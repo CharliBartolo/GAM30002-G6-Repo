@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     {        
         if (controls.Player.Movement.ReadValue<Vector2>().magnitude > 0)
         {
-            Debug.Log("Player registered as holding buttons");
+            //Debug.Log("Player registered as holding buttons");
             MovePlayer(controls.Player.Movement.ReadValue<Vector2>());
         }        
     }
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     public void MovePlayer(Vector2 stickMovementVector)
     {
         // Translate 2d analog movement to 3d vector movement
-        Debug.Log(stickMovementVector);
+        //Debug.Log(stickMovementVector);
         Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);
         movementVector = transform.TransformDirection(movementVector).normalized;
         playerController.Move(movementVector * Time.deltaTime * movementSpeed);
