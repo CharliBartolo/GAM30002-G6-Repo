@@ -11,8 +11,8 @@ public class MountedRotateInteractable : InteractableBase
     private Vector2 xAngleClamps = new Vector2 (0f, 360f);
     private Vector2 yAngleClamps = new Vector2 (-90f, 90f); 
 
-    public Vector2 _mouseSmooth;
-    public Vector2 _mouseAbsolute;
+    private Vector2 _mouseSmooth;
+    private Vector2 _mouseAbsolute;
     private InteractionType interactionType = InteractionType.RotateOnly;
     private PlayerFPControls playerControls;
 
