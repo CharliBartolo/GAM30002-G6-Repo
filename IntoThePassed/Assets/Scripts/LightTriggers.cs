@@ -23,7 +23,7 @@ public class LightTriggers : MonoBehaviour{
                 // Use Vectors (Light - other) and (light - light + fwd * light range)
                 Vector3 otherRelativeToLightPos = transform.position - other.transform.position;
                 Vector3 lightMaxRangePos = transform.position - (transform.position + transform.forward * lightComponent.range);
-                Debug.Log(Vector3.Angle(otherRelativeToLightPos, lightMaxRangePos));
+                //Debug.Log(Vector3.Angle(otherRelativeToLightPos, lightMaxRangePos));
                 if (Vector3.Angle(otherRelativeToLightPos, lightMaxRangePos) > lightComponent.spotAngle / 2f)
                 {
                     //Debug.Log("Not in spotlight");

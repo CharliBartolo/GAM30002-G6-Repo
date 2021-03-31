@@ -54,9 +54,4 @@ public class LightDetection : MonoBehaviour
  
          GUILayout.EndArea();
      }
-
-    //  bool CheckIfInLightRadius()
-    //  {
-    //     return true;
-    //  }
 }
