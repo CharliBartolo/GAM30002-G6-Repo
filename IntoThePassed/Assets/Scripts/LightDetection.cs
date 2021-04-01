@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//public delegate void EnteredLightTriggerHandler();
-
 public class LightDetection : MonoBehaviour
 {
     public bool isLit;
@@ -18,7 +16,7 @@ public class LightDetection : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         isLit = CheckIfLit();
     }

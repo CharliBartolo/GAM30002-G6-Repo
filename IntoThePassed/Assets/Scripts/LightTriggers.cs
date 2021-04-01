@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LightTriggers : MonoBehaviour{
 
+//NOTE: OnTriggerEnter dependent on one object being a rigidbody
+public class LightTriggers : MonoBehaviour{
     private enum LightType {Spotlight, Directional, Pointlight, Area};
     [SerializeField]
     private LightType lightType = LightType.Spotlight;  
@@ -54,6 +55,8 @@ public class LightTriggers : MonoBehaviour{
     void OnTriggerEnter(Collider other)
     {
         //isPlayerInLight = true;
+
+        Debug.Log("Object has entered light area");
         if (other.GetComponent<LightDetection>() != null)
         {
             other.GetComponent<LightDetection>().AddLight(this);
@@ -85,12 +88,21 @@ public class LightTriggers : MonoBehaviour{
     {
         RaycastHit hit;     
 
-        if (Physics.Linecast(transform.position, other.transform.position, out hit))
+        if (Physics.Linecast(transform.position, other.transform.position, out hit, ~0,  QueryTriggerInteraction.Ignore))
         {
-            if (hit.collider.gameObject == other)
+            if (hit.collider.gameObject.name == other.name)
             {
                 return true;
             }
+            else 
+            {
+                Debug.Log(other.gameObject.name + " is in the way");
+                Debug.Log("Was expecting " + hit.collider.name);
+            }
+        }
+        else
+        {
+            return true;
         }
 
         return false;
