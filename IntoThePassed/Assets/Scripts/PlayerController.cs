@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward * interactRange, out RaycastHit hit) && 
             hit.collider.gameObject.GetComponent<InteractableBase>() != null)
         {
-            Debug.Log("Interactable object found, attempting interaction.");
+            //Debug.Log("Interactable object found, attempting interaction.");
             currentInteractingObject = hit.collider.gameObject.GetComponent<InteractableBase>();
 
             currentInteractingObject.OnInteractEnter(controls);
@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Interaction failed, as no object was found capable of being interacted with.");
+            //Debug.Log("Interaction failed, as no object was found capable of being interacted with.");
         }
     }
 

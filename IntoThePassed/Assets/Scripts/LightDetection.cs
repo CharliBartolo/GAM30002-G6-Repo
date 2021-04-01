@@ -7,14 +7,14 @@ using UnityEngine;
 public class LightDetection : MonoBehaviour
 {
     public bool isLit;
-    public List<LightTriggers> activeLights;
+    public List<LightTriggers> activeLights;    
 
     //public event EnteredLightTriggerHandler PlayerEnteredLight;
 
     // Start is called before the first frame update
     void Start()
     {
-        activeLights = new List<LightTriggers>();
+        activeLights = new List<LightTriggers>();        
     }
 
     // Update is called once per frame
@@ -24,7 +24,7 @@ public class LightDetection : MonoBehaviour
     }
 
     bool CheckIfLit()
-    {        
+    {          
         foreach (LightTriggers light in activeLights)
         {
             if (light.CheckIfInLightArea(this.gameObject))
