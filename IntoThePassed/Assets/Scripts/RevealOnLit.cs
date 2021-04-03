@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class RevealOnLit : MonoBehaviour
 {
+    public float startingTimeTillLightTransitions = 0.1f;
+
     private LightDetection lightDetection;
     private MeshRenderer meshRenderer;
-    private float timeTillLightTransitions;
-    private float startingTimeTillLightTransitions = 0.5f;
+    private float timeTillLightTransitions;    
     private bool prevLitState;
 
     // Start is called before the first frame update

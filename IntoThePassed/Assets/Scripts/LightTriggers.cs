@@ -15,16 +15,17 @@ public class LightTriggers : MonoBehaviour{
     }
 
     public bool CheckIfInLightArea(GameObject other)
-    {           
-        Debug.DrawLine(transform.position, other.transform.position);
+    {      
 
         switch (lightType)
         {
             case LightType.Spotlight:
                 // Use Vectors (Light - other) and (light - light + fwd * light range)
-                Vector3 otherRelativeToLightPos = transform.position - other.transform.position;
-                Vector3 lightMaxRangePos = transform.position - (transform.position + transform.forward * lightComponent.range);
-                //Debug.Log(Vector3.Angle(otherRelativeToLightPos, lightMaxRangePos));
+                //Vector3 otherRelativeToLightPos = transform.position - GetComponent<Collider>().ClosestPoint(other.transform.position);
+                Vector3 otherRelativeToLightPos = transform.position - getClosestPointOnColliderRelativeToLight(other);
+
+                //Vector3 closestRelativePoint = Physics.ClosestPoint(other.transform.position, GetComponent<Collider>(), transform.position, transform.rotation);
+                Vector3 lightMaxRangePos = transform.position - (transform.position + transform.forward * lightComponent.range);                
                 if (Vector3.Angle(otherRelativeToLightPos, lightMaxRangePos) > lightComponent.spotAngle / 2f)
                 {
                     //Debug.Log("Not in spotlight");
@@ -88,7 +89,11 @@ public class LightTriggers : MonoBehaviour{
     {
         RaycastHit hit;     
 
-        if (Physics.Linecast(transform.position, other.transform.position, out hit, ~0,  QueryTriggerInteraction.Ignore))
+        //Cast line to point on other collider closest to centre ray, but equal magnitude distance as other from light        
+        Vector3 pointToCastTo = getClosestPointOnColliderRelativeToLight(other);
+
+        Debug.DrawLine(transform.position, pointToCastTo);
+        if (Physics.Linecast(transform.position, pointToCastTo, out hit, ~0,  QueryTriggerInteraction.Ignore))
         {
             if (hit.collider.gameObject.name == other.name)
             {
@@ -106,5 +111,11 @@ public class LightTriggers : MonoBehaviour{
         }
 
         return false;
+    }
+
+    // Returns closest point on the OTHER collider to the centre of the light beam
+    Vector3 getClosestPointOnColliderRelativeToLight(GameObject otherObject)
+    {
+        return otherObject.GetComponent<Collider>().ClosestPoint(transform.position + transform.forward * (transform.position - otherObject.transform.position).magnitude);
     }
 }
