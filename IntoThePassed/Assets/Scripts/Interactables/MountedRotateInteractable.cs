@@ -8,8 +8,8 @@ public class MountedRotateInteractable : InteractableBase
     public Vector2 mouseSmoothing = new Vector2 (3,3);
 
     //Should probably change these to lists, not vectors
-    private Vector2 xAngleClamps = new Vector2 (0f, 360f);
-    private Vector2 yAngleClamps = new Vector2 (-90f, 90f); 
+    public Vector2 xAngleClamps = new Vector2 (0f, 360f);
+    public Vector2 yAngleClamps = new Vector2 (-90f, 90f); 
 
     private Vector2 _mouseSmooth;
     private Vector2 _mouseAbsolute;

@@ -170,7 +170,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &335300216
 Light:
   m_ObjectHideFlags: 0
@@ -241,7 +241,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335300215}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 6, z: -2.53}
+  m_LocalPosition: {x: 0, y: 6, z: 0.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -279,7 +279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!136 &886988993
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -350,14 +350,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 886988992}
-  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0.76999986, y: 1, z: -1.53}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.76999986, y: 1, z: -0.67}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
   - {fileID: 1514445075}
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &886988997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,6 +372,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSensitivity: {x: 2, y: 2}
   mouseSmoothing: {x: 6, y: 6}
+  xAngleClamps: {x: 0, y: 360}
+  yAngleClamps: {x: -90, y: 90}
 --- !u!1 &920158014
 GameObject:
   m_ObjectHideFlags: 0
@@ -529,7 +531,7 @@ GameObject:
   - component: {fileID: 970628216}
   - component: {fileID: 970628218}
   - component: {fileID: 970628212}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LightMirror
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -605,13 +607,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 970628211}
-  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -5.15, y: 2.45, z: -0.04}
-  m_LocalScale: {x: 5, y: 0.1, z: 5}
+  m_LocalScale: {x: 5, y: 5, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &970628216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -873,6 +875,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSensitivity: {x: 2, y: 2}
   mouseSmoothing: {x: 6, y: 6}
+  xAngleClamps: {x: 0, y: 360}
+  yAngleClamps: {x: -90, y: 90}
 --- !u!136 &1367457646
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -943,14 +947,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1367457644}
-  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.77, y: 1, z: 1.72}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
   - {fileID: 1679493424}
   m_Father: {fileID: 0}
   m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &1506585974
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,7 +1079,7 @@ GameObject:
   - component: {fileID: 1514445077}
   - component: {fileID: 1514445076}
   m_Layer: 0
-  m_Name: SpotLight (1)
+  m_Name: SpotLight1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1182,7 +1186,7 @@ GameObject:
   - component: {fileID: 1679493426}
   - component: {fileID: 1679493425}
   m_Layer: 0
-  m_Name: SpotLight (1)
+  m_Name: SpotLight2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1233,13 +1237,13 @@ Light:
   m_InnerSpotAngle: 50
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_NearPlane: 0.099999994
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -1332,7 +1336,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -1379,7 +1383,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1

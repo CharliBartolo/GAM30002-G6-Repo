@@ -125,39 +125,9 @@ public class LightTriggers : MonoBehaviour{
         boxCol.size = new Vector3 (boxLength, boxLength, lightComponent.range);
     }
 
-
-
-    // Returns closest point on the OTHER collider to the centre of the light beam
-    // Idea time: Get closest point on THIS collider (box) for three points: closest vertex, centre and furthest vertex.
-
     Vector3 getClosestPointOnColliderRelativeToLight(GameObject otherObject)
     {
-        //return otherObject.GetComponent<Collider>().ClosestPoint(transform.position + transform.forward * (transform.position - otherObject.transform.position).magnitude);
         return otherObject.GetComponent<Collider>().ClosestPoint(transform.position + transform.forward * (transform.position - otherObject.transform.position).magnitude);
-        //return otherObject.GetComponent<Collider>().ClosestPoint(GetComponent<Collider>().ClosestPoint());
-    }
-
-    Vector3 GetClosestPointOnLineSegment(Vector3 startPos, Vector3 endPos, Vector3 targetPos)
-    {
-        Vector3 startToEndPos = endPos - startPos;
-        Vector3 startToTargetPos = targetPos - startPos;
-
-        float magnitudeStartToTarget = startToEndPos.magnitude;
-        float vectorProduct = Vector3.Dot(startToEndPos, startToTargetPos);
-        float distance = vectorProduct / magnitudeStartToTarget;
-
-        if (distance < 0)
-        {
-            return startPos;
-        } 
-        else if (distance > 1)
-        {
-            return endPos;
-        }
-        else
-        {
-            return startPos + startToTargetPos * distance;
-        }
     }
 
     bool CheckIfWithinAngle(Vector3 startPos, Vector3 endPos)

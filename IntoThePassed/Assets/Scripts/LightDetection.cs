@@ -50,7 +50,7 @@ public class LightDetection : MonoBehaviour
         //isPlayerInLight = true;
 
         //Debug.Log("Object has entered light area");
-        if (other.GetComponent<LightTriggers>() != null)
+        if (other.GetComponent<LightTriggers>() != null && !activeLights.Contains(other.GetComponent<LightTriggers>()))
         {
             AddLight(other.GetComponent<LightTriggers>());
         }    
@@ -58,7 +58,7 @@ public class LightDetection : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<LightTriggers>() != null)
+        if (other.GetComponent<LightTriggers>() != null && activeLights.Contains(other.GetComponent<LightTriggers>()))
         {
             RemoveLight(other.GetComponent<LightTriggers>());
         }  
