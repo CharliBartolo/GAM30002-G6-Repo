@@ -138,7 +138,7 @@ public class LightMirror : MonoBehaviour
 
     bool CheckLightHitsMirror(LightTriggers lightScript)
     {        
-        Debug.Log(Vector3.Angle(-lightScript.gameObject.transform.forward, transform.forward));        
+        //Debug.Log(Vector3.Angle(-lightScript.gameObject.transform.forward, transform.forward));        
         if (Vector3.Angle(-lightScript.gameObject.transform.forward, transform.forward) < 
             90f) //+ (lightScript.gameObject.GetComponent<Light>().spotAngle / 2))            
         {
