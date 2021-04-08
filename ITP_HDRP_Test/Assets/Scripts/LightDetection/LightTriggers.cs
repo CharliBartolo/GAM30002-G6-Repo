@@ -121,14 +121,26 @@ public class LightTriggers : MonoBehaviour
         // Sets up a box collider that matches the bounds of the spotlight
         BoxCollider boxCol = gameObject.AddComponent<BoxCollider>();
         boxCol.isTrigger = true;
-        boxCol.center = new Vector3(0f, 0f, (lightComponent.intensity / lightComponent.range) / 2);
+        boxCol.center = new Vector3(0f, 0f, (lightComponent.range * 5) / 2);
 
         // Gets length of 'cone' radius to figure out box base length
         float spotLightTan = Mathf.Tan((lightComponent.spotAngle * Mathf.Deg2Rad) / 2);
-        float boxLength = Mathf.Abs(lightComponent.range * spotLightTan) * 2;
-        boxCol.size = new Vector3(boxLength, boxLength, (lightComponent.intensity / lightComponent.range));
-        Debug.Log("intensity: " + lightComponent.intensity);
+        float boxLength = Mathf.Abs(lightComponent.range * 1.6f * spotLightTan) * 2;
+        boxCol.size = new Vector3(boxLength, boxLength, (lightComponent.range * 5));
+        //Debug.Log("intensity: " + lightComponent.intensity);
     }
+    /*    void SetupBoxCollider()
+        {
+            // Sets up a box collider that matches the bounds of the spotlight
+            BoxCollider boxCol = gameObject.AddComponent<BoxCollider>();
+            boxCol.isTrigger = true;
+            boxCol.center = new Vector3(0f, 0f, (lightComponent.intensity / lightComponent.range) / 2);
+
+            // Gets length of 'cone' radius to figure out box base length
+            float spotLightTan = Mathf.Tan((lightComponent.spotAngle * Mathf.Deg2Rad) / 2);
+            float boxLength = Mathf.Abs((lightComponent.intensity / lightComponent.range) * spotLightTan) / 2;
+            boxCol.size = new Vector3(boxLength, boxLength, (lightComponent.intensity / lightComponent.range));
+        }*/
 
     /*    void SetupBoxCollider()
         {

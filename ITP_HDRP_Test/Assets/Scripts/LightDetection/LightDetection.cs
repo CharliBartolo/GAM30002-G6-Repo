@@ -8,6 +8,8 @@ public class LightDetection : MonoBehaviour
     public bool useComplexLightDetection = false;
     public List<LightTriggers> activeLights;
 
+    public string _tag;
+
     //public event EnteredLightTriggerHandler PlayerEnteredLight;
 
     // Start is called before the first frame update
@@ -26,12 +28,25 @@ public class LightDetection : MonoBehaviour
     {
         foreach (LightTriggers light in activeLights)
         {
-            if (light.CheckIfInLightArea(this.gameObject))
+            if(_tag == "all")
             {
-                return true;
+                if (light.CheckIfInLightArea(this.gameObject))
+                {
+                    return true;
+                }
             }
+            else
+            {
+                if (_tag == light.gameObject.tag)
+                {
+                    if (light.CheckIfInLightArea(this.gameObject))
+                    {
+                        return true;
+                    }
+                }
+            }
+           
         }
-
         return false;
     }
 

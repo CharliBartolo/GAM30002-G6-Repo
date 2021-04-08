@@ -21,7 +21,8 @@ public class ElevatorController : MonoBehaviour, IRemoteFunction, IRequireKey
         {
             Debug.Log("elevetor control used");
             controlledObject.PerformMove();
-            Activate();
+            if(keyRequired != -1)
+                Activate();
         }
     }
 
@@ -44,7 +45,9 @@ public class ElevatorController : MonoBehaviour, IRemoteFunction, IRequireKey
 
     public bool PlayerHasKeyValidId()
     {
-        List<int> player_keys = GameObject.Find("PlayerFPS").GetComponent<PlayerInteractions>().key_ids;
+        List<int> player_keys = GameObject.Find("Player").GetComponent<PlayerInteractions>().key_ids;
+        if (keyRequired == -1)
+            return true;
 
         foreach (var key in player_keys)
         {
