@@ -125,7 +125,7 @@ public class LightTriggers : MonoBehaviour
 
         // Gets length of 'cone' radius to figure out box base length
         float spotLightTan = Mathf.Tan((lightComponent.spotAngle * Mathf.Deg2Rad) / 2);
-        float boxLength = Mathf.Abs(lightComponent.range * spotLightTan) * 2;
+        float boxLength = Mathf.Abs(lightComponent.range * 1.6f * spotLightTan) * 2;
         boxCol.size = new Vector3(boxLength, boxLength, (lightComponent.range * 5));
         //Debug.Log("intensity: " + lightComponent.intensity);
     }
