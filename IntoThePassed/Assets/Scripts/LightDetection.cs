@@ -5,7 +5,6 @@ using UnityEngine;
 public class LightDetection : MonoBehaviour
 {
     public bool isLit;
-    public bool useComplexLightDetection = false;
     public List<LightTriggers> activeLights;    
 
     //public event EnteredLightTriggerHandler PlayerEnteredLight;
@@ -23,7 +22,7 @@ public class LightDetection : MonoBehaviour
     }
 
     bool CheckIfLit()
-    {   
+    {          
         foreach (LightTriggers light in activeLights)
         {
             if (light.CheckIfInLightArea(this.gameObject))
@@ -44,6 +43,7 @@ public class LightDetection : MonoBehaviour
     {
         activeLights.Remove(light);
     }
+<<<<<<< HEAD
 
     void OnTriggerEnter(Collider other)
     {
@@ -63,13 +63,15 @@ public class LightDetection : MonoBehaviour
             RemoveLight(other.GetComponent<LightTriggers>());
         }  
     }
+=======
+>>>>>>> parent of 3027a01d (Updated LightDetection to have two separate modes: complex and simple detection. Complex uses more rays)
     
-    void OnGUI()
-    {
+     void OnGUI()
+     {
          GUILayout.BeginArea(new Rect(10f, 10f, Screen.width, Screen.height)); 
 
          GUILayout.Label("Player in light: " + isLit);
  
          GUILayout.EndArea();
-    }
+     }
 }
