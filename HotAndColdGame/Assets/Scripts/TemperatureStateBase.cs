@@ -6,6 +6,7 @@ public class TemperatureStateBase : MonoBehaviour
 {
     public enum TempState {Hot, Cold, Neutral};
     public enum TempStatesAllowed {HotAndCold, OnlyHot, OnlyCold, OnlyNeutral}
+    public bool debugEnabled;
 
     [SerializeField]
     protected TempState currentTempState = TempState.Neutral;
@@ -13,9 +14,9 @@ public class TemperatureStateBase : MonoBehaviour
     protected TempStatesAllowed allowedTempStates = TempStatesAllowed.HotAndCold;
     [SerializeField]
     protected float currentTemp = 0;
-    protected float tempMin = -100;
-    protected float tempMax = 100;
-    protected float tempNeutral = 0;
+    public float tempMin = -100;
+    public float tempMax = 100;
+    public float tempNeutral = 0;
 
     protected virtual void Start() 
     {
@@ -66,31 +67,26 @@ public class TemperatureStateBase : MonoBehaviour
     }
 
     protected virtual void PerformTemperatureBehaviour(TempState currentTemperatureState)
-    {       
-        
+    {   
+        if (debugEnabled)    
+            Debug.Log(this.name + " is at temperature: " + CurrentTemperature + " and is in state: " + currentTempState);
     }
 
     private void TemperatureClamp()
     {
-        if (currentTemp < tempMin)
-        {
-            currentTemp = tempMin;
-        }
-
-        if (currentTemp > tempMax)
-        {
-            currentTemp = tempMax;
-        }
+        currentTemp = Mathf.Clamp(currentTemp, tempMin, tempMax);     
     }
 
     public void ChangeTemperature(float valueToAdd)
     {
         currentTemp = currentTemp + valueToAdd;
+        TemperatureClamp();
     }
 
     public void SetTemperature(float valueToSet)
     {
         currentTemp = valueToSet;
+        TemperatureClamp();
     }
 
     public float CurrentTemperature
