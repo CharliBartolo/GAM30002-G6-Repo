@@ -93,4 +93,13 @@ public class TemperatureStateBase : MonoBehaviour
     {
         get => currentTemp;
     }
+
+    public TempState CurrentTempState
+    {
+        get
+        {
+            return currentTempState;
+        }
+
+    }
 }
