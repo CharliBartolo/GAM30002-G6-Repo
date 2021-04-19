@@ -14,9 +14,9 @@ public class TemperatureStateBase : MonoBehaviour
     protected TempStatesAllowed allowedTempStates = TempStatesAllowed.HotAndCold;
     [SerializeField]
     protected float currentTemp = 0;
-    protected float tempMin = -100;
-    protected float tempMax = 100;
-    protected float tempNeutral = 0;
+    public float tempMin = -100;
+    public float tempMax = 100;
+    public float tempNeutral = 0;
 
     protected virtual void Start() 
     {
@@ -80,11 +80,13 @@ public class TemperatureStateBase : MonoBehaviour
     public void ChangeTemperature(float valueToAdd)
     {
         currentTemp = currentTemp + valueToAdd;
+        TemperatureClamp();
     }
 
     public void SetTemperature(float valueToSet)
     {
         currentTemp = valueToSet;
+        TemperatureClamp();
     }
 
     public float CurrentTemperature
