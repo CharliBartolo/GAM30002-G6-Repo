@@ -14,6 +14,10 @@ public class DeathEffect : MonoBehaviour
     {
         Fade.canvasRenderer.SetAlpha(0.0f);// makes sure death effect is invisible until function
 
+        
+    }
+
+    private void Update() {
         DeathFade();//call fade function
     }
 
@@ -24,16 +28,18 @@ public class DeathEffect : MonoBehaviour
 
         switch (crntTemp.CurrentTempState) //checks if player is in Hot or Cold state
         {
-            case TemperatureStateBase.TempState.Hot://if hot
+            case TemperatureStateBase.TempState.Hot: //if hot
+                Debug.Log("Player is overheating");
                 Fade.GetComponent<Image>().color = new Color32(255, 0, 0, 100);//red, green, blue, alpha
                 Fade.CrossFadeAlpha(1, 3, false); //Fully fade Image with the duration of 3 seconds
                 break;
             case TemperatureStateBase.TempState.Cold://if cold
-                Fade.GetComponent<Image>().color = new Color32(0, 255, 0, 100);//red, green, blue, alpha
+                Debug.Log("Player is freezing");
+                Fade.GetComponent<Image>().color = new Color32(0, 200, 255, 100);//red, green, blue, alpha
                 Fade.CrossFadeAlpha(1, 3, false); //Fully fade Image with the duration of 3 seconds
                 break;
             default:
-                crntTemp.CurrentTempState = TemperatureStateBase.TempState.Neutral;//nothing happens
+                //crntTemp.CurrentTempState = TemperatureStateBase.TempState.Neutral;//nothing happens
                 break;
         }
     }
