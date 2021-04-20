@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}
     public PlayerState playerControlState = PlayerState.MoveAndLook;
+    public List<string> playerInventory;
 
     public PlayerFPControls controls;    
     public float movementSpeed = 50f;
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private void Awake() 
     {   
         playerCharController = GetComponent<CharacterController>();
+        playerInventory = new List<string>();
         controls = new PlayerFPControls();
         controls.Player.Interact.performed += context => Interact(context);
         controls.Player.Interact.canceled += ExitInteract;
@@ -83,8 +85,6 @@ public class PlayerController : MonoBehaviour
         playerCam.transform.rotation = Quaternion.Euler(-_mouseAbsolute.y, transform.eulerAngles.y, transform.eulerAngles.z);
     }
 
-
-
     public void Interact(InputAction.CallbackContext context)
     {
         if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward * interactRange, out RaycastHit hit) && 
@@ -103,13 +103,17 @@ public class PlayerController : MonoBehaviour
                     playerControlState = PlayerState.MoveOnly;
                     break;
                 // Use object, trigger exit interaction, and remove object from script.
-                case InteractableBase.InteractionType.Use:                    
+                case InteractableBase.InteractionType.Use:
+                    if (currentInteractingObject.GetComponent<CollectInteractable>() != null) 
+                    {
+                        playerInventory.Add(currentInteractingObject.gameObject.name);
+                    }                   
                     ExitInteract(context);
                     break;
                 default:
                     break;
             }
-            currentInteractingObject.OnInteractEnter(controls);
+            //currentInteractingObject.OnInteractEnter(controls);
         }
         else
         {
@@ -168,5 +172,28 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    void OnGUI()
+    {
+        GUILayout.BeginArea(new Rect(10f, 10f, Screen.width, Screen.height));
+        string stringToShow = "Player Inventory: ";
+
+        if (playerInventory.Count > 0)
+        {            
+            for (int i = 0; i < playerInventory.Count - 1; i++)
+            {
+                stringToShow += playerInventory[i] + ", ";
+            }
+            stringToShow += playerInventory[playerInventory.Count - 1];
+        }
+        else
+        {
+            stringToShow += "None";
+        }
+        
+        GUILayout.Label(stringToShow);
+
+        GUILayout.EndArea();
     }
 }
