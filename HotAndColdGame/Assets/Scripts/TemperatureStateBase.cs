@@ -107,7 +107,7 @@ public class TemperatureStateBase : MonoBehaviour
     {
         // If temperature is not zero, begin approaching neutral by ticking down current temperature until it hits neutral.
         float tempPercent = currentTemp / (tempCap - tempNeutral);   // Ranges from 0 - 1
-        Debug.Log(tempPercent);
+        //Debug.Log(tempPercent);
         // Rearrange equation for currentTemp while adjusting hot percent
         currentTemp = (tempPercent - (1 / powerDownRateInSeconds * Time.deltaTime)) * (tempCap - tempNeutral);
 

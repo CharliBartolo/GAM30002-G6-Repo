@@ -8,9 +8,10 @@ public class PlayerController : MonoBehaviour
     public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}
     public PlayerState playerControlState = PlayerState.MoveAndLook;
     public List<string> playerInventory;
+    public RayCastShootComplete raygunScript;
 
     public PlayerFPControls controls;    
-    public float movementSpeed = 50f;
+    public float movementSpeed = 10f;
     public float interactRange = 2f;
 
     //Mouse Control Variables
@@ -34,7 +35,12 @@ public class PlayerController : MonoBehaviour
         controls = new PlayerFPControls();
         controls.Player.Interact.performed += context => Interact(context);
         controls.Player.Interact.canceled += ExitInteract;
+
+        controls.Player.Shoot.performed += raygunScript.FireBeam;
+        controls.Player.Shoot.canceled += raygunScript.FireBeam;
+        controls.Player.SwapBeam.performed += raygunScript.SwapBeam;
         controls.Enable();
+        LockCursor();
     }
 
     private void Update() 
