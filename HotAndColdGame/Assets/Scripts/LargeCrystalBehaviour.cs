@@ -7,10 +7,8 @@ public class LargeCrystalBehaviour : TemperatureStateBase
     public Collider crystalTemperatureArea;
     public Material coldTempField, hotTempField;
     public List<GameObject> objectsInTempArea;
-    public bool isPermanentlyPowered = false;
 
-    //private float powerDownRate = 0.0333f;  //Operates on a 0-1 percentage basis, Default value 0.0333 takes roughly 30 seconds from max to power down
-    private float powerDownRateInSeconds = 30f;
+    //private float powerDownRate = 0.0333f;  //Operates on a 0-1 percentage basis, Default value 0.0333 takes roughly 30 seconds from max to power down    
     private float temperatureValueToEmit = 10f;
     
 
@@ -23,38 +21,13 @@ public class LargeCrystalBehaviour : TemperatureStateBase
     // Update is called once per frame
     protected override void Update()
     {
-        base.Update();
-
-        if (!isPermanentlyPowered)
-        {
-            if (currentTemp > 0)
-            {
-                PowerDownToNeutral(tempMax);
-            }
-            else if (currentTemp < 0)
-            {
-                PowerDownToNeutral(tempMin);
-            }
-        }   
+        base.Update();        
 
         PerformTemperatureBehaviour(currentTempState);        
     }
 
     // tempMaxValue is the max / min temperature value to calculate percentage and range with
-    private void PowerDownToNeutral(float tempCap)
-    {
-        // If temperature is not zero, begin approaching neutral by ticking down current temperature until it hits neutral.
-        float tempPercent = currentTemp / (tempCap - tempNeutral);   // Ranges from 0 - 1
-        Debug.Log(tempPercent);
-        // Rearrange equation for currentTemp while adjusting hot percent
-        currentTemp = (tempPercent - (1 / powerDownRateInSeconds * Time.deltaTime)) * (tempCap - tempNeutral);
-
-        if (tempNeutral < tempCap) 
-            currentTemp = Mathf.Clamp(currentTemp, tempNeutral, tempCap);
-        else
-            currentTemp = Mathf.Clamp(currentTemp, tempCap, tempNeutral);    
-
-    }
+    
 
     protected override void PerformTemperatureBehaviour(TempState currentTemperatureState)
     {
