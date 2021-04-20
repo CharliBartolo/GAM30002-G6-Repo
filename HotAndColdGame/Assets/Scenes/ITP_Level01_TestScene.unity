@@ -3032,43 +3032,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1239914671}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a148db082eb88f459a3c6149435a411, type: 3}
+  m_Script: {fileID: 11500000, guid: fa5c3c22e315c7843ab0eb9177d0efa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IsWalking: 0
-  m_WalkSpeed: 2
-  m_RunSpeed: 5
-  m_RunstepLenghten: 0.7
-  m_JumpSpeed: 5
-  m_StickToGroundForce: 10
-  m_GravityMultiplier: 2
-  m_StepInterval: 2
-  m_FootstepSounds: []
-  m_JumpSound: {fileID: 0}
-  m_LandSound: {fileID: 0}
-  m_Camera: {fileID: 0}
---- !u!114 &1239914673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1239914671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5959292f75ba08849bb8972ece19784f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 1283683946}
-  holding: {fileID: 0}
-  pushPower: 2
-  maxGrapDistance: 2
-  SpwawnPoint: {x: 0, y: 0, z: 0}
-  shadowPos: {x: 0, y: 0, z: 0}
-  lightPos: {x: 0, y: 0, z: 0}
-  DarknessFader: {fileID: 0}
-  GodMode: 0
-  key_ids: 
+  playerControlState: 1
+  movementSpeed: 5
+  interactRange: 2
+  playerCam: {fileID: 1283683946}
+  mouseSensitivity: {x: 2, y: 6}
+  mouseSmoothing: {x: 3, y: 3}
 --- !u!114 &1239914674
 MonoBehaviour:
   m_ObjectHideFlags: 0
