@@ -100,6 +100,9 @@ public class TemperatureStateBase : MonoBehaviour
         {
             return currentTempState;
         }
-
+        set 
+        {
+            currentTempState = value;
+        }
     }
 }
