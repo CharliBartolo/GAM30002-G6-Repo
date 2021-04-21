@@ -7,12 +7,16 @@ public class PlayerController : MonoBehaviour
 {
     public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}
     public PlayerState playerControlState = PlayerState.MoveAndLook;
+    public bool _useRigidBody = true;
     public List<string> playerInventory;
     public RayCastShootComplete raygunScript;
 
     public PlayerFPControls controls;    
     public float movementSpeed = 10f;
     public float interactRange = 2f;
+    public bool isGravityEnabled = true;
+    private bool _isGrounded;
+    private Vector3 playerVelocity;
 
     //Mouse Control Variables
     public Camera playerCam;
@@ -25,12 +29,16 @@ public class PlayerController : MonoBehaviour
     private Vector2 _mouseAbsolute;
     private Vector2 _mouseSmooth;
 
-    private CharacterController playerCharController;
+    private Rigidbody _playerRB;
+    private Transform _groundChecker;    
+    //private CharacterController playerCharController;
     private InteractableBase currentInteractingObject;
 
     private void Awake() 
     {   
-        playerCharController = GetComponent<CharacterController>();
+        //playerCharController = GetComponent<CharacterController>();
+        _playerRB = GetComponent<Rigidbody>();
+
         playerInventory = new List<string>();
         controls = new PlayerFPControls();
         controls.Player.Interact.performed += context => Interact(context);
@@ -48,6 +56,7 @@ public class PlayerController : MonoBehaviour
         switch (playerControlState)
         {
             case (PlayerState.ControlsDisabled):
+                //ResetMouse();
                 break;
             case (PlayerState.MoveAndLook):
                 MouseLook(controls.Player.Look.ReadValue<Vector2>());
@@ -55,11 +64,12 @@ public class PlayerController : MonoBehaviour
                 break;
             case (PlayerState.MoveOnly):
                 MovePlayer(controls.Player.Movement.ReadValue<Vector2>());
+                //ResetMouse();
                 break;
             default:
                 playerControlState = PlayerState.MoveAndLook;
                 break;
-        }
+        }        
 
         // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
 
@@ -77,9 +87,20 @@ public class PlayerController : MonoBehaviour
     {
         // Translate 2d analog movement to 3d vector movement
         //Debug.Log(stickMovementVector);
+ 
+        playerVelocity = _playerRB.velocity;            
         Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);
         movementVector = transform.TransformDirection(movementVector).normalized;
-        playerCharController.Move(movementVector * Time.deltaTime * movementSpeed);
+        movementVector = movementVector.normalized;
+
+        _playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);
+    
+    }
+
+    void ResetMouse()
+    {
+        _mouseAbsolute = Vector2.zero;
+
     }
 
     void MouseLook(Vector2 deltaParam)
@@ -168,13 +189,13 @@ public class PlayerController : MonoBehaviour
             _mouseAbsolute.y = MAX_Y;
     }
 
-    private void UnlockCursor()
+    private void LockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    private void LockCursor()
+    private void UnlockCursor()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

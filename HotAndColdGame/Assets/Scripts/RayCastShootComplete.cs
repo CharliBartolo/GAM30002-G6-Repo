@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class RayCastShootComplete : MonoBehaviour {
 
-	public float tempchange = 0;
+	public float tempchange = 1f;
 	public float weaponRange = 50f;
 	public float hitForce = 5f;
 	public Transform gunEnd;
@@ -16,8 +16,10 @@ public class RayCastShootComplete : MonoBehaviour {
 
     //Laser Properties
     private LineRenderer laserLine;
+    public Material hotMaterial;
+    public Material coldMaterial;
     public bool cold = true;
-    public Color col = Color.blue;
+    //public Color col = Color.blue;
 
 	void Start () 
 	{
@@ -69,18 +71,20 @@ public class RayCastShootComplete : MonoBehaviour {
 
             if (cold == true)
             {
-                col = Color.blue;
-                tempchange = -50f * Time.deltaTime;
+                //col = Color.blue;
+                laserLine.material = coldMaterial;
+                tempchange = -60f * Time.deltaTime;
             }
 
             if (cold == false)
             {
-                col = Color.red;
-                tempchange = 50f * Time.deltaTime;
+                //col = Color.red;
+                laserLine.material = hotMaterial;
+                tempchange = 60f * Time.deltaTime;
             }
 
-            laserLine.startColor = col;
-            laserLine.endColor = col;
+            //laserLine.startColor = col;
+            //laserLine.endColor = col;
 
             Vector3 rayOrigin = fpsCam.ViewportToWorldPoint (new Vector3(0.5f, 0.5f, 0.0f));
             RaycastHit hit;
@@ -101,9 +105,9 @@ public class RayCastShootComplete : MonoBehaviour {
 					hit.rigidbody.AddForce (-hit.normal * 20);
                 }
 
-                /*
-                Instantiate(spherecollider, hit.point, Quaternion.identity);
-                spherecollider.GetComponent<ShootEnd>().temperature = tempchange;
+                
+                //Instantiate(spherecollider, hit.point, Quaternion.identity);
+                //spherecollider.GetComponent<ShootEnd>().temperature = tempchange;
                 if (cold == true)
                 {
                     particleAtEnd_ice.SetActive(true);
@@ -116,7 +120,7 @@ public class RayCastShootComplete : MonoBehaviour {
                     particleAtEnd_ice.SetActive(false);
                     particleAtEnd_fire.transform.position = hit.point;
                 }
-                */
+                
 
             }
 			else
@@ -127,8 +131,8 @@ public class RayCastShootComplete : MonoBehaviour {
         else
         {
             laserLine.enabled = false;
-            //particleAtEnd_ice.SetActive(false);
-            //particleAtEnd_fire.SetActive(false);
+            particleAtEnd_ice.SetActive(false);
+            particleAtEnd_fire.SetActive(false);
         }        
 	}
 }
