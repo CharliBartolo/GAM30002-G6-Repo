@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public float movementSpeed = 10f;
     public float interactRange = 2f;
     public bool isGravityEnabled = true;
-    private bool _isGrounded;
+    private bool isGrounded;
     private Vector3 playerVelocity;
 
     //Mouse Control Variables
@@ -29,20 +29,21 @@ public class PlayerController : MonoBehaviour
     private Vector2 _mouseAbsolute;
     private Vector2 _mouseSmooth;
 
-    private Rigidbody _playerRB;
-    private Transform _groundChecker;    
+    private Rigidbody playerRB;
+    public Transform groundChecker;    
     //private CharacterController playerCharController;
     private InteractableBase currentInteractingObject;
 
     private void Awake() 
     {   
         //playerCharController = GetComponent<CharacterController>();
-        _playerRB = GetComponent<Rigidbody>();
+        playerRB = GetComponent<Rigidbody>();
 
         playerInventory = new List<string>();
         controls = new PlayerFPControls();
         controls.Player.Interact.performed += context => Interact(context);
         controls.Player.Interact.canceled += ExitInteract;
+        controls.Player.Jump.performed += Jump;
 
         controls.Player.Shoot.performed += raygunScript.FireBeam;
         controls.Player.Shoot.canceled += raygunScript.FireBeam;
@@ -59,10 +60,12 @@ public class PlayerController : MonoBehaviour
                 //ResetMouse();
                 break;
             case (PlayerState.MoveAndLook):
+                GroundedCheck();
                 MouseLook(controls.Player.Look.ReadValue<Vector2>());
                 MovePlayer(controls.Player.Movement.ReadValue<Vector2>());
                 break;
             case (PlayerState.MoveOnly):
+                GroundedCheck();
                 MovePlayer(controls.Player.Movement.ReadValue<Vector2>());
                 //ResetMouse();
                 break;
@@ -88,19 +91,33 @@ public class PlayerController : MonoBehaviour
         // Translate 2d analog movement to 3d vector movement
         //Debug.Log(stickMovementVector);
  
-        playerVelocity = _playerRB.velocity;            
+        playerVelocity = playerRB.velocity;            
         Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);
         movementVector = transform.TransformDirection(movementVector).normalized;
         movementVector = movementVector.normalized;
 
-        _playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);
+        playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);
     
+    }
+
+    void GroundedCheck()
+    {
+        isGrounded = Physics.CheckSphere(groundChecker.position, 0.01f, -1, QueryTriggerInteraction.Ignore);
+    }
+
+    void Jump(InputAction.CallbackContext context)
+    {
+        if (isGrounded)
+        {
+            //Debug.Log("Jump attempted");
+            playerRB.AddForce(Vector3.up * 5f, ForceMode.VelocityChange);
+        }
     }
 
     void ResetMouse()
     {
-        _mouseAbsolute = Vector2.zero;
-
+        //_mouseAbsolute = Vector2.zero;
+        _mouseSmooth = Vector2.zero;
     }
 
     void MouseLook(Vector2 deltaParam)
