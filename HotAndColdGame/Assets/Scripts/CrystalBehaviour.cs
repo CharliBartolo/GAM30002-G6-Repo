@@ -5,6 +5,7 @@ using UnityEngine;
 public class CrystalBehaviour : TemperatureStateBase
 {
     public Collider crystalTemperatureArea;
+    public PhysicMaterial icyPhysicMaterial;
     public Light areaLight;
     public Material coldTempField, hotTempField;
     public List<GameObject> objectsInTempArea;
@@ -125,7 +126,7 @@ public class CrystalBehaviour : TemperatureStateBase
         {
             if (temperatureObject.GetComponent<Collider>() != null)
             {
-                temperatureObject.GetComponent<Collider>().material = new PhysicMaterial();
+                temperatureObject.GetComponent<Collider>().material = icyPhysicMaterial;
                 temperatureObject.GetComponent<Collider>().material.dynamicFriction = 0.05F;
                 temperatureObject.GetComponent<Collider>().material.staticFriction = 0.05F;
                 temperatureObject.GetComponent<Collider>().material.frictionCombine = PhysicMaterialCombine.Minimum;
