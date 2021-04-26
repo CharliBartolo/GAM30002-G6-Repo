@@ -26,7 +26,7 @@ public class TemperatureStateBase : MonoBehaviour
         
     }
 
-    protected virtual void Update() 
+    protected virtual void FixedUpdate() 
     {
         TemperatureClamp();
 

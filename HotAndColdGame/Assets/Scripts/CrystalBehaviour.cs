@@ -23,9 +23,9 @@ public class CrystalBehaviour : TemperatureStateBase
     }
 
     // Update is called once per frame
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();        
+        base.FixedUpdate();        
 
         PerformTemperatureBehaviour(currentTempState);        
     }
@@ -53,7 +53,7 @@ public class CrystalBehaviour : TemperatureStateBase
                     areaLight.enabled = true;
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().material = hotTempField;
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = true;
-                    SpreadUpdraftToArea();
+                    SpreadLowGravToArea();
                     break;
                 default:
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = false;
@@ -99,20 +99,15 @@ public class CrystalBehaviour : TemperatureStateBase
         }
     }
 
-    protected virtual void SpreadUpdraftToArea()
+    protected virtual void SpreadLowGravToArea()
     {
         // If object has rigidbody component, apply upward force to it as long as it remains in area
         foreach (GameObject temperatureObject in objectsInTempArea)
         {
             if (temperatureObject.GetComponent<Rigidbody>() != null)
             {
-                temperatureObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 10f, ForceMode.Acceleration);
-            }
-            else if (temperatureObject.GetComponent<CharacterController>() != null)
-            {
-                Vector3 charYVelocity = new Vector3 (0f, temperatureObject.GetComponent<CharacterController>().velocity.y + 10f * Time.deltaTime, 0f);                
-                temperatureObject.GetComponent<CharacterController>().Move(charYVelocity);
-            }
+                temperatureObject.GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.4f, ForceMode.Acceleration);
+            }            
         }
     }
 
