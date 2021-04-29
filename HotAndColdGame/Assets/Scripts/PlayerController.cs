@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public float interactRange = 2f;
     public bool isGravityEnabled = true;
     public bool isGunEnabled = true;
-    private bool isGrounded;
+    [SerializeField]private bool isGrounded;
     private Vector3 playerVelocity;
 
     //Mouse Control Variables
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             //Debug.Log("Jump attempted");
-            playerRB.AddForce(Vector3.up * 6f, ForceMode.VelocityChange);
+            playerRB.AddForce(Vector3.up * 16f, ForceMode.VelocityChange);
         }
     }
 
