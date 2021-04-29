@@ -5,6 +5,7 @@ using UnityEngine;
 public class CrystalBehaviour : TemperatureStateBase
 {
     public Collider crystalTemperatureArea;
+    public PhysicMaterial icyPhysicMaterial;
     public Light areaLight;
     public Material coldTempField, hotTempField;
     public List<GameObject> objectsInTempArea;
@@ -22,9 +23,9 @@ public class CrystalBehaviour : TemperatureStateBase
     }
 
     // Update is called once per frame
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();        
+        base.FixedUpdate();        
 
         PerformTemperatureBehaviour(currentTempState);        
     }
@@ -52,7 +53,7 @@ public class CrystalBehaviour : TemperatureStateBase
                     areaLight.enabled = true;
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().material = hotTempField;
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = true;
-                    SpreadUpdraftToArea();
+                    SpreadLowGravToArea();
                     break;
                 default:
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = false;
@@ -98,20 +99,15 @@ public class CrystalBehaviour : TemperatureStateBase
         }
     }
 
-    protected virtual void SpreadUpdraftToArea()
+    protected virtual void SpreadLowGravToArea()
     {
         // If object has rigidbody component, apply upward force to it as long as it remains in area
         foreach (GameObject temperatureObject in objectsInTempArea)
         {
             if (temperatureObject.GetComponent<Rigidbody>() != null)
             {
-                temperatureObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 10f, ForceMode.Acceleration);
-            }
-            else if (temperatureObject.GetComponent<CharacterController>() != null)
-            {
-                Vector3 charYVelocity = new Vector3 (0f, temperatureObject.GetComponent<CharacterController>().velocity.y + 10f * Time.deltaTime, 0f);                
-                temperatureObject.GetComponent<CharacterController>().Move(charYVelocity);
-            }
+                temperatureObject.GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.4f, ForceMode.Acceleration);
+            }            
         }
     }
 
@@ -125,7 +121,7 @@ public class CrystalBehaviour : TemperatureStateBase
         {
             if (temperatureObject.GetComponent<Collider>() != null)
             {
-                temperatureObject.GetComponent<Collider>().material = new PhysicMaterial();
+                temperatureObject.GetComponent<Collider>().material = icyPhysicMaterial;
                 temperatureObject.GetComponent<Collider>().material.dynamicFriction = 0.05F;
                 temperatureObject.GetComponent<Collider>().material.staticFriction = 0.05F;
                 temperatureObject.GetComponent<Collider>().material.frictionCombine = PhysicMaterialCombine.Minimum;

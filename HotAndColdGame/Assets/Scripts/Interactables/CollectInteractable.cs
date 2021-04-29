@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CollectInteractable : InteractableBase
 {
+    public string itemName;
     private InteractionType interactionType = InteractionType.Use;
     private PlayerFPControls playerControls;
 
@@ -22,7 +23,7 @@ public class CollectInteractable : InteractableBase
     //Runs after interaction is complete
     public override void OnInteractExit()
     {
-        //playerControls = null;
+        //playerControls = null;        
         Destroy(gameObject);
     }
 

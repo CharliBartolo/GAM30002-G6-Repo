@@ -47,7 +47,7 @@ public class RayCastShootComplete : MonoBehaviour {
 
 	
 
-	void Update () 
+	void LateUpdate () 
 	{
         // Change Temperature States
         /*        
