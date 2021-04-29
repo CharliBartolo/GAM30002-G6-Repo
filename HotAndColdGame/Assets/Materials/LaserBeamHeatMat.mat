@@ -22,10 +22,10 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: LaserBeamHeatMat
   m_Shader: {fileID: -6465566751694194690, guid: d5b53c0542b1db4438bd5f8352768f0a, type: 3}
-  m_ShaderKeywords: _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
+  m_ShaderKeywords: _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: 3000
   stringTagMap:
     MotionVector: User
@@ -61,7 +61,7 @@ Material:
     m_Floats:
     - Vector1_0c69cb543c404c0592f5f3ba848e54ba: 0
     - Vector1_375e7c5cd6aa431f92285404c822b8cf: 0.25
-    - Vector1_4196b159cae94a5faf9d2981c12616c2: 162
+    - Vector1_4196b159cae94a5faf9d2981c12616c2: 0
     - Vector1_ba90917868844d29980759675f954817: 0
     - _AddPrecomputedVelocity: 0
     - _AlphaCutoffEnable: 0
@@ -70,10 +70,10 @@ Material:
     - _AlphaToMask: 0
     - _AlphaToMaskInspectorValue: 0
     - _BlendMode: 1
-    - _CullMode: 2
-    - _CullModeForward: 2
+    - _CullMode: 0
+    - _CullModeForward: 0
     - _DepthOffsetEnable: 0
-    - _DoubleSidedEnable: 0
+    - _DoubleSidedEnable: 1
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 1
     - _EnableBlendModePreserveSpecularLighting: 0
