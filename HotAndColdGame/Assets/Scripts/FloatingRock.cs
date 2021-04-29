@@ -8,25 +8,25 @@ public class FloatingRock : MonoBehaviour
     public TemperatureStateBase TSB;//Requires the TemperatureStateBase script
     public Rigidbody RB;//The rigidbody of the current object (floating rock)
     public SpringJoint SJ;//The springjoint component
-    public float MoveForce;//The amount of force used to keep the spring moving. (Trying to keep the bobbing effect instead the spring coming to a halt.)
+    public float MoveForce = 10f;//The amount of force used to keep the spring moving. (Trying to keep the bobbing effect instead the spring coming to a halt.)
 
     [SerializeField]
     private TemperatureStateBase.TempState temp;//Returns the temp of rock
     [SerializeField]
-    private float coldSpring;//Controls how much spring (bobbing-ness) the rock has when cold
+    private float coldSpring = 0f;//Controls how much spring (bobbing-ness) the rock has when cold
     [SerializeField]
-    private float neutralSpring;//Controls how much spring (bobbing-ness) the rock has when neutral
+    private float neutralSpring = 5f;//Controls how much spring (bobbing-ness) the rock has when neutral
     [SerializeField]
-    private float hotSpring;//Controls how much spring (bobbing-ness) the rock has when hot
+    private float hotSpring = 10f;//Controls how much spring (bobbing-ness) the rock has when hot
 
     // Start is called before the first frame update
     void Start()
     {
         //default values (feel free to change)
-        MoveForce = 10f;
-        coldSpring = 0f;
-        neutralSpring = 5f;
-        hotSpring = 10f;
+        //MoveForce = 10f;
+        //coldSpring = 0f;
+        //neutralSpring = 5f;
+        //hotSpring = 10f;
     }
 
     // Update is called once per frame
