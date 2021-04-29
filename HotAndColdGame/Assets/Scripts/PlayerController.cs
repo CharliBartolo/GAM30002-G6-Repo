@@ -226,7 +226,9 @@ public class PlayerController : MonoBehaviour
     // Utility Functions below
     void GroundedCheck()
     {
-        isGrounded = Physics.CheckSphere(groundChecker.position, 0.01f, -1, QueryTriggerInteraction.Ignore);
+        //isGrounded = Physics.CheckSphere(groundChecker.position, 0.01f, -1, QueryTriggerInteraction.Ignore);
+        isGrounded = Physics.SphereCast(groundChecker.position, GetComponent<CapsuleCollider>().radius, Vector3.down, out RaycastHit hit, 1f);
+        Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
     } 
 
     private void LockCursor()
