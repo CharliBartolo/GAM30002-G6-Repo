@@ -11,7 +11,7 @@ public class CrystalBehaviour : TemperatureStateBase
     public List<GameObject> objectsInTempArea;
 
     //private float powerDownRate = 0.0333f;  //Operates on a 0-1 percentage basis, Default value 0.0333 takes roughly 30 seconds from max to power down    
-    public float temperatureValueToEmit = 10f;
+    public float temperatureValueToEmit = 5f;
     // Create Use Interactable Here
     [SerializeField]private bool isPowered = true;
     

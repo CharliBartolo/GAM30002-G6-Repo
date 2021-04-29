@@ -13,11 +13,12 @@ public class PlayerController : MonoBehaviour
 
     public PlayerFPControls controls;    
     public float movementSpeed = 10f;
+    public float velocityCap = 30f;
     public float interactRange = 2f;
     public bool isGravityEnabled = true;
     public bool isGunEnabled = true;
     [SerializeField]private bool isGrounded;
-    private Vector3 playerVelocity;
+    private Vector3 lateralVelocity;
 
     //Mouse Control Variables
     public Camera playerCam;
@@ -79,8 +80,9 @@ public class PlayerController : MonoBehaviour
         }        
 
         // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
-   
+        Debug.Log(playerRB.velocity.magnitude);
         SetShootingEnabled(playerInventory.Contains("Raygun"));
+        VelocityCap();
 
         if (currentInteractingObject != null)
         {
@@ -92,16 +94,21 @@ public class PlayerController : MonoBehaviour
 
     void MovePlayer(Vector2 stickMovementVector)
     {
-        // Translate 2d analog movement to 3d vector movement
-        //Debug.Log(stickMovementVector);
- 
-        playerVelocity = playerRB.velocity;            
+        // Translate 2d analog movement to 3d vector movement        
+            
         Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);
-        movementVector = transform.TransformDirection(movementVector).normalized;
-        movementVector = movementVector.normalized;
+        movementVector = transform.TransformDirection(movementVector).normalized;        
 
-        playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);
-    
+        // If airborne, dampen movement force
+        if (!isGrounded)
+        {
+            movementVector = movementVector.normalized * 0.4f;
+        }  
+        else
+        {
+            movementVector = movementVector.normalized;
+        }
+        playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);    
     }
 
     void Jump(InputAction.CallbackContext context)
@@ -230,6 +237,19 @@ public class PlayerController : MonoBehaviour
         isGrounded = Physics.SphereCast(groundChecker.position, GetComponent<CapsuleCollider>().radius, Vector3.down, out RaycastHit hit, 1f);
         Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
     } 
+
+    void VelocityCap()
+    {
+        lateralVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
+        Vector3 downwardVelocityVector = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));
+
+        if (lateralVelocity.magnitude > velocityCap)
+        {
+            playerRB.velocity = Vector3.Lerp(lateralVelocity.normalized * velocityCap + downwardVelocityVector, playerRB.velocity, Time.deltaTime);            
+            //playerRB.velocity = Vector3.Lerp(playerRB.velocity.normalized * velocityCap, playerRB.velocity, Time.deltaTime);
+            //playerRB.velocity = playerRB.velocity.normalized * velocityCap;
+        }
+    }
 
     private void LockCursor()
     {
