@@ -9,6 +9,7 @@ public class DoorMovement : TemperatureStateBase
     [Header("References")]
     [SerializeField] GameObject Door = null;
     [SerializeField] TemperatureStateBase Trigger = null;
+    TemperatureStateBase.TempState prevTempState;
 
     [Header("Settings")]
     [Range(1, 10)]
@@ -31,7 +32,8 @@ public class DoorMovement : TemperatureStateBase
     private DoorState animatingState = DoorState.None;
     private DoorState state = DoorState.None;
 
-    private List<Transform> inRange = new List<Transform>();
+    //private List<Transform> inRange = new List<Transform>();
+    bool isOpen = false;
 
     private AudioSource source = null;
     public AudioSource Source
@@ -60,53 +62,36 @@ public class DoorMovement : TemperatureStateBase
     // Start is called before the first frame update
     protected override void Start()
     {
-        if ((Trigger == null) && (GetComponent<TemperatureStateBase>() != null))
-        {
-            Trigger = GetComponent<TemperatureStateBase>();
-        }
-        else
-        {
-            Debug.LogWarning("Missing Sensor component. Please add one");
-        }
-        if ((Door == null) && (GetComponent<GameObject>() != null))
-        {
-            Door = GetComponent<GameObject>();
-        }
-        else
-        {
-            Debug.LogWarning("Missing Door component. Please add one");
-        }
+        prevTempState = Trigger.CurrentTempState;
         closeXPos = Mathf.Abs(Door.gameObject.transform.position.x);
         //closeYPos = Mathf.Abs(Door.transform.position.y);
     }
 
-    //when hit with cold/hot beam
-    protected virtual void OnTriggerEnter(Collider other)
+    private void Update() 
     {
-        if (Trigger.CurrentTempState == TemperatureStateBase.TempState.Cold)//if cold sensor
+        // If TempState has changed
+        if (Trigger.CurrentTempState != prevTempState)
         {
-            Debug.Log("it works");
-            return;
-        }
-        inRange.Add(other.transform);
+            prevTempState = Trigger.CurrentTempState;
 
-        state = DoorState.Open;
-        StartAnimating();
-    }
-
-    //after hit with cold/hot beam
-    protected virtual void OnTriggerExit(Collider other)
-    {
-        if (Trigger.CurrentTempState == TemperatureStateBase.TempState.Cold)
-        {
-            return;
-        }
-        inRange.Remove(other.transform);
-
-        if (inRange.Count <= 0)
-        {
-            state = DoorState.Close;
-            StartAnimating();
+            if (Trigger.CurrentTempState == TemperatureStateBase.TempState.Cold)//if cold sensor
+            {
+                
+                //isOpen = true;
+                state = DoorState.Open;
+                StartAnimating();
+                Debug.Log("Cold door open");            
+            }
+            else if (Trigger.CurrentTempState == TemperatureStateBase.TempState.Hot)
+            {
+                // Insert code here
+            }
+            else
+            {                
+                state = DoorState.Close;
+                StartAnimating();
+                Debug.Log("Door close"); 
+            }
         }
     }
 
