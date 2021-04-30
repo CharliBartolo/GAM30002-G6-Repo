@@ -122,9 +122,9 @@ public class CrystalBehaviour : TemperatureStateBase
             if (temperatureObject.GetComponent<Collider>() != null)
             {
                 temperatureObject.GetComponent<Collider>().material = icyPhysicMaterial;
-                temperatureObject.GetComponent<Collider>().material.dynamicFriction = 0.05F;
-                temperatureObject.GetComponent<Collider>().material.staticFriction = 0.05F;
-                temperatureObject.GetComponent<Collider>().material.frictionCombine = PhysicMaterialCombine.Minimum;
+                //temperatureObject.GetComponent<Collider>().material.dynamicFriction = 0.05F;
+                //temperatureObject.GetComponent<Collider>().material.staticFriction = 0.05F;
+                //temperatureObject.GetComponent<Collider>().material.frictionCombine = PhysicMaterialCombine.Minimum;
             }
         }
     }
