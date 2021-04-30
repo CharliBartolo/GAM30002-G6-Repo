@@ -24,7 +24,7 @@ public class DoorTest : TemperatureStateBase
 
     protected override void FixedUpdate() 
     {
-        if (Trigger.CurrentTempState == TempState.Cold)
+        if (Trigger.CurrentTempState == ITemperature.tempState.Cold)
         {
             Debug.Log("It works");
             Door.gameObject.transform.Translate(-1, 0, 0);

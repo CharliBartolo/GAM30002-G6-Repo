@@ -28,12 +28,12 @@ public class DeathEffect : MonoBehaviour
 
         switch (crntTemp.CurrentTempState) //checks if player is in Hot or Cold state
         {
-            case TemperatureStateBase.TempState.Hot: //if hot
+            case ITemperature.tempState.Hot: //if hot
                 Debug.Log("Player is overheating");
                 Fade.GetComponent<Image>().color = new Color32(255, 0, 0, 100);//red, green, blue, alpha
                 Fade.CrossFadeAlpha(1, 3, false); //Fully fade Image with the duration of 3 seconds
                 break;
-            case TemperatureStateBase.TempState.Cold://if cold
+            case ITemperature.tempState.Cold://if cold
                 Debug.Log("Player is freezing");
                 Fade.GetComponent<Image>().color = new Color32(0, 200, 255, 100);//red, green, blue, alpha
                 Fade.CrossFadeAlpha(1, 3, false); //Fully fade Image with the duration of 3 seconds

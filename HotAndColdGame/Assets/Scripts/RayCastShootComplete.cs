@@ -93,7 +93,7 @@ public class RayCastShootComplete : MonoBehaviour {
 			if (Physics.Raycast (rayOrigin, fpsCam.transform.forward, out hit, weaponRange))
 			{
 				laserLine.SetPosition (1, hit.point);
-				TemperatureStateBase objtemp = hit.collider.GetComponent<TemperatureStateBase>();
+				ITemperature objtemp = hit.collider.GetComponent<ITemperature>();
 
 				if (objtemp != null)
 				{

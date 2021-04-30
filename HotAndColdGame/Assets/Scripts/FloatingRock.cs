@@ -11,7 +11,7 @@ public class FloatingRock : MonoBehaviour
     public float MoveForce = 10f;//The amount of force used to keep the spring moving. (Trying to keep the bobbing effect instead the spring coming to a halt.)
 
     [SerializeField]
-    private TemperatureStateBase.TempState temp;//Returns the temp of rock
+    private ITemperature.tempState temp;//Returns the temp of rock
     [SerializeField]
     private float coldSpring = 0f;//Controls how much spring (bobbing-ness) the rock has when cold
     [SerializeField]
@@ -39,18 +39,18 @@ public class FloatingRock : MonoBehaviour
         {
             //changes the spring of spring joint accordiningly
             //cold - does not bob
-            case TemperatureStateBase.TempState.Cold:
+            case ITemperature.tempState.Cold:
                 SJ.spring = coldSpring;
                 break;
 
             //neutral - bobs 
-            case TemperatureStateBase.TempState.Neutral:
+            case ITemperature.tempState.Neutral:
                 SJ.spring = neutralSpring;
                 RB.AddForce(transform.up * -MoveForce);
                 break;
 
             //hot - bobs violently
-            case TemperatureStateBase.TempState.Hot:
+            case ITemperature.tempState.Hot:
                 SJ.spring = hotSpring;
                 RB.AddForce(transform.up * -MoveForce);
                 break;

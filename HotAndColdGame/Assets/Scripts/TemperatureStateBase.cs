@@ -2,66 +2,67 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TemperatureStateBase : MonoBehaviour
+public class TemperatureStateBase : MonoBehaviour, ITemperature
 {
-    public enum TempState {Hot, Cold, Neutral};
-    public enum TempStatesAllowed {HotAndCold, OnlyHot, OnlyCold, OnlyNeutral}
+    //public enum tempState {Hot, Cold, Neutral};
+    //public enum tempStatesAllowed {HotAndCold, OnlyHot, OnlyCold, OnlyNeutral}
     public bool debugEnabled;
 
     [SerializeField]
-    protected TempState currentTempState = TempState.Neutral;
+    protected ITemperature.tempState currenttempState = ITemperature.tempState.Neutral;
     [SerializeField]
-    protected TempStatesAllowed allowedTempStates = TempStatesAllowed.HotAndCold;
+    protected ITemperature.tempStatesAllowed allowedtempStates = ITemperature.tempStatesAllowed.HotAndCold;
     [SerializeField]
     protected float currentTemp = 0;
     protected float powerDownRateInSeconds = 30f;
 
     public bool isPermanentlyPowered = false;
-    public float tempMin = -100;
-    public float tempMax = 100;
-    public float tempNeutral = 0;
+    public float[] tempValueRange = new float[3] {-100f, 0f, 100f};
+    //public float tempMin = -100;
+    //public float tempMax = 100;
+    //public float tempNeutral = 0;
 
     protected virtual void Start() 
     {
         
-    }
+    }    
 
     protected virtual void FixedUpdate() 
     {
         TemperatureClamp();
 
-        switch (currentTempState)
+        switch (currenttempState)
         {
-            case TempState.Neutral:
+            case ITemperature.tempState.Neutral:
                 // Transition to Hot
-                if (currentTemp == tempMax && 
-                    (allowedTempStates == TempStatesAllowed.HotAndCold || allowedTempStates == TempStatesAllowed.OnlyHot))
+                if (currentTemp == tempValueRange[2] && 
+                    (allowedtempStates == ITemperature.tempStatesAllowed.HotAndCold || allowedtempStates == ITemperature.tempStatesAllowed.OnlyHot))
                     {
-                        currentTempState = TempState.Hot; 
+                        currenttempState = ITemperature.tempState.Hot; 
                     }
 
                 // Transition to Cold                                       
-                else if (currentTemp == tempMin && 
-                    (allowedTempStates == TempStatesAllowed.HotAndCold || allowedTempStates == TempStatesAllowed.OnlyCold))
+                else if (currentTemp == tempValueRange[0] && 
+                    (allowedtempStates == ITemperature.tempStatesAllowed.HotAndCold || allowedtempStates == ITemperature.tempStatesAllowed.OnlyCold))
                     {
-                        currentTempState = TempState.Cold; 
+                        currenttempState = ITemperature.tempState.Cold; 
                     }
                                    
                 break;
-            case TempState.Hot:
-                if (currentTemp <= tempNeutral)
+            case ITemperature.tempState.Hot:
+                if (currentTemp <= tempValueRange[1])
                 {
-                    currentTempState = TempState.Neutral;
+                    currenttempState = ITemperature.tempState.Neutral;
                 }
                 break;
-            case TempState.Cold:
-                if (currentTemp >= tempNeutral)
+            case ITemperature.tempState.Cold:
+                if (currentTemp >= tempValueRange[1])
                 {
-                    currentTempState = TempState.Neutral;
+                    currenttempState = ITemperature.tempState.Neutral;
                 }
                 break;
             default:
-                currentTempState = TempState.Neutral;
+                currenttempState = ITemperature.tempState.Neutral;
                 break;
         }
 
@@ -69,26 +70,26 @@ public class TemperatureStateBase : MonoBehaviour
         {
             if (currentTemp > 0)
             {
-                PowerDownToNeutral(tempMax);
+                PowerDownToNeutral(tempValueRange[2]);
             }
             else if (currentTemp < 0)
             {
-                PowerDownToNeutral(tempMin);
+                PowerDownToNeutral(tempValueRange[0]);
             }
         }  
          
-        PerformTemperatureBehaviour(currentTempState);          
+        PerformTemperatureBehaviour(currenttempState);          
     }
 
-    protected virtual void PerformTemperatureBehaviour(TempState currentTemperatureState)
+    public virtual void PerformTemperatureBehaviour(ITemperature.tempState currentTemperatureState)
     {   
         if (debugEnabled)    
-            Debug.Log(this.name + " is at temperature: " + CurrentTemperature + " and is in state: " + currentTempState);
+            Debug.Log(this.name + " is at temperature: " + CurrentTemperature + " and is in state: " + currenttempState);
     }
 
-    private void TemperatureClamp()
+    public void TemperatureClamp()
     {
-        currentTemp = Mathf.Clamp(currentTemp, tempMin, tempMax);     
+        currentTemp = Mathf.Clamp(currentTemp, tempValueRange[0], tempValueRange[2]);     
     }
 
     public void ChangeTemperature(float valueToAdd)
@@ -103,18 +104,18 @@ public class TemperatureStateBase : MonoBehaviour
         TemperatureClamp();
     }
 
-    protected virtual void PowerDownToNeutral(float tempCap)
+    public virtual void PowerDownToNeutral(float tempCap)
     {
         // If temperature is not zero, begin approaching neutral by ticking down current temperature until it hits neutral.
-        float tempPercent = currentTemp / (tempCap - tempNeutral);   // Ranges from 0 - 1
+        float tempPercent = currentTemp / (tempCap - tempValueRange[0]);   // Ranges from 0 - 1
         //Debug.Log(tempPercent);
         // Rearrange equation for currentTemp while adjusting hot percent
-        currentTemp = (tempPercent - (1 / powerDownRateInSeconds * Time.deltaTime)) * (tempCap - tempNeutral);
+        currentTemp = (tempPercent - (1 / powerDownRateInSeconds * Time.deltaTime)) * (tempCap - tempValueRange[1]);
 
-        if (tempNeutral < tempCap) 
-            currentTemp = Mathf.Clamp(currentTemp, tempNeutral, tempCap);
+        if (tempValueRange[1] < tempCap) 
+            currentTemp = Mathf.Clamp(currentTemp, tempValueRange[1], tempCap);
         else
-            currentTemp = Mathf.Clamp(currentTemp, tempCap, tempNeutral);    
+            currentTemp = Mathf.Clamp(currentTemp, tempCap, tempValueRange[1]);    
 
     }
 
@@ -123,15 +124,27 @@ public class TemperatureStateBase : MonoBehaviour
         get => currentTemp;
     }
 
-    public TempState CurrentTempState
+    public ITemperature.tempState CurrentTempState
     {
         get
         {
-            return currentTempState;
+            return currenttempState;
         }
         set 
         {
-            currentTempState = value;
+            currenttempState = value;
         }
     }
+
+    public ITemperature.tempStatesAllowed TempStatesAllowed
+    {
+        get => allowedtempStates;
+        set => allowedtempStates = value;
+    }
+
+    public float[] TempValueRange
+    {
+        get => tempValueRange;
+        set => tempValueRange = value;
+    } 
 }

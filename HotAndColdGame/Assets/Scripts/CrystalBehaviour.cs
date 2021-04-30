@@ -27,19 +27,19 @@ public class CrystalBehaviour : TemperatureStateBase
     {
         base.FixedUpdate();        
 
-        PerformTemperatureBehaviour(currentTempState);        
+        PerformTemperatureBehaviour(CurrentTempState);        
     }
 
     // tempMaxValue is the max / min temperature value to calculate percentage and range with
     
 
-    protected override void PerformTemperatureBehaviour(TempState currentTemperatureState)
+    public override void PerformTemperatureBehaviour(ITemperature.tempState currentTemperatureState)
     {
         if (isPowered)
         {
             switch (currentTemperatureState)
             {
-                case (TempState.Cold):
+                case (ITemperature.tempState.Cold):
                     ApplyTemperatureToOtherObjects(-temperatureValueToEmit);
                     areaLight.color = new Color (62, 219, 236, 150f);
                     areaLight.enabled = true;
@@ -47,7 +47,7 @@ public class CrystalBehaviour : TemperatureStateBase
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = true;
                     SpreadIceToArea();
                     break;
-                case (TempState.Hot):
+                case (ITemperature.tempState.Hot):
                     ApplyTemperatureToOtherObjects(temperatureValueToEmit);
                     areaLight.color = new Color (236, 51, 56, 150f);
                     areaLight.enabled = true;
@@ -92,9 +92,9 @@ public class CrystalBehaviour : TemperatureStateBase
     {
         foreach (GameObject temperatureObject in objectsInTempArea)
         {
-            if (temperatureObject.GetComponent<TemperatureStateBase>() != null)
+            if (temperatureObject.GetComponent<ITemperature>() != null)
             {
-                temperatureObject.GetComponent<TemperatureStateBase>().ChangeTemperature(temperatureValueParam * Time.deltaTime);
+                temperatureObject.GetComponent<ITemperature>().ChangeTemperature(temperatureValueParam * Time.deltaTime);
             }
         }
     }

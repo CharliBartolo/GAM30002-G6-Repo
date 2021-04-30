@@ -9,7 +9,7 @@ public class DoorMovement : TemperatureStateBase
     [Header("References")]
     [SerializeField] GameObject Door = null;
     [SerializeField] TemperatureStateBase Trigger = null;
-    TemperatureStateBase.TempState prevTempState;
+    ITemperature.tempState prevTempState;
 
     [Header("Settings")]
     [Range(1, 10)]
@@ -74,7 +74,7 @@ public class DoorMovement : TemperatureStateBase
         {
             prevTempState = Trigger.CurrentTempState;
 
-            if (Trigger.CurrentTempState == TemperatureStateBase.TempState.Cold)//if cold sensor
+            if (Trigger.CurrentTempState == ITemperature.tempState.Cold)//if cold sensor
             {
                 
                 //isOpen = true;
@@ -82,7 +82,7 @@ public class DoorMovement : TemperatureStateBase
                 StartAnimating();
                 Debug.Log("Cold door open");            
             }
-            else if (Trigger.CurrentTempState == TemperatureStateBase.TempState.Hot)
+            else if (Trigger.CurrentTempState == ITemperature.tempState.Hot)
             {
                 // Insert code here
             }
