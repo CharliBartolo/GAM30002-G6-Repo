@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
         }        
 
         // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
-        Debug.Log(playerRB.velocity.magnitude);
+        //Debug.Log(playerRB.velocity.magnitude);
         SetShootingEnabled(playerInventory.Contains("Raygun"));
         VelocityCap();
 
