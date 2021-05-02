@@ -5,6 +5,7 @@ using UnityEngine;
 public class CrystalBehaviour : TemperatureStateBase
 {
     public Collider crystalTemperatureArea;
+    //public Collider crystalShootableCollider;
     public PhysicMaterial icyPhysicMaterial;
     public Light areaLight;
     public Material coldTempField, hotTempField;

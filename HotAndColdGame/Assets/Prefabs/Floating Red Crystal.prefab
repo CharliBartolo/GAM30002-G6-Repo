@@ -340,7 +340,8 @@ GameObject:
   - component: {fileID: 6506072247621386452}
   - component: {fileID: 4099470392923082211}
   - component: {fileID: 3610038818071994138}
-  - component: {fileID: 1632164296}
+  - component: {fileID: 2098967103}
+  - component: {fileID: 2098967104}
   m_Layer: 0
   m_Name: Floating Red Crystal
   m_TagString: Untagged
@@ -381,19 +382,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugEnabled: 0
-  currentTempState: 0
-  allowedTempStates: 1
+  currenttempState: 2
+  allowedtempStates: 0
   currentTemp: 100
   isPermanentlyPowered: 1
-  tempMin: -100
-  tempMax: 100
-  tempNeutral: 0
-  crystalTemperatureArea: {fileID: 1632164296}
+  tempValueRange:
+  - -100
+  - 0
+  - 100
+  crystalTemperatureArea: {fileID: 1632164296, guid: 10ae0bcc2f09d9c4e9fc3007466c289f, type: 3}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 4099470392923082211}
   coldTempField: {fileID: 0}
   hotTempField: {fileID: 0}
   objectsInTempArea: []
+  temperatureValueToEmit: 5
   isPowered: 1
 --- !u!108 &4099470392923082211
 Light:
@@ -579,7 +582,21 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
---- !u!135 &1632164296
+--- !u!136 &2098967103
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6228470217306264395}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.07
+  m_Height: 0.3
+  m_Direction: 1
+  m_Center: {x: 0.005, y: 0.06, z: 0}
+--- !u!135 &2098967104
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -590,7 +607,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6848342256652044310
 GameObject:
