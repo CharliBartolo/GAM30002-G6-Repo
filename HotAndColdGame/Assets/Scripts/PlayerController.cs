@@ -36,6 +36,9 @@ public class PlayerController : MonoBehaviour
     //private CharacterController playerCharController;
     private InteractableBase currentInteractingObject;
 
+    //Pause
+    public PauseController PC;
+
     private void Awake() 
     {   
         //playerCharController = GetComponent<CharacterController>();
@@ -58,7 +61,16 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Update() 
-    {   
+    {
+        if (PC.GetPause())
+        {
+            playerControlState = PlayerState.ControlsDisabled;
+        }
+        else
+        { 
+            playerControlState = PlayerState.MoveAndLook;
+        }
+        
         switch (playerControlState)
         {
             case (PlayerState.ControlsDisabled):
@@ -77,17 +89,20 @@ public class PlayerController : MonoBehaviour
             default:
                 playerControlState = PlayerState.MoveAndLook;
                 break;
-        }        
+        }
 
-        // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
-        //Debug.Log(playerRB.velocity.magnitude);
-        SetShootingEnabled(playerInventory.Contains("Raygun"));
-        VelocityCap();
-
-        if (currentInteractingObject != null)
+        if (PC.GetPause())
         {
-            currentInteractingObject.OnInteracting();
-        }      
+            // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
+            //Debug.Log(playerRB.velocity.magnitude);
+            SetShootingEnabled(playerInventory.Contains("Raygun"));
+            VelocityCap();
+
+            if (currentInteractingObject != null)
+            {
+                currentInteractingObject.OnInteracting();
+            }
+        }
     }
 
     // Input functions
@@ -224,10 +239,10 @@ public class PlayerController : MonoBehaviour
     void MouseLook(Vector2 deltaParam)
     {
         _mouseAbsolute += MouseSmooth(deltaParam);
-        MouseClamp();       
-        
+        MouseClamp();
+
         transform.rotation = Quaternion.Euler(0f, _mouseAbsolute.x, 0f);
-        playerCam.transform.rotation = Quaternion.Euler(-_mouseAbsolute.y, transform.eulerAngles.y, transform.eulerAngles.z);
+        playerCam.transform.rotation = Quaternion.Euler(-_mouseAbsolute.y, transform.eulerAngles.y, transform.eulerAngles.z);      
     }
 
     // Utility Functions below

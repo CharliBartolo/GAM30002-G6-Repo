@@ -73,7 +73,7 @@ public class PressurePadController : MonoBehaviour
         float t = 0.0f;
         while (t < 1.0f)
         {
-            Debug.Log(t);
+            //Debug.Log(t);
             t += Time.deltaTime * rate;
             thisTransform.position = new Vector3(thisTransform.position.x, Mathf.Lerp(startPos, endPos, t), thisTransform.position.z);
         }
