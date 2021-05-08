@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             //Debug.Log("Jump attempted");
-            playerRB.AddForce(Vector3.up * 16f, ForceMode.VelocityChange);
+            playerRB.AddForce(Vector3.up * 12f, ForceMode.VelocityChange);
         }
     }
 

@@ -21,6 +21,8 @@ public class RayCastShootComplete : MonoBehaviour {
     public bool cold = true;
     //public Color col = Color.blue;
 
+    public float fireRate;
+
 	void Start () 
 	{
 		laserLine = GetComponent<LineRenderer>();

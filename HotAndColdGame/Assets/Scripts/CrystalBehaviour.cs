@@ -15,7 +15,6 @@ public class CrystalBehaviour : TemperatureStateBase
     public float temperatureValueToEmit = 5f;
     // Create Use Interactable Here
     [SerializeField]private bool isPowered = true;
-    
 
     // Start is called before the first frame update
     protected override void Start()
@@ -41,16 +40,16 @@ public class CrystalBehaviour : TemperatureStateBase
             switch (currentTemperatureState)
             {
                 case (ITemperature.tempState.Cold):
-                    ApplyTemperatureToOtherObjects(-temperatureValueToEmit);
-                    areaLight.color = new Color (62, 219, 236, 150f);
+                    ApplyTemperatureToOtherObjects(-temperatureValueToEmit, 6);
+                    //areaLight.color = new Color (62, 219, 236, 150f);
                     areaLight.enabled = true;
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().material = coldTempField;
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = true;
                     SpreadIceToArea();
                     break;
                 case (ITemperature.tempState.Hot):
-                    ApplyTemperatureToOtherObjects(temperatureValueToEmit);
-                    areaLight.color = new Color (236, 51, 56, 150f);
+                    ApplyTemperatureToOtherObjects(temperatureValueToEmit, 6);
+                    //areaLight.color = new Color (236, 51, 56, 150f);
                     areaLight.enabled = true;
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().material = hotTempField;
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = true;
@@ -75,7 +74,6 @@ public class CrystalBehaviour : TemperatureStateBase
         {
             objectsInTempArea.Add(other.gameObject);
         }
-        
     }
 
     protected virtual void OnTriggerExit(Collider other) 
@@ -89,13 +87,13 @@ public class CrystalBehaviour : TemperatureStateBase
         }        
     }
 
-    protected virtual void ApplyTemperatureToOtherObjects(float temperatureValueParam)
+    protected virtual void ApplyTemperatureToOtherObjects(float temperatureValueParam, float speed)
     {
         foreach (GameObject temperatureObject in objectsInTempArea)
         {
             if (temperatureObject.GetComponent<ITemperature>() != null)
             {
-                temperatureObject.GetComponent<ITemperature>().ChangeTemperature(temperatureValueParam * Time.deltaTime);
+                temperatureObject.GetComponent<ITemperature>().ChangeTemperature(temperatureValueParam * Time.deltaTime * speed);
             }
         }
     }
