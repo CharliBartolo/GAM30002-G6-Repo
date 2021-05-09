@@ -40,7 +40,7 @@ public class CrystalBehaviour : TemperatureStateBase
             switch (currentTemperatureState)
             {
                 case (ITemperature.tempState.Cold):
-                    ApplyTemperatureToOtherObjects(-temperatureValueToEmit, 6);
+                    ApplyTemperatureToOtherObjects(-temperatureValueToEmit);
                     //areaLight.color = new Color (62, 219, 236, 150f);
                     areaLight.enabled = true;
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().material = coldTempField;
@@ -48,7 +48,7 @@ public class CrystalBehaviour : TemperatureStateBase
                     SpreadIceToArea();
                     break;
                 case (ITemperature.tempState.Hot):
-                    ApplyTemperatureToOtherObjects(temperatureValueToEmit, 6);
+                    ApplyTemperatureToOtherObjects(temperatureValueToEmit);
                     //areaLight.color = new Color (236, 51, 56, 150f);
                     areaLight.enabled = true;
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().material = hotTempField;
@@ -86,14 +86,14 @@ public class CrystalBehaviour : TemperatureStateBase
             objectsInTempArea.Remove(other.gameObject);
         }        
     }
-
-    protected virtual void ApplyTemperatureToOtherObjects(float temperatureValueParam, float speed)
+    //ADDED: speed modifier
+    protected virtual void ApplyTemperatureToOtherObjects(float temperatureValueParam)
     {
         foreach (GameObject temperatureObject in objectsInTempArea)
         {
             if (temperatureObject.GetComponent<ITemperature>() != null)
             {
-                temperatureObject.GetComponent<ITemperature>().ChangeTemperature(temperatureValueParam * Time.deltaTime * speed);
+                temperatureObject.GetComponent<ITemperature>().ChangeTemperature(temperatureValueParam * Time.deltaTime);
             }
         }
     }
