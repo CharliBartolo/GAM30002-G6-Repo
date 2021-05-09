@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public RayCastShootComplete raygunScript;
 
     public PlayerFPControls controls;    
-    public float movementSpeed = 10f;
+    public float movementSpeed = 50f;
     public float velocityCap = 30f;
     public float interactRange = 2f;
     public bool isGravityEnabled = true;
@@ -91,8 +91,8 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        if (PC.GetPause())
-        {
+        //if (PC.GetPause())
+        //{
             // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
             //Debug.Log(playerRB.velocity.magnitude);
             SetShootingEnabled(playerInventory.Contains("Raygun"));
@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour
             {
                 currentInteractingObject.OnInteracting();
             }
-        }
+        //}
     }
 
     // Input functions
