@@ -10,39 +10,40 @@ public class PlatformWithTemperature : TemperatureStateBase
 {
 
     [SerializeField] TemperatureStateBase Trigger = null;
-    ITemperature.tempState prevTempState;
+    //ITemperature.tempState prevTempState;
 
-    public GameObject origin; // the start target position
-    public GameObject coldTarget; // the cold target position
-    public GameObject hotTarget; // the cold target position
+    public Transform origin; // the start target position
+    public Transform coldTarget; // the cold target position
+    public Transform hotTarget; // the cold target position
+    public GameObject platformObj;
     
     public float speed; // speed - units per second (gives you control of how fast the object will move in the inspector)
     public float Delay = 1;
-    public bool moveObj; // a public bool that allows you to toggle this script on and off in the inspector
+    public bool canMove = true; // a public bool that allows you to toggle this script on and off in the inspector
 
-    void Start() 
-    {
-        prevTempState = Trigger.CurrentTempState;
-    }
+    //void Start() 
+    //{
+        //prevTempState = Trigger.CurrentTempState;
+    //}
 
     // Update is called once per frame
     void Update()
     {
-        Trigger.CurrentTempState = ITemperature.tempState.Cold;//for testing purposes
+        //Trigger.CurrentTempState = ITemperature.tempState.Cold;//for testing purposes
         //need to add a delay so that object can reach destination
-        if (moveObj == true)
+        if (canMove)
         {
             float step = speed * Time.deltaTime; // step size = speed * frame time
             switch (Trigger.CurrentTempState)
             {
                 case ITemperature.tempState.Cold:
-                    transform.position = Vector3.MoveTowards(transform.position, coldTarget.transform.position, step); // moves position a step closer to the target position
+                    platformObj.transform.position = Vector3.MoveTowards(platformObj.transform.position, coldTarget.transform.position, step); // moves position a step closer to the target position
                     break;
                 case ITemperature.tempState.Hot:
-                    transform.position = Vector3.MoveTowards(transform.position, hotTarget.transform.position, step); // moves position a step closer to the target position
+                    platformObj.transform.position = Vector3.MoveTowards(platformObj.transform.position, hotTarget.transform.position, step); // moves position a step closer to the target position
                     break;
                 case ITemperature.tempState.Neutral:
-                    transform.position = Vector3.MoveTowards(transform.position, origin.transform.position, step); // moves position a step closer to the target position
+                    platformObj.transform.position = Vector3.MoveTowards(platformObj.transform.position, origin.transform.position, step); // moves position a step closer to the target position
                     break;
             }
             //moveObj = true;
