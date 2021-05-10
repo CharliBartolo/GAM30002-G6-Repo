@@ -649,6 +649,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ab5ce6ea5c67eb34fb073e1bae68d00e, type: 2}
+    - target: {fileID: 6493970, guid: 01479a6614e47e24f80228294406b11c, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01479a6614e47e24f80228294406b11c, type: 3}
 --- !u!4 &545149112 stripped
@@ -1085,6 +1089,7 @@ MonoBehaviour:
   mouseSmoothing: {x: 3, y: 3}
   groundChecker: {fileID: 937540427}
   PC: {fileID: 0}
+  pauseFunctionality: 0
 --- !u!4 &674159722
 Transform:
   m_ObjectHideFlags: 0

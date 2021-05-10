@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
 
     //Pause
     public PauseController PC;
+    public bool pauseFunctionality = true;
 
     private void Awake() 
     {   
@@ -62,13 +63,16 @@ public class PlayerController : MonoBehaviour
 
     private void Update() 
     {
-        if (PC.GetPause())
+        if (pauseFunctionality)
         {
-            playerControlState = PlayerState.ControlsDisabled;
-        }
-        else
-        { 
-            playerControlState = PlayerState.MoveAndLook;
+            if (PC.GetPause())
+            {
+                playerControlState = PlayerState.ControlsDisabled;
+            }
+            else
+            {
+                playerControlState = PlayerState.MoveAndLook;
+            }
         }
         
         switch (playerControlState)
