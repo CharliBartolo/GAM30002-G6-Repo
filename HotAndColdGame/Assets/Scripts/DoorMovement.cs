@@ -19,8 +19,6 @@ public class DoorMovement : TemperatureStateBase
 
     [SerializeField] float closeXPos = 0.0f;
     [SerializeField] float openXPos = 0.0f;
-    /*[SerializeField] float closeYPos = 0.0f;
-    [SerializeField] float openYPos = 0.0f;*/
 
     [Header("Audio")]
     [SerializeField] AudioClip openSFX = null;
@@ -60,11 +58,10 @@ public class DoorMovement : TemperatureStateBase
     #endregion 
 
     // Start is called before the first frame update
-    protected override void Start()
+    private void Start()
     {
         prevTempState = Trigger.CurrentTempState;
         closeXPos = Mathf.Abs(Door.gameObject.transform.position.x);
-        //closeYPos = Mathf.Abs(Door.transform.position.y);
     }
 
     private void Update() 
