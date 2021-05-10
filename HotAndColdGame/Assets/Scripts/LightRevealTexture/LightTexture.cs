@@ -33,6 +33,8 @@ public class LightTexture : MonoBehaviour
     // set spotlight range
     public void SetRange(float range)
     {
+
+        // scale spotlight range to temperature range
         float OldRange = (100 - 0);
         float NewRange = (40 - 0);
         float NewValue = (((range - 0) * NewRange) / OldRange) + 0;

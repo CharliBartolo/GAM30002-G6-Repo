@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour
         // If airborne, dampen movement force
         if (!isGrounded)
         {
-            movementVector = movementVector.normalized * 0.4f;
+            movementVector = movementVector.normalized * 0.02f;
         }  
         else
         {
