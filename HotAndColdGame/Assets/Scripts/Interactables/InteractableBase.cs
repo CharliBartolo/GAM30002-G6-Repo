@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public abstract class InteractableBase : MonoBehaviour
 {
@@ -9,11 +10,11 @@ public abstract class InteractableBase : MonoBehaviour
     //Use = Use and that's it, e.g. a button, holding Interact does nothing.
     public enum InteractionType {Carry, RotateOnly, Use}; 
     
-    public abstract void OnInteractEnter(PlayerFPControls playerControlsRef);        
+    public abstract void OnInteractEnter(PlayerInput playerInputRef);        
 
     public abstract void OnInteracting();
     public abstract void OnInteractExit();
     
     public abstract InteractionType pInteractionType {get; set;}
-    public abstract PlayerFPControls pPlayerFPControls {get; set;}
+    public abstract PlayerInput pPlayerInput {get; set;}
 }

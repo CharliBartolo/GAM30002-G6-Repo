@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CollectInteractable : InteractableBase
 {
     public string itemName;
     private InteractionType interactionType = InteractionType.Use;
-    private PlayerFPControls playerControls;
+    private PlayerInput playerInput;
 
     private void Start() 
     {
@@ -14,7 +15,7 @@ public class CollectInteractable : InteractableBase
     }
 
     //Runs when interaction begins
-    public override void OnInteractEnter(PlayerFPControls playerControlsRef)
+    public override void OnInteractEnter(PlayerInput playerInputRef)
     {        
         
         //playerControls = playerControlsRef;
@@ -44,15 +45,15 @@ public class CollectInteractable : InteractableBase
         } 
     }
 
-    public override PlayerFPControls pPlayerFPControls 
+    public override PlayerInput pPlayerInput 
     {
         get
         {
-            return playerControls;
+            return playerInput;
         }
         set
         {
-            playerControls = value;
+            playerInput = value;
         } 
     }
 }

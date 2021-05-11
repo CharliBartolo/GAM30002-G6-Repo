@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PickUp2 : InteractableBase
 {
     public Transform theDest;// for player to see the object they're holding
     
     private InteractionType interactionType = InteractionType.Carry;
-    private PlayerFPControls playerControls;
+    private PlayerInput playerInput;
 
     //Runs when interaction begins
-    public override void OnInteractEnter(PlayerFPControls playerControlsRef)
+    public override void OnInteractEnter(PlayerInput playerInputRef)
     {
-        pPlayerFPControls = playerControlsRef;
+        playerInput = playerInputRef;
 
         Debug.Log("Mouse down triggered");
         GetComponent<BoxCollider>().enabled = false;
@@ -22,7 +23,7 @@ public class PickUp2 : InteractableBase
     //Runs when interaction ceases
     public override void OnInteractExit()
     {
-        pPlayerFPControls = null;
+        playerInput = null;
 
         Debug.Log("Mouse up triggered");
         this.transform.parent = null;//drop item in current position
@@ -51,15 +52,15 @@ public class PickUp2 : InteractableBase
         } 
     }
 
-    public override PlayerFPControls pPlayerFPControls 
+    public override PlayerInput pPlayerInput 
     {
         get
         {
-            return playerControls;
+            return playerInput;
         }
         set
         {
-            playerControls = value;
+            playerInput = value;
         } 
     }
 }

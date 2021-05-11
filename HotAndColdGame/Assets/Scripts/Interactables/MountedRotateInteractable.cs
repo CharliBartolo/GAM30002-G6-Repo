@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MountedRotateInteractable : InteractableBase
 {
@@ -14,7 +15,7 @@ public class MountedRotateInteractable : InteractableBase
     private Vector2 _mouseSmooth;
     private Vector2 _mouseAbsolute;
     private InteractionType interactionType = InteractionType.RotateOnly;
-    private PlayerFPControls playerControls;
+    private PlayerInput playerInput;
 
     private void Start() 
     {
@@ -26,15 +27,15 @@ public class MountedRotateInteractable : InteractableBase
     }
 
     //Runs when interaction begins
-    public override void OnInteractEnter(PlayerFPControls playerControlsRef)
+    public override void OnInteractEnter(PlayerInput playerInputRef)
     {
-        pPlayerFPControls = playerControlsRef;
+        pPlayerInput = playerInputRef;
     }
 
     //Runs when interaction ceases
     public override void OnInteractExit()
     {
-        pPlayerFPControls = null;
+        pPlayerInput = null;
     }
 
     //Runs every frame the interaction continues
@@ -45,7 +46,7 @@ public class MountedRotateInteractable : InteractableBase
 
     void RotateObject()
     {
-        _mouseAbsolute += MouseSmooth(playerControls.Player.Look.ReadValue<Vector2>());
+        _mouseAbsolute += MouseSmooth(playerInput.actions.FindAction("Look").ReadValue<Vector2>());
         MouseClamp();
         
         transform.rotation = Quaternion.Euler(-_mouseAbsolute.y, _mouseAbsolute.x, 0f);        
@@ -90,15 +91,15 @@ public class MountedRotateInteractable : InteractableBase
         } 
     }
 
-    public override PlayerFPControls pPlayerFPControls 
+    public override PlayerInput pPlayerInput 
     {
         get
         {
-            return playerControls;
+            return playerInput;
         }
         set
         {
-            playerControls = value;
+            playerInput = value;
         } 
     }
 }

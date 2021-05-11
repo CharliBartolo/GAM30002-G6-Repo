@@ -11,7 +11,9 @@ public class PlayerController : MonoBehaviour
     public List<string> playerInventory;
     public RayCastShootComplete raygunScript;
 
-    public PlayerFPControls controls;    
+    //public PlayerFPControls controls;
+   // public InputActionMap controls;
+    public PlayerInput playerInput;    
     public float movementSpeed = 50f;
     public float velocityCap = 30f;
     public float interactRange = 2f;
@@ -45,20 +47,30 @@ public class PlayerController : MonoBehaviour
         //playerCharController = GetComponent<CharacterController>();
         playerRB = GetComponent<Rigidbody>();
 
-        playerInventory = new List<string>();
-        controls = new PlayerFPControls();
-        controls.Player.Interact.performed += context => Interact(context);
-        controls.Player.Interact.canceled += ExitInteract;
-        controls.Player.Jump.performed += Jump;
+        playerInventory = new List<string>();          
+        //controls = new PlayerFPControls();
+        
+        //controls.Player.Interact.performed += context => Interact(context);
+        //controls.Player.Interact.canceled += ExitInteract;
+        //controls.Player.Jump.performed += Jump;
+        //controls.Player.Shoot.performed += raygunScript.FireBeam;
+        //controls.Player.Shoot.canceled += raygunScript.FireBeam;
+        //controls.Player.SwapBeam.performed += raygunScript.SwapBeam;
 
-        controls.Player.Shoot.performed += raygunScript.FireBeam;
-        controls.Player.Shoot.canceled += raygunScript.FireBeam;
-        controls.Player.SwapBeam.performed += raygunScript.SwapBeam;
-        controls.Enable(); 
+        //controls.Enable(); 
+
+        playerInput.actions.FindAction("Interact").performed += context => Interact(context);
+        playerInput.actions.FindAction("Interact").canceled += ExitInteract;
+        playerInput.actions.FindAction("Jump").performed += Jump;
+        playerInput.actions.FindAction("Shoot").performed += raygunScript.FireBeam;
+        playerInput.actions.FindAction("Shoot").canceled += raygunScript.FireBeam;
+        playerInput.actions.FindAction("Swap Beam").performed += raygunScript.SwapBeam;
+
+        playerInput.ActivateInput();      
 
         if (isGunEnabled)
             playerInventory.Add("Raygun");
-        LockCursor();
+        //LockCursor();
     }
 
     private void Update() 
@@ -82,12 +94,14 @@ public class PlayerController : MonoBehaviour
                 break;
             case (PlayerState.MoveAndLook):
                 GroundedCheck();
-                MouseLook(controls.Player.Look.ReadValue<Vector2>());
-                MovePlayer(controls.Player.Movement.ReadValue<Vector2>());
+                //MouseLook(controls.Player.Look.ReadValue<Vector2>());
+                //MovePlayer(controls.Player.Movement.ReadValue<Vector2>());
+                MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>());
+                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
                 break;
             case (PlayerState.MoveOnly):
                 GroundedCheck();
-                MovePlayer(controls.Player.Movement.ReadValue<Vector2>());
+                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
                 //ResetMouse();
                 break;
             default:
@@ -143,14 +157,14 @@ public class PlayerController : MonoBehaviour
     {
         if (setToEnable)
         {
-            controls.Player.Shoot.Enable();
-            controls.Player.SwapBeam.Enable();
+            playerInput.actions.FindAction("Shoot").Enable();
+            playerInput.actions.FindAction("Swap Beam").Enable();
             raygunScript.gameObject.SetActive(true);
         }
         else
         {
-            controls.Player.Shoot.Disable();
-            controls.Player.SwapBeam.Disable();
+            playerInput.actions.FindAction("Shoot").Disable();
+            playerInput.actions.FindAction("Swap Beam").Disable();
             raygunScript.gameObject.SetActive(false);
         }
     }
@@ -163,7 +177,7 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("Interactable object found, attempting interaction.");
             currentInteractingObject = hit.collider.gameObject.GetComponent<InteractableBase>();
 
-            currentInteractingObject.OnInteractEnter(controls);
+            currentInteractingObject.OnInteractEnter(playerInput);
 
             switch (currentInteractingObject.pInteractionType)
             {

@@ -58,6 +58,16 @@ public class CrystalBehaviour : TemperatureStateBase
                 default:
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = false;
                     areaLight.enabled = false;
+                    foreach (GameObject temperatureObject in objectsInTempArea)
+                    {
+                        if (temperatureObject.GetComponent<Collider>() != null)
+                        {
+                            temperatureObject.GetComponent<Collider>().material = null;
+                            //temperatureObject.GetComponent<Collider>().material.dynamicFriction = 0.05F;
+                            //temperatureObject.GetComponent<Collider>().material.staticFriction = 0.05F;
+                            //temperatureObject.GetComponent<Collider>().material.frictionCombine = PhysicMaterialCombine.Minimum;
+                        }
+                    }
                     break;
             }
         }
@@ -105,7 +115,7 @@ public class CrystalBehaviour : TemperatureStateBase
         {
             if (temperatureObject.GetComponent<Rigidbody>() != null)
             {
-                temperatureObject.GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.4f, ForceMode.Acceleration);
+                temperatureObject.GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.3f, ForceMode.Acceleration);
             }            
         }
     }
