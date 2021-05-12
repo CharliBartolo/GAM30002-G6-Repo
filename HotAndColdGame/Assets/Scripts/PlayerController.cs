@@ -109,18 +109,14 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        //if (PC.GetPause())
-        //{
-            // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
-            //Debug.Log(playerRB.velocity.magnitude);
-            SetShootingEnabled(playerInventory.Contains("Raygun"));
-            VelocityCap();
+        // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
+        SetShootingEnabled(playerInventory.Contains("Raygun"));
+        VelocityCap();
 
-            if (currentInteractingObject != null)
-            {
-                currentInteractingObject.OnInteracting();
-            }
-        //}
+        if (currentInteractingObject != null)
+        {
+            currentInteractingObject.OnInteracting();
+        }        
     }
 
     // Input functions
@@ -130,7 +126,15 @@ public class PlayerController : MonoBehaviour
         // Translate 2d analog movement to 3d vector movement        
             
         Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);
-        movementVector = transform.TransformDirection(movementVector).normalized;        
+
+        // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
+        //movementVector = transform.TransformDirection(movementVector).normalized;
+        movementVector = transform.TransformDirection(movementVector);
+        if (movementVector.magnitude > 1f)
+        {
+            movementVector = movementVector.normalized;
+        }
+                
 
         // If airborne, dampen movement force
         if (!isGrounded)
