@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
         if (isGunEnabled)
             playerInventory.Add("Raygun");
-        //LockCursor();
+        LockCursor();
     }
 
     private void Update() 
