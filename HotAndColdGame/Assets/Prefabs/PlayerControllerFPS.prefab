@@ -205,7 +205,7 @@ GameObject:
   - component: {fileID: 7181829467981505420}
   - component: {fileID: 7181829467981505421}
   - component: {fileID: 7181829467981505422}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -359,7 +359,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7181829468283888862}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: GunEnd
   m_TagString: Untagged
   m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 7181829469248847316}
   - component: {fileID: 7181829469248847318}
   - component: {fileID: 7181829469248847317}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -916,7 +916,8 @@ GameObject:
   - component: {fileID: 7632133415749971126}
   - component: {fileID: 7632133415749971128}
   - component: {fileID: 7632133415749971129}
-  m_Layer: 9
+  - component: {fileID: 116415989}
+  m_Layer: 0
   m_Name: PlayerControllerFPS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -932,7 +933,7 @@ Transform:
   m_GameObject: {fileID: 7632133415749971123}
   m_LocalRotation: {x: 0, y: 0.99994195, z: -0, w: -0.010777168}
   m_LocalPosition: {x: 20.3, y: -1.33, z: 9.162}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7632133416162489941}
   - {fileID: 7632133415860883985}
@@ -955,15 +956,19 @@ MonoBehaviour:
   _useRigidBody: 1
   playerInventory: []
   raygunScript: {fileID: 7181829467981505421}
+  playerInput: {fileID: 116415989}
   movementSpeed: 50
+  velocityCap: 8
   interactRange: 2
   isGravityEnabled: 1
-  isGunEnabled: 0
+  isGunEnabled: 1
   isGrounded: 0
   playerCam: {fileID: 7632133416162489938}
   mouseSensitivity: {x: 1.5, y: 1}
   mouseSmoothing: {x: 3, y: 3}
   groundChecker: {fileID: 7632133415860883985}
+  PC: {fileID: 0}
+  pauseFunctionality: 0
 --- !u!114 &7632133415749971127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -977,13 +982,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugEnabled: 0
-  currentTempState: 2
-  allowedTempStates: 3
+  currenttempState: 2
+  allowedtempStates: 0
   currentTemp: 0
   isPermanentlyPowered: 0
-  tempMin: -100
-  tempMax: 100
-  tempNeutral: 0
+  tempValueRange:
+  - -100
+  - 0
+  - 100
   _valueChangeSpeed: 0
 --- !u!114 &7632133415749971126
 MonoBehaviour:
@@ -1022,13 +1028,107 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7632133415749971123}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 02cc73f238347254b8ac9ba286b85916, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &116415989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7632133415749971123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3bc5025b-8863-4df1-bb71-84c72918e693
+    m_ActionName: Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 547199c8-3d14-4431-bf01-4abffa14db5a
+    m_ActionName: Player/Look[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a6cf4eef-2be2-4f21-8a3d-0ed2e1ce630d
+    m_ActionName: Player/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5fcae9a2-ec4b-47b3-9f98-a08b44fafde9
+    m_ActionName: Player/Shoot[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c992e8a4-a77d-49b5-bd4b-8247577fd84c
+    m_ActionName: Player/Swap Beam[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5de56136-05d1-49d3-8034-10b01c5bab8f
+    m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bc368153-3538-4f12-9b96-e9e31920f8e7
+    m_ActionName: Menu/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2dba346b-9790-4e52-8f27-e5a3f970f64f
+    m_ActionName: Menu/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d543b2c2-2d1d-4c5f-afd6-63190a5264d0
+    m_ActionName: Menu/RightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 055e6738-ee9f-43d3-988c-249fccc5ebed
+    m_ActionName: Menu/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: acc4f8d2-c846-49b5-a37c-d15361b8ae49
+    m_ActionName: Menu/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b72a8dff-5079-4ba4-8c76-2f13b2ced14f
+    m_ActionName: Menu/Click[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1db4b6da-8caf-4a40-8068-a3c56f46fe1e
+    m_ActionName: Menu/Point[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 729abe7e-e5f4-469a-a4a2-930ada8dd564
+    m_ActionName: Menu/Cancel[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7e2ce3d1-b7ec-4062-9f7f-50259e8be5f0
+    m_ActionName: Menu/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3304f517-fc19-41e9-8233-f36bfe1ee85b
+    m_ActionName: Menu/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Keyboard And Mouse
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 7632133416162489938}
 --- !u!1 &7632133415860883998
 GameObject:
   m_ObjectHideFlags: 0
@@ -1038,7 +1138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7632133415860883985}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
@@ -1053,7 +1153,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7632133415860883998}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.15, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7632133415749971125}
@@ -1071,7 +1171,7 @@ GameObject:
   - component: {fileID: 7632133416162489938}
   - component: {fileID: 7632133416162489936}
   - component: {fileID: 7632133416162489939}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}

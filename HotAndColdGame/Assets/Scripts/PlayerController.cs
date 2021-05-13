@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IConditions
 {
     public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}
     public PlayerState playerControlState = PlayerState.MoveAndLook;
@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
    // public InputActionMap controls;
     public PlayerInput playerInput;    
     public float movementSpeed = 50f;
-    public float velocityCap = 30f;
+    public float velocityCap = 8f;
     public float interactRange = 2f;
     public bool isGravityEnabled = true;
     public bool isGunEnabled = true;
@@ -288,6 +288,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void AddCondition(string conditionToAdd)
+    {
+        ActiveConditions.Add(conditionToAdd);
+    }
+
+    public void RemoveCondition(string conditionToRemove)
+    {
+        ActiveConditions.Remove(conditionToRemove);
+    }
+
     private void LockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -321,5 +331,11 @@ public class PlayerController : MonoBehaviour
         GUILayout.Label(stringToShow);
 
         GUILayout.EndArea();
+    }
+
+    public List<string> ActiveConditions
+    {
+        get;
+        set;
     }
 }

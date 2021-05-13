@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.48299563, g: 0.5256554, b: 0.55426717, a: 1}
+  m_IndirectSpecularColor: {r: 0.4847414, g: 0.5273634, b: 0.5569129, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -598,6 +598,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 116415989}
     - target: {fileID: 7632133415749971124, guid: e87e247143c36e84991716882491a178, type: 3}
+      propertyPath: velocityCap
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7632133415749971124, guid: e87e247143c36e84991716882491a178, type: 3}
       propertyPath: isGunEnabled
       value: 1
       objectReference: {fileID: 0}
@@ -665,6 +669,10 @@ PrefabInstance:
       propertyPath: _sliderTemp
       value: 
       objectReference: {fileID: 888012015}
+    - target: {fileID: 7632133415749971129, guid: e87e247143c36e84991716882491a178, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 02cc73f238347254b8ac9ba286b85916, type: 2}
     - target: {fileID: 7632133415860883985, guid: e87e247143c36e84991716882491a178, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2

@@ -105,19 +105,29 @@ public class CrystalBehaviour : TemperatureStateBase
             if (temperatureObject.GetComponent<ITemperature>() != null)
             {
                 temperatureObject.GetComponent<ITemperature>().ChangeTemperature(temperatureValueParam * Time.deltaTime);
-            }
+            }            
         }
     }
 
     protected virtual void SpreadLowGravToArea()
     {
+        // Could differentiate player / key items and random items via temp / condition system?
+
         // If object has rigidbody component, apply upward force to it as long as it remains in area
         foreach (GameObject temperatureObject in objectsInTempArea.Keys)
         {
             if (temperatureObject.GetComponent<Rigidbody>() != null)
             {
                 temperatureObject.GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.3f, ForceMode.Acceleration);
-            }            
+            }
+
+            //if (temperatureObject.GetComponent<IConditions>() != null)
+            //{
+                //if (!temperatureObject.GetComponent<IConditions>().ActiveConditions.Contains("Hot"))
+                //{
+                //    temperatureObject.GetComponent<IConditions>().AddCondition("Hot");
+                //}
+            //}            
         }
     }
 
