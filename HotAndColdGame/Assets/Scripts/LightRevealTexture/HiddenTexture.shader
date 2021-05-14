@@ -1,20 +1,68 @@
 Shader "Custom/Hidden Texture" {
     Properties{
-        _Color("Surface Color", Color) = (1,1,1,1)
-        _DiffuseTex("Diffuse", 2D) = "white" {}
-        _BumpMap("Normal Map", 2D) = "bump" {}
-        _SpotAngle("Spot Angle", Float) = 30.0
-        _Range("Range", Float) = 5.0
-        _Contrast("Contrast", Range(20.0, 80.0)) = 50.0
-        _Alpha("Alpha",  Range(0.0, 1.0)) = 1.0
-        _Color_Value("Colour_Value",  Range(0.0, 1.0)) = 0.5
+         _Color("Surface Color", Color) = (1,1,1,1)
+         _DiffuseTex("Diffuse", 2D) = "white" {}
+         _SurfaceTex("Diffuse", 2D) = "white" {}
+         _BumpMap("Normal Map", 2D) = "bump" {}
+         _SpotAngle("Spot Angle", Float) = 30.0
+         _Range("Range", Float) = 5.0
+         _Contrast("Contrast", Range(20.0, 80.0)) = 50.0
+         _Alpha("Alpha",  Range(0.0, 1.0)) = 1.0
+         _Color_Value("Colour_Value",  Range(0.0, 1.0)) = 0.5
     }
 
         Subshader{
-            Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
+            Tags {"RenderType" = "Transparent" "IgnoreProjector" = "True" "Queue" = "Transparent"}
+
+            //Pass{
+            //    CGPROGRAM
+            //    #pragma vertex vert
+            //    #pragma fragment frag
+            //    #include "UnityCG.cginc"
+            //    
+            //    float4 _Color;
+            //    sampler2D _SurfaceTex;
+            //    float4 _SurfaceTex_ST;
+
+            //    struct v2f_interpolated {
+            //        float4 pos : SV_POSITION;
+            //        float2 texCoord : TEXCOORD0;
+            //        float3 lightDir : TEXCOORD1;
+
+            //        half3 tspace0 : TEXCOORD2; // tangent.x, bitangent.x, normal.x
+            //        half3 tspace1 : TEXCOORD3; // tangent.y, bitangent.y, normal.y
+            //        half3 tspace2 : TEXCOORD4; // tangent.z, bitangent.z, normal.z
+
+            //        half3 viewDir : TEXCOORD5;
+            //        half3 normalDir : TEXCOORD6;
+            //    };
+
+            //    v2f_interpolated vert(appdata_full v) {
+            //        v2f_interpolated o;
+            //        o.pos = UnityObjectToClipPos(v.vertex);
+            //        o.texCoord = v.texcoord;
+
+            //        return o;
+            //    }
+
+            //    half4 frag(v2f_interpolated i) : SV_Target{
+
+            //        half2 uv_MainTex = TRANSFORM_TEX(i.texCoord, _SurfaceTex);
+
+            //        half3 colorSample = tex2D(_SurfaceTex, uv_MainTex).rgb * _Color;
+            //       
+            //        half4 result;
+            //        result.rgb = (colorSample) * _Color;
+
+            //        return result;
+            //    }
+            //        ENDCG
+            //}
+
             Pass {
-                Blend SrcAlpha OneMinusSrcAlpha
-                ZTest LEqual
+                Blend SrcAlpha One
+                ZTest On
+                Offset -1, -1
 
                 CGPROGRAM
                 #pragma vertex vert
@@ -23,7 +71,7 @@ Shader "Custom/Hidden Texture" {
                 float4 _Color;
                 sampler2D _DiffuseTex;
                 float4 _DiffuseTex_ST;
-             
+
                 uniform sampler2D _BumpMap; // normal map
                 float4 _BumpMap_ST;
 
@@ -34,6 +82,10 @@ Shader "Custom/Hidden Texture" {
                 uniform float _Contrast; // adjusts contrast
                 uniform float _Alpha; // adjusts transparency
                 uniform float _Color_Value; // adjusts value
+
+                float _Shift;
+                float _Delta;
+                float _Tempo;
 
                 struct v2f_interpolated {
                     float4 pos : SV_POSITION;
@@ -49,6 +101,10 @@ Shader "Custom/Hidden Texture" {
                 };
 
                 v2f_interpolated vert(appdata_full v) {
+                    v.vertex.y += _Shift;
+                    v.texcoord.x += _Delta * sin(_Tempo + v.vertex.x);
+                    v.texcoord.y += _Delta * sin(0.6 * _Tempo + v.vertex.z);
+
                     v2f_interpolated o;
                     o.pos = UnityObjectToClipPos(v.vertex);
                     o.texCoord = v.texcoord;
@@ -69,6 +125,8 @@ Shader "Custom/Hidden Texture" {
                     half3 worldSpaceVertex = mul(unity_ObjectToWorld, v.vertex).xyz;
                     // calculate light direction to vertex    
                     o.lightDir = worldSpaceVertex - _LightPos.xyz;
+
+
                     return o;
                 }
 
@@ -95,12 +153,12 @@ Shader "Custom/Hidden Texture" {
                     half alpha = saturate(dist * ang * _Contrast); // combine distance, angle and contrast
 
                     half4 result;
-                    result.a = alpha * _Alpha*10;
-                    result.rgb = (colorSample)*_Color_Value*_Color;
+                    result.a = alpha * _Alpha * 10;
+                    result.rgb = (colorSample)*_Color_Value * _Color;
 
                     return result;
                 }
                 ENDCG
             }
-        }
+         }
 }
