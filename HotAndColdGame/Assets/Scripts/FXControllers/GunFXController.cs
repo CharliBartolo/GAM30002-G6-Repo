@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class FXController : MonoBehaviour
+public class GunFXController : FXController
 {
-    // FX variables
-    public float delay;
+    // timer variables
     private float triggerDelay;
     private float swapDelay;
-    private float delayTimer;
 
     // Gun variables 
     public RayCastShootComplete gun;
@@ -20,25 +18,28 @@ public class FXController : MonoBehaviour
     public GameObject BackCrystal;
     public GameObject CrystalCase;
     public GameObject BarrelCrystals;
-    public Animator Anim;
 
     // Gun emissive components
     public GameObject[] emissiveLights;
 
-    // Gun crystal colours
-    public Color Crystal_Neutral;
-    public Color Crystal_Hot;
-    public Color Crystal_Cold;
 
     // Start is called before the first frame update
     void Start()
     {
-        Anim = GetComponent<Animator>();   
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        PerformFX();
+    }
+
+    // perform FX
+    public override void PerformFX()
+    {
+        base.PerformFX();
+
         // call set colour of barrel crystals
         SetBarrelCrystals();
         // call set colour of back crystal
@@ -47,8 +48,6 @@ public class FXController : MonoBehaviour
         SetEmissiveLights();
         // call check for gun mode switch
         CheckForModeSwitch();
-      
-
     }
 
     // set emmisive lights
