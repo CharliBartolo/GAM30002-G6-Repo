@@ -12,7 +12,6 @@ public class RayCastShootComplete : MonoBehaviour {
     public GameObject spherecollider;
     public GameObject particleAtEnd_ice;
     public GameObject particleAtEnd_fire;
-    private bool triggerHeld = false;
 
     //Laser Properties
     private LineRenderer laserLine;
@@ -21,34 +20,52 @@ public class RayCastShootComplete : MonoBehaviour {
     public bool cold = true;
     //public Color col = Color.blue;
 
+    public bool CanShoot { get; set;}
+    public bool TriggerHeld { get; set;}
+    public bool ModeSwitched { get; set;}
+
 	void Start () 
 	{
 		laserLine = GetComponent<LineRenderer>();
 		fpsCam = GetComponentInParent<Camera>();
-	}
+        CanShoot = true;
+    }
 
     public void SwapBeam(InputAction.CallbackContext context)
     {
         if (context.performed)
-            cold = !cold;
+        {
+            ModeSwitched = true;
+            ChangeMode();
+        } 
     }
 
     public void FireBeam(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            triggerHeld = true;
+            TriggerHeld = true;
         }
         else if (context.canceled)
         {
-            triggerHeld = false;
+            TriggerHeld = false;
         }
     }   
 
+    public void ChangeMode()
+    {
+        cold = !cold;
+    }
 	
 
 	void LateUpdate () 
 	{
+        if (ModeSwitched)
+        {
+            Debug.Log("MODE SWITCHED");
+            ModeSwitched = false;
+        }
+           
         // Change Temperature States
         /*        
         if (Input.GetKeyDown(KeyCode.Keypad1))
@@ -63,8 +80,7 @@ public class RayCastShootComplete : MonoBehaviour {
         }
         */
 
-        //if (Input.GetButton("Fire1"))
-        if (triggerHeld) 
+        if (TriggerHeld && CanShoot) 
 		{
 
             laserLine.enabled = true;

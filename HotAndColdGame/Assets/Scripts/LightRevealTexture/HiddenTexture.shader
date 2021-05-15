@@ -14,54 +14,11 @@ Shader "Custom/Hidden Texture" {
         Subshader{
             Tags {"RenderType" = "Transparent" "IgnoreProjector" = "True" "Queue" = "Transparent"}
 
-            //Pass{
-            //    CGPROGRAM
-            //    #pragma vertex vert
-            //    #pragma fragment frag
-            //    #include "UnityCG.cginc"
-            //    
-            //    float4 _Color;
-            //    sampler2D _SurfaceTex;
-            //    float4 _SurfaceTex_ST;
-
-            //    struct v2f_interpolated {
-            //        float4 pos : SV_POSITION;
-            //        float2 texCoord : TEXCOORD0;
-            //        float3 lightDir : TEXCOORD1;
-
-            //        half3 tspace0 : TEXCOORD2; // tangent.x, bitangent.x, normal.x
-            //        half3 tspace1 : TEXCOORD3; // tangent.y, bitangent.y, normal.y
-            //        half3 tspace2 : TEXCOORD4; // tangent.z, bitangent.z, normal.z
-
-            //        half3 viewDir : TEXCOORD5;
-            //        half3 normalDir : TEXCOORD6;
-            //    };
-
-            //    v2f_interpolated vert(appdata_full v) {
-            //        v2f_interpolated o;
-            //        o.pos = UnityObjectToClipPos(v.vertex);
-            //        o.texCoord = v.texcoord;
-
-            //        return o;
-            //    }
-
-            //    half4 frag(v2f_interpolated i) : SV_Target{
-
-            //        half2 uv_MainTex = TRANSFORM_TEX(i.texCoord, _SurfaceTex);
-
-            //        half3 colorSample = tex2D(_SurfaceTex, uv_MainTex).rgb * _Color;
-            //       
-            //        half4 result;
-            //        result.rgb = (colorSample) * _Color;
-
-            //        return result;
-            //    }
-            //        ENDCG
-            //}
-
             Pass {
                 Blend SrcAlpha One
                 ZTest On
+
+                Offset -1, -1
                 Offset -1, -1
 
                 CGPROGRAM
