@@ -3,39 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HotTrigger : MonoBehaviour
-{
-    [SerializeField] TemperatureStateBase Trigger = null;
+{    
+    [SerializeField] TemperatureStateBase Trigger = null;//Trigger onject for moving object    
+    public Transform hotTarget;// the Hot target position    
+    public Transform origin;//the object's starting position    
+    public Transform collisonPos;//the position of collision    
+    public GameObject Obj;//Object to be moved    
+    public bool isBlocked = true;//to block target if scenario requires it
 
-    public Transform hotTarget; // the Hot target position
-    public Transform origin;
-    public Transform collisonPos;
-    public GameObject platformObj;
-    public bool isBlocked = true;
-
-    [Header("Settings")]
+    [Header("Settings")]    
     [Range(1, 10)]
-    [SerializeField] float Speed = 5;
-    [Range(.5f, 4.0f)]
-    [SerializeField] float Delay = 1;
+    [SerializeField] float Speed = 5;//speed at which the object travels
 
     // Update is called once per frame
     void Update()
     {
-        float step = Speed * Time.deltaTime; // step size = speed * frame time
+        // step size = speed * frame time
+        float step = Speed * Time.deltaTime;
+        //Checks trigger's state and acts accordingly
         switch (Trigger.CurrentTempState)
         {
             case ITemperature.tempState.Cold:
+                //turns of block being blocked
                 isBlocked = false;
                 break;
             case ITemperature.tempState.Hot:
-                if (isBlocked)//check if blocked
+                //check if blocked
+                if (isBlocked)
                 {
-                    transform.position = Vector3.Lerp(collisonPos.transform.position, origin.transform.position, Mathf.PingPong(Time.time * step, 1.0f));//transform between 2 poiints
-                    platformObj.transform.position = Vector3.MoveTowards(platformObj.transform.position, origin.transform.position, step); // moves position a step closer to the target position
+                    //moves between 2 points
+                    transform.position = Vector3.Lerp(collisonPos.transform.position, origin.transform.position, Mathf.PingPong(Time.time * step, 1.0f));                  
                 }
                 else 
                 {
-                    platformObj.transform.position = Vector3.MoveTowards(platformObj.transform.position, hotTarget.transform.position, step); // moves position a step closer to the target position
+                    //moves position a step closer to the target position
+                    Obj.transform.position = Vector3.MoveTowards(Obj.transform.position, hotTarget.transform.position, step); 
                 }                
                 break;
             default:

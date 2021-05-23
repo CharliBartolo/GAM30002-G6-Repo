@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ColdTrigger : MonoBehaviour
-{
-    [SerializeField] TemperatureStateBase Trigger = null;
+{    
+    [SerializeField] TemperatureStateBase Trigger = null;//Trigger onject for moving object    
+    public Transform coldTarget; //the cold target position    
+    public GameObject Obj;//Object to be moved
 
-    public Transform coldTarget; // the cold target position
-    public GameObject platformObj;
-
-    [Header("Settings")]
+    [Header("Settings")]    
     [Range(1, 10)]
-    [SerializeField] float Speed = 5;
-    [Range(.5f, 4.0f)]
-    [SerializeField] float Delay = 1;
+    [SerializeField] float Speed = 5;//speed at which the object travels
 
     // Update is called once per frame
     void Update()
     {
-        float step = Speed * Time.deltaTime; // step size = speed * frame time
+        // step size = speed * frame time
+        float step = Speed * Time.deltaTime;
+        //Checks trigger's state and acts accordingly
         switch (Trigger.CurrentTempState)
         {
             case ITemperature.tempState.Cold:
-                platformObj.transform.position = Vector3.MoveTowards(platformObj.transform.position, coldTarget.transform.position, step); // moves position a step closer to the target position
+                // moves position a step closer to the target position
+                Obj.transform.position = Vector3.MoveTowards(Obj.transform.position, coldTarget.transform.position, step); 
                 break;
             default:
                 break;
