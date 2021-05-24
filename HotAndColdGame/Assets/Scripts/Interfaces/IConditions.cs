@@ -4,8 +4,14 @@ using UnityEngine;
 
 public interface IConditions
 {
-    void AddCondition(string nameOfCondition);
-    void RemoveCondition(string nameOfCondition);
+    enum ConditionTypes 
+    { 
+        ConditionHot,
+        ConditionCold
+    };
 
-    List<string> ActiveConditions {get; set;}
+    void AddCondition(ConditionTypes nameOfCondition);
+    void RemoveCondition(ConditionTypes nameOfCondition);
+
+    List<ConditionTypes> ActiveConditions {get; set;}
 }

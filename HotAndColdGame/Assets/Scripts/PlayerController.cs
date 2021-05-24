@@ -42,6 +42,10 @@ public class PlayerController : MonoBehaviour, IConditions
     public PauseController PC;
     public bool pauseFunctionality = true;
 
+    //Added IConditions
+    private List<IConditions.ConditionTypes> _activeConditions;
+    public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
+
     private void Awake() 
     {   
         //playerCharController = GetComponent<CharacterController>();
@@ -116,7 +120,10 @@ public class PlayerController : MonoBehaviour, IConditions
         if (currentInteractingObject != null)
         {
             currentInteractingObject.OnInteracting();
-        }        
+        }
+
+        //Added IConditions
+        ExecuteConditions();
     }
 
     // Input functions
@@ -287,7 +294,8 @@ public class PlayerController : MonoBehaviour, IConditions
             //playerRB.velocity = playerRB.velocity.normalized * velocityCap;
         }
     }
-
+    
+    /*
     public void AddCondition(string conditionToAdd)
     {
         ActiveConditions.Add(conditionToAdd);
@@ -297,7 +305,7 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         ActiveConditions.Remove(conditionToRemove);
     }
-
+    */
     private void LockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -333,9 +341,65 @@ public class PlayerController : MonoBehaviour, IConditions
         GUILayout.EndArea();
     }
 
-    public List<string> ActiveConditions
+    //Added IConditions
+    public void AddCondition(IConditions.ConditionTypes nameOfCondition)
     {
-        get;
-        set;
+        foreach (IConditions.ConditionTypes c in ActiveConditions)
+        {
+            if (c == nameOfCondition)
+            {
+                return;
+            }
+            _activeConditions.Add(nameOfCondition);
+        }
+
+    }
+
+    public void RemoveCondition(IConditions.ConditionTypes nameOfCondition)
+    {
+        _activeConditions.Remove(nameOfCondition);
+    }
+
+    public List<IConditions.ConditionTypes> ActiveConditions
+    {
+        get => _activeConditions;
+        set => _activeConditions = value;
+    }
+
+    public void ExecuteConditions()
+    {
+        foreach (IConditions.ConditionTypes c in ActiveConditions)
+        {
+            switch (c)
+            {
+                case IConditions.ConditionTypes.ConditionCold:
+                    IcySlip();
+                break;
+
+                case IConditions.ConditionTypes.ConditionHot:
+                    UpwardForce();
+                break;
+
+
+            }
+        }
+    }
+
+    public void UpwardForce()
+    {
+        if (GetComponent<Rigidbody>() != null)
+        {
+            GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.3f, ForceMode.Acceleration);
+        }
+    }
+
+    public void IcySlip()
+    {
+        if (GetComponent<Collider>() != null)
+        {
+            GetComponent<Collider>().material = icyPhysicMaterial;
+            
+        }
     }
 }
+

@@ -14,7 +14,7 @@ public class CrystalBehaviour : TemperatureStateBase
     //private float powerDownRate = 0.0333f;  //Operates on a 0-1 percentage basis, Default value 0.0333 takes roughly 30 seconds from max to power down    
     public float temperatureValueToEmit = 5f;
     // Create Use Interactable Here
-    [SerializeField]private bool isPowered = true;
+    [SerializeField] private bool isPowered = true;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -26,13 +26,13 @@ public class CrystalBehaviour : TemperatureStateBase
     // Update is called once per frame
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();        
+        base.FixedUpdate();
 
-        PerformTemperatureBehaviour(CurrentTempState);        
+        PerformTemperatureBehaviour(CurrentTempState);
     }
 
     // tempMaxValue is the max / min temperature value to calculate percentage and range with
-    
+
 
     public override void PerformTemperatureBehaviour(ITemperature.tempState currentTemperatureState)
     {
@@ -59,7 +59,7 @@ public class CrystalBehaviour : TemperatureStateBase
                 default:
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = false;
                     areaLight.enabled = false;
-                    foreach (GameObject temperatureObject in objectsInTempArea.Keys)                    
+                    foreach (GameObject temperatureObject in objectsInTempArea.Keys)
                     {
                         if (temperatureObject.GetComponent<Collider>() != null)
                         {
@@ -76,10 +76,10 @@ public class CrystalBehaviour : TemperatureStateBase
         {
             areaLight.enabled = false;
         }
-        
+
     }
 
-    protected virtual void OnTriggerEnter(Collider other) 
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (!objectsInTempArea.ContainsKey(other.gameObject))
         {
@@ -87,15 +87,15 @@ public class CrystalBehaviour : TemperatureStateBase
         }
     }
 
-    protected virtual void OnTriggerExit(Collider other) 
+    protected virtual void OnTriggerExit(Collider other)
     {
         if (objectsInTempArea.ContainsKey(other.gameObject))
         {
             // Remove ice physic material 
             other.GetComponent<Collider>().material = objectsInTempArea[other.gameObject];
-            
+
             objectsInTempArea.Remove(other.gameObject);
-        }        
+        }
     }
     //ADDED: speed modifier
     protected virtual void ApplyTemperatureToOtherObjects(float temperatureValueParam)
@@ -105,7 +105,7 @@ public class CrystalBehaviour : TemperatureStateBase
             if (temperatureObject.GetComponent<ITemperature>() != null)
             {
                 temperatureObject.GetComponent<ITemperature>().ChangeTemperature(temperatureValueParam * Time.deltaTime);
-            }            
+            }
         }
     }
 
@@ -123,11 +123,17 @@ public class CrystalBehaviour : TemperatureStateBase
 
             //if (temperatureObject.GetComponent<IConditions>() != null)
             //{
-                //if (!temperatureObject.GetComponent<IConditions>().ActiveConditions.Contains("Hot"))
-                //{
-                //    temperatureObject.GetComponent<IConditions>().AddCondition("Hot");
-                //}
-            //}            
+            //if (!temperatureObject.GetComponent<IConditions>().ActiveConditions.Contains("Hot"))
+            //{
+            //    temperatureObject.GetComponent<IConditions>().AddCondition("Hot");
+            //}
+            //}
+
+            //Added IConditions
+            if (temperatureObject.GetComponent<IConditions>() != null)
+            {
+                temperatureObject.GetComponent<IConditions>().AddCondition(IConditions.ConditionTypes.ConditionHot);
+            }
         }
     }
 
@@ -146,6 +152,14 @@ public class CrystalBehaviour : TemperatureStateBase
                 //temperatureObject.GetComponent<Collider>().material.staticFriction = 0.05F;
                 //temperatureObject.GetComponent<Collider>().material.frictionCombine = PhysicMaterialCombine.Minimum;
             }
+
+            //Added IConditions
+            if (temperatureObject.GetComponent<IConditions>() != null)
+            {
+                temperatureObject.GetComponent<IConditions>().AddCondition(IConditions.ConditionTypes.ConditionCold);
+            }
         }
     }
+
 }
+
