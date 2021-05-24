@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour, IConditions
     {   
         //playerCharController = GetComponent<CharacterController>();
         playerRB = GetComponent<Rigidbody>();
-
+        _activeConditions = new List<IConditions.ConditionTypes>();
         playerInventory = new List<string>();          
         //controls = new PlayerFPControls();
         
