@@ -83,7 +83,8 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
             }
         }  
 
-        CheckIfTempChanged(currentTemp, currentTemp);
+        //CheckIfTempChanged(currentTemp, currentTemp);
+        CheckIfShouldReturnToNeutral();
          
         PerformTemperatureBehaviour(currenttempState);              
     }
@@ -106,7 +107,8 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
         currentTemp = currentTemp + valueToAdd;
         TemperatureClamp();
 
-        CheckIfTempChanged(prevTemp, currentTemp);
+        TempChanged();
+        //CheckIfTempChanged(prevTemp, currentTemp);
     }
 
     public void SetTemperature(float valueToSet)
@@ -116,7 +118,9 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
         currentTemp = valueToSet;
         TemperatureClamp();
 
-        CheckIfTempChanged(prevTemp, currentTemp);
+        TempChanged();
+
+        //CheckIfTempChanged(prevTemp, currentTemp);
     }
 
     public virtual void PowerDownToNeutral(float tempCap)
@@ -156,6 +160,24 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
         {
             isReturningToNeutral = false;
         }
+    }
+
+    public void TempChanged()
+    {
+        if (isReturningToNeutral)
+        {
+            isReturningToNeutral = false;
+            countdownBeforeReturnToNeutral = startingCountdownBeforeReturnToNeutral;                
+        }
+    }
+
+    public void CheckIfShouldReturnToNeutral()
+    {
+        countdownBeforeReturnToNeutral -= Time.deltaTime;
+        if (countdownBeforeReturnToNeutral <= 0f)
+            isReturningToNeutral = true;
+        else
+            isReturningToNeutral = false;
     }
 
     public float CurrentTemperature

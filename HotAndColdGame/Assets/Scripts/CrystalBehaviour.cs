@@ -116,24 +116,14 @@ public class CrystalBehaviour : TemperatureStateBase
         // If object has rigidbody component, apply upward force to it as long as it remains in area
         foreach (GameObject temperatureObject in objectsInTempArea.Keys)
         {
-            if (temperatureObject.GetComponent<Rigidbody>() != null)
-            {
-                temperatureObject.GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.3f, ForceMode.Acceleration);
-            }
-
-            //if (temperatureObject.GetComponent<IConditions>() != null)
-            //{
-            //if (!temperatureObject.GetComponent<IConditions>().ActiveConditions.Contains("Hot"))
-            //{
-            //    temperatureObject.GetComponent<IConditions>().AddCondition("Hot");
-            //}
-            //}
-
-            //Added IConditions
             if (temperatureObject.GetComponent<IConditions>() != null)
             {
                 temperatureObject.GetComponent<IConditions>().AddCondition(IConditions.ConditionTypes.ConditionHot);
             }
+            else if (temperatureObject.GetComponent<Rigidbody>() != null)
+            {
+                temperatureObject.GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.3f, ForceMode.Acceleration);
+            }            
         }
     }
 
@@ -145,7 +135,11 @@ public class CrystalBehaviour : TemperatureStateBase
         */
         foreach (GameObject temperatureObject in objectsInTempArea.Keys)
         {
-            if (temperatureObject.GetComponent<Collider>() != null)
+            if (temperatureObject.GetComponent<IConditions>() != null)
+            {
+                temperatureObject.GetComponent<IConditions>().AddCondition(IConditions.ConditionTypes.ConditionCold);
+            }
+            else if (temperatureObject.GetComponent<Collider>() != null)
             {
                 temperatureObject.GetComponent<Collider>().material = icyPhysicMaterial;
                 //temperatureObject.GetComponent<Collider>().material.dynamicFriction = 0.05F;
@@ -154,10 +148,7 @@ public class CrystalBehaviour : TemperatureStateBase
             }
 
             //Added IConditions
-            if (temperatureObject.GetComponent<IConditions>() != null)
-            {
-                temperatureObject.GetComponent<IConditions>().AddCondition(IConditions.ConditionTypes.ConditionCold);
-            }
+  
         }
     }
 
