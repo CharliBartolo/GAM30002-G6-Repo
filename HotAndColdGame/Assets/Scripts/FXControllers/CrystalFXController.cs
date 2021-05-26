@@ -14,8 +14,6 @@ public class CrystalFXController : FXController
     public List<GameObject> AffectedObjects;
     public Light Spotight;
 
-    //emissive components
-    public GameObject[] Lights;
 
     // Start is called before the first frame update
     void Start()

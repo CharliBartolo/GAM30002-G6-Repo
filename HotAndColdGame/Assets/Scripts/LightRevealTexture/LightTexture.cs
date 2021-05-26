@@ -8,6 +8,7 @@ public class LightTexture : MonoBehaviour
     // public crystal
     public CrystalBehaviour crystal;
     // public Transform lightSource;
+    private Transform[] spotlights;
     private Transform spotlight;
     // color property
     public Color ColdColor;
@@ -23,9 +24,9 @@ public class LightTexture : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      
 
-        HiddenMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>()?.HiddenMaterial;
+        //spotlight = GetNearestLight();
+        HiddenMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().HiddenMaterial;
         CurrentMaterial = gameObject.GetComponent<Renderer>().sharedMaterials;
         spotlight = crystal.transform.Find("Spot Light").GetComponent<Light>()?.transform;
         AddHiddenMaterial();
@@ -34,25 +35,46 @@ public class LightTexture : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //spotlight = GetNearestLight();
         UpdateColoursFromPallet();
 
-        if (spotlight!= null)
+
+        if (spotlight != null)
         {
             SetShaderProperties();
             SetRange(crystal.CurrentTemperature);
         }
     }
 
+    public Transform GetNearestLight()
+    {
+        Transform closest = null;
+        foreach (Transform t in spotlights)
+        {
+            Vector3 dir = transform.position - t.position;  // object direction relative to light
+            float minDist = Mathf.Infinity;
+            // object distance from light position
+            float dist = dir.magnitude;
+            // only update shader parameters if object inside light range and angle
+            if (dist <= minDist)
+            {
+                closest = t;
+                minDist = dist;
+            }
+        }
+        return closest;
+    }
+
     public void UpdateColoursFromPallet()
     {
-        if(GameObject.Find("ColourPallet").GetComponent<ColourPallet>()!=null)
+        if (GameObject.Find("ColourPallet").GetComponent<ColourPallet>() != null)
         {
             HotColor = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Positive;
             ColdColor = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Negative;
             NeutralColor = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Neutral;
         }
     }
-    
+
     // set spotlight range
     public void SetRange(float range)
     {
@@ -65,9 +87,9 @@ public class LightTexture : MonoBehaviour
 
 
         spotlight.GetComponent<Light>().range = Mathf.Abs(NewValue);
-       
-        if(range > 0)
-        {           
+
+        if (range > 0)
+        {
             SetMaterialProperties(HotColor);
         }
         else if (range < 0)
@@ -88,21 +110,21 @@ public class LightTexture : MonoBehaviour
     {
         Material[] combo = new Material[CurrentMaterial.Length + 1];
         combo[0] = CurrentMaterial[0];
-        combo[combo.Length - 1] = HiddenMaterial;
+        combo[combo.Length - 1] = new Material(HiddenMaterial);
         gameObject.GetComponent<Renderer>().sharedMaterials = combo;
     }
     public void RemoveHiddenMaterial()
     {
         Material[] combo = new Material[CurrentMaterial.Length];
-        combo[0] = CurrentMaterial[0];
+        combo[0] = new Material(CurrentMaterial[0]);
         gameObject.GetComponent<Renderer>().sharedMaterials = CurrentMaterial;
     }
 
     // set material properties
     public void SetMaterialProperties(Color _color)
     {
-        Material[] m = GetComponent<Renderer>().sharedMaterials; 
-        if(m[1]!=null)
+        Material[] m = GetComponent<Renderer>().sharedMaterials;
+        if (m[1] != null)
             m[1].color = _color;
     }
 

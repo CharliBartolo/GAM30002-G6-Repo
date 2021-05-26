@@ -2292,6 +2292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 919132148450449844}
+  spotlights: []
   ColdColor: {r: 0.053800307, g: 0.8773585, b: 0.8526614, a: 0}
   HotColor: {r: 1, g: 0, b: 0, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
@@ -3360,6 +3361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 1813609968}
+  spotlights: []
   ColdColor: {r: 0.10457456, g: 0.8867924, b: 0.8394295, a: 0}
   HotColor: {r: 1, g: 0, b: 0, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
@@ -4128,6 +4130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 919132148450449844}
+  spotlights: []
   ColdColor: {r: 0.053800307, g: 0.8773585, b: 0.8526614, a: 0}
   HotColor: {r: 1, g: 0, b: 0, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
@@ -8591,6 +8594,7 @@ GameObject:
   - component: {fileID: 1186051196}
   - component: {fileID: 1186051195}
   - component: {fileID: 1186051197}
+  - component: {fileID: 1186051198}
   m_Layer: 0
   m_Name: Cave Wall (4)
   m_TagString: Untagged
@@ -8675,6 +8679,26 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3861478300804232965, guid: cf6b8753409bec64394143e78a826708, type: 3}
+--- !u!114 &1186051198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186051193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20e07cbf49837348a064efdcd5bdd96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crystal: {fileID: 919132148450449844}
+  spotlights: []
+  ColdColor: {r: 0, g: 0, b: 0, a: 0}
+  HotColor: {r: 0, g: 0, b: 0, a: 0}
+  NeutralColor: {r: 0, g: 0, b: 0, a: 0}
+  HiddenMaterial: {fileID: 0}
+  CurrentMaterial: []
+  range: 0
 --- !u!1 &1186504521
 GameObject:
   m_ObjectHideFlags: 0
@@ -9523,6 +9547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 919132148450449844}
+  spotlights: []
   ColdColor: {r: 0.053800307, g: 0.8773585, b: 0.8526614, a: 0}
   HotColor: {r: 1, g: 0, b: 0, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
@@ -9605,6 +9630,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1241866473 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4520881908170952323, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+  m_PrefabInstance: {fileID: 4520881908023220415}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1243603818
 GameObject:
   m_ObjectHideFlags: 0
@@ -13344,6 +13374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 919132148450449844}
+  spotlights: []
   ColdColor: {r: 1, g: 0, b: 0, a: 0}
   HotColor: {r: 0, g: 0.8691118, b: 1, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
@@ -14129,6 +14160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 919132148450449844}
+  spotlights: []
   ColdColor: {r: 1, g: 0, b: 0, a: 0}
   HotColor: {r: 0, g: 0.8691118, b: 1, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
@@ -18867,6 +18899,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 919132148450449844}
+  spotlights:
+  - {fileID: 1241866473}
   ColdColor: {r: 0.053800307, g: 0.8773585, b: 0.8526614, a: 0}
   HotColor: {r: 1, g: 0, b: 0, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
@@ -19567,6 +19601,8 @@ GameObject:
   - component: {fileID: 8233934857815331336}
   - component: {fileID: 6169974822863038146}
   - component: {fileID: 5665769233321379608}
+  - component: {fileID: 5665769233321379609}
+  - component: {fileID: 5665769233321379610}
   m_Layer: 0
   m_Name: Cave Wall
   m_TagString: Untagged
@@ -19588,6 +19624,56 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3861478300804232965, guid: cf6b8753409bec64394143e78a826708, type: 3}
+--- !u!114 &5665769233321379609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5665769233321379607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11b67ac3c841b514c8cb66f0268b47f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugEnabled: 0
+  currenttempState: 2
+  allowedtempStates: 0
+  currentTemp: 0
+  isPermanentlyPowered: 0
+  tempValueRange:
+  - -100
+  - 0
+  - 100
+  isReturningToNeutral: 1
+  startingCountdownBeforeReturnToNeutral: 2
+  crystalTemperatureArea: {fileID: 0}
+  icyPhysicMaterial: {fileID: 0}
+  areaLight: {fileID: 0}
+  coldTempField: {fileID: 0}
+  hotTempField: {fileID: 0}
+  temperatureValueToEmit: 5
+  isPowered: 1
+--- !u!114 &5665769233321379610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5665769233321379607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20e07cbf49837348a064efdcd5bdd96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crystal: {fileID: 919132148450449844}
+  spotlights: []
+  ColdColor: {r: 0, g: 0, b: 0, a: 0}
+  HotColor: {r: 0, g: 0, b: 0, a: 0}
+  NeutralColor: {r: 0, g: 0, b: 0, a: 0}
+  HiddenMaterial: {fileID: 0}
+  CurrentMaterial: []
+  range: 0
 --- !u!4 &5745708913482823138
 Transform:
   m_ObjectHideFlags: 0
