@@ -13,7 +13,7 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
     [SerializeField]
     protected ITemperature.tempStatesAllowed allowedtempStates = ITemperature.tempStatesAllowed.HotAndCold;
     [SerializeField]
-    protected float currentTemp = 0;
+    protected float currentTemp = 0;    
     protected float powerDownRateInSeconds = 30f;
 
     public bool isPermanentlyPowered = false;
@@ -22,14 +22,19 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
     //public float tempMax = 100;
     //public float tempNeutral = 0;
 
+    public bool isReturningToNeutral = true;
+
+    private float countdownBeforeReturnToNeutral;
+    public float startingCountdownBeforeReturnToNeutral = 2f;
+
     protected virtual void Start() 
     {
-        
+        countdownBeforeReturnToNeutral = startingCountdownBeforeReturnToNeutral;
     }    
 
     protected virtual void FixedUpdate() 
     {
-        TemperatureClamp();
+        TemperatureClamp();        
 
         switch (currenttempState)
         {
@@ -66,7 +71,7 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
                 break;
         }
 
-        if (!isPermanentlyPowered)
+        if (!isPermanentlyPowered && isReturningToNeutral)
         {
             if (currentTemp > 0)
             {
@@ -77,8 +82,11 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
                 PowerDownToNeutral(tempValueRange[0]);
             }
         }  
+
+        //CheckIfTempChanged(currentTemp, currentTemp);
+        CheckIfShouldReturnToNeutral();
          
-        PerformTemperatureBehaviour(currenttempState);          
+        PerformTemperatureBehaviour(currenttempState);              
     }
 
     public virtual void PerformTemperatureBehaviour(ITemperature.tempState currentTemperatureState)
@@ -94,14 +102,25 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
 
     public void ChangeTemperature(float valueToAdd)
     {
+        float prevTemp = currentTemp;
+
         currentTemp = currentTemp + valueToAdd;
         TemperatureClamp();
+
+        TempChanged();
+        //CheckIfTempChanged(prevTemp, currentTemp);
     }
 
     public void SetTemperature(float valueToSet)
     {
+        float prevTemp = currentTemp;
+
         currentTemp = valueToSet;
         TemperatureClamp();
+
+        TempChanged();
+
+        //CheckIfTempChanged(prevTemp, currentTemp);
     }
 
     public virtual void PowerDownToNeutral(float tempCap)
@@ -116,7 +135,49 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
             currentTemp = Mathf.Clamp(currentTemp, tempValueRange[1], tempCap);
         else
             currentTemp = Mathf.Clamp(currentTemp, tempCap, tempValueRange[1]);    
+    }
 
+    public void CheckIfTempChanged(float prevTemp, float currentTemp)
+    {
+        if (prevTemp != currentTemp)
+        {
+            if (isReturningToNeutral)
+            {
+                isReturningToNeutral = false;
+                countdownBeforeReturnToNeutral = startingCountdownBeforeReturnToNeutral;                
+            }
+        }
+        else 
+        {
+            countdownBeforeReturnToNeutral -= Time.deltaTime;
+        }
+
+        if (countdownBeforeReturnToNeutral <= 0f)
+        {
+            isReturningToNeutral = true;
+        }
+        else
+        {
+            isReturningToNeutral = false;
+        }
+    }
+
+    public void TempChanged()
+    {
+        if (isReturningToNeutral)
+        {
+            isReturningToNeutral = false;
+            countdownBeforeReturnToNeutral = startingCountdownBeforeReturnToNeutral;                
+        }
+    }
+
+    public void CheckIfShouldReturnToNeutral()
+    {
+        countdownBeforeReturnToNeutral -= Time.deltaTime;
+        if (countdownBeforeReturnToNeutral <= 0f)
+            isReturningToNeutral = true;
+        else
+            isReturningToNeutral = false;
     }
 
     public float CurrentTemperature

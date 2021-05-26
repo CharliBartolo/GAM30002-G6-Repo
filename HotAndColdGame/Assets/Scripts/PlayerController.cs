@@ -5,25 +5,39 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour, IConditions
 {
-    public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}
-    public PlayerState playerControlState = PlayerState.MoveAndLook;
-    public bool _useRigidBody = true;
-    public List<string> playerInventory;
-    public RayCastShootComplete raygunScript;
+    [HideInInspector]
+    public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}    
 
-    //public PlayerFPControls controls;
-   // public InputActionMap controls;
-    public PlayerInput playerInput;    
+    [Header("Player Control Settings")]    
     public float movementSpeed = 50f;
+    public float coldMoveSpeedMod = 1.2f;
+    public float airSpeedMod = 0.02f;
+    public float hotAirSpeedMod = 0.1f;
     public float velocityCap = 8f;
+    public float coldVelocityCap = 16f;
     public float interactRange = 2f;
-    public bool isGravityEnabled = true;
-    public bool isGunEnabled = true;
-    [SerializeField]private bool isGrounded;
     private Vector3 lateralVelocity;
 
-    //Mouse Control Variables
+    [Header("Player State Settings")]
+    public bool isGravityEnabled = true;
+    public bool isGunEnabled = true;
+    [SerializeField] private bool isGrounded;
+    public PlayerState playerControlState = PlayerState.MoveAndLook;
+    public List<string> playerInventory;
+    [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
+
+    [Header("References")]    
     public Camera playerCam;
+    public RayCastShootComplete raygunScript;
+    public PlayerInput playerInput;
+    private Rigidbody playerRB;
+    public Transform groundChecker; 
+    private TemperatureStateBase playerTemp;   
+    private InteractableBase currentInteractingObject;
+    public PauseController PC;
+    public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
+
+    [Header("Mouse Control Settings")]    
     public Vector2 mouseSensitivity = new Vector2 (2, 2);
     public Vector2 mouseSmoothing = new Vector2 (3,3);        
     const float MIN_X = 0.0f;
@@ -31,37 +45,14 @@ public class PlayerController : MonoBehaviour, IConditions
     const float MIN_Y = -90.0f;
     const float MAX_Y = 90.0f;    
     private Vector2 _mouseAbsolute;
-    private Vector2 _mouseSmooth;
-
-    private Rigidbody playerRB;
-    public Transform groundChecker;    
-    //private CharacterController playerCharController;
-    private InteractableBase currentInteractingObject;
-
-    //Pause
-    public PauseController PC;
-    public bool pauseFunctionality = true;
-
-    //Added IConditions
-    private List<IConditions.ConditionTypes> _activeConditions;
-    public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
+    private Vector2 _mouseSmooth;    
 
     private void Awake() 
     {   
-        //playerCharController = GetComponent<CharacterController>();
         playerRB = GetComponent<Rigidbody>();
-
+        playerTemp = GetComponent<TemperatureStateBase>();
+        _activeConditions = new List<IConditions.ConditionTypes>();
         playerInventory = new List<string>();          
-        //controls = new PlayerFPControls();
-        
-        //controls.Player.Interact.performed += context => Interact(context);
-        //controls.Player.Interact.canceled += ExitInteract;
-        //controls.Player.Jump.performed += Jump;
-        //controls.Player.Shoot.performed += raygunScript.FireBeam;
-        //controls.Player.Shoot.canceled += raygunScript.FireBeam;
-        //controls.Player.SwapBeam.performed += raygunScript.SwapBeam;
-
-        //controls.Enable(); 
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
@@ -79,7 +70,8 @@ public class PlayerController : MonoBehaviour, IConditions
 
     private void Update() 
     {
-        if (pauseFunctionality)
+        //if (pauseFunctionality)
+        if (PC != null)
         {
             if (PC.GetPause())
             {
@@ -94,21 +86,26 @@ public class PlayerController : MonoBehaviour, IConditions
         switch (playerControlState)
         {
             case (PlayerState.ControlsDisabled):
-                //ResetMouse();
+                if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Player"))
+                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Menu");
                 break;
             case (PlayerState.MoveAndLook):
+                if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
+                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
                 GroundedCheck();
-                //MouseLook(controls.Player.Look.ReadValue<Vector2>());
-                //MovePlayer(controls.Player.Movement.ReadValue<Vector2>());
                 MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>());
                 MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
                 break;
             case (PlayerState.MoveOnly):
+                if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
+                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
                 GroundedCheck();
                 MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
                 //ResetMouse();
                 break;
             default:
+                if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
+                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
                 playerControlState = PlayerState.MoveAndLook;
                 break;
         }
@@ -122,8 +119,8 @@ public class PlayerController : MonoBehaviour, IConditions
             currentInteractingObject.OnInteracting();
         }
 
-        //Added IConditions
         ExecuteConditions();
+        RemoveConditionsIfReturningToNeutral();
     }
 
     // Input functions
@@ -146,13 +143,21 @@ public class PlayerController : MonoBehaviour, IConditions
         // If airborne, dampen movement force
         if (!isGrounded)
         {
-            movementVector = movementVector.normalized * 0.02f;
+            // If player is in ANTIGRAV crystal range, give more control
+            if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
+                movementVector = movementVector.normalized * hotAirSpeedMod;
+            else
+                movementVector = movementVector.normalized * airSpeedMod;
         }  
         else
         {
             movementVector = movementVector.normalized;
         }
-        playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);    
+
+        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
+            playerRB.AddForce(movementVector * movementSpeed * coldMoveSpeedMod, ForceMode.Acceleration);
+        else
+            playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);    
     }
 
     void Jump(InputAction.CallbackContext context)
@@ -231,7 +236,6 @@ public class PlayerController : MonoBehaviour, IConditions
     }
 
     // Mouse Functions below
-
     Vector2 MouseSmooth(Vector2 deltaParam)
     {
         Vector2 mouseDelta = deltaParam;
@@ -286,26 +290,18 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         lateralVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
         Vector3 downwardVelocityVector = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));
-
+        
         if (lateralVelocity.magnitude > velocityCap)
         {
-            playerRB.velocity = Vector3.Lerp(lateralVelocity.normalized * velocityCap + downwardVelocityVector, playerRB.velocity, Time.deltaTime);            
+            if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && lateralVelocity.magnitude > coldVelocityCap)            
+                playerRB.velocity = Vector3.Lerp(lateralVelocity.normalized * coldVelocityCap + downwardVelocityVector, playerRB.velocity, Time.deltaTime);               
+            else
+                playerRB.velocity = Vector3.Lerp(lateralVelocity.normalized * velocityCap + downwardVelocityVector, playerRB.velocity, Time.deltaTime);            
             //playerRB.velocity = Vector3.Lerp(playerRB.velocity.normalized * velocityCap, playerRB.velocity, Time.deltaTime);
             //playerRB.velocity = playerRB.velocity.normalized * velocityCap;
         }
     }
-    
-    /*
-    public void AddCondition(string conditionToAdd)
-    {
-        ActiveConditions.Add(conditionToAdd);
-    }
-
-    public void RemoveCondition(string conditionToRemove)
-    {
-        ActiveConditions.Remove(conditionToRemove);
-    }
-    */
+ 
     private void LockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -344,6 +340,11 @@ public class PlayerController : MonoBehaviour, IConditions
     //Added IConditions
     public void AddCondition(IConditions.ConditionTypes nameOfCondition)
     {
+        if (!ActiveConditions.Contains(nameOfCondition))
+        {
+            _activeConditions.Add(nameOfCondition);
+        }
+        /*
         foreach (IConditions.ConditionTypes c in ActiveConditions)
         {
             if (c == nameOfCondition)
@@ -352,12 +353,23 @@ public class PlayerController : MonoBehaviour, IConditions
             }
             _activeConditions.Add(nameOfCondition);
         }
-
+        */
     }
 
     public void RemoveCondition(IConditions.ConditionTypes nameOfCondition)
     {
-        _activeConditions.Remove(nameOfCondition);
+        if (ActiveConditions.Contains(nameOfCondition))
+            _activeConditions.Remove(nameOfCondition);
+    }
+
+    // In future, could edit list to store separate condition timers for each. For now, using isReturningToNeutral works.
+    private void RemoveConditionsIfReturningToNeutral()
+    {
+        if (playerTemp.isReturningToNeutral)
+        {
+            RemoveCondition(IConditions.ConditionTypes.ConditionHot);
+            RemoveCondition(IConditions.ConditionTypes.ConditionCold);
+        }
     }
 
     public List<IConditions.ConditionTypes> ActiveConditions
@@ -389,7 +401,7 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         if (GetComponent<Rigidbody>() != null)
         {
-            GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.3f, ForceMode.Acceleration);
+            GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.4f, ForceMode.Acceleration);
         }
     }
 
