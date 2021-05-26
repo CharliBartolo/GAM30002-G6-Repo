@@ -25,14 +25,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3712951276414829937}
-  m_LocalRotation: {x: 0.0000016205013, y: -0.13184455, z: 0.0000029308721, w: -0.9912704}
+  m_LocalRotation: {x: 0, y: 0.13184118, z: 0, w: 0.99127084}
   m_LocalPosition: {x: -8.41, y: 18.01, z: -15.78}
   m_LocalScale: {x: 0.5199583, y: 0.28610504, z: 0.5199583}
   m_Children:
   - {fileID: 3750853070092891473}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 15.152, z: 0}
 --- !u!54 &3712951276414829939
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -86,11 +86,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 0}
-  spotlights:
-  - {fileID: 0}
   ColdColor: {r: 1, g: 0, b: 0, a: 0}
   HotColor: {r: 0, g: 0.91636705, b: 1, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
+  HiddenMaterial: {fileID: 2100000, guid: db12df5fd27282d4ca812c4e5bdcda89, type: 2}
+  CurrentMaterial: []
   range: 0
 --- !u!1001 &6935473820010729750
 PrefabInstance:
@@ -161,12 +161,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4934072258052022056, guid: e57b21bbaf40ca54eaa3685c3ec8f52b, type: 3}
       propertyPath: m_Materials.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4934072258052022056, guid: e57b21bbaf40ca54eaa3685c3ec8f52b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: db12df5fd27282d4ca812c4e5bdcda89, type: 2}
+      objectReference: {fileID: -2273933481115794718, guid: ba187febcb749cb4f8dfca3a953b1781, type: 3}
     - target: {fileID: 4934072258052022056, guid: e57b21bbaf40ca54eaa3685c3ec8f52b, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e619284ec62c91c4bab56694ff937fa4
+guid: 728fa5c51b0cd7d47b771578c8f79e39
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -18,18 +18,19 @@ ScriptedImporter:
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://metal_panels_001\" label=\"\" >\n  <presetinput
       identifier=\"$outputsize\" uid=\"2147178036\" type=\"8\" value=\"9,9\" />\n 
-      <presetinput identifier=\"luminosity\" uid=\"2057826191\" type=\"0\" value=\"0.453\"
-      />\n  <presetinput identifier=\"saturation\" uid=\"2057826202\" type=\"0\"
-      value=\"0.467\" />\n  <presetinput identifier=\"height_range\" uid=\"42029347\"
-      type=\"0\" value=\"0\" />\n  <presetinput identifier=\"height_position\" uid=\"42029346\"
+      <presetinput identifier=\"luminosity\" uid=\"2057826191\" type=\"0\" value=\"0.65\"
+      />\n  <presetinput identifier=\"height_range\" uid=\"42029347\" type=\"0\"
+      value=\"0\" />\n  <presetinput identifier=\"height_position\" uid=\"42029346\"
       type=\"0\" value=\"1\" />\n  <presetinput identifier=\"number\" uid=\"226596497\"
       type=\"4\" value=\"1\" />\n  <presetinput identifier=\"rivet_scale\" uid=\"226588005\"
       type=\"0\" value=\"1\" />\n  <presetinput identifier=\"rivet_missing\" uid=\"226587318\"
-      type=\"0\" value=\"1\" />\n  <presetinput identifier=\"rust\" uid=\"2057065053\"
+      type=\"0\" value=\"1\" />\n  <presetinput identifier=\"impact\" uid=\"226581228\"
+      type=\"0\" value=\"0.928\" />\n  <presetinput identifier=\"rust\" uid=\"2057065053\"
       type=\"0\" value=\"1\" />\n  <presetinput identifier=\"rust_drips\" uid=\"2063392016\"
-      type=\"0\" value=\"0.685\" />\n  <presetinput identifier=\"dirtiness\" uid=\"226582160\"
-      type=\"0\" value=\"0.812\" />\n  <presetinput identifier=\"scratches\" uid=\"2057066179\"
-      type=\"0\" value=\"0.364\" />\n </sbspreset>\n"
+      type=\"0\" value=\"1\" />\n  <presetinput identifier=\"dirtiness\" uid=\"226582160\"
+      type=\"0\" value=\"1\" />\n  <presetinput identifier=\"scratches\" uid=\"2057066179\"
+      type=\"0\" value=\"1\" />\n  <presetinput identifier=\"metal_color\" uid=\"87741515\"
+      type=\"2\" value=\"0.169811,0.169811,0.169811\" />\n </sbspreset>\n"
     shaderName: HDRP/LitTessellation
     materialProperties:
       shader: {fileID: 4800000, guid: 756bac9090102564582875f4c7e30202, type: 3}
@@ -46,7 +47,7 @@ ScriptedImporter:
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _BaseColorMap
-        texture: {fileID: 6344665451385196243, guid: e619284ec62c91c4bab56694ff937fa4, type: 3}
+        texture: {fileID: 6344665451385196243, guid: 728fa5c51b0cd7d47b771578c8f79e39, type: 3}
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _BentNormalMap
@@ -74,7 +75,7 @@ ScriptedImporter:
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _HeightMap
-        texture: {fileID: 1361220934952870948, guid: e619284ec62c91c4bab56694ff937fa4, type: 3}
+        texture: {fileID: 1361220934952870948, guid: 728fa5c51b0cd7d47b771578c8f79e39, type: 3}
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _IridescenceMaskMap
@@ -90,11 +91,11 @@ ScriptedImporter:
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _MaskMap
-        texture: {fileID: -1640019793792196398, guid: e619284ec62c91c4bab56694ff937fa4, type: 3}
+        texture: {fileID: -1640019793792196398, guid: 728fa5c51b0cd7d47b771578c8f79e39, type: 3}
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _NormalMap
-        texture: {fileID: 2945532018097518028, guid: e619284ec62c91c4bab56694ff937fa4, type: 3}
+        texture: {fileID: 2945532018097518028, guid: 728fa5c51b0cd7d47b771578c8f79e39, type: 3}
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _NormalMapOS
@@ -102,7 +103,7 @@ ScriptedImporter:
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _SpecularColorMap
-        texture: {fileID: -383970524605302174, guid: e619284ec62c91c4bab56694ff937fa4, type: 3}
+        texture: {fileID: -383970524605302174, guid: 728fa5c51b0cd7d47b771578c8f79e39, type: 3}
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _SubsurfaceMaskMap
@@ -636,10 +637,10 @@ ScriptedImporter:
       textureFormatMode: 0
       normalCompressed: 0
       bGenerateOnLoad: 1
-    material: {fileID: 1523472303362493764, guid: e619284ec62c91c4bab56694ff937fa4, type: 3}
+    material: {fileID: 1523472303362493764, guid: 728fa5c51b0cd7d47b771578c8f79e39, type: 3}
     generatedTextures:
-    - {fileID: 6344665451385196243, guid: e619284ec62c91c4bab56694ff937fa4, type: 3}
-    - {fileID: 2945532018097518028, guid: e619284ec62c91c4bab56694ff937fa4, type: 3}
-    - {fileID: -383970524605302174, guid: e619284ec62c91c4bab56694ff937fa4, type: 3}
-    - {fileID: 1361220934952870948, guid: e619284ec62c91c4bab56694ff937fa4, type: 3}
-    - {fileID: -1640019793792196398, guid: e619284ec62c91c4bab56694ff937fa4, type: 3}
+    - {fileID: 6344665451385196243, guid: 728fa5c51b0cd7d47b771578c8f79e39, type: 3}
+    - {fileID: 2945532018097518028, guid: 728fa5c51b0cd7d47b771578c8f79e39, type: 3}
+    - {fileID: -383970524605302174, guid: 728fa5c51b0cd7d47b771578c8f79e39, type: 3}
+    - {fileID: 1361220934952870948, guid: 728fa5c51b0cd7d47b771578c8f79e39, type: 3}
+    - {fileID: -1640019793792196398, guid: 728fa5c51b0cd7d47b771578c8f79e39, type: 3}
