@@ -49,7 +49,19 @@ public class AudioManager : MonoBehaviour
     public void Play (string name)
     { //Seach for sound in sounds by name, if it matches, play the sound
         Sound s = Array.Find(sounds, sound => sound.name == name);
-        s.source.Play();
+        if (!s.source.isPlaying)
+        {
+            s.source.Play();
+        }
+    }
+
+    public void Stop(string name)
+    { //Seach for sound in sounds by name, if it matches, play the sound
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        if (s.source.isPlaying)
+        {
+            s.source.Stop();
+        }
     }
 
     //At the moment objects that play this way can only have 1 sound
@@ -57,12 +69,6 @@ public class AudioManager : MonoBehaviour
     { //Seach for sound in sounds by name, if it matches, play the sound
         AudioSource source = obj.GetComponent<AudioSource>();
         source.Play();
-    }
-
-    public void Stop(string name)
-    { //Stop a sound from playing
-        Sound s = Array.Find(sounds, sound => sound.name == name);
-        s.source.Stop();
     }
 
     public void Spawn(GameObject obj, string name)
