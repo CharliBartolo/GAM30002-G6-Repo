@@ -301,22 +301,13 @@ public class PlayerController : MonoBehaviour, IConditions
         //Take sideways velocity
         lateralVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
 
-        //Take downwards velocity, and apply effects of gravity for one frame's worth of force
+        //Take downwards velocity
         Vector3 downwardVelocityVector = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));
-        //downwardVelocityVector = downwardVelocityVector + Physics.gravity * Time.deltaTime;
         
         if (lateralVelocity.magnitude > cappedValue)
         {
-            // TODO: Lerp lateralVelocity and set that, instead of lerping playerVelocity
             lateralVelocity = Vector3.Lerp(lateralVelocity.normalized * cappedValue, lateralVelocity, Time.deltaTime);
             playerRB.velocity = lateralVelocity + downwardVelocityVector;
-            //playerRB.velocity = Vector3.Lerp(playerRB.velocity.normalized * cappedValue + downwardVelocityVector, playerRB.velocity, Time.deltaTime);
-
-            //playerRB.velocity = Vector3.Lerp(lateralVelocity.normalized * coldVelocityCap + downwardVelocityVector, playerRB.velocity, Time.deltaTime);               
-            //else
-            //playerRB.velocity = Vector3.Lerp(lateralVelocity.normalized * velocityCap + downwardVelocityVector, playerRB.velocity, Time.deltaTime);     
-
-            //playerRB.velocity = playerRB.velocity.normalized * velocityCap;
         }
     }
  
@@ -408,7 +399,11 @@ public class PlayerController : MonoBehaviour, IConditions
         // If player is cold and NOT hot
         else if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
         {
-            IcySlip();
+            // If player is making any movement inputs, remove friction, otherwise re-enable it.
+            if (playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude > 0f)
+                IcySlip();
+            else
+                ResetSlip();
         }
         else
         {

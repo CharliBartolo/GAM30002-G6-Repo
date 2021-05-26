@@ -21,7 +21,7 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
     //public float tempMin = -100;
     //public float tempMax = 100;
     //public float tempNeutral = 0;
-
+    
     public bool isReturningToNeutral = true;
 
     private float countdownBeforeReturnToNeutral;

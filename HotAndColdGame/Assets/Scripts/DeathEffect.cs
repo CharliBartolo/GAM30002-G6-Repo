@@ -26,6 +26,7 @@ public class DeathEffect : MonoBehaviour
     // DeathEffect is called once per frame
     void DeathFade()
     {        
+        //tweak fade effect 
         switch (crntTemp.CurrentTempState) //checks if player is in Hot or Cold state
         {
             case ITemperature.tempState.Hot: //if hot
