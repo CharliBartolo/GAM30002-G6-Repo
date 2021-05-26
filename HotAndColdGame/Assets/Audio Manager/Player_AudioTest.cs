@@ -37,14 +37,13 @@ public class Player_AudioTest : MonoBehaviour
 
         //If not hitting crystal trigger, return song to main
         if (collision_count == 0) {
-            if (main_volume < max_volume)
+            if (main_volume < max_volume )
             {
                 main_volume = Mathf.MoveTowards(main_volume, max_volume, volume_rate * Time.deltaTime);
-                ice_volume = Mathf.MoveTowards(ice_volume, min_volume, volume_rate * Time.deltaTime);
-                heat_volume = Mathf.MoveTowards(heat_volume, min_volume, volume_rate * Time.deltaTime);
             }
-
             current_value = Mathf.MoveTowards(current_value, standard_value, 1);
+            ice_volume = Mathf.MoveTowards(ice_volume, min_volume, volume_rate * Time.deltaTime);
+            heat_volume = Mathf.MoveTowards(heat_volume, min_volume, volume_rate * Time.deltaTime);
 
         }
 
@@ -76,13 +75,12 @@ public class Player_AudioTest : MonoBehaviour
             }
             if (heat_volume < max_volume)
             {
-                //set other volumes to min
-                main_volume = Mathf.MoveTowards(main_volume, min_volume, volume_rate * Time.deltaTime);
-                ice_volume = Mathf.MoveTowards(ice_volume, min_volume, volume_rate * Time.deltaTime);
-
                 //set heat volume to max
                 heat_volume = Mathf.MoveTowards(heat_volume, max_volume, volume_rate * Time.deltaTime);
             }
+            //set other volumes to min
+            main_volume = Mathf.MoveTowards(main_volume, min_volume, volume_rate * Time.deltaTime);
+            ice_volume = Mathf.MoveTowards(ice_volume, min_volume, volume_rate * Time.deltaTime);
         }
      
         if (col.gameObject.CompareTag("Blue"))
@@ -93,13 +91,12 @@ public class Player_AudioTest : MonoBehaviour
             }
             if (ice_volume < max_volume)
             {
-                //set other volumes to min
-                main_volume = Mathf.MoveTowards(main_volume, min_volume, volume_rate * Time.deltaTime);
-                heat_volume = Mathf.MoveTowards(heat_volume, min_volume, volume_rate * Time.deltaTime);
-
                 //set heat volume to max
                 ice_volume = Mathf.MoveTowards(ice_volume, max_volume, volume_rate * Time.deltaTime);
             }
+            //set other volumes to min
+            main_volume = Mathf.MoveTowards(main_volume, min_volume, volume_rate * Time.deltaTime);
+            heat_volume = Mathf.MoveTowards(heat_volume, min_volume, volume_rate * Time.deltaTime);
         }
     }
 
