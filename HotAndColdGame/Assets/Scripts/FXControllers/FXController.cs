@@ -22,6 +22,10 @@ public class FXController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Crystal_Hot = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Positive;
+        Crystal_Cold = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Negative;
+        Crystal_Neutral = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Neutral;
+
         Anim = GetComponent<Animator>();   
     }
 

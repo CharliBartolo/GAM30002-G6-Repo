@@ -8,20 +8,19 @@ public class CrystalFXController : FXController
 {
     // variables 
 
-
     // components
     public CrystalBehaviour MainCrystal;
     public SphereCollider AreaCollider;
-    public GameObject[] AffectedObjects;
+    public List<GameObject> AffectedObjects;
     public Light Spotight;
 
     //emissive components
     public GameObject[] Lights;
 
-
     // Start is called before the first frame update
     void Start()
     {
+        AffectedObjects = new List<GameObject>();
         MainCrystal = GetComponent<CrystalBehaviour>();
         AreaCollider = GetComponent<SphereCollider>();
     }
@@ -29,8 +28,35 @@ public class CrystalFXController : FXController
     // Update is called once per frame
     void Update()
     {
+
+        AddAffectedObjects();
+        RemoveAffectedObjects();
+
         PerformFX();
+
     }
+
+    public void AddAffectedObjects()
+    {
+        foreach (var item in GetComponent<CrystalBehaviour>().objectsInTempArea.Keys)
+        {
+            if(!AffectedObjects.Contains(item))
+            {
+                AffectedObjects.Add(item);
+            }
+        }
+    }
+    public void RemoveAffectedObjects()
+    {
+        foreach (var item in GetComponent<CrystalBehaviour>().objectsInTempArea.Keys)
+        {
+            if (!AffectedObjects.Contains(item))
+            {
+                AffectedObjects.Remove(item);
+            }
+        }
+    }
+
 
     // perform FX
     public override void PerformFX()
@@ -71,5 +97,24 @@ public class CrystalFXController : FXController
     {
 
     }
-   
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!AffectedObjects.Contains(other.gameObject))
+        {
+            // add fx
+            AffectedObjects.Add(other.gameObject);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (AffectedObjects.Contains(other.gameObject))
+        {
+            // Remove fx
+            //other.GetComponent<Collider>().material = AffectedObjects[other.gameObject];
+
+            AffectedObjects.Remove(other.gameObject);
+        }
+    }
 }
