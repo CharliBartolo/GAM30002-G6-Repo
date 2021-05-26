@@ -236,7 +236,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2696231968649309347}
-  - component: {fileID: 815152427672361698}
   m_Layer: 0
   m_Name: Larger03:VERTICAL_SET
   m_TagString: Untagged
@@ -261,26 +260,6 @@ Transform:
   m_Father: {fileID: 896694062848359801}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &815152427672361698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815152427672361697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3376112320e024c4f89eacd070c856a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Trigger: {fileID: 0}
-  hotTarget: {fileID: 0}
-  origin: {fileID: 0}
-  collisonPos: {fileID: 0}
-  platformObj: {fileID: 815152427672361697}
-  isBlocked: 1
-  Speed: 2
-  Delay: 1
 --- !u!1 &863295859365050168
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,16 +765,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 863295860549538834}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41ca410bcc76eaf48bd858b0b19b1976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Trigger: {fileID: 0}
   coldTarget: {fileID: 0}
-  platformObj: {fileID: 863295860549538834}
+  Obj: {fileID: 0}
   Speed: 2
-  Delay: 1
 --- !u!64 &863295860549538844
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -821,7 +799,6 @@ GameObject:
   - component: {fileID: 863295860581057273}
   - component: {fileID: 863295860581057157}
   - component: {fileID: 863295860581057156}
-  - component: {fileID: 863295860581057275}
   - component: {fileID: 863295860581057274}
   m_Layer: 0
   m_Name: HorizontalDoor1 (1)
@@ -893,23 +870,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &863295860581057275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 863295860581057272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41ca410bcc76eaf48bd858b0b19b1976, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Trigger: {fileID: 0}
-  coldTarget: {fileID: 0}
-  platformObj: {fileID: 863295860581057272}
-  Speed: 2
-  Delay: 1
 --- !u!64 &863295860581057274
 MeshCollider:
   m_ObjectHideFlags: 0

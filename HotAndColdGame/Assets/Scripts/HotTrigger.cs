@@ -32,7 +32,7 @@ public class HotTrigger : MonoBehaviour
                 if (isBlocked)
                 {
                     //moves between 2 points
-                    transform.position = Vector3.Lerp(collisonPos.transform.position, origin.transform.position, Mathf.PingPong(Time.time * step, 1.0f));                  
+                    Obj.transform.position = Vector3.Lerp(collisonPos.transform.position, origin.transform.position, Mathf.PingPong(Time.time * step, 1.0f));                  
                 }
                 else 
                 {

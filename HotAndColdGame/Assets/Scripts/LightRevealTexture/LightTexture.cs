@@ -2,32 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
 [RequireComponent(typeof(Renderer))]
 public class LightTexture : MonoBehaviour
 {
     // public crystal
     public CrystalBehaviour crystal;
     // public Transform lightSource;
-    public Transform[] spotlights;
+    private Transform spotlight;
     // color property
-
     public Color ColdColor;
     public Color HotColor;
     public Color NeutralColor;
+    // hidden material
+    public Material HiddenMaterial;
+    // hidden material
+    public Material[] CurrentMaterial;
+    private bool materialSet;
 
     public float range;
     // Start is called before the first frame update
     void Start()
     {
+      
 
+        HiddenMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>()?.HiddenMaterial;
+        CurrentMaterial = gameObject.GetComponent<Renderer>().sharedMaterials;
+        spotlight = crystal.transform.Find("Spot Light").GetComponent<Light>()?.transform;
+        AddHiddenMaterial();
     }
 
     // Update is called once per frame
     void Update()
     {
-        SetShaderProperties();
-        SetRange(crystal.CurrentTemperature);
+        UpdateColoursFromPallet();
+
+        if (spotlight!= null)
+        {
+            SetShaderProperties();
+            SetRange(crystal.CurrentTemperature);
+        }
+    }
+
+    public void UpdateColoursFromPallet()
+    {
+        if(GameObject.Find("ColourPallet").GetComponent<ColourPallet>()!=null)
+        {
+            HotColor = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Positive;
+            ColdColor = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Negative;
+            NeutralColor = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Neutral;
+        }
     }
     
     // set spotlight range
@@ -39,13 +62,12 @@ public class LightTexture : MonoBehaviour
         float NewRange = (40 - 0);
         float NewValue = (((range - 0) * NewRange) / OldRange) + 0;
 
-        foreach (var item in spotlights)
-        {
-            item.GetComponent<Light>().range = Mathf.Abs(NewValue);
-        }
+
+
+        spotlight.GetComponent<Light>().range = Mathf.Abs(NewValue);
        
         if(range > 0)
-        {
+        {           
             SetMaterialProperties(HotColor);
         }
         else if (range < 0)
@@ -60,25 +82,40 @@ public class LightTexture : MonoBehaviour
 
     }
 
+
+    // add HiddenMaterial 
+    public void AddHiddenMaterial()
+    {
+        Material[] combo = new Material[CurrentMaterial.Length + 1];
+        combo[0] = CurrentMaterial[0];
+        combo[combo.Length - 1] = HiddenMaterial;
+        gameObject.GetComponent<Renderer>().sharedMaterials = combo;
+    }
+    public void RemoveHiddenMaterial()
+    {
+        Material[] combo = new Material[CurrentMaterial.Length];
+        combo[0] = CurrentMaterial[0];
+        gameObject.GetComponent<Renderer>().sharedMaterials = CurrentMaterial;
+    }
+
     // set material properties
     public void SetMaterialProperties(Color _color)
     {
         Material[] m = GetComponent<Renderer>().sharedMaterials; 
-        m[0].color = _color;
+        if(m[1]!=null)
+            m[1].color = _color;
     }
 
     // set shader properties
     private void SetShaderProperties()
     {
-        foreach (var lightSource in spotlights)
+        if (spotlight)
         {
-            if (lightSource)
-            {
-                GetComponent<Renderer>().sharedMaterial.SetFloat("_SpotAngle", lightSource.GetComponent<Light>().spotAngle);
-                GetComponent<Renderer>().sharedMaterial.SetFloat("_Range", lightSource.GetComponent<Light>().range);
-                GetComponent<Renderer>().sharedMaterial.SetVector("_LightPos", lightSource.position);
-                GetComponent<Renderer>().sharedMaterial.SetVector("_LightDir", lightSource.forward);
-            }
+            GetComponent<Renderer>().sharedMaterials[1]?.SetFloat("_SpotAngle", spotlight.GetComponent<Light>().spotAngle);
+            GetComponent<Renderer>().sharedMaterials[1]?.SetFloat("_Range", spotlight.GetComponent<Light>().range);
+            GetComponent<Renderer>().sharedMaterials[1]?.SetVector("_LightPos", spotlight.position);
+            GetComponent<Renderer>().sharedMaterials[1]?.SetVector("_LightDir", spotlight.forward);
         }
+
     }
 }

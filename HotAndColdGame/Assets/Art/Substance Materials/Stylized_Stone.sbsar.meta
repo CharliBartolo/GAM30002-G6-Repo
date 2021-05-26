@@ -20,9 +20,8 @@ ScriptedImporter:
     shaderName: HDRP/LitTessellation
     materialProperties:
       shader: {fileID: 4800000, guid: 756bac9090102564582875f4c7e30202, type: 3}
-      shaderKeywords: _DISPLACEMENT_LOCK_TILING_SCALE _EMISSIVECOLORMAP _EMISSIVE_COLOR_MAP
-        _HEIGHTMAP _MASKMAP _METALLICGLOSSMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
-        _OCCLUSIONMAP _ROUGHNESSMAP _TESSELLATION_DISPLACEMENT _VERTEX_DISPLACEMENT_LOCK_OBJECT_SCALE
+      shaderKeywords: _EMISSIVECOLORMAP _EMISSIVE_COLOR_MAP _HEIGHTMAP _MASKMAP _METALLICGLOSSMAP
+        _NORMALMAP _NORMALMAP_TANGENT_SPACE _OCCLUSIONMAP _ROUGHNESSMAP
       lightmapFlags: 4
       enableInstancingVariants: 0
       doubleSidedGI: 0
@@ -272,7 +271,7 @@ ScriptedImporter:
       - name: _NormalMapSpace
         float: 0
       - name: _NormalScale
-        float: 1
+        float: 1.27
       - name: _OpaqueCullMode
         float: 2
       - name: _PPDLodThreshold
@@ -567,7 +566,7 @@ ScriptedImporter:
     - textureName: Stylized Stone Wall - height
       wrapMode: 0
       filterMode: 1
-      aniso: 1
+      aniso: 0
     - textureName: Stylized Stone Wall - emissive
       wrapMode: 0
       filterMode: 1

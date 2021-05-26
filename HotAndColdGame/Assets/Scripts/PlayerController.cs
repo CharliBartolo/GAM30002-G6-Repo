@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour, IConditions
     private InteractableBase currentInteractingObject;
     public PauseController PC;
     public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
+    public PhysicMaterial regularPhysicMaterial;
 
     [Header("Mouse Control Settings")]    
     public Vector2 mouseSensitivity = new Vector2 (2, 2);
@@ -112,7 +113,16 @@ public class PlayerController : MonoBehaviour, IConditions
 
         // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
         SetShootingEnabled(playerInventory.Contains("Raygun"));
-        VelocityCap();
+
+        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
+        {
+            VelocityCap(coldVelocityCap);
+        }
+        else
+        {
+            VelocityCap(velocityCap);
+        }
+        
 
         if (currentInteractingObject != null)
         {
@@ -286,19 +296,18 @@ public class PlayerController : MonoBehaviour, IConditions
         Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
     } 
 
-    void VelocityCap()
+    void VelocityCap(float cappedValue)
     {
+        //Take sideways velocity
         lateralVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
+
+        //Take downwards velocity
         Vector3 downwardVelocityVector = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));
         
-        if (lateralVelocity.magnitude > velocityCap)
+        if (lateralVelocity.magnitude > cappedValue)
         {
-            if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && lateralVelocity.magnitude > coldVelocityCap)            
-                playerRB.velocity = Vector3.Lerp(lateralVelocity.normalized * coldVelocityCap + downwardVelocityVector, playerRB.velocity, Time.deltaTime);               
-            else
-                playerRB.velocity = Vector3.Lerp(lateralVelocity.normalized * velocityCap + downwardVelocityVector, playerRB.velocity, Time.deltaTime);            
-            //playerRB.velocity = Vector3.Lerp(playerRB.velocity.normalized * velocityCap, playerRB.velocity, Time.deltaTime);
-            //playerRB.velocity = playerRB.velocity.normalized * velocityCap;
+            lateralVelocity = Vector3.Lerp(lateralVelocity.normalized * cappedValue, lateralVelocity, Time.deltaTime);
+            playerRB.velocity = lateralVelocity + downwardVelocityVector;
         }
     }
  
@@ -380,21 +389,44 @@ public class PlayerController : MonoBehaviour, IConditions
 
     public void ExecuteConditions()
     {
-        foreach (IConditions.ConditionTypes c in ActiveConditions)
+        // If player is hot and NOT cold
+        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
+        {
+            UpwardForce();
+            ResetSlip();
+        }
+
+        // If player is cold and NOT hot
+        else if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
+        {
+            // If player is making any movement inputs, remove friction, otherwise re-enable it.
+            if (playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude > 0f)
+                IcySlip();
+            else
+                ResetSlip();
+        }
+        else
+        {
+            ResetSlip();
+        }
+
+ /*       foreach (IConditions.ConditionTypes c in ActiveConditions)
         {
             switch (c)
             {
                 case IConditions.ConditionTypes.ConditionCold:
                     IcySlip();
-                break;
+                    break;
 
                 case IConditions.ConditionTypes.ConditionHot:
                     UpwardForce();
-                break;
-
-
+                    ResetSlip();
+                    break;
+                default:
+                    ResetSlip();
+                    break;
             }
-        }
+        }*/
     }
 
     public void UpwardForce()
@@ -409,8 +441,15 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         if (GetComponent<Collider>() != null)
         {
-            GetComponent<Collider>().material = icyPhysicMaterial;
-            
+            GetComponent<Collider>().material = icyPhysicMaterial;            
+        }
+    }
+
+    public void ResetSlip()
+    {
+        if (GetComponent<Collider>() != null)
+        {
+            GetComponent<Collider>().material = regularPhysicMaterial;
         }
     }
 }
