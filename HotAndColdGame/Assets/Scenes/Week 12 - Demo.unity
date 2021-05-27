@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4847414, g: 0.5273634, b: 0.5569129, a: 1}
+  m_IndirectSpecularColor: {r: 0.48299563, g: 0.5256554, b: 0.55426717, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -620,6 +620,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 54900875}
   m_Mesh: {fileID: 3386366587294148195, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!114 &56634878 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4520881909536623490, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+  m_PrefabInstance: {fileID: 1345763152}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &59365453
 GameObject:
   m_ObjectHideFlags: 0
@@ -6224,6 +6235,15 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
+  bluelight: {fileID: 0}
+  redlight: {fileID: 0}
+  col: {r: 0, g: 0, b: 0, a: 0}
+  col_intensity_rate: 10
+  mat: {fileID: 0}
+  mat_obj: {fileID: 0}
+  light_min: 0
+  light_max: 10000
+  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 1064142956}
@@ -7137,6 +7157,15 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
+  bluelight: {fileID: 0}
+  redlight: {fileID: 0}
+  col: {r: 0, g: 0, b: 0, a: 0}
+  col_intensity_rate: 10
+  mat: {fileID: 0}
+  mat_obj: {fileID: 493096352}
+  light_min: 0
+  light_max: 10000
+  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 82458222}
@@ -7565,6 +7594,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 517824918}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &562685986 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4520881909536623490, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+  m_PrefabInstance: {fileID: 721009008}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &563997423
 GameObject:
   m_ObjectHideFlags: 0
@@ -9948,6 +9988,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 90230374}
     m_Modifications:
+    - target: {fileID: 2989532005418311897, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9ab0edf89f06eb4418337df80579d614, type: 2}
+    - target: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: mat_obj
+      value: 
+      objectReference: {fileID: 1547850425}
+    - target: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: redlight
+      value: 
+      objectReference: {fileID: 562685986}
+    - target: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: bluelight
+      value: 
+      objectReference: {fileID: 562685986}
     - target: {fileID: 3637800144976544012, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
       propertyPath: m_Name
       value: CrystalAgent
@@ -10044,6 +10100,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -161.517
       objectReference: {fileID: 0}
+    - target: {fileID: 4520881909536623489, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5566038
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881909536623489, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5566038
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881909536623489, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5566038
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881909536623489, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Intensity
+      value: 708.93835
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881909536623490, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Intensity
+      value: 8908.782
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
 --- !u!114 &721009009 stripped
@@ -10051,7 +10127,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
   m_PrefabInstance: {fileID: 721009008}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1547850425}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11b67ac3c841b514c8cb66f0268b47f2, type: 3}
@@ -15807,6 +15883,15 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
+  bluelight: {fileID: 0}
+  redlight: {fileID: 0}
+  col: {r: 0, g: 0, b: 0, a: 0}
+  col_intensity_rate: 10
+  mat: {fileID: 0}
+  mat_obj: {fileID: 1145736846}
+  light_min: 0
+  light_max: 10000
+  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 291669322}
@@ -18424,10 +18509,26 @@ PrefabInstance:
     - target: {fileID: 2989532005418311897, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9ab0edf89f06eb4418337df80579d614, type: 2}
+      objectReference: {fileID: 2100000, guid: d8e796e7db470e6449d59a32e5459d6f, type: 2}
+    - target: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: mat_obj
+      value: 
+      objectReference: {fileID: 1532342214}
+    - target: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: redlight
+      value: 
+      objectReference: {fileID: 56634878}
+    - target: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: bluelight
+      value: 
+      objectReference: {fileID: 56634878}
     - target: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
       propertyPath: currentTemp
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: currenttempState
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
       propertyPath: allowedtempStates
@@ -18529,6 +18630,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4520881909536623489, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5566038
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881909536623489, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5566038
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881909536623489, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5566038
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881909536623489, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Intensity
+      value: 708.93835
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881909536623490, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Intensity
+      value: 8908.782
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
 --- !u!114 &1345763153 stripped
@@ -18536,7 +18657,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
   m_PrefabInstance: {fileID: 1345763152}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1532342214}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11b67ac3c841b514c8cb66f0268b47f2, type: 3}
@@ -21079,6 +21200,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1530993895}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1532342214 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3637800144976544012, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+  m_PrefabInstance: {fileID: 1345763152}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1534737294
 GameObject:
   m_ObjectHideFlags: 0
@@ -21384,6 +21510,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1542048125}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1547850425 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3637800144976544012, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+  m_PrefabInstance: {fileID: 721009008}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1548566625
 GameObject:
   m_ObjectHideFlags: 0
@@ -29013,6 +29144,15 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
+  bluelight: {fileID: 0}
+  redlight: {fileID: 0}
+  col: {r: 0, g: 0, b: 0, a: 0}
+  col_intensity_rate: 10
+  mat: {fileID: 0}
+  mat_obj: {fileID: 0}
+  light_min: 0
+  light_max: 10000
+  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 6558478048167985974}

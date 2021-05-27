@@ -28,11 +28,11 @@ public class ColourPallet : MonoBehaviour
     void Update()
     {
 
-  /*      // randomise colour
-        t += Time.deltaTime;
+        // randomise colour
+       /* t += Time.deltaTime;
         if ((60 % t) > 1)
         {
-            Positive = Color.Lerp(RandomColour1(), RandomColour2(), t * Time.deltaTime);
+            Positive = Color.Lerp(RandomColour1(), RandomColour1(), t * Time.deltaTime);
             Negative = Color.Lerp(RandomColour2(), RandomColour1(), t * Time.deltaTime);
             t = 0;
         }*/
@@ -47,7 +47,7 @@ public class ColourPallet : MonoBehaviour
     }
     Color RandomColour2()
     {
-        return Random.ColorHSV(0f, 0f, 1f, 1f, 0.5f, 1f);
+        return Random.ColorHSV(0f, 1f, 1f, 0.5f, 0.5f, 1f);
     }
     //public Material HiddenMaterial => GetComponent<Renderer>().sharedMaterials[0];
     public Material HiddenMaterial => HiddenTexture;
