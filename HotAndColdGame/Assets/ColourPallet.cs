@@ -29,13 +29,13 @@ public class ColourPallet : MonoBehaviour
     {
 
         // randomise colour
-        t += Time.deltaTime;
-        if ((60 % t) > 1)
-        {
-            Positive = Color.Lerp(RandomColour1(), RandomColour1(), t * Time.deltaTime);
-            Negative = Color.Lerp(RandomColour2(), RandomColour1(), t * Time.deltaTime);
-            t = 0;
-        }
+        // t += Time.deltaTime;
+        // if ((60 % t) > 1)
+        // {
+        //     Positive = Color.Lerp(RandomColour1(), RandomColour1(), t * Time.deltaTime);
+        //     Negative = Color.Lerp(RandomColour2(), RandomColour1(), t * Time.deltaTime);
+        //     t = 0;
+        // }
 
         //Positive = Color.Lerp(RandomColour(), RandomColour(),10 * Time.deltaTime);
         //Negative = Color.Lerp(RandomColour(), RandomColour(), 10 * Time.deltaTime);
