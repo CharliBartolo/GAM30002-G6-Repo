@@ -61,7 +61,7 @@ public class CrystalBehaviour : TemperatureStateBase
                     ApplyTemperatureToOtherObjects(-temperatureValueToEmit);
                     //areaLight.color = new Color (62, 219, 236, 150f);
                     //Debug.Log("intensity changing :" + bluelight.intensity);
-                    //bluelight.intensity = Mathf.MoveTowards(bluelight.intensity, light_max, intensity_rate * Time.deltaTime);
+                    bluelight.intensity = Mathf.MoveTowards(bluelight.intensity, light_max, intensity_rate * Time.deltaTime);
                     redlight.intensity = Mathf.MoveTowards(redlight.intensity, light_min, intensity_rate * Time.deltaTime);
 
                     r = Mathf.MoveTowards(r, 0, col_intensity_rate * Time.deltaTime);
@@ -80,8 +80,8 @@ public class CrystalBehaviour : TemperatureStateBase
                 case (ITemperature.tempState.Hot):
                     ApplyTemperatureToOtherObjects(temperatureValueToEmit);
                     //areaLight.color = new Color (236, 51, 56, 150f);
-                    //bluelight.intensity = Mathf.MoveTowards(bluelight.intensity, light_min, intensity_rate * Time.deltaTime);
-                    //redlight.intensity = Mathf.MoveTowards(redlight.intensity, light_max, intensity_rate * Time.deltaTime);
+                    bluelight.intensity = Mathf.MoveTowards(bluelight.intensity, light_min, intensity_rate * Time.deltaTime);
+                    redlight.intensity = Mathf.MoveTowards(redlight.intensity, light_max, intensity_rate * Time.deltaTime);
 
                     r = Mathf.MoveTowards(r, 75, col_intensity_rate * Time.deltaTime);
                     g = Mathf.MoveTowards(g, 0, col_intensity_rate * Time.deltaTime);

@@ -40,7 +40,7 @@ public class CrystalFXController : FXController
 
     public void GrowAreaCollider()
     {
-        AreaCollider.radius = Math.Abs(CrystalTemp()) / 100;
+        AreaCollider.radius = Math.Abs(CrystalTemp()) / 150;
     }
 
     // get back crystal color
@@ -96,20 +96,29 @@ public class CrystalFXController : FXController
     {
         if(other != null)
         {
-            if(other.gameObject != null)
+            if(other.gameObject!= this.gameObject)
             {
-                if (other.gameObject.tag != "Player" )
+                if(other.transform.parent != this.gameObject)
                 {
-                    if (other.transform.parent != null)
+                    if(other.GetComponent<CrystalBehaviour>()==null)
                     {
-                        if (other.transform.parent.gameObject.tag != "Player")
+                        if (other.gameObject != null)
                         {
-                            if (other.gameObject.GetComponent<MeshRenderer>() != null)
+                            if (other.gameObject.tag != "Player")
                             {
-                                // if not have lighttexture, add it
-                                if (other.gameObject.GetComponent<LightTexture>() == null)
+                                if (other.transform.parent != null)
                                 {
-                                    AddLightTextureComponent(other);
+                                    if (other.transform.parent.gameObject.tag != "Player")
+                                    {
+                                        if (other.gameObject.GetComponent<MeshRenderer>() != null)
+                                        {
+                                            // if not have lighttexture, add it
+                                            if (other.gameObject.GetComponent<LightTexture>() == null)
+                                            {
+                                                AddLightTextureComponent(other);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

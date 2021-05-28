@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 3637800144976544010}
   - component: {fileID: 3637800144976544009}
   - component: {fileID: 3637800144976544008}
+  - component: {fileID: 1387847398}
   m_Layer: 10
   m_Name: CrystalAgent
   m_TagString: Untagged
@@ -278,6 +279,15 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
+  bluelight: {fileID: 0}
+  redlight: {fileID: 0}
+  col: {r: 0, g: 0, b: 0, a: 0}
+  col_intensity_rate: 10
+  mat: {fileID: 0}
+  mat_obj: {fileID: 3637800144976544012}
+  light_min: 0
+  light_max: 10000
+  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 4520881909536623489}
@@ -359,7 +369,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.03
   m_Center: {x: 0, y: 0.04, z: 0}
 --- !u!114 &3637800144976544008
 MonoBehaviour:
@@ -383,6 +393,22 @@ MonoBehaviour:
   AreaCollider: {fileID: 0}
   AffectedObjects: []
   Spotight: {fileID: 0}
+--- !u!54 &1387847398
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3637800144976544012}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4520881908170952324
 GameObject:
   m_ObjectHideFlags: 0
