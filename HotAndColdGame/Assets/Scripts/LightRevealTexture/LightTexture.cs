@@ -9,7 +9,7 @@ public class LightTexture : MonoBehaviour
     public CrystalBehaviour crystal;
     // public Transform lightSource;
     private Transform[] spotlights;
-    private Transform spotlight;
+    public Transform spotlight;
     // color property
     public Color ColdColor;
     public Color HotColor;
