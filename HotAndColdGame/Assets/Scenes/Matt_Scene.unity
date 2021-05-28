@@ -967,6 +967,112 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3861478300804232965, guid: cf6b8753409bec64394143e78a826708, type: 3}
+--- !u!1001 &102365817
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3637800144976544008, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: AreaCollider
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3637800144976544009, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Radius
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: mat_obj
+      value: 
+      objectReference: {fileID: 102365818}
+    - target: {fileID: 3637800144976544012, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Name
+      value: CrystalAgent (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123009560036334518, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_RootOrder
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123009560036334518, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123009560036334518, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123009560036334518, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -102.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123009560036334518, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.86186
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123009560036334518, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.18271406
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123009560036334518, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.4585544
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123009560036334518, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.116365604
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123009560036334518, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 24.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123009560036334518, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -55.569
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123009560036334518, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 2.086
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881908170952321, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Range
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881908170952323, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.016
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881908170952323, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.038
+      objectReference: {fileID: 0}
+    - target: {fileID: 4520881908170952323, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.028
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+--- !u!1 &102365818 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3637800144976544012, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+  m_PrefabInstance: {fileID: 102365817}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &102365819
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102365818}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &109871393
 GameObject:
   m_ObjectHideFlags: 0
@@ -2292,7 +2398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 919132148450449844}
-  spotlights: []
+  spotlight: {fileID: 0}
   ColdColor: {r: 0.053800307, g: 0.8773585, b: 0.8526614, a: 0}
   HotColor: {r: 1, g: 0, b: 0, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
@@ -3326,7 +3432,6 @@ GameObject:
   - component: {fileID: 551567448}
   - component: {fileID: 551567447}
   - component: {fileID: 551567446}
-  - component: {fileID: 551567445}
   m_Layer: 0
   m_Name: Floor (1)
   m_TagString: Untagged
@@ -3348,26 +3453,6 @@ Transform:
   m_Father: {fileID: 2118384915}
   m_RootOrder: 66
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
---- !u!114 &551567445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 551567443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e20e07cbf49837348a064efdcd5bdd96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  crystal: {fileID: 1813609968}
-  spotlights: []
-  ColdColor: {r: 0.10457456, g: 0.8867924, b: 0.8394295, a: 0}
-  HotColor: {r: 1, g: 0, b: 0, a: 0}
-  NeutralColor: {r: 0, g: 0, b: 0, a: 0}
-  HiddenMaterial: {fileID: 0}
-  CurrentMaterial: []
-  range: 0
 --- !u!64 &551567446
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4130,7 +4215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 919132148450449844}
-  spotlights: []
+  spotlight: {fileID: 0}
   ColdColor: {r: 0.053800307, g: 0.8773585, b: 0.8526614, a: 0}
   HotColor: {r: 1, g: 0, b: 0, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
@@ -8594,7 +8679,6 @@ GameObject:
   - component: {fileID: 1186051196}
   - component: {fileID: 1186051195}
   - component: {fileID: 1186051197}
-  - component: {fileID: 1186051198}
   m_Layer: 0
   m_Name: Cave Wall (4)
   m_TagString: Untagged
@@ -8610,8 +8694,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1186051193}
   m_LocalRotation: {x: 0.7071068, y: 0.7071068, z: 0, w: 0}
-  m_LocalPosition: {x: 16.93, y: 7.22, z: -3.0800002}
-  m_LocalScale: {x: 208.6662, y: 208.6662, z: 423.2196}
+  m_LocalPosition: {x: 16.93, y: 7.22, z: 0.42}
+  m_LocalScale: {x: 208.6662, y: 208.6662, z: 277.84366}
   m_Children: []
   m_Father: {fileID: 2118384915}
   m_RootOrder: 5
@@ -8679,26 +8763,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3861478300804232965, guid: cf6b8753409bec64394143e78a826708, type: 3}
---- !u!114 &1186051198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1186051193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e20e07cbf49837348a064efdcd5bdd96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  crystal: {fileID: 919132148450449844}
-  spotlights: []
-  ColdColor: {r: 0, g: 0, b: 0, a: 0}
-  HotColor: {r: 0, g: 0, b: 0, a: 0}
-  NeutralColor: {r: 0, g: 0, b: 0, a: 0}
-  HiddenMaterial: {fileID: 0}
-  CurrentMaterial: []
-  range: 0
 --- !u!1 &1186504521
 GameObject:
   m_ObjectHideFlags: 0
@@ -9547,7 +9611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 919132148450449844}
-  spotlights: []
+  spotlight: {fileID: 0}
   ColdColor: {r: 0.053800307, g: 0.8773585, b: 0.8526614, a: 0}
   HotColor: {r: 1, g: 0, b: 0, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
@@ -9630,11 +9694,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1241866473 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4520881908170952323, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
-  m_PrefabInstance: {fileID: 4520881908023220415}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1243603818
 GameObject:
   m_ObjectHideFlags: 0
@@ -10957,6 +11016,102 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1322174822}
   m_Mesh: {fileID: 3861478300804232965, guid: cf6b8753409bec64394143e78a826708, type: 3}
+--- !u!1 &1327148189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1327148190}
+  - component: {fileID: 1327148193}
+  - component: {fileID: 1327148192}
+  - component: {fileID: 1327148191}
+  m_Layer: 0
+  m_Name: Cave Wall (9)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1327148190
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327148189}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -20.09, y: 7.22, z: 3.08}
+  m_LocalScale: {x: 208.6662, y: 208.6662, z: 283.80682}
+  m_Children: []
+  m_Father: {fileID: 2118384915}
+  m_RootOrder: 79
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!64 &1327148191
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327148189}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3861478300804232965, guid: cf6b8753409bec64394143e78a826708, type: 3}
+--- !u!23 &1327148192
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327148189}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -2273933481115794718, guid: ba187febcb749cb4f8dfca3a953b1781, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1327148193
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327148189}
+  m_Mesh: {fileID: 3861478300804232965, guid: cf6b8753409bec64394143e78a826708, type: 3}
 --- !u!1 &1338131515
 GameObject:
   m_ObjectHideFlags: 0
@@ -11576,6 +11731,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1387332012}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1387847391 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3637800144976544012, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+  m_PrefabInstance: {fileID: 4520881908023220415}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &1387847398
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387847391}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1390689650
 GameObject:
   m_ObjectHideFlags: 0
@@ -12916,6 +13092,15 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
+  bluelight: {fileID: 0}
+  redlight: {fileID: 0}
+  col: {r: 0, g: 0, b: 0, a: 0}
+  col_intensity_rate: 10
+  mat: {fileID: 0}
+  mat_obj: {fileID: 0}
+  light_min: 0
+  light_max: 10000
+  intensity_rate: 10
   crystalTemperatureArea: {fileID: 1531220591}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 1531220593}
@@ -13276,7 +13461,6 @@ GameObject:
   - component: {fileID: 1540226331}
   - component: {fileID: 1540226330}
   - component: {fileID: 1540226332}
-  - component: {fileID: 1540226333}
   m_Layer: 0
   m_Name: Cave Wall (3)
   m_TagString: Untagged
@@ -13361,26 +13545,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3861478300804232965, guid: cf6b8753409bec64394143e78a826708, type: 3}
---- !u!114 &1540226333
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1540226328}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e20e07cbf49837348a064efdcd5bdd96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  crystal: {fileID: 919132148450449844}
-  spotlights: []
-  ColdColor: {r: 1, g: 0, b: 0, a: 0}
-  HotColor: {r: 0, g: 0.8691118, b: 1, a: 0}
-  NeutralColor: {r: 0, g: 0, b: 0, a: 0}
-  HiddenMaterial: {fileID: 0}
-  CurrentMaterial: []
-  range: 0
 --- !u!1 &1556613638
 GameObject:
   m_ObjectHideFlags: 0
@@ -14062,7 +14226,6 @@ GameObject:
   - component: {fileID: 1656477009}
   - component: {fileID: 1656477008}
   - component: {fileID: 1656477010}
-  - component: {fileID: 1656477011}
   m_Layer: 0
   m_Name: Cave Wall (2)
   m_TagString: Untagged
@@ -14147,26 +14310,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3861478300804232965, guid: cf6b8753409bec64394143e78a826708, type: 3}
---- !u!114 &1656477011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1656477006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e20e07cbf49837348a064efdcd5bdd96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  crystal: {fileID: 919132148450449844}
-  spotlights: []
-  ColdColor: {r: 1, g: 0, b: 0, a: 0}
-  HotColor: {r: 0, g: 0.8691118, b: 1, a: 0}
-  NeutralColor: {r: 0, g: 0, b: 0, a: 0}
-  HiddenMaterial: {fileID: 0}
-  CurrentMaterial: []
-  range: 0
 --- !u!1 &1685524314
 GameObject:
   m_ObjectHideFlags: 0
@@ -14584,6 +14727,10 @@ PrefabInstance:
     - target: {fileID: 7632133415749971123, guid: e87e247143c36e84991716882491a178, type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7632133415749971123, guid: e87e247143c36e84991716882491a178, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7632133415749971125, guid: e87e247143c36e84991716882491a178, type: 3}
       propertyPath: m_RootOrder
@@ -15699,7 +15846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1813609964
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -15799,6 +15946,15 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
+  bluelight: {fileID: 0}
+  redlight: {fileID: 0}
+  col: {r: 0, g: 0, b: 0, a: 0}
+  col_intensity_rate: 10
+  mat: {fileID: 0}
+  mat_obj: {fileID: 1813609963}
+  light_min: 0
+  light_max: 10000
+  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 1296174632}
@@ -18039,6 +18195,7 @@ Transform:
   - {fileID: 870218303}
   - {fileID: 214727209}
   - {fileID: 1526600330}
+  - {fileID: 1327148190}
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18262,7 +18419,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
   m_PrefabInstance: {fileID: 4520881908023220415}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1387847391}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11b67ac3c841b514c8cb66f0268b47f2, type: 3}
@@ -18764,6 +18921,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3665375622738269863, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 373220723}
+    - target: {fileID: 3665375622738269863, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: crntTemp
       value: 
       objectReference: {fileID: 285222113}
@@ -18864,7 +19025,6 @@ GameObject:
   - component: {fileID: 758570707304197049}
   - component: {fileID: 3270188665639460723}
   - component: {fileID: 3918966427760819879}
-  - component: {fileID: 3918966427760819880}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -18886,27 +19046,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 8342159127421523248, guid: 4adb65cb93758184fa19cdd7e299e381, type: 3}
---- !u!114 &3918966427760819880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3918966427760819878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e20e07cbf49837348a064efdcd5bdd96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  crystal: {fileID: 919132148450449844}
-  spotlights:
-  - {fileID: 1241866473}
-  ColdColor: {r: 0.053800307, g: 0.8773585, b: 0.8526614, a: 0}
-  HotColor: {r: 1, g: 0, b: 0, a: 0}
-  NeutralColor: {r: 0, g: 0, b: 0, a: 0}
-  HiddenMaterial: {fileID: 0}
-  CurrentMaterial: []
-  range: 0
 --- !u!4 &4001068016386512399
 Transform:
   m_ObjectHideFlags: 0
@@ -19031,6 +19170,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3637800144976544008, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: AreaCollider
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3637800144976544009, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: m_Radius
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3637800144976544011, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
+      propertyPath: mat_obj
+      value: 
+      objectReference: {fileID: 1387847391}
     - target: {fileID: 3637800144976544012, guid: 7c0c75f5ec741ad4f86f9898b270685f, type: 3}
       propertyPath: m_Name
       value: CrystalAgent
@@ -19609,7 +19760,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &5665769233321379608
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -19647,6 +19798,15 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
+  bluelight: {fileID: 0}
+  redlight: {fileID: 0}
+  col: {r: 0, g: 0, b: 0, a: 0}
+  col_intensity_rate: 10
+  mat: {fileID: 0}
+  mat_obj: {fileID: 0}
+  light_min: 0
+  light_max: 10000
+  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 0}
   areaLight: {fileID: 0}
@@ -19667,7 +19827,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystal: {fileID: 919132148450449844}
-  spotlights: []
+  spotlight: {fileID: 0}
   ColdColor: {r: 0, g: 0, b: 0, a: 0}
   HotColor: {r: 0, g: 0, b: 0, a: 0}
   NeutralColor: {r: 0, g: 0, b: 0, a: 0}
