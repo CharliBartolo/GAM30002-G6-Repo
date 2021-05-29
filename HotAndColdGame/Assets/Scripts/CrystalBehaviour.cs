@@ -123,7 +123,8 @@ public class CrystalBehaviour : TemperatureStateBase
     {
         if (!objectsInTempArea.ContainsKey(other.gameObject))
         {
-            objectsInTempArea.Add(other.gameObject, other.material);
+            if(!other.gameObject.GetComponent<MachineFXController>())
+                objectsInTempArea.Add(other.gameObject, other.material);
         }
     }
 

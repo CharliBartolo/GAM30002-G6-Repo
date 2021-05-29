@@ -100,7 +100,7 @@ public class CrystalFXController : FXController
             {
                 if(other.transform.parent != this.gameObject)
                 {
-                    if(other.GetComponent<CrystalBehaviour>()==null)
+                    if(other.GetComponent<CrystalBehaviour>()==null && other.GetComponent<MachineFXController>() == null && other.transform.parent.GetComponent<MachineFXController>()==null)
                     {
                         if (other.gameObject != null)
                         {
