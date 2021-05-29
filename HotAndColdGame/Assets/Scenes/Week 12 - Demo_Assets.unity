@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.48299563, g: 0.5256554, b: 0.55426717, a: 1}
+  m_IndirectSpecularColor: {r: 0.4847414, g: 0.5273634, b: 0.5569129, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6009,6 +6009,7 @@ MonoBehaviour:
   currenttempState: 2
   allowedtempStates: 0
   currentTemp: 0
+  powerDownRateInSeconds: 30
   isPermanentlyPowered: 0
   tempValueRange:
   - -100
@@ -6016,15 +6017,7 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
-  bluelight: {fileID: 0}
-  redlight: {fileID: 0}
-  col: {r: 0, g: 0, b: 0, a: 0}
-  col_intensity_rate: 10
   mat: {fileID: 0}
-  mat_obj: {fileID: 0}
-  light_min: 0
-  light_max: 10000
-  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 1064142956}
@@ -6413,6 +6406,8 @@ MonoBehaviour:
   Positive: {r: 1, g: 0.15532212, b: 0, a: 0}
   Negative: {r: 0, g: 0.93155813, b: 1, a: 0}
   Neutral: {r: 0, g: 0, b: 0, a: 0}
+  Crystal: {fileID: 2100000, guid: ef78372303d9f384fbbe71b96bc7658f, type: 2}
+  CrystalEmissionValue: 0
   MachineEmissiveLights: {fileID: 2100000, guid: 7d482b13a750fdb4c91eff99c6e81416, type: 2}
   HiddenTexture: {fileID: 2100000, guid: db12df5fd27282d4ca812c4e5bdcda89, type: 2}
 --- !u!4 &444404405
@@ -6494,6 +6489,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 359966ef9842a9046869c40eb59d40cf, type: 3}
   m_PrefabInstance: {fileID: 448107969}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &452859828 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1321668878447009786, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+  m_PrefabInstance: {fileID: 1292997911}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &467655525
 GameObject:
@@ -6959,6 +6959,7 @@ MonoBehaviour:
   currenttempState: 2
   allowedtempStates: 0
   currentTemp: 0
+  powerDownRateInSeconds: 30
   isPermanentlyPowered: 0
   tempValueRange:
   - -100
@@ -6966,15 +6967,7 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
-  bluelight: {fileID: 0}
-  redlight: {fileID: 0}
-  col: {r: 0, g: 0, b: 0, a: 0}
-  col_intensity_rate: 10
   mat: {fileID: 0}
-  mat_obj: {fileID: 493096352}
-  light_min: 0
-  light_max: 10000
-  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 82458222}
@@ -8542,6 +8535,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 621710756}
   m_Mesh: {fileID: 7490096023148408820, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!1 &627003693 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2600138676212099050, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+  m_PrefabInstance: {fileID: 1292997911}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &635608318
 GameObject:
   m_ObjectHideFlags: 0
@@ -15886,6 +15884,7 @@ MonoBehaviour:
   currenttempState: 2
   allowedtempStates: 0
   currentTemp: 0
+  powerDownRateInSeconds: 30
   isPermanentlyPowered: 0
   tempValueRange:
   - -100
@@ -15893,15 +15892,7 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
-  bluelight: {fileID: 291669323}
-  redlight: {fileID: 291669323}
-  col: {r: 0, g: 0, b: 0, a: 0}
-  col_intensity_rate: 10
   mat: {fileID: 0}
-  mat_obj: {fileID: 1145736846}
-  light_min: 0
-  light_max: 10000
-  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 291669322}
@@ -18074,6 +18065,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2768925494723770926, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ef78372303d9f384fbbe71b96bc7658f, type: 2}
     - target: {fileID: 4662846840876865895, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.3560898
@@ -18086,6 +18081,38 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.68092746
       objectReference: {fileID: 0}
+    - target: {fileID: 5401747934019147543, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ef78372303d9f384fbbe71b96bc7658f, type: 2}
+    - target: {fileID: 6546441121097449425, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.017038194
+      objectReference: {fileID: 0}
+    - target: {fileID: 6546441121097449425, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0012953627
+      objectReference: {fileID: 0}
+    - target: {fileID: 6546441121097449425, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0038007868
+      objectReference: {fileID: 0}
+    - target: {fileID: 6546441121097449425, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.9998469
+      objectReference: {fileID: 0}
+    - target: {fileID: 6546441121097449425, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 179.562
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155601054213224031, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ef78372303d9f384fbbe71b96bc7658f, type: 2}
+    - target: {fileID: 9091077135738595814, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ef78372303d9f384fbbe71b96bc7658f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
 --- !u!1 &1292997912 stripped
@@ -18131,8 +18158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193ae2d4b014ad04faa90996920ea2ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 0
-  delayTimer: 0
+  delay: 0.5
   Anim: {fileID: 0}
   Crystal_Neutral: {r: 0, g: 0, b: 0, a: 0}
   Crystal_Hot: {r: 0, g: 0, b: 0, a: 0}
@@ -18140,6 +18166,8 @@ MonoBehaviour:
   gun: {fileID: 1292997916}
   BackCrystal: {fileID: 1292997915}
   CrystalCase: {fileID: 1292997914}
+  CrystalCase1: {fileID: 627003693}
+  CrystalCase2: {fileID: 452859828}
   BarrelCrystals: {fileID: 1292997913}
   emissiveLights:
   - {fileID: 1292997920}
@@ -29261,12 +29289,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 0
-  delayTimer: 0
   Anim: {fileID: 0}
   Crystal_Neutral: {r: 0, g: 0, b: 0, a: 0}
   Crystal_Hot: {r: 0, g: 0, b: 0, a: 0}
   Crystal_Cold: {r: 0, g: 0, b: 0, a: 0}
   MainCrystal: {fileID: 0}
+  MainCrystaLight: {fileID: 0}
   AreaCollider: {fileID: 0}
   AffectedObjects: []
   Spotight: {fileID: 0}
@@ -29300,6 +29328,7 @@ MonoBehaviour:
   currenttempState: 2
   allowedtempStates: 0
   currentTemp: 100
+  powerDownRateInSeconds: 30
   isPermanentlyPowered: 1
   tempValueRange:
   - -100
@@ -29307,15 +29336,7 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
-  bluelight: {fileID: 0}
-  redlight: {fileID: 0}
-  col: {r: 0, g: 0, b: 0, a: 0}
-  col_intensity_rate: 10
   mat: {fileID: 0}
-  mat_obj: {fileID: 0}
-  light_min: 0
-  light_max: 10000
-  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 6558478048167985974}

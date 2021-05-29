@@ -8,11 +8,10 @@ public class FXController : MonoBehaviour
 {
     // FX variables
     public float delay;
-    public float delayTimer;
+    protected float delayTimer;
 
     // Components
     public Animator Anim;
-
 
     // Gun crystal colours
     public Color Crystal_Neutral;
@@ -40,7 +39,9 @@ public class FXController : MonoBehaviour
     // perform FX
     public virtual void PerformFX()
     {
-
+        Crystal_Hot = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Positive;
+        Crystal_Cold = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Negative;
+        Crystal_Neutral = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Neutral;
     }
 
 

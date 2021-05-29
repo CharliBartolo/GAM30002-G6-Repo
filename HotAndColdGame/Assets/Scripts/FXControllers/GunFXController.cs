@@ -7,8 +7,9 @@ using DG.Tweening;
 public class GunFXController : FXController
 {
     // timer variables
+    private float swapModeDelay;
     private float triggerDelay;
-    private float swapDelay;
+   
 
     // Gun variables 
     public RayCastShootComplete gun;
@@ -17,6 +18,8 @@ public class GunFXController : FXController
     // Gun components
     public GameObject BackCrystal;
     public GameObject CrystalCase;
+    public GameObject CrystalCase1;
+    public GameObject CrystalCase2;
     public GameObject BarrelCrystals;
 
     // Gun emissive components
@@ -27,6 +30,28 @@ public class GunFXController : FXController
     public override void Start()
     {
         base.Start();
+
+        // initialise barrel crystals materials
+        Renderer[] renderers = BarrelCrystals.GetComponentsInChildren<Renderer>();
+        // set crystals colour to neutral if not shooting or cannot shoot
+        foreach (var item in renderers)
+        {
+            item.sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
+        }
+        // initialise back crystal material
+        BackCrystal.GetComponent<Renderer>().sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
+        // initialse crystal case materials
+        Renderer case1 = CrystalCase1.GetComponent<Renderer>();
+        Renderer case2 = CrystalCase2.GetComponent<Renderer>();
+        /*foreach (var item in renderers2)
+        {
+            item.sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
+        }*/
+        case1.sharedMaterial = new Material(GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal);
+        case2.sharedMaterial = new Material(GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal);
+        case1.sharedMaterial.color = Crystal_Cold;
+        case2.sharedMaterial.color = Crystal_Hot;
+        SetBackCrystal();
     }
 
     // Update is called once per frame
@@ -39,7 +64,6 @@ public class GunFXController : FXController
     public override void PerformFX()
     {
         base.PerformFX();
-
         // call set colour of barrel crystals
         SetBarrelCrystals();
         // call set colour of back crystal
@@ -48,6 +72,17 @@ public class GunFXController : FXController
         SetEmissiveLights();
         // call check for gun mode switch
         CheckForModeSwitch();
+
+        // update cased crystals
+        Renderer case1 = CrystalCase1.GetComponent<Renderer>();
+        if (case1.sharedMaterial.color != Crystal_Cold)
+        {
+           
+            Renderer case2 = CrystalCase2.GetComponent<Renderer>();
+            case1.sharedMaterial.color = Crystal_Cold;
+            case2.sharedMaterial.color = Crystal_Hot;
+        }
+       
     }
 
     // set emmisive lights
