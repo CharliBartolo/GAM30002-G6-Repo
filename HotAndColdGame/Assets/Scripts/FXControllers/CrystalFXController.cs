@@ -14,8 +14,6 @@ public class CrystalFXController : FXController
     public List<GameObject> AffectedObjects;
     public Light Spotight;
 
-    //emissive components
-    public GameObject[] Lights;
 
     // Start is called before the first frame update
     void Start()
@@ -29,34 +27,8 @@ public class CrystalFXController : FXController
     void Update()
     {
 
-        AddAffectedObjects();
-        RemoveAffectedObjects();
-
         PerformFX();
-
     }
-
-    public void AddAffectedObjects()
-    {
-        foreach (var item in GetComponent<CrystalBehaviour>().objectsInTempArea.Keys)
-        {
-            if(!AffectedObjects.Contains(item))
-            {
-                AffectedObjects.Add(item);
-            }
-        }
-    }
-    public void RemoveAffectedObjects()
-    {
-        foreach (var item in GetComponent<CrystalBehaviour>().objectsInTempArea.Keys)
-        {
-            if (!AffectedObjects.Contains(item))
-            {
-                AffectedObjects.Remove(item);
-            }
-        }
-    }
-
 
     // perform FX
     public override void PerformFX()
@@ -92,29 +64,67 @@ public class CrystalFXController : FXController
         }
     }
 
-    // check for gun mode switch
-    public void CheckForTempChange()
+    // add fx
+    public void AddLightTextureComponent(Collider other)
     {
-
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!AffectedObjects.Contains(other.gameObject))
+        if(other)
         {
             // add fx
             AffectedObjects.Add(other.gameObject);
+            other.gameObject.AddComponent<LightTexture>();
+            other.gameObject.GetComponent<LightTexture>().crystal = gameObject.GetComponent<CrystalBehaviour>();
+            other.gameObject.GetComponent<LightTexture>().spotlight = transform.Find("Spot Light");
+        }
+      
+    }
+
+    // remove fx
+    public void RemoveLightTextureComponent(Collider other)
+    {
+        if (other.gameObject.GetComponent<LightTexture>() != null)
+        {
+            //Remove fx
+            //other.GetComponent<Collider>().material = AffectedObjects[other.gameObject];
+            other.gameObject.GetComponent<LightTexture>().RemoveHiddenMaterial();
+            Destroy(other.gameObject.GetComponent<LightTexture>());
+            AffectedObjects.Remove(other.gameObject);
+        }
+    }
+
+    // detect objects 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other != null)
+        {
+            if(other.gameObject != null)
+            {
+                if (other.gameObject.tag != "Player" )
+                {
+                    if (other.transform.parent != null)
+                    {
+                        if (other.transform.parent.gameObject.tag != "Player")
+                        {
+                            if (other.gameObject.GetComponent<MeshRenderer>() != null)
+                            {
+                                // if not have lighttexture, add it
+                                if (other.gameObject.GetComponent<LightTexture>() == null)
+                                {
+                                    AddLightTextureComponent(other);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        // remove fx when out of range
         if (AffectedObjects.Contains(other.gameObject))
         {
-            // Remove fx
-            //other.GetComponent<Collider>().material = AffectedObjects[other.gameObject];
-
-            AffectedObjects.Remove(other.gameObject);
+            RemoveLightTextureComponent(other);
         }
     }
 }

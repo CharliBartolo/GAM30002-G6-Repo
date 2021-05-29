@@ -126,6 +126,8 @@ MonoBehaviour:
   - -100
   - 0
   - 100
+  isReturningToNeutral: 1
+  startingCountdownBeforeReturnToNeutral: 2
 --- !u!114 &5862847856297356331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,8 +150,6 @@ MonoBehaviour:
   emissiveLights:
   - {fileID: 4566791074020412500}
   - {fileID: 5862847858291213848}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 3720511609620429173}
   - {fileID: 3720511608825740835}
   - {fileID: 3720511608388408576}
@@ -785,8 +785,6 @@ MonoBehaviour:
   emissiveLights:
   - {fileID: 4566791074020412500}
   - {fileID: 5862847858291213848}
-  - {fileID: 0}
-  - {fileID: 0}
   emissionValue: 0
 --- !u!1 &5862847858252433723
 GameObject:
