@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793092206}
-  m_LocalRotation: {x: -0.45847362, y: 0.7075036, z: 0.43983477, w: 0.3094932}
-  m_LocalPosition: {x: -0.0107, y: 0.1055, z: -0.039}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.0002, y: 0.0377, z: -0.0110000055}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4123009560036334518}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -64.98, y: 175.303, z: -62.896}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!108 &1793092209
 Light:
   m_ObjectHideFlags: 0
@@ -45,7 +45,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 526.052
-  m_Range: 0.001
+  m_Range: 13.85
   m_SpotAngle: 177.5
   m_InnerSpotAngle: 1
   m_CookieSize: 10
@@ -272,6 +272,7 @@ MonoBehaviour:
   currenttempState: 2
   allowedtempStates: 0
   currentTemp: 0
+  powerDownRateInSeconds: 6
   isPermanentlyPowered: 0
   tempValueRange:
   - -100
@@ -279,15 +280,7 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
-  bluelight: {fileID: 0}
-  redlight: {fileID: 0}
-  col: {r: 0, g: 0, b: 0, a: 0}
-  col_intensity_rate: 10
   mat: {fileID: 0}
-  mat_obj: {fileID: 3637800144976544012}
-  light_min: 0
-  light_max: 10000
-  intensity_rate: 10
   crystalTemperatureArea: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   areaLight: {fileID: 4520881909536623489}
@@ -370,7 +363,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.03
-  m_Center: {x: 0, y: 0.04, z: 0}
+  m_Center: {x: 0, y: 0.04, z: -0.01}
 --- !u!114 &3637800144976544008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,6 +383,7 @@ MonoBehaviour:
   Crystal_Hot: {r: 1, g: 0, b: 0, a: 0}
   Crystal_Cold: {r: 0, g: 0.91717124, b: 1, a: 0}
   MainCrystal: {fileID: 0}
+  MainCrystaLight: {fileID: 0}
   AreaCollider: {fileID: 0}
   AffectedObjects: []
   Spotight: {fileID: 0}
@@ -434,13 +428,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4520881908170952324}
-  m_LocalRotation: {x: -0.45847362, y: 0.7075036, z: 0.43983477, w: 0.3094932}
-  m_LocalPosition: {x: -0.017, y: -0.06, z: 0.038}
+  m_LocalRotation: {x: 0.35902303, y: 0.50696546, z: 0.7834213, w: 0.018430782}
+  m_LocalPosition: {x: -0.06, y: -0.043, z: -0.028}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4123009560036334518}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -64.98, y: 175.303, z: -62.896}
+  m_LocalEulerAnglesHint: {x: -51.361, y: 428.566, z: -218.994}
 --- !u!108 &4520881908170952321
 Light:
   m_ObjectHideFlags: 0
@@ -454,7 +448,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 526.052
-  m_Range: 0
+  m_Range: 18.43
   m_SpotAngle: 177.5
   m_InnerSpotAngle: 1
   m_CookieSize: 10
@@ -668,7 +662,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_Intensity: 3183.0989
   m_Range: 18.36
   m_SpotAngle: 30

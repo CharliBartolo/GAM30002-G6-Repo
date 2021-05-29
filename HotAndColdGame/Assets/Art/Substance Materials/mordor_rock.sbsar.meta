@@ -17,8 +17,13 @@ ScriptedImporter:
     generateAllOutputs: 0
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://Mordor_Rock\" label=\"\" >\n  <presetinput
-      identifier=\"$outputsize\" uid=\"718234609\" type=\"8\" value=\"9,9\" />\n
-      </sbspreset>\n"
+      identifier=\"$outputsize\" uid=\"718234609\" type=\"8\" value=\"9,9\" />\n 
+      <presetinput identifier=\"Tertiary_Forms_Strength\" uid=\"1506086684\" type=\"0\"
+      value=\"0\" />\n  <presetinput identifier=\"Secondary_Forms_Strength\" uid=\"1506097453\"
+      type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Fine_Detail_Strength\"
+      uid=\"1506198067\" type=\"0\" value=\"0\" />\n  <presetinput identifier=\"mask_lichen_amount\"
+      uid=\"1506156124\" type=\"0\" value=\"0.715\" />\n  <presetinput identifier=\"mask_pebbles_amount\"
+      uid=\"1506153934\" type=\"0\" value=\"0.576\" />\n </sbspreset>\n"
     shaderName: HDRP/LitTessellation
     materialProperties:
       shader: {fileID: 4800000, guid: 756bac9090102564582875f4c7e30202, type: 3}
@@ -550,7 +555,7 @@ ScriptedImporter:
     - textureName: Mordor_Rock - height
       wrapMode: 0
       filterMode: 1
-      aniso: 1
+      aniso: 0
     - textureName: Mordor_Rock - ambientOcclusion
       wrapMode: 0
       filterMode: 1

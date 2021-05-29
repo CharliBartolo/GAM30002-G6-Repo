@@ -10,17 +10,21 @@ public class CrystalFXController : FXController
 
     // components
     public CrystalBehaviour MainCrystal;
+    public Light MainCrystaLight;
     public SphereCollider AreaCollider;
     public List<GameObject> AffectedObjects;
     public Light Spotight;
 
 
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
+        base.Start();
         AffectedObjects = new List<GameObject>();
         MainCrystal = GetComponent<CrystalBehaviour>();
+        MainCrystaLight = transform.Find("Area Light").GetComponent<Light>();
         AreaCollider = GetComponent<SphereCollider>();
+        MainCrystal.GetComponent<Renderer>().sharedMaterial = new Material(GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal);
     }
 
     // Update is called once per frame
@@ -34,8 +38,66 @@ public class CrystalFXController : FXController
     public override void PerformFX()
     {
         base.PerformFX();
-
+        ColourCrystal();
         GrowAreaCollider();
+    }
+
+    // colour crystial according to state
+    public void ColourCrystal()
+    {
+       //Debug.Log("Temp: " + MainCrystal.CurrentTemperature*1000);
+
+        
+        if (MainCrystal.CurrentTemperature < -5)
+        {
+            MainCrystaLight.color = Crystal_Cold;
+            MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameObject.Find("ColourPallet").GetComponent<ColourPallet>().CrystalEmissionValue);
+            MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Cold);
+            MainCrystal.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
+
+        }
+        else if (MainCrystal.CurrentTemperature > 5)
+        {
+            MainCrystaLight.color = Crystal_Hot;
+            MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameObject.Find("ColourPallet").GetComponent<ColourPallet>().CrystalEmissionValue);
+            MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Hot);
+            MainCrystal.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
+        }
+        else
+        {
+            MainCrystaLight.color = Crystal_Neutral;
+            MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * 0);
+            MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Neutral);
+            MainCrystal.GetComponent<Renderer>().sharedMaterial.color = Crystal_Neutral;
+        }
+
+       /* switch (MainCrystal.CurrentTempState)
+        {
+            case ITemperature.tempState.Cold:
+                //Debug.Log("crystal cold");
+               
+                //MainCrystal.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
+                //MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Cold * GameObject.Find("ColourPallet").GetComponent<ColourPallet>().CrystalEmissionValue);
+                //MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Cold * GameObject.Find("ColourPallet").GetComponent<ColourPallet>().CrystalEmissionValue);
+
+                break;
+            case ITemperature.tempState.Neutral:
+                //Debug.Log("crystal neutral");
+                //MainCrystaLight.color = Crystal_Neutral;
+                //MainCrystal.GetComponent<Renderer>().sharedMaterial.color = Crystal_Neutral;
+                //MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Neutral * 0f);
+                //MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Neutral * 0f);
+
+                break;
+            case ITemperature.tempState.Hot:
+                //Debug.Log("crystal hot");
+                //MainCrystaLight.color = Crystal_Hot;
+                //MainCrystal.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
+                //MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Hot * GameObject.Find("ColourPallet").GetComponent<ColourPallet>().CrystalEmissionValue);
+                //MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Hot * GameObject.Find("ColourPallet").GetComponent<ColourPallet>().CrystalEmissionValue);
+
+                break;
+        }*/
     }
 
     public void GrowAreaCollider()
@@ -94,13 +156,13 @@ public class CrystalFXController : FXController
     // detect objects 
     private void OnTriggerEnter(Collider other)
     {
-        if(other != null)
+        if(other != null && AreaCollider.radius > 0.01)
         {
             if(other.gameObject!= this.gameObject)
             {
                 if(other.transform.parent != this.gameObject)
                 {
-                    if(other.GetComponent<CrystalBehaviour>()==null && other.GetComponent<MachineFXController>() == null && other.transform.parent.GetComponent<MachineFXController>()==null)
+                    if(other.GetComponent<CrystalBehaviour>()==null && other.GetComponent<MachineFXController>() == null)
                     {
                         if (other.gameObject != null)
                         {

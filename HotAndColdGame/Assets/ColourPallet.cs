@@ -9,6 +9,9 @@ public class ColourPallet : MonoBehaviour
     public Color Positive;
     public Color Negative;
     public Color Neutral;
+    [Header("Crystal Material")]
+    public Material Crystal;
+    public float CrystalEmissionValue;
     [Header("Emmisive Lights")]
     public Material MachineEmissiveLights;
     [Header("HiddenTexture")]
