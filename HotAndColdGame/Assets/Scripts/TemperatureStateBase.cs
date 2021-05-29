@@ -14,7 +14,7 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
     protected ITemperature.tempStatesAllowed allowedtempStates = ITemperature.tempStatesAllowed.HotAndCold;
     [SerializeField]
     protected float currentTemp = 0;    
-    protected float powerDownRateInSeconds = 30f;
+    [SerializeField] protected float powerDownRateInSeconds = 30f;
 
     public bool isPermanentlyPowered = false;
     public float[] tempValueRange = new float[3] {-100f, 0f, 100f};
