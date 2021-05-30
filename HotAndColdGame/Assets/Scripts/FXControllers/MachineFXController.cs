@@ -14,6 +14,7 @@ public class MachineFXController : FXController
     private Material emissiveMaterial;
     public float emissionValue;
 
+    public bool playingSFX;
 
     // Start is called before the first frame update
     public override void Start()
@@ -38,6 +39,23 @@ public class MachineFXController : FXController
         base.PerformFX();
 
         SetEmissiveLights();
+        if(Math.Abs(machine.CurrentTemperature)>5)
+        {
+            if(!playingSFX)
+            {
+                playingSFX = true;
+                GameMaster.instance.audioManager.Play(machine.gameObject);
+            }
+           
+        }
+        if(playingSFX)
+        {
+            if(Math.Abs(machine.CurrentTemperature) < 5)
+            {
+                playingSFX = false;
+                GameMaster.instance.audioManager.Stop(machine.gameObject);
+            }
+        }
     }
 
     // set emmisive lights

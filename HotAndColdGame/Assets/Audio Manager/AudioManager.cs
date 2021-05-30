@@ -7,7 +7,7 @@ public class AudioManager : MonoBehaviour
     //Array of sounds
     public Sound[] sounds; 
 
-    void Awake()
+    public virtual void Awake()
     {
         foreach (Sound s in sounds) //Turn each sound in array to audio scource
         {
@@ -28,16 +28,13 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    void Start() //Play sounds on start (main songs and ambience)
+    public virtual void Start() //Play sounds on start (main songs and ambience)
     {
-        Play("Cave");
-        Play("Main");
-        Play("Ice");
-        Play("Heat");
+
         //FindObjectOfType<AudioManager>().Play("sound"); (this is what to use when calling a sound elsewhere)
     }
 
-    void Update()
+    public virtual void Update()
     {
         /* For testing sound volume in inspector
         foreach (Sound s in sounds)
@@ -45,8 +42,9 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
         */
     }
-
-    public void Play (string name)
+    
+    // play sound
+    public virtual void Play (string name)
     { //Seach for sound in sounds by name, if it matches, play the sound
         Sound s = Array.Find(sounds, sound => sound.name == name);
         if (!s.source.isPlaying)
@@ -54,8 +52,9 @@ public class AudioManager : MonoBehaviour
             s.source.Play();
         }
     }
-
-    public void Stop(string name)
+    
+    // stop sound playing
+    public virtual void Stop(string name)
     { //Seach for sound in sounds by name, if it matches, play the sound
         Sound s = Array.Find(sounds, sound => sound.name == name);
         if (s.source.isPlaying)
@@ -64,14 +63,21 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // stop obj playing
+    public virtual void Stop(GameObject obj)
+    { //Seach for sound in sounds by name, if it matches, play the sound
+        AudioSource source = obj.GetComponent<AudioSource>();
+        source.Stop();
+    }
+
     //At the moment objects that play this way can only have 1 sound
-    public void Play(GameObject obj)
+    public virtual void Play(GameObject obj)
     { //Seach for sound in sounds by name, if it matches, play the sound
         AudioSource source = obj.GetComponent<AudioSource>();
         source.Play();
     }
 
-    public void Spawn(GameObject obj, string name)
+    public virtual void Spawn(GameObject obj, string name)
     { //Stop a sound from playing
         Sound s = Array.Find(sounds, sound => sound.name == name);
         s.source = obj.AddComponent<AudioSource>();
@@ -82,7 +88,7 @@ public class AudioManager : MonoBehaviour
         s.source.spatialBlend = s.space;
     }
 
-    public void SetVolume(string name, float volume)
+    public virtual void SetVolume(string name, float volume)
     { //Set the volume of a sound
         Sound s = Array.Find(sounds, sound => sound.name == name);
         s.source.volume = volume;

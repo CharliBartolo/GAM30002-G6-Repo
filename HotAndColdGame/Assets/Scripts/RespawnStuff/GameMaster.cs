@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster instance;
-    //public AudioManager audioManager;
+    public AudioManager audioManager;
     public ColourPalette colourPallete;
     //Vector 3 works, had problems with transform but maybe there is a way to use transform
     [SerializeField] public Vector3 lastCheckPointPos;
