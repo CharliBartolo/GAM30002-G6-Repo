@@ -102,7 +102,7 @@ public class GunFXController : FXController
             {
                 triggerPressed = false;
                 triggerReleased = true;
-                Debug.Log("TRIGGER RELEASED");
+                //Debug.Log("TRIGGER RELEASED");
             }
             if (!triggerReleased && !triggerReleased)
                 gun.GetComponent<Animator>().Play("Idle");
@@ -112,7 +112,7 @@ public class GunFXController : FXController
             if (!triggerPressed && !triggerReleased)
             {
                 triggerPressed = true;
-                Debug.Log("TRIGGER PRESSED");
+                //Debug.Log("TRIGGER PRESSED");
             }
         }
 

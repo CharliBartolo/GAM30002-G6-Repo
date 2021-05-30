@@ -15,6 +15,7 @@ public class CrystalFXController : FXController
     public List<GameObject> AffectedObjects;
     public Light Spotight;
 
+    public GameObject[] friends;
 
     // Start is called before the first frame update
     public override void Start()
@@ -40,6 +41,22 @@ public class CrystalFXController : FXController
         base.PerformFX();
         ColourCrystal();
         GrowAreaCollider();
+        ColourFriends();
+    }
+
+    public void ColourFriends()
+    {
+        if(friends.Length > 0)
+        {
+            foreach (var item in friends)
+            {
+                if(item != null && item.GetComponent<MeshRenderer>()!= null)
+                {
+                    item.GetComponent<MeshRenderer>().sharedMaterial.color = MainCrystal.GetComponent<MeshRenderer>().sharedMaterial.color;
+                }
+            }
+        }
+       
     }
 
     // colour crystial according to state
