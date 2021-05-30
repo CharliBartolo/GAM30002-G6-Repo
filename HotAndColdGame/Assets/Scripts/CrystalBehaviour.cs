@@ -59,51 +59,20 @@ public class CrystalBehaviour : TemperatureStateBase
             {
                 case (ITemperature.tempState.Cold):
                     ApplyTemperatureToOtherObjects(-temperatureValueToEmit);
-                    //areaLight.color = new Color (62, 219, 236, 150f);
-                    //Debug.Log("intensity changing :" + bluelight.intensity);
-                    //bluelight.intensity = Mathf.MoveTowards(bluelight.intensity, light_max, intensity_rate * Time.deltaTime);
-                    //redlight.intensity = Mathf.MoveTowards(redlight.intensity, light_min, intensity_rate * Time.deltaTime);
-
-                    //r = Mathf.MoveTowards(r, 0, col_intensity_rate * Time.deltaTime);
-                    //g = Mathf.MoveTowards(g, 22, col_intensity_rate * Time.deltaTime);
-                    //b = Mathf.MoveTowards(b, 85, col_intensity_rate * Time.deltaTime);
-
-                    //crystalTemperatureArea.GetComponent<MeshRenderer>().material = coldTempField;
-                    //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = true;
                     SpreadIceToArea();
                     break;
 
-
-                    //Color2 name - Color_ea2f6e2b682b42c99f990beacb20c9fa
-                    //Color1 name - Color_f0defd60fc814840bf788457eddb279f
-
                 case (ITemperature.tempState.Hot):
                     ApplyTemperatureToOtherObjects(temperatureValueToEmit);
-                    //areaLight.color = new Color (236, 51, 56, 150f);
-                    //bluelight.intensity = Mathf.MoveTowards(bluelight.intensity, light_min, intensity_rate * Time.deltaTime);
-                    //redlight.intensity = Mathf.MoveTowards(redlight.intensity, light_max, intensity_rate * Time.deltaTime);
-
-                    //r = Mathf.MoveTowards(r, 75, col_intensity_rate * Time.deltaTime);
-                    //g = Mathf.MoveTowards(g, 0, col_intensity_rate * Time.deltaTime);
-                    //b = Mathf.MoveTowards(b, 0, col_intensity_rate * Time.deltaTime);
-
-                    //crystalTemperatureArea.GetComponent<MeshRenderer>().material = hotTempField;
-                    //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = true;
                     SpreadLowGravToArea();
                     break;
                 default:
-
-                    //r = Mathf.MoveTowards(r, 32, col_intensity_rate * Time.deltaTime);
-                    //g = Mathf.MoveTowards(g, 32, col_intensity_rate * Time.deltaTime);
-                    //b = Mathf.MoveTowards(b, 32, col_intensity_rate * Time.deltaTime);
 
                     //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = false;
                     foreach (GameObject temperatureObject in objectsInTempArea.Keys)
                     {
                         if (temperatureObject.GetComponent<Collider>() != null)
                         {
-                            //bluelight.intensity = Mathf.MoveTowards(bluelight.intensity, light_min, intensity_rate * Time.deltaTime);
-                            //redlight.intensity = Mathf.MoveTowards(redlight.intensity, light_min, intensity_rate * Time.deltaTime);
                             temperatureObject.GetComponent<Collider>().material = null;
                             //temperatureObject.GetComponent<Collider>().material.dynamicFriction = 0.05F;
                             //temperatureObject.GetComponent<Collider>().material.staticFriction = 0.05F;
