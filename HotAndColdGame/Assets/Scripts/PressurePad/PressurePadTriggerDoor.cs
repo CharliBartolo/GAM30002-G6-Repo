@@ -29,7 +29,7 @@ public class PressurePadTriggerDoor : PressurePadTrigger
         {
             StartCoroutine(Open(transform, openPos.position, DoorOpenTime));
             open = true;
- 
+            GameMaster.instance.audioManager.Play(this.gameObject);
         }       
     }
 
