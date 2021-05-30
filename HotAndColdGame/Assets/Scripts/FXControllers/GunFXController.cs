@@ -9,6 +9,8 @@ public class GunFXController : FXController
     // timer variables
     private float swapModeDelay;
     private float triggerDelay;
+    private bool triggerReleased;
+    private bool triggerPressed;
    
 
     // Gun variables 
@@ -58,12 +60,19 @@ public class GunFXController : FXController
     void Update()
     {
         PerformFX();
+
+       
     }
+
+
+
 
     // perform FX
     public override void PerformFX()
     {
         base.PerformFX();
+        // call run gun animation
+        AnimateGunTool();
         // call set colour of barrel crystals
         SetBarrelCrystals();
         // call set colour of back crystal
@@ -83,6 +92,41 @@ public class GunFXController : FXController
             case2.sharedMaterial.color = Crystal_Hot;
         }
        
+    }
+
+    void AnimateGunTool()
+    {
+        if (!gun.TriggerHeld)
+        {
+            if (triggerPressed && !triggerReleased)
+            {
+                triggerPressed = false;
+                triggerReleased = true;
+                Debug.Log("TRIGGER RELEASED");
+            }
+            if (!triggerReleased && !triggerReleased)
+                gun.GetComponent<Animator>().Play("Idle");
+        }
+        else
+        {
+            if (!triggerPressed && !triggerReleased)
+            {
+                triggerPressed = true;
+                Debug.Log("TRIGGER PRESSED");
+            }
+        }
+
+
+        if (triggerPressed && !triggerReleased)
+        {
+            gun.GetComponent<Animator>().Play("TriggerPress");
+        }
+
+        if (triggerReleased)
+        {
+            triggerReleased = false;
+
+        }
     }
 
     // set emmisive lights
