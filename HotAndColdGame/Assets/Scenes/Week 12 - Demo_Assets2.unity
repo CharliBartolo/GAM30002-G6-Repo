@@ -4356,6 +4356,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 216939188}
   m_Mesh: {fileID: 3599279630561727917, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!1 &224972951 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 914824868832365014, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+  m_PrefabInstance: {fileID: 1292997911}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &231382025
 GameObject:
   m_ObjectHideFlags: 0
@@ -5706,56 +5711,6 @@ Transform:
   - {fileID: 587776072}
   m_Father: {fileID: 523290570}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &283906962
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 283906964}
-  - component: {fileID: 283906963}
-  m_Layer: 0
-  m_Name: ColourPallet
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &283906963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 283906962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97a4d7e22bb450c4ea15e9e520758d15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Positive: {r: 1, g: 0.15532212, b: 0, a: 0}
-  Negative: {r: 0, g: 0.93155813, b: 1, a: 0}
-  Neutral: {r: 0, g: 0, b: 0, a: 0}
-  Crystal: {fileID: 2100000, guid: ef78372303d9f384fbbe71b96bc7658f, type: 2}
-  CrystalEmissionValue: 20
-  MachineEmissiveLights: {fileID: 2100000, guid: 7d482b13a750fdb4c91eff99c6e81416, type: 2}
-  HiddenTexture: {fileID: 2100000, guid: db12df5fd27282d4ca812c4e5bdcda89, type: 2}
---- !u!4 &283906964
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 283906962}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.7625036, y: -9.43266, z: -38.068832}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &286089855
 PrefabInstance:
@@ -11430,6 +11385,85 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 587776071}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &588272301
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 588272303}
+  - component: {fileID: 588272302}
+  - component: {fileID: 588272305}
+  - component: {fileID: 588272304}
+  m_Layer: 0
+  m_Name: GameMaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &588272302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588272301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e090e40686b869429d4b8a11ce96cde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colourPallete: {fileID: 588272305}
+  lastCheckPointPos: {x: 0, y: 0, z: 0}
+--- !u!4 &588272303
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588272301}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.8102484, y: 19.21709, z: 30.181187}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &588272304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588272301}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16f81d48a120f094ba3dcc446345891c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds: []
+--- !u!114 &588272305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588272301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97a4d7e22bb450c4ea15e9e520758d15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Positive: {r: 1, g: 0.15532212, b: 0, a: 0}
+  Negative: {r: 0, g: 0.93155813, b: 1, a: 0}
+  Neutral: {r: 0, g: 0, b: 0, a: 0}
+  Crystal: {fileID: 2100000, guid: ef78372303d9f384fbbe71b96bc7658f, type: 2}
+  CrystalEmissionValue: 20
+  MachineEmissiveLights: {fileID: 2100000, guid: 7d482b13a750fdb4c91eff99c6e81416, type: 2}
+  HiddenTexture: {fileID: 2100000, guid: db12df5fd27282d4ca812c4e5bdcda89, type: 2}
 --- !u!1 &594182153
 GameObject:
   m_ObjectHideFlags: 0
@@ -27779,6 +27813,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rayners Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4482305169743534652, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4662846840876865895, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.3560898
@@ -37681,6 +37719,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1784495778}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1786204012 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 386869310606872809, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+  m_PrefabInstance: {fileID: 1292997911}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1790394810
 GameObject:
   m_ObjectHideFlags: 0
@@ -41753,7 +41796,106 @@ MonoBehaviour:
   CrystalCase1: {fileID: 680110388}
   CrystalCase2: {fileID: 102787402}
   BarrelCrystals: {fileID: 1087081503}
-  emissiveLights: []
+  emissiveLights:
+  - {fileID: 224972951}
+  - {fileID: 2017764429}
+  - {fileID: 1786204012}
+--- !u!82 &1963997325
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963997323}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1968868851
 GameObject:
   m_ObjectHideFlags: 0
@@ -42391,6 +42533,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2014876608}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2017764429 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8358975464692347963, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+  m_PrefabInstance: {fileID: 1292997911}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2020025331
 GameObject:
   m_ObjectHideFlags: 0

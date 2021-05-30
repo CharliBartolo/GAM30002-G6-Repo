@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColourPallet : MonoBehaviour
+public class ColourPalette : MonoBehaviour
 {
 
     [Header("Colours")]

@@ -19,7 +19,7 @@ public class MachineFXController : FXController
     public override void Start()
     {
         base.Start();
-        emissiveMaterial  = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().MachineEmissiveLights;
+        emissiveMaterial  = GameMaster.instance.colourPallete.MachineEmissiveLights;
         foreach (var item in this.emissiveLights)
         {
             item.GetComponent<Renderer>().sharedMaterial = emissiveMaterial;

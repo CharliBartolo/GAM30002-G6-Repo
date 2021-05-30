@@ -24,7 +24,7 @@ public class CrystalFXController : FXController
         MainCrystal = GetComponent<CrystalBehaviour>();
         MainCrystaLight = transform.Find("Area Light").GetComponent<Light>();
         AreaCollider = GetComponent<SphereCollider>();
-        MainCrystal.GetComponent<Renderer>().sharedMaterial = new Material(GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal);
+        MainCrystal.GetComponent<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.Crystal);
     }
 
     // Update is called once per frame
@@ -51,7 +51,7 @@ public class CrystalFXController : FXController
         if (MainCrystal.CurrentTemperature < -5)
         {
             MainCrystaLight.color = Crystal_Cold;
-            MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameObject.Find("ColourPallet").GetComponent<ColourPallet>().CrystalEmissionValue);
+            MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameMaster.instance.colourPallete.CrystalEmissionValue);
             MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Cold);
             MainCrystal.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
 
@@ -59,7 +59,7 @@ public class CrystalFXController : FXController
         else if (MainCrystal.CurrentTemperature > 5)
         {
             MainCrystaLight.color = Crystal_Hot;
-            MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameObject.Find("ColourPallet").GetComponent<ColourPallet>().CrystalEmissionValue);
+            MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameMaster.instance.colourPallete.CrystalEmissionValue);
             MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Hot);
             MainCrystal.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
         }

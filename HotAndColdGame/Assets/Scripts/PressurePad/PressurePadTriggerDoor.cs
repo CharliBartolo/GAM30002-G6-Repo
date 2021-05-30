@@ -25,13 +25,12 @@ public class PressurePadTriggerDoor : PressurePadTrigger
     public override void Trigger()
     {
         base.Trigger();
-        if(!open)
+        if (!open)
         {
             StartCoroutine(Open(transform, openPos.position, DoorOpenTime));
             open = true;
-        }
-       
-        
+ 
+        }       
     }
 
     public IEnumerator Open(Transform transform, Vector3 position, float timeToMove)

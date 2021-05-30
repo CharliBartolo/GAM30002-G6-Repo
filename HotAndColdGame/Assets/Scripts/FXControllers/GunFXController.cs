@@ -38,10 +38,10 @@ public class GunFXController : FXController
         // set crystals colour to neutral if not shooting or cannot shoot
         foreach (var item in renderers)
         {
-            item.sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
+            item.sharedMaterial = GameMaster.instance.colourPallete.Crystal;
         }
         // initialise back crystal material
-        BackCrystal.GetComponent<Renderer>().sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
+        BackCrystal.GetComponent<Renderer>().sharedMaterial = GameMaster.instance.colourPallete.Crystal;
         // initialse crystal case materials
         Renderer case1 = CrystalCase1.GetComponent<Renderer>();
         Renderer case2 = CrystalCase2.GetComponent<Renderer>();
@@ -49,8 +49,8 @@ public class GunFXController : FXController
         {
             item.sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
         }*/
-        case1.sharedMaterial = new Material(GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal);
-        case2.sharedMaterial = new Material(GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal);
+        case1.sharedMaterial = new Material(GameMaster.instance.colourPallete.Crystal);
+        case2.sharedMaterial = new Material(GameMaster.instance.colourPallete.Crystal);
         case1.sharedMaterial.color = Crystal_Cold;
         case2.sharedMaterial.color = Crystal_Hot;
         SetBackCrystal();

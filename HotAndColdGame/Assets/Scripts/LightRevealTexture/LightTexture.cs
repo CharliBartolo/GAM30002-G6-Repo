@@ -26,7 +26,7 @@ public class LightTexture : MonoBehaviour
     {
 
         //spotlight = GetNearestLight();
-        HiddenMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().HiddenMaterial;
+        HiddenMaterial = GameMaster.instance.colourPallete.HiddenMaterial;
         CurrentMaterial = gameObject.GetComponent<Renderer>().sharedMaterials;
         spotlight = crystal.transform.Find("Spot Light").GetComponent<Light>()?.transform;
         AddHiddenMaterial();
@@ -67,11 +67,11 @@ public class LightTexture : MonoBehaviour
 
     public void UpdateColoursFromPallet()
     {
-        if (GameObject.Find("ColourPallet").GetComponent<ColourPallet>() != null)
+        if (GameMaster.instance.colourPallete != null)
         {
-            HotColor = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Positive;
-            ColdColor = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Negative;
-            NeutralColor = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Neutral;
+            HotColor = GameMaster.instance.colourPallete.Positive;
+            ColdColor = GameMaster.instance.colourPallete.Negative;
+            NeutralColor = GameMaster.instance.colourPallete.Neutral;
         }
     }
 

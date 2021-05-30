@@ -185,13 +185,13 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             playerInput.actions.FindAction("Shoot").Enable();
             playerInput.actions.FindAction("Swap Beam").Enable();
-            raygunScript.gameObject.SetActive(true);
+            raygunScript?.gameObject.SetActive(true);
         }
         else
         {
             playerInput.actions.FindAction("Shoot").Disable();
             playerInput.actions.FindAction("Swap Beam").Disable();
-            raygunScript.gameObject.SetActive(false);
+            raygunScript?.gameObject.SetActive(false);
         }
     }
 

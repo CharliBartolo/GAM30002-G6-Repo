@@ -21,9 +21,9 @@ public class FXController : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
-        Crystal_Hot = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Positive;
-        Crystal_Cold = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Negative;
-        Crystal_Neutral = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Neutral;
+        Crystal_Hot = GameMaster.instance.colourPallete.Positive;
+        Crystal_Cold = GameMaster.instance.colourPallete.Negative;
+        Crystal_Neutral = GameMaster.instance.colourPallete.Neutral;
 
         Anim = GetComponent<Animator>();   
     }
@@ -39,9 +39,9 @@ public class FXController : MonoBehaviour
     // perform FX
     public virtual void PerformFX()
     {
-        Crystal_Hot = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Positive;
-        Crystal_Cold = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Negative;
-        Crystal_Neutral = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Neutral;
+        Crystal_Hot = GameMaster.instance.colourPallete.Positive;
+        Crystal_Cold = GameMaster.instance.colourPallete.Negative;
+        Crystal_Neutral = GameMaster.instance.colourPallete.Neutral;
     }
 
 
