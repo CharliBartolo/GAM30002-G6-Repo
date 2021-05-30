@@ -48,25 +48,32 @@ public class CrystalFXController : FXController
        //Debug.Log("Temp: " + MainCrystal.CurrentTemperature*1000);
 
         
-        if (MainCrystal.CurrentTemperature < -5)
+        if (MainCrystal.CurrentTemperature < -1)
         {
             MainCrystaLight.color = Crystal_Cold;
-            MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameMaster.instance.colourPallete.CrystalEmissionValue);
+            if (Math.Abs(MainCrystal.CurrentTemperature) > 50)
+                MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameMaster.instance.colourPallete.CrystalEmissionValue);
+            else
+                MainCrystaLight.intensity = Math.Abs(50 * GameMaster.instance.colourPallete.CrystalEmissionValue);
             MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Cold);
             MainCrystal.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
 
         }
-        else if (MainCrystal.CurrentTemperature > 5)
+        else if (MainCrystal.CurrentTemperature > 1)
         {
             MainCrystaLight.color = Crystal_Hot;
-            MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameMaster.instance.colourPallete.CrystalEmissionValue);
+            if(Math.Abs(MainCrystal.CurrentTemperature)>50)
+                MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameMaster.instance.colourPallete.CrystalEmissionValue);
+            else
+                MainCrystaLight.intensity = Math.Abs(50 * GameMaster.instance.colourPallete.CrystalEmissionValue);
+
             MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Hot);
             MainCrystal.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
         }
         else
         {
             MainCrystaLight.color = Crystal_Neutral;
-            MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * 0);
+            MainCrystaLight.intensity = Math.Abs(50 * GameMaster.instance.colourPallete.CrystalEmissionValue);
             MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Neutral);
             MainCrystal.GetComponent<Renderer>().sharedMaterial.color = Crystal_Neutral;
         }
