@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour, IConditions
     [Header("Player Control Settings")]    
     public float movementSpeed = 50f;
     public float coldMoveSpeedMod = 1.2f;
+    public float jumpStrength = 10f;
     public float airSpeedMod = 0.02f;
     public float hotAirSpeedMod = 0.1f;
     public float velocityCap = 8f;
@@ -175,7 +176,7 @@ public class PlayerController : MonoBehaviour, IConditions
         if (isGrounded)
         {
             //Debug.Log("Jump attempted");
-            playerRB.AddForce(Vector3.up * 12f, ForceMode.VelocityChange);
+            playerRB.AddForce(Vector3.up * jumpStrength, ForceMode.VelocityChange);
         }
     }
 
@@ -292,8 +293,10 @@ public class PlayerController : MonoBehaviour, IConditions
     void GroundedCheck()
     {
         //isGrounded = Physics.CheckSphere(groundChecker.position, 0.01f, -1, QueryTriggerInteraction.Ignore);
-        isGrounded = Physics.SphereCast(groundChecker.position, GetComponent<CapsuleCollider>().radius, Vector3.down, out RaycastHit hit, 1f);
-        Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
+        //isGrounded = Physics.SphereCast(groundChecker.position, GetComponent<CapsuleCollider>().radius, Vector3.down, out RaycastHit hit, 1f);
+        isGrounded = Physics.SphereCast(transform.position, GetComponent<CapsuleCollider>().radius - 0.01f, 
+            Vector3.down, out RaycastHit hit, (GetComponent<CapsuleCollider>().height / 2 + 0.01f));
+        //Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
     } 
 
     void VelocityCap(float cappedValue)
