@@ -30027,7 +30027,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 425391498, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
 --- !u!1001 &1296092488
 PrefabInstance:
@@ -45016,6 +45017,59 @@ MonoBehaviour:
   CrystalCase2: {fileID: 102787402}
   BarrelCrystals: {fileID: 1087081503}
   emissiveLights: []
+--- !u!114 &1963997325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963997323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3178d91f3cfd2b841a9b21dd8689facc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Main
+    clip: {fileID: 8300000, guid: 905315047d46260418bc685103c57a2a, type: 3}
+    volume: 1
+    pitch: 1
+    space: 0
+    loop: 1
+    spawn_on_object: 0
+    source: {fileID: 0}
+  - name: Ice
+    clip: {fileID: 8300000, guid: a9307b9ea9c8e824b90f84dd4263eb37, type: 3}
+    volume: 1
+    pitch: 1
+    space: 0
+    loop: 1
+    spawn_on_object: 0
+    source: {fileID: 0}
+  - name: Heat
+    clip: {fileID: 8300000, guid: 6a0af0dc8f424de4d8d85a546536ec10, type: 3}
+    volume: 1
+    pitch: 1
+    space: 0
+    loop: 1
+    spawn_on_object: 0
+    source: {fileID: 0}
+  - name: Cave
+    clip: {fileID: 8300000, guid: eedbecf419c879f42a56b15221182ff6, type: 3}
+    volume: 1
+    pitch: 1
+    space: 0
+    loop: 1
+    spawn_on_object: 0
+    source: {fileID: 0}
+  - name: Lazer
+    clip: {fileID: 8300000, guid: aea441607fe170b4ab19c3b5b355ff17, type: 3}
+    volume: 1
+    pitch: 1
+    space: 0
+    loop: 1
+    spawn_on_object: 0
+    source: {fileID: 0}
 --- !u!1 &1968868851
 GameObject:
   m_ObjectHideFlags: 0
