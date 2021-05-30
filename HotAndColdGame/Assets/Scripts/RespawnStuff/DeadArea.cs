@@ -10,6 +10,6 @@ public class DeadArea : MonoBehaviour
     //Sets new checkpoint
     void OnTriggerEnter(Collider other)
     {
-        player.transform.position = gm.lastCheckPointPos;
+        player.transform.position = gm.lastCheckPointPos.position;
     }
 }

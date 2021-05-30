@@ -35,7 +35,7 @@ public class DeathEffect : MonoBehaviour
                 Fade.GetComponent<Image>().color = new Color32(255, 0, 0, 100);//red, green, blue, alpha
                 Fade.CrossFadeAlpha(1, 3, false); //Fully fade Image with the duration of 3 seconds
                 //reloads last chekcpoint
-                player.transform.position = gm.lastCheckPointPos;
+                player.transform.position = gm.lastCheckPointPos.position;
                 break;
             case ITemperature.tempState.Cold://if cold
                 //testing purposes
@@ -43,7 +43,7 @@ public class DeathEffect : MonoBehaviour
                 Fade.GetComponent<Image>().color = new Color32(0, 200, 255, 100);//red, green, blue, alpha
                 Fade.CrossFadeAlpha(1, 3, false); //Fully fade Image with the duration of 3 seconds
                 //reloads last chekcpoint
-                player.transform.position = gm.lastCheckPointPos;
+                player.transform.position = gm.lastCheckPointPos.position;
                 break;
             default:
                 Fade.GetComponent<Image>().color = new Color32(0, 0, 0, 100);

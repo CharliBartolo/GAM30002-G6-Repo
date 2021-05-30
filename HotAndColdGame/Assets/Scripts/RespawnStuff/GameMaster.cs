@@ -8,7 +8,7 @@ public class GameMaster : MonoBehaviour
     public AudioManager audioManager;
     public ColourPalette colourPallete;
     //Vector 3 works, had problems with transform but maybe there is a way to use transform
-    [SerializeField] public Vector3 lastCheckPointPos;
+    [SerializeField] public Transform lastCheckPointPos;
 
     void Awake() 
     {

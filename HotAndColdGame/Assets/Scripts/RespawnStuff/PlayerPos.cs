@@ -13,7 +13,7 @@ public class PlayerPos : MonoBehaviour
         //get game master last position
         gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
         //set player to last checkpoint position
-        transform.position = gm.lastCheckPointPos;
+        transform.position = gm.lastCheckPointPos.position;
     }
 
     // Update is called once per frame
