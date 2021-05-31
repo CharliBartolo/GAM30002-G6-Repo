@@ -58,8 +58,10 @@ public class DeathEffect : MonoBehaviour
         isResetting = true;
         yield return new WaitForSeconds(secondsToWait); 
         crntTemp.SetTemperature(crntTemp.tempValueRange[1]);
+        crntTemp.CurrentTempState = ITemperature.tempState.Neutral;
         player.transform.position = gm.lastCheckPointPos.position;
-        Fade.CrossFadeAlpha(0, 0.1f, false);  
+        //Fade.GetComponent<Image>().color = new Color32(0, 0, 0, 0);//red, green, blue, alpha
+        Fade.CrossFadeAlpha(0, 0.5f, false);  
         isResetting = false;      
     }
 }
