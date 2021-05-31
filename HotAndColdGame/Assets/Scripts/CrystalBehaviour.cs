@@ -53,39 +53,51 @@ public class CrystalBehaviour : TemperatureStateBase
 
     public override void PerformTemperatureBehaviour(ITemperature.tempState currentTemperatureState)
     {
+        // if (isPowered)
+        // {
+        //     switch (currentTemperatureState)
+        //     {
+        //         case (ITemperature.tempState.Cold):
+        //             ApplyTemperatureToOtherObjects(-temperatureValueToEmit);
+        //             SpreadIceToArea();
+        //             break;
+
+        //         case (ITemperature.tempState.Hot):
+        //             ApplyTemperatureToOtherObjects(temperatureValueToEmit);
+        //             SpreadLowGravToArea();
+        //             break;
+        //         default:
+
+        //             //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = false;
+        //             foreach (GameObject temperatureObject in objectsInTempArea.Keys)
+        //             {
+        //                 if (temperatureObject.GetComponent<Collider>() != null)
+        //                 {
+        //                     temperatureObject.GetComponent<Collider>().material = null;                            
+        //                 }
+        //             }
+        //             break;
+        //     }
+        // }
+
         if (isPowered)
         {
-            switch (currentTemperatureState)
+            if (currentTemp < tempValueRange[1])
             {
-                case (ITemperature.tempState.Cold):
-                    ApplyTemperatureToOtherObjects(-temperatureValueToEmit);
-                    SpreadIceToArea();
-                    break;
-
-                case (ITemperature.tempState.Hot):
-                    ApplyTemperatureToOtherObjects(temperatureValueToEmit);
-                    SpreadLowGravToArea();
-                    break;
-                default:
-
-                    //crystalTemperatureArea.GetComponent<MeshRenderer>().enabled = false;
-                    foreach (GameObject temperatureObject in objectsInTempArea.Keys)
-                    {
-                        if (temperatureObject.GetComponent<Collider>() != null)
-                        {
-                            temperatureObject.GetComponent<Collider>().material = null;
-                            //temperatureObject.GetComponent<Collider>().material.dynamicFriction = 0.05F;
-                            //temperatureObject.GetComponent<Collider>().material.staticFriction = 0.05F;
-                            //temperatureObject.GetComponent<Collider>().material.frictionCombine = PhysicMaterialCombine.Minimum;
-                        }
-                    }
-                    break;
+                ApplyTemperatureToOtherObjects(-temperatureValueToEmit);
+                SpreadIceToArea();
             }
-        }
-        else
-        {
-        }
-
+            else if (currentTemp > tempValueRange[1])
+            {
+                ApplyTemperatureToOtherObjects(temperatureValueToEmit);
+                ResetIce();
+                SpreadLowGravToArea();
+            }
+            else
+            {
+                ResetIce();
+            }
+        }                       
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -160,6 +172,17 @@ public class CrystalBehaviour : TemperatureStateBase
             //Added IConditions
   
         }
+    }
+
+    private void ResetIce()
+    {
+        foreach (GameObject temperatureObject in objectsInTempArea.Keys)
+        {
+            if (temperatureObject.GetComponent<Collider>() != null)
+            {
+                temperatureObject.GetComponent<Collider>().material = null;                            
+            }                    
+        } 
     }
 
 }
