@@ -17,10 +17,8 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
     [SerializeField] protected float powerDownRateInSeconds = 30f;
 
     public bool isPermanentlyPowered = false;
+    public bool canTempChange = true;
     public float[] tempValueRange = new float[3] {-100f, 0f, 100f};
-    //public float tempMin = -100;
-    //public float tempMax = 100;
-    //public float tempNeutral = 0;
     
     public bool isReturningToNeutral = true;
 
@@ -102,13 +100,15 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
 
     public void ChangeTemperature(float valueToAdd)
     {
-        float prevTemp = currentTemp;
+        if (canTempChange)
+        {
+            float prevTemp = currentTemp;
 
-        currentTemp = currentTemp + valueToAdd;
-        TemperatureClamp();
+            currentTemp = currentTemp + valueToAdd;
+            TemperatureClamp();
 
-        TempChanged();
-        //CheckIfTempChanged(prevTemp, currentTemp);
+            TempChanged();
+        }
     }
 
     public void SetTemperature(float valueToSet)

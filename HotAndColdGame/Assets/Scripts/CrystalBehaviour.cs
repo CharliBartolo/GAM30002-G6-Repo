@@ -27,7 +27,7 @@ public class CrystalBehaviour : TemperatureStateBase
     //private float powerDownRate = 0.0333f;  //Operates on a 0-1 percentage basis, Default value 0.0333 takes roughly 30 seconds from max to power down    
     public float temperatureValueToEmit = 5f;
     // Create Use Interactable Here
-    [SerializeField] private bool isPowered = true;
+    [SerializeField] private bool isPowered = true;    
 
     // Start is called before the first frame update
     protected override void Start()
@@ -184,6 +184,5 @@ public class CrystalBehaviour : TemperatureStateBase
             }                    
         } 
     }
-
 }
 
