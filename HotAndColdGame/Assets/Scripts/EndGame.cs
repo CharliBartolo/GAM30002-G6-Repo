@@ -6,6 +6,11 @@ using UnityEngine.SceneManagement;
 public class EndGame : MonoBehaviour
 {
     // Start is called before the first frame update
+    private void Start()
+    {
+        Cursor.visible = true;
+    }
+
     public void GoToMainMenu()
     {
         SceneManager.LoadScene(0);
