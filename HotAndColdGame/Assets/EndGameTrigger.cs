@@ -24,7 +24,7 @@ public class EndGameTrigger : MonoBehaviour
     {
         if(other.GetComponent<PlayerController>()!= null)
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }
