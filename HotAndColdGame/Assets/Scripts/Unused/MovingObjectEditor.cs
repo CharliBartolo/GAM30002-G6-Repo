@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(MovingObject))]
+/*[CustomEditor(typeof(MovingObject))]
 public class MovingObjectEditor : Editor
 {
     public override void OnInspectorGUI()
@@ -17,5 +17,5 @@ public class MovingObjectEditor : Editor
         if (GUILayout.Button("Set End Pos"))
             obj.SetEndPosition();
 
-    }
-}
+    *//*}*/
+//}
