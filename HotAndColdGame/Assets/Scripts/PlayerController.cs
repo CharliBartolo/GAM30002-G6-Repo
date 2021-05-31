@@ -69,7 +69,10 @@ public class PlayerController : MonoBehaviour, IConditions
             playerInventory.Add("Raygun");
         LockCursor();
     }
-
+    private void Start()
+    {
+        SetShootingEnabled(playerInventory.Contains("Raygun"));
+    }
     private void Update() 
     {
         //if (pauseFunctionality)
@@ -113,7 +116,7 @@ public class PlayerController : MonoBehaviour, IConditions
         }
 
         // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
-        SetShootingEnabled(playerInventory.Contains("Raygun"));
+        
 
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
         {
