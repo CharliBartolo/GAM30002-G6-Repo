@@ -10,14 +10,14 @@ public class Play_Audio_W_Key : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
-        FindObjectOfType<AudioManager>().Spawn(this.gameObject,Clip);
+        GetComponent<AudioManager>().Spawn(this.gameObject,Clip);
     }
 
         void Update()
     {
         if (Input.GetKeyDown(Key))
         {
-            FindObjectOfType<AudioManager>().Play(this.gameObject);
+            GetComponent<AudioManager>().Play(this.gameObject);
         }
     }
 }

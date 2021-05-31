@@ -82,9 +82,9 @@ public class RayCastShootComplete : MonoBehaviour {
 
         if (TriggerHeld && CanShoot) 
 		{
-            if (FindObjectOfType<AudioManager>())
+            if (GetComponent<AudioManager>()!= null)
             {
-                    FindObjectOfType<AudioManager>().Play("Lazer");
+                GetComponent<AudioManager>().Play("Lazer");
             }
 
             laserLine.enabled = true;
@@ -153,9 +153,9 @@ public class RayCastShootComplete : MonoBehaviour {
             laserLine.enabled = false;
             particleAtEnd_ice.SetActive(false);
             particleAtEnd_fire.SetActive(false);
-            if (FindObjectOfType<AudioManager>())
+            if (GetComponent<AudioManager>()!= null)
             {
-                FindObjectOfType<AudioManager>().Stop("Lazer");
+                GetComponent<AudioManager>().Stop("Lazer");
             }
         }        
 	}

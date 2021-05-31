@@ -25,13 +25,13 @@ public class Player_Audio : MonoBehaviour
         //Test playing a sound
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            FindObjectOfType<AudioManager>().Play("Lazer");
+            GetComponent<AudioManager>().Play("Lazer");
         }
 
         //Adjust volumes on update
-        FindObjectOfType<AudioManager>().SetVolume("Main", main_volume);
-        FindObjectOfType<AudioManager>().SetVolume("Ice", ice_volume);
-        FindObjectOfType<AudioManager>().SetVolume("Heat", heat_volume);
+        GetComponent<AudioManager>().SetVolume("Main", main_volume);
+        GetComponent<AudioManager>().SetVolume("Ice", ice_volume);
+        GetComponent<AudioManager>().SetVolume("Heat", heat_volume);
 
         //If not hitting crystal trigger, return song to main
 
