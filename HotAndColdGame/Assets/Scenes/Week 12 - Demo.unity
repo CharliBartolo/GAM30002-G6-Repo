@@ -1161,6 +1161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gm: {fileID: 1091699047}
+  spawnPos: {fileID: 2051449664}
 --- !u!1 &61364595
 GameObject:
   m_ObjectHideFlags: 0
@@ -8704,6 +8705,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3665375621385087423, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -5
+      objectReference: {fileID: 0}
     - target: {fileID: 3665375622089406116, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -9100,6 +9105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gm: {fileID: 1091699047}
+  spawnPos: {fileID: 1919761971}
 --- !u!1 &370679320
 GameObject:
   m_ObjectHideFlags: 0
@@ -31574,6 +31580,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rayners Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2677741609143010374, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2677741609143010374, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 3592152640333502459, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -35705,6 +35719,7 @@ GameObject:
   - component: {fileID: 1451009394}
   - component: {fileID: 1451009393}
   - component: {fileID: 1451009392}
+  - component: {fileID: 1451009395}
   m_Layer: 0
   m_Name: DeathTrapWater (1)
   m_TagString: Untagged
@@ -35788,6 +35803,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1451009390}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1451009395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451009390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddbf5b5821014b1449877dd989be15f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gm: {fileID: 1091699047}
+  player: {fileID: 1292997923}
 --- !u!4 &1452899446 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7039756841385740240, guid: e840f6710a9e5b540b0524b0f5584f28, type: 3}
