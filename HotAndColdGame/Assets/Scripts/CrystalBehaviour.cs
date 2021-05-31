@@ -132,7 +132,7 @@ public class CrystalBehaviour : TemperatureStateBase
             }
             else if (temperatureObject.GetComponent<Rigidbody>() != null)
             {
-                temperatureObject.GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.3f, ForceMode.Acceleration);
+                temperatureObject.GetComponent<Rigidbody>().AddForce(-Physics.gravity * 25f * Time.deltaTime, ForceMode.Acceleration);
             }            
         }
     }

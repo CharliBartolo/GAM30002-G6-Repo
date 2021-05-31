@@ -436,7 +436,7 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         if (GetComponent<Rigidbody>() != null)
         {
-            GetComponent<Rigidbody>().AddForce(Physics.gravity * -0.4f, ForceMode.Acceleration);
+            GetComponent<Rigidbody>().AddForce(-Physics.gravity * Time.deltaTime * 25f, ForceMode.Acceleration);
         }
     }
 
