@@ -124,9 +124,20 @@ public class CrystalBehaviour : TemperatureStateBase
     {
         foreach (GameObject temperatureObject in objectsInTempArea.Keys)
         {
+            //Added proximity
             if (temperatureObject.GetComponent<ITemperature>() != null)
             {
-                temperatureObject.GetComponent<ITemperature>().ChangeTemperature(temperatureValueParam * Time.deltaTime);
+                if (temperatureObject.GetComponent<PlayerController>() != null)
+                {
+                    
+                    float distance = Vector3.Distance(transform.position, temperatureObject.GetComponent<Transform>().position);
+                    float multiplier = 1.0F - Mathf.Clamp01(distance / (GetComponent<SphereCollider>().radius * transform.localScale.x));
+                    temperatureObject.GetComponent<ITemperature>().ChangeTemperature(multiplier * temperatureValueParam);
+                }
+                else
+                {
+                    temperatureObject.GetComponent<ITemperature>().ChangeTemperature(temperatureValueParam * Time.deltaTime);
+                }
             }
         }
     }
