@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.5700685, g: 0.60737646, b: 0.627362, a: 1}
+  m_IndirectSpecularColor: {r: 0.43769288, g: 0.48258483, b: 0.51704025, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6047,7 +6047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e090e40686b869429d4b8a11ce96cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioManager: {fileID: 136672048}
+  audioManager: {fileID: 1945001382}
   colourPallete: {fileID: 136672047}
   lastCheckPointPos: {fileID: 713061962}
 --- !u!114 &136672047
@@ -81548,6 +81548,10 @@ PrefabInstance:
       propertyPath: hotMaterial
       value: 
       objectReference: {fileID: 2100000, guid: ec514a936555b2a4798347e799d14098, type: 2}
+    - target: {fileID: 1056535388547192624, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: audioManager
+      value: 
+      objectReference: {fileID: 1945001382}
     - target: {fileID: 1645568026167580966, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -81664,6 +81668,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5531536525834768504, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+      propertyPath: sounds.Array.data[4].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: bae9d7e300370a94b89a6fbbe426d27a, type: 3}
     - target: {fileID: 5646154439056074037, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -81787,6 +81795,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1945001382 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5531536525834768504, guid: 63d8d1ecb3f24d74d9d94a467fdae7e9, type: 3}
+  m_PrefabInstance: {fileID: 1945001377}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945001380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3178d91f3cfd2b841a9b21dd8689facc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1946413259
 GameObject:
   m_ObjectHideFlags: 0
@@ -89108,6 +89127,11 @@ Transform:
   m_Father: {fileID: 265350901}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &2102693253 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4221565547916634474, guid: 641c54b04eb42ac4da6457f18b633cab, type: 3}
+  m_PrefabInstance: {fileID: 2303381521735107342}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2104563218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -91228,6 +91252,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 1.718
       objectReference: {fileID: 0}
+    - target: {fileID: 4221565547916634483, guid: 641c54b04eb42ac4da6457f18b633cab, type: 3}
+      propertyPath: origin
+      value: 
+      objectReference: {fileID: 2102693253}
     - target: {fileID: 6610458625619583224, guid: 641c54b04eb42ac4da6457f18b633cab, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
