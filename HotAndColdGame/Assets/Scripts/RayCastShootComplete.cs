@@ -85,6 +85,7 @@ public class RayCastShootComplete : MonoBehaviour {
 		{
             if (audioManager != null)
             {
+                //audioManager.Play("LazerStart");
                 audioManager.Play("Lazer");
             }
 
@@ -156,6 +157,7 @@ public class RayCastShootComplete : MonoBehaviour {
             particleAtEnd_fire.SetActive(false);
             if (audioManager != null)
             {
+                //audioManager.Play("LazerEnd");
                 audioManager.Stop("Lazer");
             }
         }        
