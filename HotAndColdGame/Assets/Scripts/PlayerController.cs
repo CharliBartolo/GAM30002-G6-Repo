@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public float coldVelocityCap = 16f;
     public float interactRange = 2f;
     private Vector3 lateralVelocity;
+    private float[] playerFriction = new float[2];
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
@@ -51,6 +52,8 @@ public class PlayerController : MonoBehaviour, IConditions
 
     private void Awake() 
     {   
+        playerFriction[0] = regularPhysicMaterial.staticFriction;
+        playerFriction[1] = regularPhysicMaterial.dynamicFriction;
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         _activeConditions = new List<IConditions.ConditionTypes>();
@@ -157,6 +160,10 @@ public class PlayerController : MonoBehaviour, IConditions
         // If airborne, dampen movement force
         if (!isGrounded)
         {
+            // If player airborne, remove friction
+            regularPhysicMaterial.staticFriction = 0f;
+            regularPhysicMaterial.dynamicFriction = 0f;
+
             // If player is in ANTIGRAV crystal range, give more control
             if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
                 movementVector = movementVector.normalized * hotAirSpeedMod;
@@ -165,6 +172,9 @@ public class PlayerController : MonoBehaviour, IConditions
         }  
         else
         {
+            regularPhysicMaterial.staticFriction = playerFriction[0];
+            regularPhysicMaterial.dynamicFriction = playerFriction[1];
+            
             movementVector = movementVector.normalized;
         }
 
@@ -405,15 +415,17 @@ public class PlayerController : MonoBehaviour, IConditions
         // If player is cold and NOT hot
         else if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
         {
+            /*
             // If player is making any movement inputs, remove friction, otherwise re-enable it.
             if (playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude > 0f)
                 IcySlip();
             else
                 ResetSlip();
+            */
         }
         else
         {
-            ResetSlip();
+            //ResetSlip();
         }
 
  /*       foreach (IConditions.ConditionTypes c in ActiveConditions)
