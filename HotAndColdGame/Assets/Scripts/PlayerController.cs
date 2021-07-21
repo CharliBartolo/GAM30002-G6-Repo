@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
         // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
         
-
+        // This should be refactored into the condition code, not the update loop
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
         {
             VelocityCap(coldVelocityCap);
@@ -164,6 +164,7 @@ public class PlayerController : MonoBehaviour, IConditions
             regularPhysicMaterial.staticFriction = 0f;
             regularPhysicMaterial.dynamicFriction = 0f;
 
+            // This should be refactored into the condition code, not the update loop
             // If player is in ANTIGRAV crystal range, give more control
             if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
                 movementVector = movementVector.normalized * hotAirSpeedMod;
