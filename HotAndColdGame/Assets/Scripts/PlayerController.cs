@@ -72,13 +72,16 @@ public class PlayerController : MonoBehaviour, IConditions
             playerInventory.Add("Raygun");
         LockCursor();
     }
+
     private void Start()
     {
         SetShootingEnabled(playerInventory.Contains("Raygun"));
     }
+
     private void Update() 
     {
-        //if (pauseFunctionality)
+        Debug.Log(playerRB.velocity.magnitude);
+
         if (PC != null)
         {
             if (PC.GetPause())
@@ -144,18 +147,15 @@ public class PlayerController : MonoBehaviour, IConditions
 
     void MovePlayer(Vector2 stickMovementVector)
     {
-        // Translate 2d analog movement to 3d vector movement        
-            
-        Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);
-
-        // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
-        //movementVector = transform.TransformDirection(movementVector).normalized;
+        // Translate 2d analog movement to 3d vector movement            
+        Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);       
         movementVector = transform.TransformDirection(movementVector);
+
+         // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
         if (movementVector.magnitude > 1f)
         {
             movementVector = movementVector.normalized;
-        }
-                
+        }                
 
         // If airborne, dampen movement force
         if (!isGrounded)
@@ -166,18 +166,22 @@ public class PlayerController : MonoBehaviour, IConditions
 
             // This should be refactored into the condition code, not the update loop
             // If player is in ANTIGRAV crystal range, give more control
+            // NOTE: This may be bugged for gamepads / controllers if normalizing again
             if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
-                movementVector = movementVector.normalized * hotAirSpeedMod;
+                //movementVector = movementVector.normalized * hotAirSpeedMod;
+                movementVector *= hotAirSpeedMod;
             else
-                movementVector = movementVector.normalized * airSpeedMod;
+                //movementVector = movementVector.normalized * airSpeedMod;
+                movementVector *= airSpeedMod;
         }  
         else
         {
             regularPhysicMaterial.staticFriction = playerFriction[0];
             regularPhysicMaterial.dynamicFriction = playerFriction[1];
-            
-            movementVector = movementVector.normalized;
         }
+
+        // Factoring in frame rate
+        movementVector = movementVector * Time.deltaTime * 50;
 
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
             playerRB.AddForce(movementVector * movementSpeed * coldMoveSpeedMod, ForceMode.Acceleration);
@@ -323,7 +327,9 @@ public class PlayerController : MonoBehaviour, IConditions
         
         if (lateralVelocity.magnitude > cappedValue)
         {
-            lateralVelocity = Vector3.Lerp(lateralVelocity.normalized * cappedValue, lateralVelocity, Time.deltaTime);
+            // Technically inverts how a Lerp should work, but should be frame rate independent. 
+            // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
+            lateralVelocity = Vector3.Lerp(lateralVelocity, lateralVelocity.normalized * cappedValue, 1 - Mathf.Exp(-100 * Time.deltaTime));
             playerRB.velocity = lateralVelocity + downwardVelocityVector;
         }
     }
