@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public bool isGravityEnabled = true;
     public bool isGunEnabled = true;
     [SerializeField] private bool isGrounded;
+    private RaycastHit groundedHit;
     public PlayerState playerControlState = PlayerState.MoveAndLook;
     public List<string> playerInventory;
     [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
@@ -164,8 +165,16 @@ public class PlayerController : MonoBehaviour, IConditions
     void MovePlayer(Vector2 stickMovementVector)
     {
         // Translate 2d analog movement to 3d vector movement            
-        Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);       
+        Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);    
+
         movementVector = transform.TransformDirection(movementVector);
+
+        // Reflect along surface if grounded?
+        if (isGrounded)
+        {
+            movementVector = Vector3.ProjectOnPlane(movementVector, groundedHit.normal);
+            Debug.DrawRay(transform.position, movementVector * 100);
+        }
 
          // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
         if (movementVector.magnitude > 1f)
@@ -330,6 +339,11 @@ public class PlayerController : MonoBehaviour, IConditions
         //isGrounded = Physics.SphereCast(groundChecker.position, GetComponent<CapsuleCollider>().radius, Vector3.down, out RaycastHit hit, 1f);
         isGrounded = Physics.SphereCast(transform.position, GetComponent<CapsuleCollider>().radius - 0.01f, 
             Vector3.down, out RaycastHit hit, (GetComponent<CapsuleCollider>().height / 2 + 0.01f));
+
+        if (isGrounded)
+            groundedHit = hit;
+        else
+            groundedHit = new RaycastHit();
         //Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
     } 
 
