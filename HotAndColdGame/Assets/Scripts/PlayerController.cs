@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour, IConditions
     [Header("Player Control Settings")]    
     public float movementSpeed = 50f;
     public float coldMoveSpeedMod = 1.2f;
+    public float speedCapSmoothFactor = 20f;
     public float jumpStrength = 10f;
     public float airSpeedMod = 0.02f;
     public float hotAirSpeedMod = 0.1f;
@@ -80,7 +81,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
     private void Update() 
     {
-        Debug.Log(playerRB.velocity.magnitude);
+        //Debug.Log(playerRB.velocity.magnitude);
 
         if (PC != null)
         {
@@ -102,22 +103,43 @@ public class PlayerController : MonoBehaviour, IConditions
                 break;
             case (PlayerState.MoveAndLook):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
-                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
-                GroundedCheck();
-                MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>());
-                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
+                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");                
+                MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>());                
                 break;
             case (PlayerState.MoveOnly):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
-                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
-                GroundedCheck();
-                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
+                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");                
                 //ResetMouse();
                 break;
             default:
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
                     playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
                 playerControlState = PlayerState.MoveAndLook;
+                break;
+        }       
+
+        if (currentInteractingObject != null)
+        {
+            currentInteractingObject.OnInteracting();
+        }
+    }
+
+    private void FixedUpdate() 
+    {
+        switch (playerControlState)
+        {
+            case (PlayerState.ControlsDisabled):                
+                break;
+            case (PlayerState.MoveAndLook):                
+                GroundedCheck();                
+                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
+                break;
+            case (PlayerState.MoveOnly):                
+                GroundedCheck();
+                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
+                //ResetMouse();
+                break;
+            default:               
                 break;
         }
 
@@ -132,18 +154,12 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             VelocityCap(velocityCap);
         }
-        
-
-        if (currentInteractingObject != null)
-        {
-            currentInteractingObject.OnInteracting();
-        }
 
         ExecuteConditions();
         RemoveConditionsIfReturningToNeutral();
     }
 
-    // Input functions
+    // Input functions 
 
     void MovePlayer(Vector2 stickMovementVector)
     {
@@ -181,7 +197,7 @@ public class PlayerController : MonoBehaviour, IConditions
         }
 
         // Factoring in frame rate
-        movementVector = movementVector * Time.deltaTime * 50;
+        //movementVector = movementVector * Time.deltaTime * 50;
 
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
             playerRB.AddForce(movementVector * movementSpeed * coldMoveSpeedMod, ForceMode.Acceleration);
@@ -329,7 +345,7 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             // Technically inverts how a Lerp should work, but should be frame rate independent. 
             // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
-            lateralVelocity = Vector3.Lerp(lateralVelocity, lateralVelocity.normalized * cappedValue, 1 - Mathf.Exp(-100 * Time.deltaTime));
+            lateralVelocity = Vector3.Lerp(lateralVelocity, lateralVelocity.normalized * cappedValue, 1 - Mathf.Exp(-speedCapSmoothFactor * Time.deltaTime));
             playerRB.velocity = lateralVelocity + downwardVelocityVector;
         }
     }
