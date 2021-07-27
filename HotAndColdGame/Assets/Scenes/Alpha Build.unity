@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.43769288, g: 0.48258483, b: 0.51704025, a: 1}
+  m_IndirectSpecularColor: {r: 0.5700685, g: 0.60737646, b: 0.627362, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -467,6 +467,7 @@ GameObject:
   - component: {fileID: 11801380}
   - component: {fileID: 11801382}
   - component: {fileID: 11801381}
+  - component: {fileID: 11801383}
   m_Layer: 0
   m_Name: Shaft
   m_TagString: Untagged
@@ -537,6 +538,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11801379}
   m_Mesh: {fileID: -3152895889083857318, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &11801383
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11801379}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.06248208, y: 0.0072698398, z: 0.0072698304}
+  m_Center: {x: 0.00000011827797, y: 0.00000003434252, z: 0.00000011862721}
 --- !u!1001 &13993776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1096,6 +1110,7 @@ GameObject:
   - component: {fileID: 23767613}
   - component: {fileID: 23767615}
   - component: {fileID: 23767614}
+  - component: {fileID: 23767616}
   m_Layer: 0
   m_Name: OuterUpperFrame1
   m_TagString: Untagged
@@ -1166,6 +1181,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23767612}
   m_Mesh: {fileID: 2022260489461183678, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &23767616
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23767612}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.027463574, y: 0.055696055, z: 0.013505931}
+  m_Center: {x: 0.0017102256, y: -0.00467305, z: 0.00000005963013}
 --- !u!1 &24091718 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3344194674612990208, guid: 3ce9ec5c33924c14389c9af6e05e8043, type: 3}
@@ -6013,6 +6041,7 @@ GameObject:
   - component: {fileID: 135105374}
   - component: {fileID: 135105376}
   - component: {fileID: 135105375}
+  - component: {fileID: 135105377}
   m_Layer: 0
   m_Name: Engine
   m_TagString: Untagged
@@ -6083,6 +6112,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 135105373}
   m_Mesh: {fileID: -7037502782376635450, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &135105377
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135105373}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.0382126, y: 0.010538315, z: 0.010000002}
+  m_Center: {x: 0.00000011920929, y: 0.000000014901161, z: 0.00000011920929}
 --- !u!1 &135264807 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7d9064246bddd574c9264bf7c7dfbd11, type: 3}
@@ -12841,6 +12883,7 @@ GameObject:
   - component: {fileID: 322883354}
   - component: {fileID: 322883356}
   - component: {fileID: 322883355}
+  - component: {fileID: 322883357}
   m_Layer: 0
   m_Name: DermaPlate5
   m_TagString: Untagged
@@ -12911,6 +12954,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322883353}
   m_Mesh: {fileID: -9185479782520577751, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &322883357
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322883353}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.020000001, y: 0.0044455063, z: 0.040000003}
+  m_Center: {x: 0.00000011920929, y: -0.0011960566, z: 0.000000059604645}
 --- !u!1 &323335732
 GameObject:
   m_ObjectHideFlags: 0
@@ -24407,6 +24463,7 @@ GameObject:
   - component: {fileID: 578281580}
   - component: {fileID: 578281582}
   - component: {fileID: 578281581}
+  - component: {fileID: 578281583}
   m_Layer: 0
   m_Name: Cave
   m_TagString: Untagged
@@ -24477,6 +24534,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578281579}
   m_Mesh: {fileID: -2258370131159463500, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &578281583
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578281579}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.13084234, y: 0.07205515, z: 0.061019514}
+  m_Center: {x: 0.00000011920347, y: 0.036027603, z: 0.00039042445}
 --- !u!1 &583048023
 GameObject:
   m_ObjectHideFlags: 0
@@ -26374,6 +26444,7 @@ GameObject:
   - component: {fileID: 613553252}
   - component: {fileID: 613553254}
   - component: {fileID: 613553253}
+  - component: {fileID: 613553255}
   m_Layer: 0
   m_Name: DermaPlate4
   m_TagString: Untagged
@@ -26444,6 +26515,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 613553251}
   m_Mesh: {fileID: -8835835713133728395, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &613553255
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613553251}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.020000001, y: 0.0044455063, z: 0.040000003}
+  m_Center: {x: 0.00000011920929, y: -0.0011960566, z: 0.00000011920929}
 --- !u!1001 &617522058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28631,6 +28715,7 @@ GameObject:
   - component: {fileID: 662475130}
   - component: {fileID: 662475132}
   - component: {fileID: 662475131}
+  - component: {fileID: 662475133}
   m_Layer: 0
   m_Name: InnerFrame
   m_TagString: Untagged
@@ -28701,6 +28786,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 662475129}
   m_Mesh: {fileID: 5454032018867360677, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &662475133
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662475129}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.090061374, y: 0.055651836, z: 0.034319017}
+  m_Center: {x: -0.00014436433, y: -0.0012375778, z: -0.0000000018647965}
 --- !u!1 &665218154
 GameObject:
   m_ObjectHideFlags: 0
@@ -28712,6 +28810,7 @@ GameObject:
   - component: {fileID: 665218155}
   - component: {fileID: 665218157}
   - component: {fileID: 665218156}
+  - component: {fileID: 665218158}
   m_Layer: 0
   m_Name: OuterLowerFrame1
   m_TagString: Untagged
@@ -28782,6 +28881,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 665218154}
   m_Mesh: {fileID: 406583455511737595, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &665218158
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665218154}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.027043333, y: 0.026820663, z: 0.013505931}
+  m_Center: {x: -0.0026989628, y: -0.0020428165, z: 0.00000011916907}
 --- !u!1001 &666408096
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44331,6 +44443,7 @@ GameObject:
   - component: {fileID: 1062116072}
   - component: {fileID: 1062116074}
   - component: {fileID: 1062116073}
+  - component: {fileID: 1062116075}
   m_Layer: 0
   m_Name: DermaPlate2
   m_TagString: Untagged
@@ -44401,6 +44514,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1062116071}
   m_Mesh: {fileID: 7490096023148408820, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &1062116075
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062116071}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.020000001, y: 0.0044455146, z: 0.040000003}
+  m_Center: {x: 0.00000011920929, y: 0.0011960852, z: 0.00000011920929}
 --- !u!1 &1063121374
 GameObject:
   m_ObjectHideFlags: 0
@@ -45468,6 +45594,7 @@ GameObject:
   - component: {fileID: 1086186995}
   - component: {fileID: 1086186997}
   - component: {fileID: 1086186996}
+  - component: {fileID: 1086186998}
   m_Layer: 0
   m_Name: DermaPlate1
   m_TagString: Untagged
@@ -45538,6 +45665,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086186994}
   m_Mesh: {fileID: -2173911613659037227, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &1086186998
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086186994}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.020000001, y: 0.0044455146, z: 0.040000003}
+  m_Center: {x: 0, y: 0.0011960852, z: 0.000000059604645}
 --- !u!1001 &1086839073
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47281,6 +47421,7 @@ GameObject:
   - component: {fileID: 1113664917}
   - component: {fileID: 1113664919}
   - component: {fileID: 1113664918}
+  - component: {fileID: 1113664920}
   m_Layer: 0
   m_Name: DermaPlate3
   m_TagString: Untagged
@@ -47351,6 +47492,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1113664916}
   m_Mesh: {fileID: 4403006839420492535, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &1113664920
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113664916}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.020000001, y: 0.0044455063, z: 0.040000003}
+  m_Center: {x: 0, y: -0.0011960566, z: 0.000000059604645}
 --- !u!1001 &1116191224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60880,6 +61034,7 @@ GameObject:
   - component: {fileID: 1448705481}
   - component: {fileID: 1448705483}
   - component: {fileID: 1448705482}
+  - component: {fileID: 1448705484}
   m_Layer: 0
   m_Name: OuterUpperFrame2
   m_TagString: Untagged
@@ -60950,6 +61105,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448705480}
   m_Mesh: {fileID: 3386366587294148195, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &1448705484
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448705480}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.027463568, y: 0.055696055, z: 0.013505931}
+  m_Center: {x: -0.0017101087, y: -0.00467305, z: 0.0000001191838}
 --- !u!1 &1449805205
 GameObject:
   m_ObjectHideFlags: 0
@@ -65558,6 +65726,7 @@ GameObject:
   - component: {fileID: 1564804798}
   - component: {fileID: 1564804800}
   - component: {fileID: 1564804799}
+  - component: {fileID: 1564804801}
   m_Layer: 0
   m_Name: DermaPlate
   m_TagString: Untagged
@@ -65628,6 +65797,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1564804797}
   m_Mesh: {fileID: 3599279630561727917, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &1564804801
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1564804797}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.020000001, y: 0.0044455146, z: 0.040000003}
+  m_Center: {x: 0.00000011920929, y: 0.0011960852, z: 0.000000059604645}
 --- !u!1001 &1565029709
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -78527,6 +78709,7 @@ GameObject:
   - component: {fileID: 1861382348}
   - component: {fileID: 1861382350}
   - component: {fileID: 1861382349}
+  - component: {fileID: 1861382351}
   m_Layer: 0
   m_Name: OuterLoswerFrame2
   m_TagString: Untagged
@@ -78597,6 +78780,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1861382347}
   m_Mesh: {fileID: -566719031434495642, guid: c7321318d3b2285448f3c795de6ce43f, type: 3}
+--- !u!65 &1861382351
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861382347}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.027043154, y: 0.026820846, z: 0.013505931}
+  m_Center: {x: 0.002699095, y: -0.0020427983, z: 0.00000005964486}
 --- !u!1001 &1863967193
 PrefabInstance:
   m_ObjectHideFlags: 0
