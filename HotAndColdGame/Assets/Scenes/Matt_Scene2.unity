@@ -3390,7 +3390,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &288258255
 Transform:
   m_ObjectHideFlags: 0
@@ -3412,7 +3412,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 288258254}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -7399,7 +7399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &668947662
 Transform:
   m_ObjectHideFlags: 0
@@ -7421,7 +7421,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 668947661}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -23286,7 +23286,7 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
-  clearColorMode: 0
+  clearColorMode: 2
   backgroundColorHDR: {r: 0.025, g: 0.07, b: 0.19, a: 0}
   clearDepth: 1
   volumeLayerMask:
@@ -23444,6 +23444,7 @@ MonoBehaviour:
   weaponRange: 50
   hitForce: 5
   gunEnd: {fileID: 1316082885900111991}
+  audioManager: {fileID: 0}
   spherecollider: {fileID: 0}
   particleAtEnd_ice: {fileID: 893454075}
   particleAtEnd_fire: {fileID: 1625454053}
@@ -24141,6 +24142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 20
   coldMoveSpeedMod: 1.2
+  speedCapSmoothFactor: 20
   jumpStrength: 8.75
   airSpeedMod: 0.08
   hotAirSpeedMod: 0.3
