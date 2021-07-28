@@ -9,17 +9,31 @@ public class PlayerController : MonoBehaviour, IConditions
     public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}    
 
     [Header("Player Control Settings")]    
-    public float movementSpeed = 50f;
-    public float coldMoveSpeedMod = 1.2f;
+    public float movementSpeed = 20f;
     public float speedCapSmoothFactor = 20f;
     public float jumpStrength = 10f;
-    public float airSpeedMod = 0.02f;
-    public float hotAirSpeedMod = 0.1f;
-    public float velocityCap = 8f;
-    public float coldVelocityCap = 16f;
+    public float airSpeed = 0.02f;  
+    public float velocityCap = 6f;
     public float interactRange = 2f;
     private Vector3 lateralVelocity;
     private float[] playerFriction = new float[2];
+
+    [Header("Player Condition Control Settings")]
+    public float baseMovementSpeed = 20f;
+    public float coldMoveSpeedMod = 1.2f;
+    public float hotMoveSpeedMod = 1f;
+
+    public float baseAirSpeed = 0.02f;
+    public float coldAirSpeedMod = 1f;
+    public float hotAirSpeedMod = 5f;
+
+    public float baseJumpStrength = 10f;
+    public float hotJumpStrengthMod = 1.4f;
+    public float coldJumpStrengthMod = 1f;
+
+    public float baseVelocityCap = 8f;
+    public float coldVelocityCapMod = 2f;
+    public float hotVelocityCapMod = 1f;
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
@@ -29,6 +43,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public PlayerState playerControlState = PlayerState.MoveAndLook;
     public List<string> playerInventory;
     [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
+    private bool isConditionChanging = false;    
 
     [Header("References")]    
     public Camera playerCam;
@@ -59,7 +74,12 @@ public class PlayerController : MonoBehaviour, IConditions
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         _activeConditions = new List<IConditions.ConditionTypes>();
-        playerInventory = new List<string>();          
+        playerInventory = new List<string>();  
+
+        baseMovementSpeed = movementSpeed;            
+        baseJumpStrength = jumpStrength;
+        baseAirSpeed = airSpeed;  
+        baseVelocityCap = velocityCap;         
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
@@ -119,6 +139,7 @@ public class PlayerController : MonoBehaviour, IConditions
                 break;
         }       
 
+        // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it  
         if (currentInteractingObject != null)
         {
             currentInteractingObject.OnInteracting();
@@ -126,7 +147,10 @@ public class PlayerController : MonoBehaviour, IConditions
     }
 
     private void FixedUpdate() 
-    {
+    {        
+        ExecuteConditions();
+        RemoveConditionsIfReturningToNeutral();       
+
         switch (playerControlState)
         {
             case (PlayerState.ControlsDisabled):                
@@ -144,20 +168,7 @@ public class PlayerController : MonoBehaviour, IConditions
                 break;
         }
 
-        // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
-        
-        // This should be refactored into the condition code, not the update loop
-        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
-        {
-            VelocityCap(coldVelocityCap);
-        }
-        else
-        {
-            VelocityCap(velocityCap);
-        }
-
-        ExecuteConditions();
-        RemoveConditionsIfReturningToNeutral();
+        VelocityCap(velocityCap);
     }
 
     // Input functions 
@@ -165,54 +176,32 @@ public class PlayerController : MonoBehaviour, IConditions
     void MovePlayer(Vector2 stickMovementVector)
     {
         // Translate 2d analog movement to 3d vector movement            
-        Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);    
-
+        Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);   
         movementVector = transform.TransformDirection(movementVector);
 
         // Reflect along surface if grounded?
         if (isGrounded)
         {
+            regularPhysicMaterial.staticFriction = playerFriction[0];
+            regularPhysicMaterial.dynamicFriction = playerFriction[1];
+
             movementVector = Vector3.ProjectOnPlane(movementVector, groundedHit.normal);
             Debug.DrawRay(transform.position, movementVector * 100);
+        }
+        else
+        {
+            regularPhysicMaterial.staticFriction = 0f;
+            regularPhysicMaterial.dynamicFriction = 0f;
+            movementVector *= airSpeed;
         }
 
          // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
         if (movementVector.magnitude > 1f)
         {
             movementVector = movementVector.normalized;
-        }                
+        } 
 
-        // If airborne, dampen movement force
-        if (!isGrounded)
-        {
-            // If player airborne, remove friction
-            regularPhysicMaterial.staticFriction = 0f;
-            regularPhysicMaterial.dynamicFriction = 0f;
-
-            // This should be refactored into the condition code, not the update loop
-            // If player is in ANTIGRAV crystal range, give more control
-            // NOTE: This may be bugged for gamepads / controllers if normalizing again
-            if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
-                //movementVector = movementVector.normalized * hotAirSpeedMod;
-                movementVector *= hotAirSpeedMod;
-            else
-                //movementVector = movementVector.normalized * airSpeedMod;
-                movementVector *= airSpeedMod;
-        }  
-        else
-        {
-            regularPhysicMaterial.staticFriction = playerFriction[0];
-            regularPhysicMaterial.dynamicFriction = playerFriction[1];
-        }
-
-        // Factoring in frame rate
-        //movementVector = movementVector * Time.deltaTime * 50;
-
-
-        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
-            playerRB.AddForce(movementVector * movementSpeed * coldMoveSpeedMod, ForceMode.Acceleration);
-        else
-            playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration); 
+        playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);
     }
 
     void Jump(InputAction.CallbackContext context)
@@ -406,23 +395,17 @@ public class PlayerController : MonoBehaviour, IConditions
         if (!ActiveConditions.Contains(nameOfCondition))
         {
             _activeConditions.Add(nameOfCondition);
-        }
-        /*
-        foreach (IConditions.ConditionTypes c in ActiveConditions)
-        {
-            if (c == nameOfCondition)
-            {
-                return;
-            }
-            _activeConditions.Add(nameOfCondition);
-        }
-        */
+            isConditionChanging = true;
+        }        
     }
 
     public void RemoveCondition(IConditions.ConditionTypes nameOfCondition)
     {
         if (ActiveConditions.Contains(nameOfCondition))
+        {
             _activeConditions.Remove(nameOfCondition);
+            isConditionChanging = true;
+        }       
     }
 
     // In future, could edit list to store separate condition timers for each. For now, using isReturningToNeutral works.
@@ -438,7 +421,11 @@ public class PlayerController : MonoBehaviour, IConditions
     public List<IConditions.ConditionTypes> ActiveConditions
     {
         get => _activeConditions;
-        set => _activeConditions = value;
+        set
+        {
+            _activeConditions = value;
+            isConditionChanging = true;
+        }        
     }
 
     public void ExecuteConditions()
@@ -447,7 +434,7 @@ public class PlayerController : MonoBehaviour, IConditions
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
         {
             UpwardForce();
-            ResetSlip();
+            //ResetSlip();
         }
 
         // If player is cold and NOT hot
@@ -461,28 +448,40 @@ public class PlayerController : MonoBehaviour, IConditions
                 ResetSlip();
             */
         }
+        
+        //if (!_prevConditions.Equals(_activeConditions))
+        if (isConditionChanging)
+        {
+            Debug.Log("Conditions have changed!");
+            UpdateControlSettingsBasedOnConditions();
+            isConditionChanging = false;
+        }    
+    }
+
+    public void UpdateControlSettingsBasedOnConditions()
+    {
+        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
+        {
+            movementSpeed = baseMovementSpeed * hotMoveSpeedMod;            
+            jumpStrength = baseJumpStrength * hotJumpStrengthMod;
+            airSpeed = baseAirSpeed * hotAirSpeedMod;  
+            velocityCap = baseVelocityCap * hotVelocityCapMod;      
+        }
+        // If player is cold and NOT hot
+        else if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
+        {   
+            movementSpeed = baseMovementSpeed * coldMoveSpeedMod;            
+            jumpStrength = baseJumpStrength * coldJumpStrengthMod;
+            airSpeed = baseAirSpeed * coldAirSpeedMod;  
+            velocityCap = baseVelocityCap * coldVelocityCapMod;          
+        }
         else
         {
-            //ResetSlip();
+            movementSpeed = baseMovementSpeed;            
+            jumpStrength = baseJumpStrength;
+            airSpeed = baseAirSpeed;  
+            velocityCap = baseVelocityCap;    
         }
-
- /*       foreach (IConditions.ConditionTypes c in ActiveConditions)
-        {
-            switch (c)
-            {
-                case IConditions.ConditionTypes.ConditionCold:
-                    IcySlip();
-                    break;
-
-                case IConditions.ConditionTypes.ConditionHot:
-                    UpwardForce();
-                    ResetSlip();
-                    break;
-                default:
-                    ResetSlip();
-                    break;
-            }
-        }*/
     }
 
     public void UpwardForce()
