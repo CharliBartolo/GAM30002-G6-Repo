@@ -150,6 +150,7 @@ public class LightTexture : MonoBehaviour
     {
         if (spotlight)
         {
+
             //GetComponent<Renderer>().sharedMaterials[1]?.SetFloat("_SpotAngle", spotlight.GetComponent<Light>().spotAngle);
             if (GetComponent<Renderer>().sharedMaterials[index]!=null)
             {
