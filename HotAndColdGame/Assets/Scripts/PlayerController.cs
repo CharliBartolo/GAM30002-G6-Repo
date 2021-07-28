@@ -168,10 +168,11 @@ public class PlayerController : MonoBehaviour, IConditions
             movementVector = movementVector.normalized;
         }
 
+
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
             playerRB.AddForce(movementVector * movementSpeed * coldMoveSpeedMod, ForceMode.Acceleration);
         else
-            playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);    
+            playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration); 
     }
 
     void Jump(InputAction.CallbackContext context)
