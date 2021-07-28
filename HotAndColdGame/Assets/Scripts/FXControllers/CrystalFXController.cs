@@ -291,7 +291,7 @@ private void OnTriggerEnter(Collider other)
                         {
                             if (other.transform.parent?.gameObject.tag != "Player")
                             {
-                                Debug.Log("COLLISION: " + other.gameObject.name);
+                                //Debug.Log("COLLISION: " + other.gameObject.name);
 
                                 if (other.gameObject.GetComponent<MeshRenderer>() != null)
                                 {
