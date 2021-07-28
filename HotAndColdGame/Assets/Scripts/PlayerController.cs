@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour, IConditions
     [Header("Player Control Settings")]    
     public float movementSpeed = 50f;
     public float coldMoveSpeedMod = 1.2f;
+    public float speedCapSmoothFactor = 20f;
     public float jumpStrength = 10f;
     public float airSpeedMod = 0.02f;
     public float hotAirSpeedMod = 0.1f;
@@ -18,11 +19,13 @@ public class PlayerController : MonoBehaviour, IConditions
     public float coldVelocityCap = 16f;
     public float interactRange = 2f;
     private Vector3 lateralVelocity;
+    private float[] playerFriction = new float[2];
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
     public bool isGunEnabled = true;
     [SerializeField] private bool isGrounded;
+    private RaycastHit groundedHit;
     public PlayerState playerControlState = PlayerState.MoveAndLook;
     public List<string> playerInventory;
     [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
@@ -51,6 +54,8 @@ public class PlayerController : MonoBehaviour, IConditions
 
     private void Awake() 
     {   
+        playerFriction[0] = regularPhysicMaterial.staticFriction;
+        playerFriction[1] = regularPhysicMaterial.dynamicFriction;
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         _activeConditions = new List<IConditions.ConditionTypes>();
@@ -69,13 +74,16 @@ public class PlayerController : MonoBehaviour, IConditions
             playerInventory.Add("Raygun");
         LockCursor();
     }
+
     private void Start()
     {
         SetShootingEnabled(playerInventory.Contains("Raygun"));
     }
+
     private void Update() 
     {
-        //if (pauseFunctionality)
+        //Debug.Log(playerRB.velocity.magnitude);
+
         if (PC != null)
         {
             if (PC.GetPause())
@@ -96,16 +104,12 @@ public class PlayerController : MonoBehaviour, IConditions
                 break;
             case (PlayerState.MoveAndLook):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
-                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
-                GroundedCheck();
-                MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>());
-                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
+                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");                
+                MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>());                
                 break;
             case (PlayerState.MoveOnly):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
-                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
-                GroundedCheck();
-                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
+                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");                
                 //ResetMouse();
                 break;
             default:
@@ -113,11 +117,36 @@ public class PlayerController : MonoBehaviour, IConditions
                     playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
                 playerControlState = PlayerState.MoveAndLook;
                 break;
+        }       
+
+        if (currentInteractingObject != null)
+        {
+            currentInteractingObject.OnInteracting();
+        }
+    }
+
+    private void FixedUpdate() 
+    {
+        switch (playerControlState)
+        {
+            case (PlayerState.ControlsDisabled):                
+                break;
+            case (PlayerState.MoveAndLook):                
+                GroundedCheck();                
+                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
+                break;
+            case (PlayerState.MoveOnly):                
+                GroundedCheck();
+                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
+                //ResetMouse();
+                break;
+            default:               
+                break;
         }
 
         // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
         
-
+        // This should be refactored into the condition code, not the update loop
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
         {
             VelocityCap(coldVelocityCap);
@@ -126,47 +155,58 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             VelocityCap(velocityCap);
         }
-        
-
-        if (currentInteractingObject != null)
-        {
-            currentInteractingObject.OnInteracting();
-        }
 
         ExecuteConditions();
         RemoveConditionsIfReturningToNeutral();
     }
 
-    // Input functions
+    // Input functions 
 
     void MovePlayer(Vector2 stickMovementVector)
     {
-        // Translate 2d analog movement to 3d vector movement        
-            
-        Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);
+        // Translate 2d analog movement to 3d vector movement            
+        Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);    
 
-        // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
-        //movementVector = transform.TransformDirection(movementVector).normalized;
         movementVector = transform.TransformDirection(movementVector);
+
+        // Reflect along surface if grounded?
+        if (isGrounded)
+        {
+            movementVector = Vector3.ProjectOnPlane(movementVector, groundedHit.normal);
+            Debug.DrawRay(transform.position, movementVector * 100);
+        }
+
+         // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
         if (movementVector.magnitude > 1f)
         {
             movementVector = movementVector.normalized;
-        }
-                
+        }                
 
         // If airborne, dampen movement force
         if (!isGrounded)
         {
+            // If player airborne, remove friction
+            regularPhysicMaterial.staticFriction = 0f;
+            regularPhysicMaterial.dynamicFriction = 0f;
+
+            // This should be refactored into the condition code, not the update loop
             // If player is in ANTIGRAV crystal range, give more control
+            // NOTE: This may be bugged for gamepads / controllers if normalizing again
             if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
-                movementVector = movementVector.normalized * hotAirSpeedMod;
+                //movementVector = movementVector.normalized * hotAirSpeedMod;
+                movementVector *= hotAirSpeedMod;
             else
-                movementVector = movementVector.normalized * airSpeedMod;
+                //movementVector = movementVector.normalized * airSpeedMod;
+                movementVector *= airSpeedMod;
         }  
         else
         {
-            movementVector = movementVector.normalized;
+            regularPhysicMaterial.staticFriction = playerFriction[0];
+            regularPhysicMaterial.dynamicFriction = playerFriction[1];
         }
+
+        // Factoring in frame rate
+        //movementVector = movementVector * Time.deltaTime * 50;
 
 
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
@@ -300,6 +340,11 @@ public class PlayerController : MonoBehaviour, IConditions
         //isGrounded = Physics.SphereCast(groundChecker.position, GetComponent<CapsuleCollider>().radius, Vector3.down, out RaycastHit hit, 1f);
         isGrounded = Physics.SphereCast(transform.position, GetComponent<CapsuleCollider>().radius - 0.01f, 
             Vector3.down, out RaycastHit hit, (GetComponent<CapsuleCollider>().height / 2 + 0.01f));
+
+        if (isGrounded)
+            groundedHit = hit;
+        else
+            groundedHit = new RaycastHit();
         //Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
     } 
 
@@ -313,7 +358,9 @@ public class PlayerController : MonoBehaviour, IConditions
         
         if (lateralVelocity.magnitude > cappedValue)
         {
-            lateralVelocity = Vector3.Lerp(lateralVelocity.normalized * cappedValue, lateralVelocity, Time.deltaTime);
+            // Technically inverts how a Lerp should work, but should be frame rate independent. 
+            // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
+            lateralVelocity = Vector3.Lerp(lateralVelocity, lateralVelocity.normalized * cappedValue, 1 - Mathf.Exp(-speedCapSmoothFactor * Time.deltaTime));
             playerRB.velocity = lateralVelocity + downwardVelocityVector;
         }
     }
@@ -406,15 +453,17 @@ public class PlayerController : MonoBehaviour, IConditions
         // If player is cold and NOT hot
         else if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
         {
+            /*
             // If player is making any movement inputs, remove friction, otherwise re-enable it.
             if (playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude > 0f)
                 IcySlip();
             else
                 ResetSlip();
+            */
         }
         else
         {
-            ResetSlip();
+            //ResetSlip();
         }
 
  /*       foreach (IConditions.ConditionTypes c in ActiveConditions)

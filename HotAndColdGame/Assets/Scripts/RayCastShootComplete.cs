@@ -9,6 +9,7 @@ public class RayCastShootComplete : MonoBehaviour {
 	public float hitForce = 5f;
 	public Transform gunEnd;
 	private Camera fpsCam;
+    public AudioManager audioManager;
     public GameObject spherecollider;
     public GameObject particleAtEnd_ice;
     public GameObject particleAtEnd_fire;
@@ -82,9 +83,10 @@ public class RayCastShootComplete : MonoBehaviour {
 
         if (TriggerHeld && CanShoot) 
 		{
-            if (GetComponent<AudioManager>()!= null)
+            if (audioManager != null)
             {
-                GetComponent<AudioManager>().Play("Lazer");
+                //audioManager.Play("LazerStart");
+                audioManager.Play("Lazer");
             }
 
             laserLine.enabled = true;
@@ -153,9 +155,10 @@ public class RayCastShootComplete : MonoBehaviour {
             laserLine.enabled = false;
             particleAtEnd_ice.SetActive(false);
             particleAtEnd_fire.SetActive(false);
-            if (GetComponent<AudioManager>()!= null)
+            if (audioManager != null)
             {
-                GetComponent<AudioManager>().Stop("Lazer");
+                //audioManager.Play("LazerEnd");
+                audioManager.Stop("Lazer");
             }
         }        
 	}
