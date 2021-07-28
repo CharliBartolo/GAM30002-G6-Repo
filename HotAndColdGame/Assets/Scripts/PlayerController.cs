@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public float jumpStrength = 10f;
     public float airSpeed = 0.02f;  
     public float velocityCap = 6f;
+    public float hotGravMod = 1f;
     public float interactRange = 2f;
     private Vector3 lateralVelocity;
     private float[] playerFriction = new float[2];
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public float baseVelocityCap = 8f;
     public float coldVelocityCapMod = 2f;
     public float hotVelocityCapMod = 1f;
+    
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
@@ -488,7 +490,7 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         if (GetComponent<Rigidbody>() != null)
         {
-            GetComponent<Rigidbody>().AddForce(-Physics.gravity * Time.deltaTime * 25f, ForceMode.Acceleration);
+            GetComponent<Rigidbody>().AddForce(-Physics.gravity * hotGravMod * Time.deltaTime * 25f, ForceMode.Acceleration);
         }
     }
 
