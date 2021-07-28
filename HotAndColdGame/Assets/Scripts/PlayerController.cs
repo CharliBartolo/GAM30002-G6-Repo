@@ -12,11 +12,12 @@ public class PlayerController : MonoBehaviour, IConditions
     public float movementSpeed = 20f;
     public float speedCapSmoothFactor = 20f;
     public float jumpStrength = 10f;
-    public float airSpeed = 0.02f;  
-    public float velocityCap = 6f;
+    public float airSpeed = 0.02f; 
+    public Vector2 velocityCap = new Vector2 (6f, 20f); 
     public float hotGravMod = 1f;
     public float interactRange = 2f;
-    private Vector3 lateralVelocity;
+    private Vector3 horizVelocity;
+    private Vector3 vertVelocity;
     private float[] playerFriction = new float[2];
 
     [Header("Player Condition Control Settings")]
@@ -32,15 +33,19 @@ public class PlayerController : MonoBehaviour, IConditions
     public float hotJumpStrengthMod = 1.4f;
     public float coldJumpStrengthMod = 1f;
 
-    public float baseVelocityCap = 8f;
-    public float coldVelocityCapMod = 2f;
-    public float hotVelocityCapMod = 1f;
-    
+    public Vector2 baseVelocityCap = new Vector2 (8f, 20f);
+    public Vector2 coldVelocityCapMod = new Vector2 (2f, 1f);
+    public Vector2 hotVelocityCapMod = new Vector2 (0.75f, 0.5f);   
+
+    public float baseSpeedCapSmoothFactor = 15f;
+    public float hotSpeedCapSmoothMod = 0.2f; 
+    public float coldSpeedCapSmoothMod = 1f; 
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
     public bool isGunEnabled = true;
     [SerializeField] private bool isGrounded;
+    private bool isClimbing = false;
     private RaycastHit groundedHit;
     public PlayerState playerControlState = PlayerState.MoveAndLook;
     public List<string> playerInventory;
@@ -80,8 +85,8 @@ public class PlayerController : MonoBehaviour, IConditions
 
         baseMovementSpeed = movementSpeed;            
         baseJumpStrength = jumpStrength;
-        baseAirSpeed = airSpeed;  
-        baseVelocityCap = velocityCap;         
+        baseAirSpeed = airSpeed;
+        baseVelocityCap = velocityCap;               
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
@@ -170,7 +175,8 @@ public class PlayerController : MonoBehaviour, IConditions
                 break;
         }
 
-        VelocityCap(velocityCap);
+        VelocityClamp();
+        SetPlayerFriction();
     }
 
     // Input functions 
@@ -184,16 +190,11 @@ public class PlayerController : MonoBehaviour, IConditions
         // Reflect along surface if grounded?
         if (isGrounded)
         {
-            regularPhysicMaterial.staticFriction = playerFriction[0];
-            regularPhysicMaterial.dynamicFriction = playerFriction[1];
-
             movementVector = Vector3.ProjectOnPlane(movementVector, groundedHit.normal);
-            Debug.DrawRay(transform.position, movementVector * 100);
+            //Debug.DrawRay(transform.position, movementVector * 100);
         }
         else
-        {
-            regularPhysicMaterial.staticFriction = 0f;
-            regularPhysicMaterial.dynamicFriction = 0f;
+        {            
             movementVector *= airSpeed;
         }
 
@@ -214,7 +215,52 @@ public class PlayerController : MonoBehaviour, IConditions
             playerRB.AddForce(Vector3.up * jumpStrength, ForceMode.VelocityChange);
         }
     }
+    
+    private void OnCollisionStay(Collision other) 
+    {
+        //Debug.Log("Collision is happening");
+        Vector3 normal = other.GetContact(0).normal;
+        Vector3 horForward = playerCam.transform.forward;
+        horForward.y = 0f;
+        horForward.Normalize();
 
+        // If we're hitting the wall at no more than a 45 degree angle...
+        if (Vector3.Angle(horForward, -normal) <= 45)
+        {
+            bool ledgeAvailable = true;
+            
+            RaycastHit hit;
+            // If the wall's too tall, don't climb
+            if (Physics.Raycast(playerCam.transform.position + Vector3.up * 0.5f, -normal, out hit, 1, LayerMask.GetMask("Default")))
+            {
+                ledgeAvailable = false;
+            }
+
+            if (ledgeAvailable)
+            {
+                Debug.Log("Ledge is available!");                
+                Vector3 currentPos = playerCam.transform.position + Vector3.up * 0.5f + Vector3.down * 0.05f;
+                while (!Physics.Raycast(currentPos, -normal, out hit, 1, LayerMask.GetMask("Default")))
+                {
+                    currentPos += Vector3.down * 0.05f;
+                    if (currentPos.y < playerCam.transform.position.y - 2f)
+                        break;
+                }
+
+                
+                if (playerInput.actions.FindAction("Jump").ReadValue<float>() > 0f && isClimbing == false)
+                {
+                    //isClimbing = true;
+                    //Debug.Log("Direction force is applied in: " + (currentPos - transform.position));
+                    playerRB.AddForce(Vector3.up * 30, ForceMode.Impulse);
+                }
+                
+            }
+        }
+
+
+    }
+    
     void SetShootingEnabled(bool setToEnable)
     {
         if (setToEnable)
@@ -339,20 +385,42 @@ public class PlayerController : MonoBehaviour, IConditions
         //Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
     } 
 
-    void VelocityCap(float cappedValue)
+    void VelocityClamp()
     {
-        //Take sideways velocity
-        lateralVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
-
-        //Take downwards velocity
-        Vector3 downwardVelocityVector = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));
+        horizVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
+        vertVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));
         
-        if (lateralVelocity.magnitude > cappedValue)
-        {
-            // Technically inverts how a Lerp should work, but should be frame rate independent. 
+        if (horizVelocity.magnitude > velocityCap.x && velocityCap.x > 0f)
+        { 
             // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
-            lateralVelocity = Vector3.Lerp(lateralVelocity, lateralVelocity.normalized * cappedValue, 1 - Mathf.Exp(-speedCapSmoothFactor * Time.deltaTime));
-            playerRB.velocity = lateralVelocity + downwardVelocityVector;
+            horizVelocity = Vector3.Lerp(horizVelocity, horizVelocity.normalized * velocityCap.x, 1 - Mathf.Exp(-speedCapSmoothFactor * Time.deltaTime));            
+        }
+
+        if (vertVelocity.magnitude > velocityCap.y && velocityCap.y > 0f)
+        { 
+            // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
+            vertVelocity = Vector3.Lerp(vertVelocity, vertVelocity.normalized * velocityCap.y, 1 - Mathf.Exp(-speedCapSmoothFactor * Time.deltaTime));            
+        }
+
+        playerRB.velocity = horizVelocity + vertVelocity;
+    }
+
+    void SetPlayerFriction()
+    {
+        if (isGrounded)
+        {
+            if (regularPhysicMaterial.staticFriction < playerFriction[0] || regularPhysicMaterial.dynamicFriction < playerFriction[1])
+            {
+                regularPhysicMaterial.staticFriction = Mathf.Clamp(regularPhysicMaterial.staticFriction +
+                    Mathf.Lerp(0f, playerFriction[0], Time.deltaTime), 0, playerFriction[0]);
+                regularPhysicMaterial.dynamicFriction = Mathf.Clamp(regularPhysicMaterial.dynamicFriction +
+                    Mathf.Lerp(0f, playerFriction[1], Time.deltaTime), 0, playerFriction[1]);
+            }            
+        }
+        else
+        {
+            regularPhysicMaterial.staticFriction = 0f;
+            regularPhysicMaterial.dynamicFriction = 0f;
         }
     }
  
@@ -391,7 +459,6 @@ public class PlayerController : MonoBehaviour, IConditions
         GUILayout.EndArea();
     }
 
-    //Added IConditions
     public void AddCondition(IConditions.ConditionTypes nameOfCondition)
     {
         if (!ActiveConditions.Contains(nameOfCondition))
@@ -467,14 +534,14 @@ public class PlayerController : MonoBehaviour, IConditions
             movementSpeed = baseMovementSpeed * hotMoveSpeedMod;            
             jumpStrength = baseJumpStrength * hotJumpStrengthMod;
             airSpeed = baseAirSpeed * hotAirSpeedMod;  
-            velocityCap = baseVelocityCap * hotVelocityCapMod;      
+            velocityCap = baseVelocityCap * hotVelocityCapMod;    
         }
         // If player is cold and NOT hot
         else if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
         {   
             movementSpeed = baseMovementSpeed * coldMoveSpeedMod;            
             jumpStrength = baseJumpStrength * coldJumpStrengthMod;
-            airSpeed = baseAirSpeed * coldAirSpeedMod;  
+            airSpeed = baseAirSpeed * coldAirSpeedMod; 
             velocityCap = baseVelocityCap * coldVelocityCapMod;          
         }
         else
