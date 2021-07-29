@@ -115,7 +115,8 @@ public class RayCastShootComplete : MonoBehaviour {
 			if (Physics.Raycast (rayOrigin, fpsCam.transform.forward, out hit, weaponRange))
 			{
 				laserLine.SetPosition (1, hit.point);
-				ITemperature objtemp = hit.collider.GetComponent<ITemperature>();
+				//ITemperature objtemp = hit.collider.GetComponent<ITemperature>();
+				ITemperature objtemp = hit.collider.GetComponentInParent<ITemperature>();
 
 				if (objtemp != null)
 				{
@@ -124,7 +125,7 @@ public class RayCastShootComplete : MonoBehaviour {
 
 				if (hit.rigidbody != null)
 				{
-					hit.rigidbody.AddForce (-hit.normal * 20);
+					//hit.rigidbody.AddForce (-hit.normal * 20);
                 }
 
                 

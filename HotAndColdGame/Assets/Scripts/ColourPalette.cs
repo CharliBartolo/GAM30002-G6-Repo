@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class ColourPalette : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class ColourPalette : MonoBehaviour
     public Color Neutral;
     [Header("Crystal Material")]
     public Material Crystal;
+    [Header("Effects Field Material")]
+    public Material EffectField;
+    public VisualEffect VFX;
     public float CrystalEmissionValue;
     [Header("Emmisive Lights")]
     public Material MachineEmissiveLights;

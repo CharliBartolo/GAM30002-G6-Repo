@@ -88,6 +88,7 @@ public class LightTexture : MonoBehaviour
         float NewRange = (10 - 0);
         float NewValue = (((range - 0) * NewRange) / OldRange) + 0;
 
+        //spotlight.GetComponent<Light>().range = Mathf.Abs(NewValue);
         spotlight.GetComponent<Light>().range = Mathf.Abs(NewValue);
 
         if (range > 0)

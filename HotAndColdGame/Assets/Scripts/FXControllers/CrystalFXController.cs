@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class CrystalFXController : FXController
 {
@@ -9,9 +10,11 @@ public class CrystalFXController : FXController
 
     // components
     public CrystalBehaviour MainCrystal;
+    public Renderer[] CrystalMesh;
     public Light MainCrystaLight;
     public SphereCollider AreaCollider;
     public Transform AreaSphere;
+    public VisualEffect vfx;
     public List<GameObject> AffectedObjects;
     public Light Spotight;
 
@@ -19,6 +22,7 @@ public class CrystalFXController : FXController
 
     public GameObject CrystalGrowth;
 
+    private int temp;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -26,15 +30,27 @@ public class CrystalFXController : FXController
         AffectedObjects = new List<GameObject>();
         MainCrystal = GetComponent<CrystalBehaviour>();
         MainCrystaLight = transform.Find("Area Light").GetComponent<Light>();
+        CrystalMesh = transform.Find("Mesh").GetComponentsInChildren<Renderer>();
         //AreaCollider = GetComponent<SphereCollider>();
         AreaSphere = transform.Find("EffectSphere").transform;
         AreaCollider = AreaSphere.GetComponent<SphereCollider>();
-        MainCrystal.GetComponentInChildren<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.Crystal);
+        //MainCrystal.GetComponentInChildren<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.Crystal);
+        AreaSphere.gameObject.GetComponent<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.EffectField);
+        vfx = AreaSphere.GetChild(0).GetComponent<VisualEffect>();//= new VisualEffectAsset(GameMaster.instance.colourPallete.VFX.visualEffectAsset);
+
+        foreach (var item in CrystalMesh)
+        {
+            item.GetComponentInChildren<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.Crystal);
+        }
+
+        temp = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+
 
         PerformFX();
 
@@ -43,12 +59,28 @@ public class CrystalFXController : FXController
         */
     }
 
+
+
     // perform FX
     public override void PerformFX()
     {
         base.PerformFX();
-        
+
+        if (MainCrystal.CurrentTemperature < -1)
+        {
+            temp = -1;
+        }
+        else if (MainCrystal.CurrentTemperature > 1)
+        {
+            temp = 1;
+        }
+        else
+        {
+            temp = 0;
+        }
+
         GrowAreaCollider();
+        ColourAreaSphere();
         ColourFriends();
         ColourCrystal();
     }
@@ -68,42 +100,80 @@ public class CrystalFXController : FXController
 
     }
 
+    public void ColourAreaSphere()
+    {
+        if (temp == -1)
+        {
+            vfx.SetVector4("ParticleColour", Crystal_Cold / 8);
+            vfx.SetVector4("TrailColour", Crystal_Cold / 8);
+            //vfx.SetVector4("TrailColour", new Vector4(Crystal_Cold.r, Crystal_Cold.g, Crystal_Cold.b, 0.1f));
+            AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Cold * 64);
+        }
+        else if (temp == 1)
+        {
+            vfx.SetVector4("ParticleColour", Crystal_Hot / 8);
+            vfx.SetVector4("TrailColour", Crystal_Hot / 8);
+            //vfx.SetVector4("TrailColour", new Vector4(Crystal_Hot.r, Crystal_Hot.g, Crystal_Hot.b, 0.1f));
+            AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Hot * 64);
+        }
+        else if (temp == 0)
+        {
+            vfx.SetVector4("ParticleColour", Crystal_Neutral / 8);
+            vfx.SetVector4("TrailColour", Crystal_Neutral / 8);
+            //vfx.SetVector4("TrailColour", new Vector4(Crystal_Neutral.r, Crystal_Neutral.g, Crystal_Neutral.b, 0.1f));
+            AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Neutral * 64);
+        }
+    }
+
     // colour crystial according to state
     public void ColourCrystal()
     {
         //Debug.Log("Temp: " + MainCrystal.CurrentTemperature*1000);
 
 
+
         if (MainCrystal.CurrentTemperature < -1)
         {
+            foreach (var item in CrystalMesh)
+            {
+                item.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+            }
             //MainCrystaLight.color = Crystal_Cold;
             /* if (Math.Abs(MainCrystal.CurrentTemperature) > 50)
                  MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameMaster.instance.colourPallete.CrystalEmissionValue);
              else
                  MainCrystaLight.intensity = Math.Abs(GameMaster.instance.colourPallete.CrystalEmissionValue);*/
             //MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameMaster.instance.colourPallete.CrystalEmissionValue)*0.1f;
-            MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+            //MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
             //AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Cold);
-           // MainCrystal.GetComponentInChildren<Renderer>().sharedMaterial.color = Crystal_Cold;
+            // MainCrystal.GetComponentInChildren<Renderer>().sharedMaterial.color = Crystal_Cold;
 
         }
         else if (MainCrystal.CurrentTemperature > 1)
         {
+            foreach (var item in CrystalMesh)
+            {
+                item.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+            }
             //MainCrystaLight.color = Crystal_Hot;
             /*if (Math.Abs(MainCrystal.CurrentTemperature) > 50)
                 MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameMaster.instance.colourPallete.CrystalEmissionValue);
             else
                 MainCrystaLight.intensity = Math.Abs(50 * GameMaster.instance.colourPallete.CrystalEmissionValue);*/
             //MainCrystaLight.intensity = Math.Abs(MainCrystal.CurrentTemperature * GameMaster.instance.colourPallete.CrystalEmissionValue) * 0.1f;
-            MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+            //MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
             //AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Hot);
             //MainCrystal.GetComponentInChildren<Renderer>().sharedMaterial.color = Crystal_Hot;
         }
         else
         {
+            foreach (var item in CrystalMesh)
+            {
+                item.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+            }
             //MainCrystaLight.color = Crystal_Neutral;
             //MainCrystaLight.intensity = Math.Abs(50 * GameMaster.instance.colourPallete.CrystalEmissionValue);
-            MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+            //MainCrystal.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
             //AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Neutral);
             //MainCrystal.GetComponentInChildren<Renderer>().sharedMaterial.color = Crystal_Neutral;
         }
@@ -220,15 +290,15 @@ public class CrystalFXController : FXController
 
 
                }*/
-           /* foreach (var item in comps)
-            {
+            /* foreach (var item in comps)
+             {
 
-                if (item.index > myIndex)
-                {
-                    item.index -= 1;
-                }
+                 if (item.index > myIndex)
+                 {
+                     item.index -= 1;
+                 }
 
-            }*/
+             }*/
             //other.gameObject.GetComponent<LightTexture>().RemoveHiddenMaterial();
             //Destroy(other.gameObject.GetComponent<LightTexture>());
             AffectedObjects.Remove(other.gameObject);
@@ -250,7 +320,7 @@ public class CrystalFXController : FXController
             }
             else
             {
-                if(item.index>1)
+                if (item.index > 1)
                     item.index--;
             }
         }
@@ -267,15 +337,15 @@ public class CrystalFXController : FXController
         float dist = length * 2;
 
         Vector3 direction = UnityEngine.Random.onUnitSphere;
-        Ray ray = new Ray(transform.position + direction * length,-direction);
+        Ray ray = new Ray(transform.position + direction * length, -direction);
         RaycastHit hit;
-        
+
         Physics.Raycast(ray, out hit, dist);
         return hit;
     }
 
-// detect objects 
-private void OnTriggerEnter(Collider other)
+    // detect objects 
+    private void OnTriggerEnter(Collider other)
     {
 
         if (other != null && AreaCollider.radius > 0.01)
