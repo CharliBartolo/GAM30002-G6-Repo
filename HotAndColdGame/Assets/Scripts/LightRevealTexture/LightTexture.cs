@@ -7,6 +7,7 @@ using UnityEngine;
 public class LightTexture : MonoBehaviour
 {
     // public crystal
+
     public CrystalBehaviour crystal;
     // public Transform lightSource;
     private Transform[] spotlights;
@@ -46,7 +47,7 @@ public class LightTexture : MonoBehaviour
         if (spotlight != null)
         {
             SetShaderProperties();
-            SetRange(crystal.CurrentTemperature);
+            SetRange((crystal.CurrentTemperature * crystal.GetComponent<CrystalFXController>().effectRadius/10)/2);
         }
     }
 
@@ -84,12 +85,13 @@ public class LightTexture : MonoBehaviour
     {
 
         // scale spotlight range to temperature range
-        float OldRange = (100 - 0);
-        float NewRange = (10 - 0);
-        float NewValue = (((range - 0) * NewRange) / OldRange) + 0;
+        float OldRange = 100;
+        float NewRange = 10;
+        float NewValue = (range * NewRange) / OldRange;
 
-        //spotlight.GetComponent<Light>().range = Mathf.Abs(NewValue);
         spotlight.GetComponent<Light>().range = Mathf.Abs(NewValue);
+
+        //spotlight.GetComponent<Light>().range = crystal.transform.Find("EffectSphere").transform.localScale.x;
 
         if (range > 0)
         {
@@ -143,7 +145,6 @@ public class LightTexture : MonoBehaviour
             m[index].SetVector("_InnerLightColorInside", _color);
         }
        
-           
     }
 
     // set shader properties
