@@ -21,8 +21,8 @@ public class FXController : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
-        Crystal_Hot = GameMaster.instance.colourPallete.Positive;
-        Crystal_Cold = GameMaster.instance.colourPallete.Negative;
+        Crystal_Hot = GameMaster.instance.colourPallete.Positive * 2;
+        Crystal_Cold = GameMaster.instance.colourPallete.Negative * 2;
         Crystal_Neutral = GameMaster.instance.colourPallete.Neutral;
 
         Anim = GetComponent<Animator>();   
@@ -39,8 +39,8 @@ public class FXController : MonoBehaviour
     // perform FX
     public virtual void PerformFX()
     {
-        Crystal_Hot = GameMaster.instance.colourPallete.Positive;
-        Crystal_Cold = GameMaster.instance.colourPallete.Negative;
+        Crystal_Hot = GameMaster.instance.colourPallete.Positive * 2;
+        Crystal_Cold = GameMaster.instance.colourPallete.Negative * 2;
         Crystal_Neutral = GameMaster.instance.colourPallete.Neutral;
     }
 

@@ -15,6 +15,7 @@ public class GunFXController : FXController
 
     // Gun variables 
     public RayCastShootComplete gun;
+    public GameObject gun_obj;
     private bool switchingMode;
 
     // Gun components
@@ -27,6 +28,16 @@ public class GunFXController : FXController
     // Gun emissive components
     public GameObject[] emissiveLights;
 
+    private bool inspectWeapon;
+    private bool inspectingWeapon;
+    private bool inspectingWeaponComplete;
+
+    public enum WeaponState { Idle, TriggerPressed, TriggerReleased, Inspect, SwitchMode}
+
+    public WeaponState weaponState;
+
+    public int power;
+    float startRotation;
 
     // Start is called before the first frame update
     public override void Start()
@@ -54,17 +65,19 @@ public class GunFXController : FXController
         case1.sharedMaterial.color = Crystal_Cold;
         case2.sharedMaterial.color = Crystal_Hot;
         SetBackCrystal();
+
+
+        weaponState = WeaponState.Inspect;
+        NextState();
+        inspectingWeapon = true;
+        startRotation = CrystalCase.transform.eulerAngles.z;
     }
 
     // Update is called once per frame
     void Update()
     {
         PerformFX();
-
-       
     }
-
-
 
 
     // perform FX
@@ -84,53 +97,163 @@ public class GunFXController : FXController
 
         // update cased crystals
         Renderer case1 = CrystalCase1.GetComponent<Renderer>();
-        if (case1.sharedMaterial.color != Crystal_Cold)
+        Renderer case2 = CrystalCase2.GetComponent<Renderer>();
+        case1.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+        case2.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+
+    }
+
+    // weapon states
+    IEnumerator IdleState()
+    {
+        Debug.Log("Idle: Enter");
+        gun_obj.GetComponent<Animator>().Play("Idle");
+
+        while (weaponState == WeaponState.Idle)
         {
-           
-            Renderer case2 = CrystalCase2.GetComponent<Renderer>();
-            case1.sharedMaterial.color = Crystal_Cold;
-            case2.sharedMaterial.color = Crystal_Hot;
+            // do state stuff
+            yield return 0;
         }
-       
+        Debug.Log("Idle: Exit");
+        NextState();
+    }
+
+    IEnumerator TriggerPressedState()
+    {
+        Debug.Log("TriggerPressed: Enter");
+        gun_obj.GetComponent<Animator>().Play("TriggerPress");
+
+        while (weaponState == WeaponState.TriggerPressed)
+        {
+            // do state stuff
+            //RotateAmmo();
+            //CrystalCase.transform.DOLocalRotate(new Vector3(0, 0, CrystalCase.transform.rotation.z + 180), delay, RotateMode.Fast);
+            yield return 0;
+        }
+        Debug.Log("TriggerPressed: Exit");
+        NextState();
+    }
+
+    IEnumerator TriggerReleasedState()
+    {
+        Debug.Log("TriggerReleased: Enter");
+        gun_obj.GetComponent<Animator>().Play("TriggerRelease");
+
+        while (weaponState == WeaponState.TriggerReleased)
+        {
+            // do state stuff
+            if (AnimationComplete("TriggerRelease"))
+                weaponState = WeaponState.Idle;
+
+            yield return 0;
+        }
+        Debug.Log("TriggerReleased: Exit");
+        NextState();
+    }
+
+    IEnumerator InspectState()
+    {
+        Debug.Log("Inspect: Enter");
+        gun_obj.GetComponent<Animator>().Play("InspectTool");
+
+        while (weaponState == WeaponState.Inspect)
+        {
+            // do state stuff
+
+            if (AnimationComplete())
+                weaponState = WeaponState.Idle;
+               
+            yield return 0;
+        }
+        Debug.Log("Inspect: Exit");
+        NextState();
+    }
+
+    IEnumerator SwitchModeState()
+    {
+        Debug.Log("SwitchMode: Enter");
+        gun_obj.GetComponent<Animator>().Play("SwitchMode");
+        //StartCoroutine(RotateCrystalCase(0.5f));
+        
+        
+        
+        float midRotation = startRotation + 360f;
+        float t = 0;
+
+        StartCoroutine(RotateCrystalCase(0.5f));
+
+        while (weaponState == WeaponState.SwitchMode)
+        {
+            // do state stuff
+
+            //Rotate Ammo;
+           
+
+            /*float t = 0.0f;
+            while (t < 0.5f)
+            {
+                t += Time.deltaTime;
+                float zRotation = Mathf.Lerp(startRotation, midRotation, t / 0.5f) % 360;
+                CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, zRotation);
+
+            }*/
+
+            if (AnimationComplete("SwitchMode"))
+            {
+                float endRotation = startRotation + 180f;
+                CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, endRotation);
+                startRotation = CrystalCase.transform.eulerAngles.z;
+                FinishSwitchingMode();
+                weaponState = WeaponState.Idle;
+            }
+
+            Debug.Log("Playing switch animation");
+            yield return 0;
+        }
+        Debug.Log("SwitchMode: Exit");
+        NextState();
+    }
+
+    void NextState()
+    {
+        string methodName = weaponState.ToString() + "State";
+        System.Reflection.MethodInfo info = GetType().GetMethod(methodName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        StartCoroutine((IEnumerator)info.Invoke(this, null));
+    }
+
+    public virtual bool AnimationComplete()
+    {
+        return (gun_obj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !gun_obj.GetComponent<Animator>().IsInTransition(0));
+    }
+
+    public virtual bool AnimationComplete(string animationName)
+    {
+        return (gun_obj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName(animationName) && gun_obj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !gun_obj.GetComponent<Animator>().IsInTransition(0));
+    }
+
+    public void WeaponInspected()
+    {
+        inspectingWeapon = false;
     }
 
     void AnimateGunTool()
     {
-        if (!gun.TriggerHeld)
+        if(!switchingMode)
         {
-            if (triggerPressed && !triggerReleased)
+            if (gun.TriggerHeld)
             {
-                triggerPressed = false;
-                triggerReleased = true;
-                //Debug.Log("TRIGGER RELEASED");
+                if (weaponState != WeaponState.TriggerPressed && weaponState != WeaponState.Inspect)
+                {
+                    weaponState = WeaponState.TriggerPressed;
+                }
             }
-            if(gun!= null)
+            else
             {
-                if (!triggerReleased && !triggerReleased)
-                    gun.GetComponent<Animator>().Play("Idle");
+                if (weaponState == WeaponState.TriggerPressed)
+                {
+                    weaponState = WeaponState.TriggerReleased;
+                }
             }
-           
-        }
-        else
-        {
-            if (!triggerPressed && !triggerReleased)
-            {
-                triggerPressed = true;
-                //Debug.Log("TRIGGER PRESSED");
-            }
-        }
-
-
-        if (triggerPressed && !triggerReleased)
-        {
-            if (gun != null)
-                gun.GetComponent<Animator>().Play("TriggerPress");
-        }
-
-        if (triggerReleased)
-        {
-            triggerReleased = false;
-
         }
     }
 
@@ -176,7 +299,7 @@ public class GunFXController : FXController
         {
             foreach (var item in renderers)
             {
-                item.material.color = Crystal_Neutral;
+                item.material.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
             }
         }
         else
@@ -186,7 +309,7 @@ public class GunFXController : FXController
             {
                 foreach (var item in renderers)
                 {
-                    item.material.color = Crystal_Cold;
+                    item.material.SetColor("_SurfaceAlphaColor", Crystal_Cold);
                 }
                
             }
@@ -194,7 +317,7 @@ public class GunFXController : FXController
             {
                 foreach (var item in renderers)
                 {
-                    item.material.color = Crystal_Hot;
+                    item.material.SetColor("_SurfaceAlphaColor", Crystal_Hot);
                 }
             }
         }
@@ -205,17 +328,17 @@ public class GunFXController : FXController
     {
         if(switchingMode)
         {
-            BackCrystal.GetComponentInChildren<Renderer>().material.color = Crystal_Neutral;
+            BackCrystal.GetComponentInChildren<Renderer>().material.SetColor("_SurfaceAlphaColor",Crystal_Neutral);  
         }
         else
         {
             if (gun.cold)
             {
-                BackCrystal.GetComponentInChildren<Renderer>().material.color = Crystal_Cold;
+                BackCrystal.GetComponentInChildren<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Cold);
             }
             else
             {
-                BackCrystal.GetComponentInChildren<Renderer>().material.color = Crystal_Hot;
+                BackCrystal.GetComponentInChildren<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Hot);
             }
         }
     }
@@ -224,42 +347,63 @@ public class GunFXController : FXController
     public void CheckForModeSwitch()
     {
         // get gun switch bool 
-        if(gun.ModeSwitched)
+        if(gun.ModeSwitched && !switchingMode)
         {
             switchingMode = true;
             // disable shooting
             DisableShooting();
+
         }
 
         // while switching mode 
         if(switchingMode)
         {
+            if (weaponState != WeaponState.SwitchMode)
+                weaponState = WeaponState.SwitchMode;
             // perform ammo rotation
-            RotateAmmo();
+            //RotateAmmo();
             
-            // count through delay time and reenable shooting, and set switching to off
+           /* // count through delay time and reenable shooting, and set switching to off
             delayTimer += Time.deltaTime;
             if (delayTimer > delay)
             {
                 EnableShooting();
                 switchingMode = false;
                 delayTimer = 0;
-            }
+            }*/
         }
     }
 
     // rotate the ammo case
-    void RotateAmmo()
+    IEnumerator RotateCrystalCase(float duration)
     {
-        if (gun.cold)
+        /* Quaternion startRot = CrystalCase.transform.rotation;
+         float t = 0.0f;
+         while (t < duration)
+         {
+             t += Time.deltaTime;
+             CrystalCase.transform.rotation = startRot * Quaternion.AngleAxis(t / duration * 360f, CrystalCase.transform.forward); //or transform.right if you want it to be locally based
+             yield return null;
+         }
+         CrystalCase.transform.rotation = startRot + new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, CrystalCase.transform.eulerAngles.x +180);
+ */
+        float startRotation = CrystalCase.transform.eulerAngles.z;
+        float endRotation = startRotation + 540.0f;
+        float t = 0.0f;
+        while (t < duration)
         {
-            CrystalCase.transform.DOLocalRotate(new Vector3(0, 0, CrystalCase.transform.rotation.z + 0), delay, RotateMode.Fast);
+            t += Time.deltaTime;
+            float zRotation = Mathf.Lerp(startRotation, endRotation, t / duration);
+            CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, zRotation);
+            yield return null;
         }
-        else
-        {
-            CrystalCase.transform.DOLocalRotate(new Vector3(0, 0, CrystalCase.transform.rotation.z + 180), delay, RotateMode.Fast);
+        CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, endRotation);
+    }
 
-        }
+    void FinishSwitchingMode()
+    {
+        switchingMode = false;
+        EnableShooting();
     }
     // enable shooting
     void EnableShooting()

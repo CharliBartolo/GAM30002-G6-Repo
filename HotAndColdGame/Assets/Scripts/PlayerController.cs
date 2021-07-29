@@ -9,26 +9,48 @@ public class PlayerController : MonoBehaviour, IConditions
     public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}    
 
     [Header("Player Control Settings")]    
-    public float movementSpeed = 50f;
-    public float coldMoveSpeedMod = 1.2f;
+    public float movementSpeed = 20f;
     public float speedCapSmoothFactor = 20f;
     public float jumpStrength = 10f;
-    public float airSpeedMod = 0.02f;
-    public float hotAirSpeedMod = 0.1f;
-    public float velocityCap = 8f;
-    public float coldVelocityCap = 16f;
+    public float airSpeed = 0.02f; 
+    public Vector2 velocityCap = new Vector2 (6f, 20f); 
+    public float hotGravMod = 1f;
     public float interactRange = 2f;
-    private Vector3 lateralVelocity;
+    private Vector3 horizVelocity;
+    private Vector3 vertVelocity;
     private float[] playerFriction = new float[2];
+
+    [Header("Player Condition Control Settings")]
+    public float baseMovementSpeed = 20f;
+    public float coldMoveSpeedMod = 1.2f;
+    public float hotMoveSpeedMod = 1f;
+
+    public float baseAirSpeed = 0.02f;
+    public float coldAirSpeedMod = 1f;
+    public float hotAirSpeedMod = 5f;
+
+    public float baseJumpStrength = 10f;
+    public float hotJumpStrengthMod = 1.4f;
+    public float coldJumpStrengthMod = 1f;
+
+    public Vector2 baseVelocityCap = new Vector2 (8f, 20f);
+    public Vector2 coldVelocityCapMod = new Vector2 (2f, 1f);
+    public Vector2 hotVelocityCapMod = new Vector2 (0.75f, 0.5f);   
+
+    public float baseSpeedCapSmoothFactor = 15f;
+    public float hotSpeedCapSmoothMod = 0.2f; 
+    public float coldSpeedCapSmoothMod = 1f; 
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
     public bool isGunEnabled = true;
     [SerializeField] private bool isGrounded;
+    private bool isClimbing = false;
     private RaycastHit groundedHit;
     public PlayerState playerControlState = PlayerState.MoveAndLook;
     public List<string> playerInventory;
     [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
+    private bool isConditionChanging = false;    
 
     [Header("References")]    
     public Camera playerCam;
@@ -59,7 +81,12 @@ public class PlayerController : MonoBehaviour, IConditions
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         _activeConditions = new List<IConditions.ConditionTypes>();
-        playerInventory = new List<string>();          
+        playerInventory = new List<string>();  
+
+        baseMovementSpeed = movementSpeed;            
+        baseJumpStrength = jumpStrength;
+        baseAirSpeed = airSpeed;
+        baseVelocityCap = velocityCap;               
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
@@ -119,6 +146,7 @@ public class PlayerController : MonoBehaviour, IConditions
                 break;
         }       
 
+        // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it  
         if (currentInteractingObject != null)
         {
             currentInteractingObject.OnInteracting();
@@ -126,7 +154,10 @@ public class PlayerController : MonoBehaviour, IConditions
     }
 
     private void FixedUpdate() 
-    {
+    {        
+        ExecuteConditions();
+        RemoveConditionsIfReturningToNeutral();       
+
         switch (playerControlState)
         {
             case (PlayerState.ControlsDisabled):                
@@ -144,20 +175,8 @@ public class PlayerController : MonoBehaviour, IConditions
                 break;
         }
 
-        // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it 
-        
-        // This should be refactored into the condition code, not the update loop
-        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
-        {
-            VelocityCap(coldVelocityCap);
-        }
-        else
-        {
-            VelocityCap(velocityCap);
-        }
-
-        ExecuteConditions();
-        RemoveConditionsIfReturningToNeutral();
+        VelocityClamp();
+        SetPlayerFriction();
     }
 
     // Input functions 
@@ -165,53 +184,27 @@ public class PlayerController : MonoBehaviour, IConditions
     void MovePlayer(Vector2 stickMovementVector)
     {
         // Translate 2d analog movement to 3d vector movement            
-        Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);    
-
+        Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);   
         movementVector = transform.TransformDirection(movementVector);
 
         // Reflect along surface if grounded?
         if (isGrounded)
         {
             movementVector = Vector3.ProjectOnPlane(movementVector, groundedHit.normal);
-            Debug.DrawRay(transform.position, movementVector * 100);
+            //Debug.DrawRay(transform.position, movementVector * 100);
+        }
+        else
+        {            
+            movementVector *= airSpeed;
         }
 
          // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
         if (movementVector.magnitude > 1f)
         {
             movementVector = movementVector.normalized;
-        }                
+        } 
 
-        // If airborne, dampen movement force
-        if (!isGrounded)
-        {
-            // If player airborne, remove friction
-            regularPhysicMaterial.staticFriction = 0f;
-            regularPhysicMaterial.dynamicFriction = 0f;
-
-            // This should be refactored into the condition code, not the update loop
-            // If player is in ANTIGRAV crystal range, give more control
-            // NOTE: This may be bugged for gamepads / controllers if normalizing again
-            if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
-                //movementVector = movementVector.normalized * hotAirSpeedMod;
-                movementVector *= hotAirSpeedMod;
-            else
-                //movementVector = movementVector.normalized * airSpeedMod;
-                movementVector *= airSpeedMod;
-        }  
-        else
-        {
-            regularPhysicMaterial.staticFriction = playerFriction[0];
-            regularPhysicMaterial.dynamicFriction = playerFriction[1];
-        }
-
-        // Factoring in frame rate
-        //movementVector = movementVector * Time.deltaTime * 50;
-
-        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
-            playerRB.AddForce(movementVector * movementSpeed * coldMoveSpeedMod, ForceMode.Acceleration);
-        else
-            playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);    
+        playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);
     }
 
     void Jump(InputAction.CallbackContext context)
@@ -222,7 +215,52 @@ public class PlayerController : MonoBehaviour, IConditions
             playerRB.AddForce(Vector3.up * jumpStrength, ForceMode.VelocityChange);
         }
     }
+    
+    private void OnCollisionStay(Collision other) 
+    {
+        //Debug.Log("Collision is happening");
+        Vector3 normal = other.GetContact(0).normal;
+        Vector3 horForward = playerCam.transform.forward;
+        horForward.y = 0f;
+        horForward.Normalize();
 
+        // If we're hitting the wall at no more than a 45 degree angle...
+        if (Vector3.Angle(horForward, -normal) <= 45)
+        {
+            bool ledgeAvailable = true;
+            
+            RaycastHit hit;
+            // If the wall's too tall, don't climb
+            if (Physics.Raycast(playerCam.transform.position + Vector3.up * 0.5f, -normal, out hit, 1, LayerMask.GetMask("Default")))
+            {
+                ledgeAvailable = false;
+            }
+
+            if (ledgeAvailable)
+            {
+                Debug.Log("Ledge is available!");                
+                Vector3 currentPos = playerCam.transform.position + Vector3.up * 0.5f + Vector3.down * 0.05f;
+                while (!Physics.Raycast(currentPos, -normal, out hit, 1, LayerMask.GetMask("Default")))
+                {
+                    currentPos += Vector3.down * 0.05f;
+                    if (currentPos.y < playerCam.transform.position.y - 2f)
+                        break;
+                }
+
+                
+                if (playerInput.actions.FindAction("Jump").ReadValue<float>() > 0f && isClimbing == false)
+                {
+                    //isClimbing = true;
+                    //Debug.Log("Direction force is applied in: " + (currentPos - transform.position));
+                    playerRB.AddForce(Vector3.up * 30, ForceMode.Impulse);
+                }
+                
+            }
+        }
+
+
+    }
+    
     void SetShootingEnabled(bool setToEnable)
     {
         if (setToEnable)
@@ -347,20 +385,42 @@ public class PlayerController : MonoBehaviour, IConditions
         //Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
     } 
 
-    void VelocityCap(float cappedValue)
+    void VelocityClamp()
     {
-        //Take sideways velocity
-        lateralVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
-
-        //Take downwards velocity
-        Vector3 downwardVelocityVector = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));
+        horizVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
+        vertVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));
         
-        if (lateralVelocity.magnitude > cappedValue)
-        {
-            // Technically inverts how a Lerp should work, but should be frame rate independent. 
+        if (horizVelocity.magnitude > velocityCap.x && velocityCap.x > 0f)
+        { 
             // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
-            lateralVelocity = Vector3.Lerp(lateralVelocity, lateralVelocity.normalized * cappedValue, 1 - Mathf.Exp(-speedCapSmoothFactor * Time.deltaTime));
-            playerRB.velocity = lateralVelocity + downwardVelocityVector;
+            horizVelocity = Vector3.Lerp(horizVelocity, horizVelocity.normalized * velocityCap.x, 1 - Mathf.Exp(-speedCapSmoothFactor * Time.deltaTime));            
+        }
+
+        if (vertVelocity.magnitude > velocityCap.y && velocityCap.y > 0f)
+        { 
+            // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
+            vertVelocity = Vector3.Lerp(vertVelocity, vertVelocity.normalized * velocityCap.y, 1 - Mathf.Exp(-speedCapSmoothFactor * Time.deltaTime));            
+        }
+
+        playerRB.velocity = horizVelocity + vertVelocity;
+    }
+
+    void SetPlayerFriction()
+    {
+        if (isGrounded)
+        {
+            if (regularPhysicMaterial.staticFriction < playerFriction[0] || regularPhysicMaterial.dynamicFriction < playerFriction[1])
+            {
+                regularPhysicMaterial.staticFriction = Mathf.Clamp(regularPhysicMaterial.staticFriction +
+                    Mathf.Lerp(0f, playerFriction[0], Time.deltaTime), 0, playerFriction[0]);
+                regularPhysicMaterial.dynamicFriction = Mathf.Clamp(regularPhysicMaterial.dynamicFriction +
+                    Mathf.Lerp(0f, playerFriction[1], Time.deltaTime), 0, playerFriction[1]);
+            }            
+        }
+        else
+        {
+            regularPhysicMaterial.staticFriction = 0f;
+            regularPhysicMaterial.dynamicFriction = 0f;
         }
     }
  
@@ -399,29 +459,22 @@ public class PlayerController : MonoBehaviour, IConditions
         GUILayout.EndArea();
     }
 
-    //Added IConditions
     public void AddCondition(IConditions.ConditionTypes nameOfCondition)
     {
         if (!ActiveConditions.Contains(nameOfCondition))
         {
             _activeConditions.Add(nameOfCondition);
-        }
-        /*
-        foreach (IConditions.ConditionTypes c in ActiveConditions)
-        {
-            if (c == nameOfCondition)
-            {
-                return;
-            }
-            _activeConditions.Add(nameOfCondition);
-        }
-        */
+            isConditionChanging = true;
+        }        
     }
 
     public void RemoveCondition(IConditions.ConditionTypes nameOfCondition)
     {
         if (ActiveConditions.Contains(nameOfCondition))
+        {
             _activeConditions.Remove(nameOfCondition);
+            isConditionChanging = true;
+        }       
     }
 
     // In future, could edit list to store separate condition timers for each. For now, using isReturningToNeutral works.
@@ -437,7 +490,11 @@ public class PlayerController : MonoBehaviour, IConditions
     public List<IConditions.ConditionTypes> ActiveConditions
     {
         get => _activeConditions;
-        set => _activeConditions = value;
+        set
+        {
+            _activeConditions = value;
+            isConditionChanging = true;
+        }        
     }
 
     public void ExecuteConditions()
@@ -446,7 +503,7 @@ public class PlayerController : MonoBehaviour, IConditions
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
         {
             UpwardForce();
-            ResetSlip();
+            //ResetSlip();
         }
 
         // If player is cold and NOT hot
@@ -460,35 +517,47 @@ public class PlayerController : MonoBehaviour, IConditions
                 ResetSlip();
             */
         }
+        
+        //if (!_prevConditions.Equals(_activeConditions))
+        if (isConditionChanging)
+        {
+            Debug.Log("Conditions have changed!");
+            UpdateControlSettingsBasedOnConditions();
+            isConditionChanging = false;
+        }    
+    }
+
+    public void UpdateControlSettingsBasedOnConditions()
+    {
+        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
+        {
+            movementSpeed = baseMovementSpeed * hotMoveSpeedMod;            
+            jumpStrength = baseJumpStrength * hotJumpStrengthMod;
+            airSpeed = baseAirSpeed * hotAirSpeedMod;  
+            velocityCap = baseVelocityCap * hotVelocityCapMod;    
+        }
+        // If player is cold and NOT hot
+        else if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
+        {   
+            movementSpeed = baseMovementSpeed * coldMoveSpeedMod;            
+            jumpStrength = baseJumpStrength * coldJumpStrengthMod;
+            airSpeed = baseAirSpeed * coldAirSpeedMod; 
+            velocityCap = baseVelocityCap * coldVelocityCapMod;          
+        }
         else
         {
-            //ResetSlip();
+            movementSpeed = baseMovementSpeed;            
+            jumpStrength = baseJumpStrength;
+            airSpeed = baseAirSpeed;  
+            velocityCap = baseVelocityCap;    
         }
-
- /*       foreach (IConditions.ConditionTypes c in ActiveConditions)
-        {
-            switch (c)
-            {
-                case IConditions.ConditionTypes.ConditionCold:
-                    IcySlip();
-                    break;
-
-                case IConditions.ConditionTypes.ConditionHot:
-                    UpwardForce();
-                    ResetSlip();
-                    break;
-                default:
-                    ResetSlip();
-                    break;
-            }
-        }*/
     }
 
     public void UpwardForce()
     {
         if (GetComponent<Rigidbody>() != null)
         {
-            GetComponent<Rigidbody>().AddForce(-Physics.gravity * Time.deltaTime * 25f, ForceMode.Acceleration);
+            GetComponent<Rigidbody>().AddForce(-Physics.gravity * hotGravMod * Time.deltaTime * 25f, ForceMode.Acceleration);
         }
     }
 
