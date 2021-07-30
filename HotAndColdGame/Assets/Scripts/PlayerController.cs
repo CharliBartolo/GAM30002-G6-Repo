@@ -191,7 +191,7 @@ public class PlayerController : MonoBehaviour, IConditions
         if (isGrounded)
         {
             movementVector = Vector3.ProjectOnPlane(movementVector, groundedHit.normal);
-            //Debug.DrawRay(transform.position, movementVector * 100);
+            Debug.DrawRay(transform.position, movementVector * 100);
         }
         else
         {            

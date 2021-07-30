@@ -47,7 +47,8 @@ public class LightTexture : MonoBehaviour
         if (spotlight != null)
         {
             SetShaderProperties();
-            SetRange((crystal.CurrentTemperature * crystal.GetComponent<CrystalFXController>().effectRadius/10)/2);
+            //SetRange((crystal.CurrentTemperature * crystal.GetComponent<CrystalFXController>().effectRadius/10)/2);
+            SetRange(crystal.CurrentTemperature * crystal.GetComponent<CrystalFXController>().effectRadius * crystal.GetComponent<Transform>().localScale.x / 20f);
         }
     }
 
@@ -85,11 +86,12 @@ public class LightTexture : MonoBehaviour
     {
 
         // scale spotlight range to temperature range
-        float OldRange = 100;
-        float NewRange = 10;
-        float NewValue = (range * NewRange) / OldRange;
+        //float OldRange = 100;
+        //float NewRange = 10;
+        //float NewValue = (range * NewRange) / OldRange;
 
-        spotlight.GetComponent<Light>().range = Mathf.Abs(NewValue);
+        //spotlight.GetComponent<Light>().range = Mathf.Abs(NewValue);
+        spotlight.GetComponent<Light>().range = Mathf.Abs(range);
 
         //spotlight.GetComponent<Light>().range = crystal.transform.Find("EffectSphere").transform.localScale.x;
 

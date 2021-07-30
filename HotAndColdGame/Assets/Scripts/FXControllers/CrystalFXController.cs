@@ -27,6 +27,7 @@ public class CrystalFXController : FXController
     public override void Start()
     {
         base.Start();
+        
         AffectedObjects = new List<GameObject>();
         MainCrystal = GetComponent<CrystalBehaviour>();
         MainCrystaLight = transform.Find("Area Light").GetComponent<Light>();
@@ -50,6 +51,8 @@ public class CrystalFXController : FXController
     void Update()
     {
         PerformFX();
+
+        transform.localScale = new Vector3 (transform.localScale.x, transform.localScale.x, transform.localScale.x) ;       
 
         /*if(AreaColliderAreaCollider.radius > 0.2f)
             Instantiate(CrystalGrowth,GetPointOnMesh().point, Quaternion.FromToRotation(Vector3.forward, GetPointOnMesh().normal));
@@ -151,10 +154,13 @@ public class CrystalFXController : FXController
 
     public void GrowAreaCollider()
     {
+        //AreaCollider.radius = Math.Abs(CrystalTemp()) * effectRadius / 100f;
         //AreaCollider.radius = Math.Abs(CrystalTemp()) / 100;
         //AreaCollider.gameObject.transform.localScale += Vector3.one * AreaCollider.radius;
-
-        AreaCollider.gameObject.transform.localScale = Vector3.one * Math.Abs(CrystalTemp()/10) * (effectRadius/10);
+        
+        //AreaCollider.gameObject.transform.localScale = Vector3.one * Math.Abs(CrystalTemp()/10) * (effectRadius/10);
+        AreaCollider.gameObject.transform.localScale = Vector3.one * Math.Abs(CrystalTemp()) * effectRadius / 10f;        
+        //effectRadius = 10 * transform.localScale.x;
     }
 
     // get back crystal color
@@ -256,7 +262,41 @@ public class CrystalFXController : FXController
         return hit;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {                 
+        if (other.transform.parent != this.gameObject)
+        {            
+            if (other.gameObject.tag != "Player")
+            {
+                if (other.transform.parent?.gameObject.tag != "Player")
+                {
+                    //Debug.Log("COLLISION: " + other.gameObject.name);
+                    if (other.gameObject.GetComponent<MeshRenderer>() != null)
+                    {
+                        if (other.gameObject.GetComponent<CrystalFXController>() == null)
+                        {
+                            if (other.gameObject.transform.parent?.GetComponent<CrystalFXController>() == null)
+                            {
+                                //AddLightTextureComponent(other);
+                                // if not have lighttexture, add it
+                                if (other.gameObject.GetComponent<LightTexture>() == null)
+                                {
+                                    AddLightTextureComponent(other);
+                                }
+                                else
+                                {
+                                    AddExtraLightTextureComponent(other);
+                                }
+                            }
+                        }
+                    }
+                }
+            }            
+        }       
+    }
+
     // detect objects 
+    /*
     private void OnTriggerEnter(Collider other)
     {
 
@@ -301,6 +341,7 @@ public class CrystalFXController : FXController
             }
         }
     }
+    */
 
     private void OnTriggerExit(Collider other)
     {
