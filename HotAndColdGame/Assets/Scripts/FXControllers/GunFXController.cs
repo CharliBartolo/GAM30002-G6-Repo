@@ -12,7 +12,6 @@ public class GunFXController : FXController
     private bool triggerReleased;
     private bool triggerPressed;
    
-
     // Gun variables 
     public RayCastShootComplete gun;
     public GameObject gun_obj;
@@ -36,7 +35,6 @@ public class GunFXController : FXController
 
     public WeaponState weaponState;
 
-    public int power;
     float startRotation;
 
     // Start is called before the first frame update
@@ -106,7 +104,7 @@ public class GunFXController : FXController
     // weapon states
     IEnumerator IdleState()
     {
-        Debug.Log("Idle: Enter");
+        //Debug.Log("Idle: Enter");
         gun_obj.GetComponent<Animator>().Play("Idle");
 
         while (weaponState == WeaponState.Idle)
@@ -114,13 +112,13 @@ public class GunFXController : FXController
             // do state stuff
             yield return 0;
         }
-        Debug.Log("Idle: Exit");
+        //Debug.Log("Idle: Exit");
         NextState();
     }
 
     IEnumerator TriggerPressedState()
     {
-        Debug.Log("TriggerPressed: Enter");
+        //Debug.Log("TriggerPressed: Enter");
         gun_obj.GetComponent<Animator>().Play("TriggerPress");
 
         while (weaponState == WeaponState.TriggerPressed)
@@ -130,13 +128,13 @@ public class GunFXController : FXController
             //CrystalCase.transform.DOLocalRotate(new Vector3(0, 0, CrystalCase.transform.rotation.z + 180), delay, RotateMode.Fast);
             yield return 0;
         }
-        Debug.Log("TriggerPressed: Exit");
+        //Debug.Log("TriggerPressed: Exit");
         NextState();
     }
 
     IEnumerator TriggerReleasedState()
     {
-        Debug.Log("TriggerReleased: Enter");
+        //Debug.Log("TriggerReleased: Enter");
         gun_obj.GetComponent<Animator>().Play("TriggerRelease");
 
         while (weaponState == WeaponState.TriggerReleased)
@@ -147,13 +145,13 @@ public class GunFXController : FXController
 
             yield return 0;
         }
-        Debug.Log("TriggerReleased: Exit");
+        //Debug.Log("TriggerReleased: Exit");
         NextState();
     }
 
     IEnumerator InspectState()
     {
-        Debug.Log("Inspect: Enter");
+        //Debug.Log("Inspect: Enter");
         gun_obj.GetComponent<Animator>().Play("InspectTool");
 
         while (weaponState == WeaponState.Inspect)
@@ -165,13 +163,13 @@ public class GunFXController : FXController
                
             yield return 0;
         }
-        Debug.Log("Inspect: Exit");
+        //Debug.Log("Inspect: Exit");
         NextState();
     }
 
     IEnumerator SwitchModeState()
     {
-        Debug.Log("SwitchMode: Enter");
+        //Debug.Log("SwitchMode: Enter");
         gun_obj.GetComponent<Animator>().Play("SwitchMode");
         //StartCoroutine(RotateCrystalCase(0.5f));
         
@@ -207,10 +205,10 @@ public class GunFXController : FXController
                 weaponState = WeaponState.Idle;
             }
 
-            Debug.Log("Playing switch animation");
+            //Debug.Log("Playing switch animation");
             yield return 0;
         }
-        Debug.Log("SwitchMode: Exit");
+        //Debug.Log("SwitchMode: Exit");
         NextState();
     }
 

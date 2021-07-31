@@ -23,7 +23,17 @@ public class MachineFXController : FXController
         emissiveMaterial  = GameMaster.instance.colourPallete.MachineEmissiveLights;
         foreach (var item in this.emissiveLights)
         {
-            item.GetComponent<Renderer>().sharedMaterial = emissiveMaterial;
+            if (item.GetComponentsInChildren<Renderer>() != null)
+            {
+                Renderer[] r = item.GetComponentsInChildren<Renderer>();
+                foreach (var obj in r)
+                {
+                    if(obj.GetComponentsInChildren<Renderer>() != null)
+                    {
+                        obj.GetComponentInChildren<Renderer>().sharedMaterial = emissiveMaterial;
+                    }
+                }
+            }
         }
     }
 
@@ -47,7 +57,8 @@ public class MachineFXController : FXController
     public void PlaySound()
     {
         // have pitch match current temperature
-        machine.GetComponent<AudioSource>().pitch = (float)Math.Abs((machine.CurrentTemperature) * 0.1);
+        if (machine.GetComponent<AudioSource>() != null)
+            machine.GetComponent<AudioSource>().pitch = (float)Math.Abs((machine.CurrentTemperature) * 0.1);
 
         if (Math.Abs(machine.CurrentTemperature) > 5)
         {
@@ -93,56 +104,52 @@ public class MachineFXController : FXController
     // set emmisive lights
     void SetEmissiveLights()
     {
-        // set crystals colour to neutral if not shooting or cannot shoot
-
-        /*if (machine.CurrentTemperature < -5)
-        {
-            foreach (var item in this.emissiveLights)
-            {
-                item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
-                item.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Cold * emissionValue * (Math.Abs(machine.CurrentTemperature)));
-            }
-        }
-        else if (machine.CurrentTemperature > 5)
-        {
-            foreach (var item in this.emissiveLights)
-            {
-                item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
-                item.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Hot * emissionValue * (Math.Abs(machine.CurrentTemperature)));
-            }
-        }
-        else
-        {
-            foreach (var item in this.emissiveLights)
-            {
-                item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Neutral;
-                item.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Neutral * 0f);
-            }
-        }*/
-
-
-
         switch (machine.CurrentTempState)
         {
             case ITemperature.tempState.Cold:
                 foreach (var item in this.emissiveLights)
                 {
-                    item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
-                    item.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Cold * emissionValue);
+                    if(item.GetComponentsInChildren<Renderer>()!= null)
+                    {
+                        Renderer[] r = item.GetComponentsInChildren<Renderer>();
+                        foreach (var obj in r)
+                        {
+                            obj.GetComponentInChildren<Renderer>().sharedMaterial.color = Crystal_Cold;
+                            obj.GetComponentInChildren<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Cold * emissionValue);
+                            //item.GetComponent<Renderer>().sharedMaterial.SetFloat("_EmissiveExposureWeight ",emissionValue);
+                        }
+                    }
+
                 }
                 break;
             case ITemperature.tempState.Neutral:
                 foreach (var item in this.emissiveLights)
                 {
-                    item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Neutral;
-                    item.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Neutral * 0f);
+                    if (item.GetComponentsInChildren<Renderer>() != null)
+                    {
+                        Renderer[] r = item.GetComponentsInChildren<Renderer>();
+                        foreach (var obj in r)
+                        {
+                            obj.GetComponentInChildren<Renderer>().sharedMaterial.color = Crystal_Neutral;
+                            obj.GetComponentInChildren<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Neutral * emissionValue);
+                            //item.GetComponent<Renderer>().sharedMaterial.SetFloat("_EmissiveExposureWeight ", 0f);
+                        }
+                    }
                 }
                 break;
             case ITemperature.tempState.Hot:
                 foreach (var item in this.emissiveLights)
                 {
-                    item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
-                    item.GetComponent<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Hot * emissionValue);
+                    if (item.GetComponentsInChildren<Renderer>() != null)
+                    {
+                        Renderer[] r = item.GetComponentsInChildren<Renderer>();
+                        foreach (var obj in r)
+                        {
+                            obj.GetComponentInChildren<Renderer>().sharedMaterial.color = Crystal_Hot;
+                            obj.GetComponentInChildren<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Hot * emissionValue);
+                            //item.GetComponent<Renderer>().sharedMaterial.SetFloat("_EmissiveExposureWeight ", emissionValue);
+                        }
+                    }
                 }
                 break;
         }

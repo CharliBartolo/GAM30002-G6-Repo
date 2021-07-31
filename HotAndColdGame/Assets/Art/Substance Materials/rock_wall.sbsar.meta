@@ -18,9 +18,12 @@ ScriptedImporter:
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://rock_wall\" label=\"\" >\n  <presetinput
       identifier=\"$outputsize\" uid=\"2299555124\" type=\"8\" value=\"9,9\" />\n 
-      <presetinput identifier=\"Moss_Amount\" uid=\"4196807052\" type=\"0\" value=\"0\"
-      />\n  <presetinput identifier=\"Snow\" uid=\"4197136033\" type=\"4\" value=\"0\"
-      />\n </sbspreset>\n"
+      <presetinput identifier=\"Moss_Amount\" uid=\"4196807052\" type=\"0\" value=\"0.29\"
+      />\n  <presetinput identifier=\"Moss_Contrast\" uid=\"4196807644\" type=\"0\"
+      value=\"0.32\" />\n  <presetinput identifier=\"Snow\" uid=\"4197136033\" type=\"4\"
+      value=\"0\" />\n  <presetinput identifier=\"Slope_Angle\" uid=\"4197136247\"
+      type=\"0\" value=\"0.126\" />\n  <presetinput identifier=\"Intensity\" uid=\"4197138302\"
+      type=\"0\" value=\"0.583\" />\n </sbspreset>\n"
     shaderName: HDRP/LitTessellation
     materialProperties:
       shader: {fileID: 4800000, guid: 756bac9090102564582875f4c7e30202, type: 3}
@@ -238,15 +241,15 @@ ScriptedImporter:
       - name: _EnergyConservingSpecularColor
         float: 1
       - name: _HeightAmplitude
-        float: 0.02
+        float: 0.11
       - name: _HeightCenter
-        float: 0.5
+        float: 0.90909094
       - name: _HeightMapParametrization
         float: 0
       - name: _HeightMax
         float: 1
       - name: _HeightMin
-        float: -1
+        float: -10
       - name: _HeightOffset
         float: 0
       - name: _HeightPoMAmplitude
@@ -276,7 +279,7 @@ ScriptedImporter:
       - name: _NormalMapSpace
         float: 0
       - name: _NormalScale
-        float: 1
+        float: 0.8
       - name: _OpaqueCullMode
         float: 2
       - name: _PPDLodThreshold
@@ -296,7 +299,7 @@ ScriptedImporter:
       - name: _Smoothness
         float: 0.5
       - name: _SmoothnessRemapMax
-        float: 1
+        float: 0.57
       - name: _SmoothnessRemapMin
         float: 0
       - name: _SpecularAAScreenSpaceVariance
