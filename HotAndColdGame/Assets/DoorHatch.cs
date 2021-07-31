@@ -62,8 +62,8 @@ public class DoorHatch : StateTriggered
                     {
                         Anim.Play("Open1");
                         state = DoorState.Open1;
-                        ActivateLight(-1);
-                        //DeactivateLight(1);
+                        //ActivateLight(-1);
+                        DeactivateLight(-1);
                         stateChanged = false;
                         Debug.Log("STATE CHANGED");
                     }
@@ -73,7 +73,9 @@ public class DoorHatch : StateTriggered
                     {
                         Anim.Play("Close1");
                         state = DoorState.Locked;
-                        DeactivateLight(-1);
+                        ActivateLight(-1);
+                        ActivateLight(1);
+                        //DeactivateLight(-1);
                         //DeactivateLight(1);
                         stateChanged = false;
                     }
@@ -94,7 +96,8 @@ public class DoorHatch : StateTriggered
                         state = DoorState.Open2;
                         Anim.Play("Open2");
                         //ActivateLight(-1);
-                        ActivateLight(1);
+                        DeactivateLight(1);
+                        //DeactivateLight(-1);
                         stateChanged = false;
                     }
                 }else if (state == DoorState.Open2)
@@ -103,7 +106,9 @@ public class DoorHatch : StateTriggered
                     {
                         state = DoorState.Open1;
                         Anim.Play("Close2");
-                        ActivateLight(-1);
+                        
+                        //ActivateLight(-1);
+                        ActivateLight(1);
                         //DeactivateLight(1);
                         stateChanged = false;
                     }
@@ -114,12 +119,42 @@ public class DoorHatch : StateTriggered
         }
     }
 
+
     public void InitialiseLights()
     {
-        DeactivateLight(-1);
-        DeactivateLight(1);
-    }
+        foreach (var item in EmmisiveLights_Positive)
+        {
+            Renderer[] rs = item.GetComponentsInChildren<Renderer>();
 
+            foreach (var r in rs)
+            {
+                if (r != null)
+                {
+                    r.sharedMaterial = new Material(emissiveMaterial);
+                }
+            }
+            //item.SetActive(true);
+        }
+
+        foreach (var item in EmmisiveLights_Negative)
+        {
+            Renderer[] rs = item.GetComponentsInChildren<Renderer>();
+
+            foreach (var r in rs)
+            {
+                if (r != null)
+                {
+                    r.sharedMaterial = new Material(emissiveMaterial);
+                }
+            }
+            //item.SetActive(true);
+        }
+
+        ActivateLight(-1);
+        ActivateLight(1);
+        //DeactivateLight(-1);
+        //DeactivateLight(1);
+    }
     public void ActivateLight(int light)
     {
         if (light == 1)
@@ -127,7 +162,6 @@ public class DoorHatch : StateTriggered
             foreach (var item in EmmisiveLights_Positive)
             {
                 Renderer[] rs = item.GetComponentsInChildren<Renderer>();
-
 
                 foreach (var r in rs)
                 {
@@ -145,7 +179,6 @@ public class DoorHatch : StateTriggered
             foreach (var item in EmmisiveLights_Negative)
             {
                 Renderer[] rs = item.GetComponentsInChildren<Renderer>();
-
 
                 foreach (var r in rs)
                 {
