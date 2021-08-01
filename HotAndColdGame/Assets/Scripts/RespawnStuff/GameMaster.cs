@@ -24,6 +24,11 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        lastCheckPointPos = GameObject.Find("Player").transform;
+    }
+
     public void LoadNextScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
