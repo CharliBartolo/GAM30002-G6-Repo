@@ -6,40 +6,71 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour, IConditions
 {
     [HideInInspector]
-    public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}    
+    public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}   
 
-    [Header("Player Control Settings")]    
-    public float movementSpeed = 20f;
-    public float speedCapSmoothFactor = 20f;
-    public float jumpStrength = 10f;
-    public float airSpeed = 0.02f; 
-    public Vector2 velocityCap = new Vector2 (6f, 20f); 
-    public float hotGravMod = 1f;
+    [System.Serializable]
+    public struct playerMovementSettings
+    {
+        public float movementSpeed;
+        public float speedCapSmoothFactor;
+        public float jumpStrength;
+        public float airSpeed; 
+        public Vector2 velocityCap;
+        public float antiGravMod; 
+
+        public playerMovementSettings(float movementSpeed, float speedCapSmoothFactor, float jumpStrength, float airSpeed, Vector2 velocityCap, float antiGravMod)
+        {
+            this.movementSpeed = movementSpeed;
+            this.speedCapSmoothFactor = speedCapSmoothFactor;
+            this.jumpStrength = jumpStrength;
+            this.airSpeed = airSpeed;
+            this.velocityCap = velocityCap;
+            this.antiGravMod = antiGravMod;
+        }
+    }  
+
+    [Header("Player Control Settings")]
+    public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2 (8f, 20f), 1f);    
     public float interactRange = 2f;
     private Vector3 horizVelocity;
     private Vector3 vertVelocity;
     private float[] playerFriction = new float[2];
+    
+    // Mouse Control Settings   
+    public Vector2 mouseSensitivity = new Vector2 (2, 2);
+    public Vector2 mouseSmoothing = new Vector2 (3,3);        
+    const float MIN_X = 0.0f;
+    const float MAX_X = 360.0f;
+    const float MIN_Y = -90.0f;
+    const float MAX_Y = 90.0f;    
+    private Vector2 _mouseAbsolute;
+    private Vector2 _mouseSmooth;  
+    // public float movementSpeed = 20f;
+    // public float speedCapSmoothFactor = 20f;
+    // public float jumpStrength = 10f;
+    // public float airSpeed = 0.02f; 
+    // public Vector2 velocityCap = new Vector2 (6f, 20f); 
 
     [Header("Player Condition Control Settings")]
-    public float baseMovementSpeed = 20f;
-    public float coldMoveSpeedMod = 1.2f;
-    public float hotMoveSpeedMod = 1f;
+    public playerMovementSettings baseMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2 (8f, 20f), 1f);
+    public playerMovementSettings hotMovementSettings = new playerMovementSettings(20f, 3f, 14f, 0.15f, new Vector2 (6f, 10f), 1f);
+    public playerMovementSettings coldMovementSettings = new playerMovementSettings(24f, 15f, 10f, 0.02f, new Vector2 (16f, 20f), 1f);    
 
-    public float baseAirSpeed = 0.02f;
-    public float coldAirSpeedMod = 1f;
-    public float hotAirSpeedMod = 5f;
-
-    public float baseJumpStrength = 10f;
-    public float hotJumpStrengthMod = 1.4f;
-    public float coldJumpStrengthMod = 1f;
-
-    public Vector2 baseVelocityCap = new Vector2 (8f, 20f);
-    public Vector2 coldVelocityCapMod = new Vector2 (2f, 1f);
-    public Vector2 hotVelocityCapMod = new Vector2 (0.75f, 0.5f);   
-
-    public float baseSpeedCapSmoothFactor = 15f;
-    public float hotSpeedCapSmoothMod = 0.2f; 
-    public float coldSpeedCapSmoothMod = 1f; 
+    // public float baseMovementSpeed = 20f;
+    // public float coldMoveSpeedMod = 1.2f;
+    // public float hotMoveSpeedMod = 1f;
+    // public float baseAirSpeed = 0.02f;
+    // public float coldAirSpeedMod = 1f;
+    // public float hotAirSpeedMod = 5f;
+    // public float baseJumpStrength = 10f;
+    // public float hotJumpStrengthMod = 1.4f;
+    // public float coldJumpStrengthMod = 1f;
+    // public Vector2 baseVelocityCap = new Vector2 (8f, 20f);
+    // public Vector2 coldVelocityCapMod = new Vector2 (2f, 1f);
+    // public Vector2 hotVelocityCapMod = new Vector2 (0.75f, 0.5f);   
+    // public float baseSpeedCapSmoothFactor = 15f;
+    // public float hotSpeedCapSmoothMod = 0.2f; 
+    // public float coldSpeedCapSmoothMod = 1f; 
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
@@ -64,16 +95,6 @@ public class PlayerController : MonoBehaviour, IConditions
     public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
     public PhysicMaterial regularPhysicMaterial;
 
-    [Header("Mouse Control Settings")]    
-    public Vector2 mouseSensitivity = new Vector2 (2, 2);
-    public Vector2 mouseSmoothing = new Vector2 (3,3);        
-    const float MIN_X = 0.0f;
-    const float MAX_X = 360.0f;
-    const float MIN_Y = -90.0f;
-    const float MAX_Y = 90.0f;    
-    private Vector2 _mouseAbsolute;
-    private Vector2 _mouseSmooth;    
-
     private void Awake() 
     {   
         playerFriction[0] = regularPhysicMaterial.staticFriction;
@@ -81,12 +102,12 @@ public class PlayerController : MonoBehaviour, IConditions
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         _activeConditions = new List<IConditions.ConditionTypes>();
-        playerInventory = new List<string>();  
-
-        baseMovementSpeed = movementSpeed;            
-        baseJumpStrength = jumpStrength;
-        baseAirSpeed = airSpeed;
-        baseVelocityCap = velocityCap;               
+        playerInventory = new List<string>();         
+        
+        // baseMovementSpeed = movementSpeed;            
+        // baseJumpStrength = jumpStrength;
+        // baseAirSpeed = airSpeed;
+        // baseVelocityCap = velocityCap;               
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
@@ -195,7 +216,8 @@ public class PlayerController : MonoBehaviour, IConditions
         }
         else
         {            
-            movementVector *= airSpeed;
+            //movementVector *= airSpeed;
+            movementVector *= currentMovementSettings.airSpeed;
         }
 
          // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
@@ -204,7 +226,8 @@ public class PlayerController : MonoBehaviour, IConditions
             movementVector = movementVector.normalized;
         } 
 
-        playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);
+        //playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);
+        playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed, ForceMode.Acceleration);
     }
 
     void Jump(InputAction.CallbackContext context)
@@ -212,7 +235,8 @@ public class PlayerController : MonoBehaviour, IConditions
         if (isGrounded)
         {
             //Debug.Log("Jump attempted");
-            playerRB.AddForce(Vector3.up * jumpStrength, ForceMode.VelocityChange);
+            //playerRB.AddForce(Vector3.up * jumpStrength, ForceMode.VelocityChange);
+            playerRB.AddForce(Vector3.up * currentMovementSettings.jumpStrength, ForceMode.VelocityChange);
         }
     }
     
@@ -388,18 +412,20 @@ public class PlayerController : MonoBehaviour, IConditions
     void VelocityClamp()
     {
         horizVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
-        vertVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));
+        vertVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));        
         
-        if (horizVelocity.magnitude > velocityCap.x && velocityCap.x > 0f)
+        if (horizVelocity.magnitude > currentMovementSettings.velocityCap.x && currentMovementSettings.velocityCap.x > 0f)
         { 
             // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
-            horizVelocity = Vector3.Lerp(horizVelocity, horizVelocity.normalized * velocityCap.x, 1 - Mathf.Exp(-speedCapSmoothFactor * Time.deltaTime));            
+            horizVelocity = Vector3.Lerp(horizVelocity, horizVelocity.normalized * currentMovementSettings.velocityCap.x,
+                1 - Mathf.Exp(-currentMovementSettings.speedCapSmoothFactor * Time.deltaTime));                         
         }
 
-        if (vertVelocity.magnitude > velocityCap.y && velocityCap.y > 0f)
+        if (vertVelocity.magnitude > currentMovementSettings.velocityCap.y && currentMovementSettings.velocityCap.y > 0f)
         { 
             // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
-            vertVelocity = Vector3.Lerp(vertVelocity, vertVelocity.normalized * velocityCap.y, 1 - Mathf.Exp(-speedCapSmoothFactor * Time.deltaTime));            
+            vertVelocity = Vector3.Lerp(vertVelocity, vertVelocity.normalized * currentMovementSettings.velocityCap.y, 
+                1 - Mathf.Exp(-currentMovementSettings.speedCapSmoothFactor * Time.deltaTime));            
         }
 
         playerRB.velocity = horizVelocity + vertVelocity;
@@ -531,25 +557,28 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
         {
-            movementSpeed = baseMovementSpeed * hotMoveSpeedMod;            
-            jumpStrength = baseJumpStrength * hotJumpStrengthMod;
-            airSpeed = baseAirSpeed * hotAirSpeedMod;  
-            velocityCap = baseVelocityCap * hotVelocityCapMod;    
+            currentMovementSettings = hotMovementSettings;
+            // movementSpeed = baseMovementSpeed * hotMoveSpeedMod;            
+            // jumpStrength = baseJumpStrength * hotJumpStrengthMod;
+            // airSpeed = baseAirSpeed * hotAirSpeedMod;  
+            // velocityCap = baseVelocityCap * hotVelocityCapMod;    
         }
         // If player is cold and NOT hot
         else if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
         {   
-            movementSpeed = baseMovementSpeed * coldMoveSpeedMod;            
-            jumpStrength = baseJumpStrength * coldJumpStrengthMod;
-            airSpeed = baseAirSpeed * coldAirSpeedMod; 
-            velocityCap = baseVelocityCap * coldVelocityCapMod;          
+            currentMovementSettings = coldMovementSettings;
+            // movementSpeed = baseMovementSpeed * coldMoveSpeedMod;            
+            // jumpStrength = baseJumpStrength * coldJumpStrengthMod;
+            // airSpeed = baseAirSpeed * coldAirSpeedMod; 
+            // velocityCap = baseVelocityCap * coldVelocityCapMod;          
         }
         else
         {
-            movementSpeed = baseMovementSpeed;            
-            jumpStrength = baseJumpStrength;
-            airSpeed = baseAirSpeed;  
-            velocityCap = baseVelocityCap;    
+            currentMovementSettings = baseMovementSettings;
+            // movementSpeed = baseMovementSpeed;            
+            // jumpStrength = baseJumpStrength;
+            // airSpeed = baseAirSpeed;  
+            // velocityCap = baseVelocityCap;    
         }
     }
 
@@ -557,7 +586,7 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         if (GetComponent<Rigidbody>() != null)
         {
-            GetComponent<Rigidbody>().AddForce(-Physics.gravity * hotGravMod * Time.deltaTime * 25f, ForceMode.Acceleration);
+            GetComponent<Rigidbody>().AddForce(-Physics.gravity * currentMovementSettings.antiGravMod * Time.deltaTime * 25f, ForceMode.Acceleration);
         }
     }
 
