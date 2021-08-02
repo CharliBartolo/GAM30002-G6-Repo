@@ -18,7 +18,7 @@ public class GunFXController : FXController
     private bool switchingMode;
 
     // Gun components
-    public GameObject BackCrystal;
+    public GameObject BackCrystals;
     public GameObject CrystalCase;
     public GameObject CrystalCase1;
     public GameObject CrystalCase2;
@@ -26,6 +26,7 @@ public class GunFXController : FXController
 
     // Gun emissive components
     public GameObject[] emissiveLights;
+    public GameObject lightning;
 
     private bool inspectWeapon;
     private bool inspectingWeapon;
@@ -49,8 +50,13 @@ public class GunFXController : FXController
         {
             item.sharedMaterial = GameMaster.instance.colourPallete.Crystal;
         }
-        // initialise back crystal material
-        BackCrystal.GetComponent<Renderer>().sharedMaterial = GameMaster.instance.colourPallete.Crystal;
+        Renderer[] backCrystals = BackCrystals.GetComponentsInChildren<Renderer>();
+        foreach (var item in backCrystals)
+        {
+            // initialise back crystal material
+            if (item.GetComponent<Renderer>() != null)
+                item.GetComponent<Renderer>().sharedMaterial = GameMaster.instance.colourPallete.Crystal;
+        }
         // initialse crystal case materials
         Renderer case1 = CrystalCase1.GetComponent<Renderer>();
         Renderer case2 = CrystalCase2.GetComponent<Renderer>();
@@ -184,18 +190,6 @@ public class GunFXController : FXController
         {
             // do state stuff
 
-            //Rotate Ammo;
-           
-
-            /*float t = 0.0f;
-            while (t < 0.5f)
-            {
-                t += Time.deltaTime;
-                float zRotation = Mathf.Lerp(startRotation, midRotation, t / 0.5f) % 360;
-                CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, zRotation);
-
-            }*/
-
             if (AnimationComplete("SwitchMode"))
             {
                 float endRotation = startRotation + 180f;
@@ -233,6 +227,8 @@ public class GunFXController : FXController
     {
         inspectingWeapon = false;
     }
+
+    //public void CreateLightning
 
     void AnimateGunTool()
     {
@@ -324,19 +320,33 @@ public class GunFXController : FXController
     // set back crystal color
     void SetBackCrystal()
     {
-        if(switchingMode)
+        Renderer[] renderers = BackCrystals.GetComponentsInChildren<Renderer>();
+
+        if (switchingMode)
         {
-            BackCrystal.GetComponentInChildren<Renderer>().material.SetColor("_SurfaceAlphaColor",Crystal_Neutral);  
+            foreach (var item in renderers)
+            {
+                if (item.GetComponent<Renderer>() != null)
+                    item.GetComponent<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+            }
         }
         else
         {
             if (gun.cold)
             {
-                BackCrystal.GetComponentInChildren<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                foreach (var item in renderers)
+                {
+                    if (item.GetComponent<Renderer>() != null)
+                        item.GetComponent<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                }
             }
             else
             {
-                BackCrystal.GetComponentInChildren<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                foreach (var item in renderers)
+                {
+                    if (item.GetComponent<Renderer>() != null)
+                        item.GetComponent<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                }
             }
         }
     }
@@ -358,33 +368,13 @@ public class GunFXController : FXController
         {
             if (weaponState != WeaponState.SwitchMode)
                 weaponState = WeaponState.SwitchMode;
-            // perform ammo rotation
-            //RotateAmmo();
-            
-           /* // count through delay time and reenable shooting, and set switching to off
-            delayTimer += Time.deltaTime;
-            if (delayTimer > delay)
-            {
-                EnableShooting();
-                switchingMode = false;
-                delayTimer = 0;
-            }*/
         }
     }
 
     // rotate the ammo case
     IEnumerator RotateCrystalCase(float duration)
     {
-        /* Quaternion startRot = CrystalCase.transform.rotation;
-         float t = 0.0f;
-         while (t < duration)
-         {
-             t += Time.deltaTime;
-             CrystalCase.transform.rotation = startRot * Quaternion.AngleAxis(t / duration * 360f, CrystalCase.transform.forward); //or transform.right if you want it to be locally based
-             yield return null;
-         }
-         CrystalCase.transform.rotation = startRot + new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, CrystalCase.transform.eulerAngles.x +180);
- */
+
         float startRotation = CrystalCase.transform.eulerAngles.z;
         float endRotation = startRotation + 540.0f;
         float t = 0.0f;

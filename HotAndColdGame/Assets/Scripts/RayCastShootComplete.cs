@@ -15,7 +15,8 @@ public class RayCastShootComplete : MonoBehaviour {
     public GameObject particleAtEnd_fire;
 
     //Laser Properties
-    private LineRenderer laserLine;
+    public LineRenderer laserLine;
+    public LineRenderer lightning;
     public Material hotMaterial;
     public Material coldMaterial;
     public bool cold = true;
@@ -30,6 +31,11 @@ public class RayCastShootComplete : MonoBehaviour {
 		laserLine = GetComponent<LineRenderer>();
 		fpsCam = GetComponentInParent<Camera>();
         CanShoot = true;
+
+        Color colour = GameMaster.instance.colourPallete.Neutral;
+        laserLine.GetComponent<Renderer>().sharedMaterial.SetColor("_Color", colour);
+        lightning.startColor = colour;
+        //lightning.endColor = colour;
     }
 
     public void SwapBeam(InputAction.CallbackContext context)
@@ -90,18 +96,27 @@ public class RayCastShootComplete : MonoBehaviour {
             }
 
             laserLine.enabled = true;
+            lightning.enabled = true;
 
             if (cold == true)
             {
                 //col = Color.blue;
+                Color colour = GameMaster.instance.colourPallete.Negative;
+                laserLine.GetComponent<Renderer>().sharedMaterial.SetColor("_Color", colour);
                 laserLine.material = coldMaterial;
+                lightning.startColor = colour;
+                //lightning.endColor = colour;
                 tempchange = -60f * Time.deltaTime;
             }
 
             if (cold == false)
             {
                 //col = Color.red;
+                Color colour = GameMaster.instance.colourPallete.Positive;
+                laserLine.GetComponent<Renderer>().sharedMaterial.SetColor("_Color", colour);
                 laserLine.material = hotMaterial;
+                lightning.startColor = colour;
+                //lightning.endColor = colour;
                 tempchange = 60f * Time.deltaTime;
             }
 
@@ -115,8 +130,11 @@ public class RayCastShootComplete : MonoBehaviour {
 			if (Physics.Raycast (rayOrigin, fpsCam.transform.forward, out hit, weaponRange))
 			{
 				laserLine.SetPosition (1, hit.point);
-				//ITemperature objtemp = hit.collider.GetComponent<ITemperature>();
-				ITemperature objtemp = hit.collider.GetComponentInParent<ITemperature>();
+                //lightning.SetPosition (1, hit.point);
+                lightning.SetPosition(1, rayOrigin + (fpsCam.transform.forward * 2));
+
+                //ITemperature objtemp = hit.collider.GetComponent<ITemperature>();
+                ITemperature objtemp = hit.collider.GetComponentInParent<ITemperature>();
 
 				if (objtemp != null)
 				{
@@ -136,6 +154,7 @@ public class RayCastShootComplete : MonoBehaviour {
                     particleAtEnd_ice.SetActive(true);
                     particleAtEnd_fire.SetActive(false);
                     particleAtEnd_ice.transform.position = hit.point;
+
                 }
                 if (cold == false)
                 {
@@ -149,11 +168,13 @@ public class RayCastShootComplete : MonoBehaviour {
 			else
 			{
                 laserLine.SetPosition (1, rayOrigin + (fpsCam.transform.forward * weaponRange));
+                lightning.SetPosition (1, rayOrigin + (fpsCam.transform.forward * 2));
 			}
 		}
         else
         {
             laserLine.enabled = false;
+            lightning.enabled = false;
             particleAtEnd_ice.SetActive(false);
             particleAtEnd_fire.SetActive(false);
             if (audioManager != null)
