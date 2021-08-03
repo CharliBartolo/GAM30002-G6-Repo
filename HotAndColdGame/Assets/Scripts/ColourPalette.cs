@@ -6,20 +6,26 @@ using UnityEngine.VFX;
 public class ColourPalette : MonoBehaviour
 {
 
-    [Header("Colours")]
+    [Header("Colour palette")]
     public Color Positive;
     public Color Negative;
     public Color Neutral;
-    [Header("Crystal Material")]
-    public Material Crystal;
-    [Header("Effects Field Material")]
-    public Material EffectField;
-    public VisualEffect VFX;
-    public float CrystalEmissionValue;
-    [Header("Emmisive Lights")]
-    public Material MachineEmissiveLights;
-    [Header("HiddenTexture")]
-    public Material HiddenTexture;
+
+    [System.Serializable]
+    public struct MaterialMap
+    {
+        public Material Crystal;
+        public Material EffectField;
+        public VisualEffect VFX;
+        public Material EmissiveLights;
+        public Material HiddenTexture;
+        public LineRenderer LightningStrike;
+    }
+
+    //public List<MaterialMap> mapObjs;
+    [Header("Materials palette")]
+    public MaterialMap materials = new MaterialMap();
+
 
     private float t = 0;
     private void Awake()
@@ -59,5 +65,5 @@ public class ColourPalette : MonoBehaviour
         return Random.ColorHSV(0f, 1f, 1f, 0.5f, 0.5f, 1f);
     }
     //public Material HiddenMaterial => GetComponent<Renderer>().sharedMaterials[0];
-    public Material HiddenMaterial => HiddenTexture;
+    public Material HiddenMaterial => materials.HiddenTexture;
 }

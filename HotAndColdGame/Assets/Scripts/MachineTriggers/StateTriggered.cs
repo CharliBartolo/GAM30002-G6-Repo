@@ -7,7 +7,7 @@ public class StateTriggered : MonoBehaviour
     [SerializeField] public TemperatureStateBase Trigger = null;
 
     // Start is called before the first frame update
-    void Start() { }
+    public virtual void Start() {}//Lightning = GameMaster.instance.colourPallete.materials.LightningStrike; }
 
     // Update is called once per frame
     void Update() { }

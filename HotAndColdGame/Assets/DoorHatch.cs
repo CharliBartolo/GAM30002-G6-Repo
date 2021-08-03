@@ -26,24 +26,32 @@ public class DoorHatch : StateTriggered
     protected Color Crystal_Hot;
     protected Color Crystal_Cold;
 
+    //public LineRenderer Lightning;
+
+    //public TemperatureStateBase machine;
+
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
+        base.Start();
+
         Crystal_Hot = GameMaster.instance.colourPallete.Positive;
         Crystal_Cold = GameMaster.instance.colourPallete.Negative;
         Crystal_Neutral = GameMaster.instance.colourPallete.Neutral;
 
         stateChanged = false;
         state = DoorState.Locked;
-        Anim = GetComponent<Animator>();
-        emissiveMaterial = GameMaster.instance.colourPallete.MachineEmissiveLights;
+        Anim = GetComponentInChildren<Animator>();
+        emissiveMaterial = GameMaster.instance.colourPallete.materials.EmissiveLights;
         InitialiseLights();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        ListenForTrigger();
+        if(Trigger != null && AnimationComplete())
+            ListenForTrigger();
     }
 
     public override void ListenForTrigger()
@@ -53,11 +61,11 @@ public class DoorHatch : StateTriggered
         switch (Trigger.CurrentTempState)
         {
             case ITemperature.tempState.Cold:
-
                 stateChanged = true;
-
+                
                 if (state == DoorState.Locked)
                 {
+                    
                     if (isAnimationComplete)
                     {
                         Anim.Play("Open1");
@@ -133,7 +141,6 @@ public class DoorHatch : StateTriggered
                     r.sharedMaterial = new Material(emissiveMaterial);
                 }
             }
-            //item.SetActive(true);
         }
 
         foreach (var item in EmmisiveLights_Negative)
@@ -147,13 +154,10 @@ public class DoorHatch : StateTriggered
                     r.sharedMaterial = new Material(emissiveMaterial);
                 }
             }
-            //item.SetActive(true);
         }
 
         ActivateLight(-1);
         ActivateLight(1);
-        //DeactivateLight(-1);
-        //DeactivateLight(1);
     }
     public void ActivateLight(int light)
     {

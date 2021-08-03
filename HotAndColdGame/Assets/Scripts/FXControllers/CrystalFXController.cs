@@ -36,12 +36,12 @@ public class CrystalFXController : FXController
         AreaSphere = transform.Find("EffectSphere").transform;
         AreaCollider = AreaSphere.GetComponent<SphereCollider>();
         //MainCrystal.GetComponentInChildren<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.Crystal);
-        AreaSphere.gameObject.GetComponent<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.EffectField);
+        AreaSphere.gameObject.GetComponent<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.EffectField);
         vfx = AreaSphere.GetChild(0).GetComponent<VisualEffect>();//= new VisualEffectAsset(GameMaster.instance.colourPallete.VFX.visualEffectAsset);
 
         foreach (var item in CrystalMesh)
         {
-            item.GetComponentInChildren<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.Crystal);
+            item.GetComponentInChildren<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
         }
 
         temp = 0;
@@ -218,11 +218,11 @@ public class CrystalFXController : FXController
             LightTexture[] comps = other.gameObject.GetComponents<LightTexture>();
 
             Debug.Log("# of Light Texture componenets: " + comps.Length);
-            int myIndex = Myindex(other);
+            int myIndex = RemoveMyindex(other);
             AffectedObjects.Remove(other.gameObject);
         }
     }
-    int Myindex(Collider other)
+    int RemoveMyindex(Collider other)
     {
         int myIndex = 0;
         LightTexture[] comps = other.gameObject.GetComponents<LightTexture>();

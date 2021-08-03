@@ -7,20 +7,39 @@ using DG.Tweening;
 public class MachineFXController : FXController
 {
     // Machine variables 
+    [Header("Machine Components")]
     public TemperatureStateBase machine;
-
+    public GameObject triggeredObj;
+   
+    [Header("Light Properties")]
     // Machine emissive components
     public GameObject[] emissiveLights;
     private Material emissiveMaterial;
     public float emissionValue;
 
+    [Header("Line Properties")]
+    [SerializeField] public Transform LightningHit = null;
+    [SerializeField] public LineRenderer Lightning = null;
+    [SerializeField] public float LineWidth = 1;
+    [SerializeField] [Range(0.1f, 1.0f)] public float Opacity = 1;
+
+    [Header("Sound Properties")]
     public bool playingSFX;
 
+
     // Start is called before the first frame update
+    private void Awake()
+    {
+        Lightning.enabled = true;
+        Lightning.GetComponent<DigitalRuby.LightningBolt.LightningBoltScript>().StartObject = transform.Find("Current").gameObject;
+        Lightning.GetComponent<DigitalRuby.LightningBolt.LightningBoltScript>().EndObject = LightningHit.gameObject;
+        SetAsTrigger();
+    }
     public override void Start()
     {
         base.Start();
-        emissiveMaterial  = GameMaster.instance.colourPallete.MachineEmissiveLights;
+        emissiveMaterial  = new Material(GameMaster.instance.colourPallete.materials.EmissiveLights);
+        //Lightning = GameMaster.instance.colourPallete.materials.LightningStrike;
         foreach (var item in this.emissiveLights)
         {
             if (item.GetComponentsInChildren<Renderer>() != null)
@@ -50,8 +69,21 @@ public class MachineFXController : FXController
 
         SetEmissiveLights();
         PlaySound();
+        UpdateLineProperties();
+    }
 
 
+    void SetAsTrigger()
+    {
+        if(triggeredObj.GetComponentInChildren<StateTriggered>() != null)
+            triggeredObj.GetComponentInChildren<StateTriggered>().Trigger = this.gameObject.GetComponent<TemperatureStateBase>();
+
+    }
+
+    public void SetLightningPos(Transform target)
+    {
+
+        Lightning.GetComponent<DigitalRuby.LightningBolt.LightningBoltScript>().EndObject = target.gameObject;
     }
 
     public void PlaySound()
@@ -67,29 +99,12 @@ public class MachineFXController : FXController
                 playingSFX = true;
                 GameMaster.instance.audioManager.Play(machine.gameObject);
             }
-
         }
         else
         {
             playingSFX = false;
             GameMaster.instance.audioManager.Stop(machine.gameObject);
         }
-        /*if (playingSFX)
-        {
-            // stop sound when reach max
-            if(Math.Abs(machine.CurrentTemperature) == 100)
-            {
-                playingSFX = false;
-                GameMaster.instance.audioManager.Stop(machine.gameObject);
-            }
-
-            
-            if (Math.Abs(machine.CurrentTemperature) < 5)
-            {
-                playingSFX = false;
-                GameMaster.instance.audioManager.Stop(machine.gameObject);
-            }
-        }*/
     }
 
     public void StartSound()
@@ -101,12 +116,36 @@ public class MachineFXController : FXController
 
     }
 
+    public void UpdateLineProperties()
+    {
+        Lightning.startWidth = LineWidth;
+        Lightning.endWidth = LineWidth;
+
+        Color col = Lightning.startColor;
+        col.a = Opacity;
+        Lightning.startColor = col;
+        Lightning.endColor = col;
+    }
+    public void SetLineColour(Color colour)
+    {
+        Lightning.startColor = colour;
+        Lightning.endColor = colour;
+    }
+
+
     // set emmisive lights
     void SetEmissiveLights()
     {
         switch (machine.CurrentTempState)
         {
             case ITemperature.tempState.Cold:
+
+                if (Lightning.enabled == false)
+                {
+                    SetLineColour(GameMaster.instance.colourPallete.Negative);
+                    Lightning.enabled = true;
+                }
+
                 foreach (var item in this.emissiveLights)
                 {
                     if(item.GetComponentsInChildren<Renderer>()!= null)
@@ -119,10 +158,17 @@ public class MachineFXController : FXController
                             //item.GetComponent<Renderer>().sharedMaterial.SetFloat("_EmissiveExposureWeight ",emissionValue);
                         }
                     }
-
                 }
                 break;
+
             case ITemperature.tempState.Neutral:
+
+                if(Lightning.enabled)
+                {
+                    SetLineColour(GameMaster.instance.colourPallete.Neutral);
+                    Lightning.enabled = false;
+                }
+
                 foreach (var item in this.emissiveLights)
                 {
                     if (item.GetComponentsInChildren<Renderer>() != null)
@@ -137,7 +183,15 @@ public class MachineFXController : FXController
                     }
                 }
                 break;
+
             case ITemperature.tempState.Hot:
+
+                if (Lightning.enabled == false)
+                {
+                    SetLineColour(GameMaster.instance.colourPallete.Positive);
+                    Lightning.enabled = true;
+                }
+
                 foreach (var item in this.emissiveLights)
                 {
                     if (item.GetComponentsInChildren<Renderer>() != null)

@@ -52,7 +52,7 @@ public class LightTexture : MonoBehaviour
         }
     }
 
-    public Transform GetNearestLight()
+/*    public Transform GetNearestLight()
     {
         Transform closest = null;
         foreach (Transform t in spotlights)
@@ -69,7 +69,7 @@ public class LightTexture : MonoBehaviour
             }
         }
         return closest;
-    }
+    }*/
 
     public void UpdateColoursFromPallet()
     {
@@ -128,6 +128,11 @@ public class LightTexture : MonoBehaviour
     {
         Material[] current = gameObject.GetComponent<Renderer>().sharedMaterials;
         Debug.Log("Removing index: " + index);
+    /*    if(index > gameObject.GetComponent<Renderer>().sharedMaterials.Length)
+        {
+            Debug.Log("Index out of range, reducing index: " + index);
+            RemoveHiddenMaterial(index - 1);
+        }*/
         Material[] _new = current.Except(new Material[] { current[index] }).ToArray();
 
         gameObject.GetComponent<Renderer>().sharedMaterials = _new;
@@ -156,7 +161,7 @@ public class LightTexture : MonoBehaviour
         {
 
             //GetComponent<Renderer>().sharedMaterials[1]?.SetFloat("_SpotAngle", spotlight.GetComponent<Light>().spotAngle);
-            if (GetComponent<Renderer>().sharedMaterials[index]!=null)
+            if (GetComponent<Renderer>().sharedMaterials.Length > index && GetComponent<Renderer>().sharedMaterials[index]!=null)
             {
                 GetComponent<Renderer>().sharedMaterials[index]?.SetFloat("_Range", spotlight.GetComponent<Light>().range);
                 GetComponent<Renderer>().sharedMaterials[index]?.SetVector("_LightPos", spotlight.position);

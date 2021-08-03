@@ -44,18 +44,19 @@ public class GunFXController : FXController
         base.Start();
 
         // initialise barrel crystals materials
-        Renderer[] renderers = BarrelCrystals.GetComponentsInChildren<Renderer>();
+        //Renderer[] renderers = BarrelCrystals.GetComponentsInChildren<Renderer>();
         // set crystals colour to neutral if not shooting or cannot shoot
-        foreach (var item in renderers)
+/*        foreach (var item in renderers)
         {
-            item.sharedMaterial = GameMaster.instance.colourPallete.Crystal;
-        }
+            item.sharedMaterial = GameMaster.instance.colourPallete.materials.Crystal;
+        }*/
+
         Renderer[] backCrystals = BackCrystals.GetComponentsInChildren<Renderer>();
         foreach (var item in backCrystals)
         {
             // initialise back crystal material
             if (item.GetComponent<Renderer>() != null)
-                item.GetComponent<Renderer>().sharedMaterial = GameMaster.instance.colourPallete.Crystal;
+                item.GetComponent<Renderer>().sharedMaterial = GameMaster.instance.colourPallete.materials.Crystal;
         }
         // initialse crystal case materials
         Renderer case1 = CrystalCase1.GetComponent<Renderer>();
@@ -64,8 +65,8 @@ public class GunFXController : FXController
         {
             item.sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
         }*/
-        case1.sharedMaterial = new Material(GameMaster.instance.colourPallete.Crystal);
-        case2.sharedMaterial = new Material(GameMaster.instance.colourPallete.Crystal);
+        case1.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
+        case2.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
         case1.sharedMaterial.color = Crystal_Cold;
         case2.sharedMaterial.color = Crystal_Hot;
         SetBackCrystal();
@@ -91,7 +92,7 @@ public class GunFXController : FXController
         // call run gun animation
         AnimateGunTool();
         // call set colour of barrel crystals
-        SetBarrelCrystals();
+        //SetBarrelCrystals();
         // call set colour of back crystal
         SetBackCrystal();
         // call set emissive lights
@@ -283,7 +284,7 @@ public class GunFXController : FXController
         }
     }
 
-    // set barrel crystals
+/*    // set barrel crystals
     void SetBarrelCrystals()
     {
         Renderer[] renderers = BarrelCrystals.GetComponentsInChildren<Renderer>();
@@ -315,7 +316,7 @@ public class GunFXController : FXController
                 }
             }
         }
-    }
+    }*/
 
     // set back crystal color
     void SetBackCrystal()
