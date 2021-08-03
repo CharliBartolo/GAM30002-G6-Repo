@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PlatformWithTemperature : TemperatureStateBase
 {
-    [SerializeField] TemperatureStateBase Trigger = null;
+    [SerializeField] public TemperatureStateBase Trigger = null;
 
-    public Transform origin; // the start target position
-    public Transform coldTarget; // the cold target position
-    public Transform hotTarget; // the cold target position
-    public GameObject platformObj;
+    protected Transform origin; // the start target position
+    protected Transform coldTarget; // the cold target position
+    protected Transform hotTarget; // the cold target position
+    protected GameObject platformObj;
     
     public float speed; // speed - units per second (gives you control of how fast the object will move in the inspector)
     public float Delay = 1;
@@ -23,15 +23,32 @@ public class PlatformWithTemperature : TemperatureStateBase
     protected override void Start()
     {
         base.Start();
-        emissiveMaterial = new Material(GameMaster.instance.colourPallete.materials.EmissiveLights);
-        SetLights(GameMaster.instance.colourPallete.Neutral);
+
+        emissiveMaterial = GameMaster.instance.colourPallete.materials.EmissiveLights;
+
+
+        Renderer[] r = transform.GetChild(0).GetComponentsInChildren<Renderer>();
+
+        foreach (var item in r)
+        {
+            item.sharedMaterial = new Material(emissiveMaterial);
+        }
+
+        origin = transform.parent.transform.Find("Positions").transform.Find("OriginPos");
+        coldTarget = transform.parent.transform.Find("Positions").transform.Find("ColdPos");
+        hotTarget = transform.parent.transform.Find("Positions").transform.Find("HotPos");
+        platformObj = this.gameObject;
+
+
+        if(Trigger)
+            SetLights(GameMaster.instance.colourPallete.Neutral);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (canMove)
+        if (canMove && Trigger != null)
         {
             float step = speed * Time.deltaTime; // step size = speed * frame time
             switch (Trigger.CurrentTempState)

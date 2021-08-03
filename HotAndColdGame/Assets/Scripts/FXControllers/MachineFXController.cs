@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+
 public class MachineFXController : FXController
 {
     // Machine variables 
@@ -30,15 +31,13 @@ public class MachineFXController : FXController
     // Start is called before the first frame update
     private void Awake()
     {
-        Lightning.enabled = true;
-        Lightning.GetComponent<DigitalRuby.LightningBolt.LightningBoltScript>().StartObject = transform.Find("Current").gameObject;
-        Lightning.GetComponent<DigitalRuby.LightningBolt.LightningBoltScript>().EndObject = LightningHit.gameObject;
+       
         SetAsTrigger();
     }
     public override void Start()
     {
         base.Start();
-        emissiveMaterial  = new Material(GameMaster.instance.colourPallete.materials.EmissiveLights);
+        emissiveMaterial = GameMaster.instance.colourPallete.materials.EmissiveLights;
         //Lightning = GameMaster.instance.colourPallete.materials.LightningStrike;
         foreach (var item in this.emissiveLights)
         {
@@ -49,11 +48,14 @@ public class MachineFXController : FXController
                 {
                     if(obj.GetComponentsInChildren<Renderer>() != null)
                     {
-                        obj.GetComponentInChildren<Renderer>().sharedMaterial = emissiveMaterial;
+                        obj.GetComponentInChildren<Renderer>().sharedMaterial = new Material(emissiveMaterial);
                     }
                 }
             }
         }
+        Lightning.enabled = true;
+        Lightning.GetComponent<DigitalRuby.LightningBolt.LightningBoltScript>().StartObject = transform.Find("Current").gameObject;
+        Lightning.GetComponent<DigitalRuby.LightningBolt.LightningBoltScript>().EndObject = LightningHit.gameObject;
     }
 
     // Update is called once per frame
@@ -75,8 +77,13 @@ public class MachineFXController : FXController
 
     void SetAsTrigger()
     {
+        // set as state trigger
         if(triggeredObj.GetComponentInChildren<StateTriggered>() != null)
             triggeredObj.GetComponentInChildren<StateTriggered>().Trigger = this.gameObject.GetComponent<TemperatureStateBase>();
+
+        // set as platform trigger
+        if (triggeredObj.GetComponentInChildren<PlatformWithTemperature>() != null)
+            triggeredObj.GetComponentInChildren<PlatformWithTemperature>().Trigger = this.gameObject.GetComponent<TemperatureStateBase>();
 
     }
 
