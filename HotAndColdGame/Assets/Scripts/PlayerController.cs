@@ -32,45 +32,28 @@ public class PlayerController : MonoBehaviour, IConditions
     [Header("Player Control Settings")]
     public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2 (8f, 20f), 1f);    
     public float interactRange = 2f;
+    public float timeBetweenFootsteps = 1f;
+    private float currentTimeBetweenFootsteps = 0f;
+    public float timeBeforeFrictionReturns = 0.2f;
+    private float currentTimeBeforeFrictionReturns = 0f;
     private Vector3 horizVelocity;
     private Vector3 vertVelocity;
-    private float[] playerFriction = new float[2];
+    public float[] playerFriction = new float[2] {1f, 1f};
     
     // Mouse Control Settings   
-    public Vector2 mouseSensitivity = new Vector2 (2, 2);
-    public Vector2 mouseSmoothing = new Vector2 (3,3);        
+    public Vector2 mouseSensitivity = new Vector2 (1, 1);
+    public Vector2 mouseSmoothing = new Vector2 (2,2);        
     const float MIN_X = 0.0f;
     const float MAX_X = 360.0f;
     const float MIN_Y = -90.0f;
     const float MAX_Y = 90.0f;    
     private Vector2 _mouseAbsolute;
     private Vector2 _mouseSmooth;  
-    // public float movementSpeed = 20f;
-    // public float speedCapSmoothFactor = 20f;
-    // public float jumpStrength = 10f;
-    // public float airSpeed = 0.02f; 
-    // public Vector2 velocityCap = new Vector2 (6f, 20f); 
 
     [Header("Player Condition Control Settings")]
     public playerMovementSettings baseMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2 (8f, 20f), 1f);
     public playerMovementSettings hotMovementSettings = new playerMovementSettings(20f, 3f, 14f, 0.15f, new Vector2 (6f, 10f), 1f);
     public playerMovementSettings coldMovementSettings = new playerMovementSettings(24f, 15f, 10f, 0.02f, new Vector2 (16f, 20f), 1f);    
-
-    // public float baseMovementSpeed = 20f;
-    // public float coldMoveSpeedMod = 1.2f;
-    // public float hotMoveSpeedMod = 1f;
-    // public float baseAirSpeed = 0.02f;
-    // public float coldAirSpeedMod = 1f;
-    // public float hotAirSpeedMod = 5f;
-    // public float baseJumpStrength = 10f;
-    // public float hotJumpStrengthMod = 1.4f;
-    // public float coldJumpStrengthMod = 1f;
-    // public Vector2 baseVelocityCap = new Vector2 (8f, 20f);
-    // public Vector2 coldVelocityCapMod = new Vector2 (2f, 1f);
-    // public Vector2 hotVelocityCapMod = new Vector2 (0.75f, 0.5f);   
-    // public float baseSpeedCapSmoothFactor = 15f;
-    // public float hotSpeedCapSmoothMod = 0.2f; 
-    // public float coldSpeedCapSmoothMod = 1f; 
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
@@ -92,13 +75,14 @@ public class PlayerController : MonoBehaviour, IConditions
     private TemperatureStateBase playerTemp;   
     private InteractableBase currentInteractingObject;
     public PauseController PC;
+    public AudioManager audioManager;
     public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
     public PhysicMaterial regularPhysicMaterial;
 
     private void Awake() 
     {   
-        playerFriction[0] = regularPhysicMaterial.staticFriction;
-        playerFriction[1] = regularPhysicMaterial.dynamicFriction;
+        //playerFriction[0] = regularPhysicMaterial.staticFriction;
+        //playerFriction[1] = regularPhysicMaterial.dynamicFriction;
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         _activeConditions = new List<IConditions.ConditionTypes>();
@@ -196,6 +180,8 @@ public class PlayerController : MonoBehaviour, IConditions
                 break;
         }
 
+        if (audioManager != null)
+            PlayFootstepSound();
         VelocityClamp();
         SetPlayerFriction();
     }
@@ -262,7 +248,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
             if (ledgeAvailable)
             {
-                Debug.Log("Ledge is available!");                
+                //Debug.Log("Ledge is available!");                
                 Vector3 currentPos = playerCam.transform.position + Vector3.up * 0.5f + Vector3.down * 0.05f;
                 while (!Physics.Raycast(currentPos, -normal, out hit, 1, LayerMask.GetMask("Default")))
                 {
@@ -394,6 +380,29 @@ public class PlayerController : MonoBehaviour, IConditions
         playerCam.transform.rotation = Quaternion.Euler(-_mouseAbsolute.y, transform.eulerAngles.y, transform.eulerAngles.z);      
     }
 
+    // Sound Functions Below
+
+    void PlayFootstepSound()
+    {
+        //Debug.Log(currentTimeBetweenFootsteps);
+        if (horizVelocity.magnitude > 0f && isGrounded)
+        {
+            currentTimeBetweenFootsteps -= 5f * horizVelocity.magnitude * Time.deltaTime;
+        }   
+        else
+        {
+            currentTimeBetweenFootsteps = 0.01f;
+        }
+
+        if (currentTimeBetweenFootsteps <= 0f)
+        {
+            audioManager.Play("Footstep");
+            
+            currentTimeBetweenFootsteps = timeBetweenFootsteps;
+        }
+    }
+
+
     // Utility Functions below
     void GroundedCheck()
     {
@@ -431,8 +440,30 @@ public class PlayerController : MonoBehaviour, IConditions
         playerRB.velocity = horizVelocity + vertVelocity;
     }
 
+    // TODO: Use forces instead of friction for player control
     void SetPlayerFriction()
     {
+        // Player should have no friction when either airborne or providing movement input.
+        // Should probably enable friction if trying to move opposite current direction?
+        if (!isGrounded || playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude > 0)
+        {
+            //Debug.Log("Friction disabled");
+            regularPhysicMaterial.staticFriction = 0f;
+            regularPhysicMaterial.dynamicFriction = 0f;
+            currentTimeBeforeFrictionReturns = timeBeforeFrictionReturns;
+        }
+        else
+        {
+            currentTimeBeforeFrictionReturns -= Time.deltaTime;
+
+            if (currentTimeBeforeFrictionReturns <= 0f)
+            {
+                //Debug.Log("Friction enabled");
+                regularPhysicMaterial.staticFriction = playerFriction[0];
+                regularPhysicMaterial.dynamicFriction = playerFriction[1];
+            }
+        }
+        /*
         if (isGrounded)
         {
             if (regularPhysicMaterial.staticFriction < playerFriction[0] || regularPhysicMaterial.dynamicFriction < playerFriction[1])
@@ -448,6 +479,7 @@ public class PlayerController : MonoBehaviour, IConditions
             regularPhysicMaterial.staticFriction = 0f;
             regularPhysicMaterial.dynamicFriction = 0f;
         }
+        */
     }
  
     private void LockCursor()
