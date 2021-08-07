@@ -87,7 +87,7 @@ public class RayCastShootComplete : MonoBehaviour {
         }
         */
 
-        if (TriggerHeld && CanShoot && !GetComponentInParent<GunFXController>().inspectingWeapon) 
+        if (TriggerHeld && CanShoot && !GetComponentInParent<GunFXController>().inspectingWeapon && GameObject.Find("UI").GetComponent<PauseController>().IsPaused)
 		{
             if (audioManager != null)
             {
@@ -128,11 +128,16 @@ public class RayCastShootComplete : MonoBehaviour {
 			laserLine.SetPosition (0, gunEnd.position);
 			//lightning.SetPosition (0, gunEnd.position);
 
-			if (Physics.Raycast (rayOrigin, fpsCam.transform.forward, out hit, weaponRange))
+			if (Physics.Raycast (rayOrigin, fpsCam.transform.forward, out hit, weaponRange) && lightning != null)
 			{
-				laserLine.SetPosition (1, hit.point);
-                lightning.SetPosition(1, hit.point);
-                lightning.SetPosition(1, rayOrigin + (fpsCam.transform.forward * 2));
+
+                laserLine.SetPosition (1, hit.point);
+                
+                if(lightning.enabled)
+                {
+                    lightning.SetPosition(1, hit.point);
+                    lightning.SetPosition(1, rayOrigin + (fpsCam.transform.forward * 2));
+                }
 
                 //ITemperature objtemp = hit.collider.GetComponent<ITemperature>();
                 ITemperature objtemp = hit.collider.GetComponentInParent<ITemperature>();

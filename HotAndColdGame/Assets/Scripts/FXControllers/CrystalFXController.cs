@@ -6,6 +6,8 @@ using UnityEngine.VFX;
 
 public class CrystalFXController : FXController
 {
+
+    public bool effectOnly;
     // variables 
     public float effectRadius = 1;
     // components
@@ -106,10 +108,17 @@ public class CrystalFXController : FXController
         }
 
         GrowAreaCollider();
-        ColourAreaSphere();
-        ColourFriends();
-        ColourCrystal();
+
+        if(MainCrystal.spreadEffects)
+        {
+            ColourAreaSphere();
+            ColourFriends();
+            ColourCrystal();
+        }
+
     }
+
+
 
     public void ColourFriends()
     {
@@ -284,7 +293,7 @@ public class CrystalFXController : FXController
 
     private void OnTriggerEnter(Collider other)
     {                 
-        if (other.transform.parent != this.gameObject)
+        if (other.transform.parent != this.gameObject && MainCrystal.spreadEffects)
         {            
             if (other.gameObject.tag != "Player")
             {

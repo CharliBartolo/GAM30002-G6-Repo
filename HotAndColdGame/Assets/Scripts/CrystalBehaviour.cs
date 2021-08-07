@@ -28,6 +28,7 @@ public class CrystalBehaviour : TemperatureStateBase
     public float temperatureValueToEmit = 5f;
     // Create Use Interactable Here
     [SerializeField] private bool isPowered = true;    
+    [SerializeField] public bool spreadEffects = true;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -84,18 +85,24 @@ public class CrystalBehaviour : TemperatureStateBase
         {
             if (currentTemp < tempValueRange[1])
             {
-                ApplyTemperatureToOtherObjects(-temperatureValueToEmit);
-                SpreadIceToArea();
+                    ApplyTemperatureToOtherObjects(-temperatureValueToEmit);
+                if(spreadEffects)
+                    SpreadIceToArea();
             }
             else if (currentTemp > tempValueRange[1])
             {
-                ApplyTemperatureToOtherObjects(temperatureValueToEmit);
-                ResetIce();
-                SpreadLowGravToArea();
+                    ApplyTemperatureToOtherObjects(temperatureValueToEmit);
+                if(spreadEffects)
+                {
+                    ResetIce();
+                    SpreadLowGravToArea();
+                }
+                
             }
             else
             {
-                ResetIce();
+                if(spreadEffects)
+                    ResetIce();
             }
         }                       
     }
@@ -129,10 +136,32 @@ public class CrystalBehaviour : TemperatureStateBase
             {
                 if (temperatureObject.GetComponent<PlayerController>() != null)
                 {
-                    
-                    float distance = Vector3.Distance(transform.position, temperatureObject.GetComponent<Transform>().position);
-                    float multiplier = 1.0F - Mathf.Clamp01(distance / (GetComponent<SphereCollider>().radius * transform.localScale.x));
-                    temperatureObject.GetComponent<ITemperature>().ChangeTemperature(multiplier * temperatureValueParam);
+                    if (spreadEffects)
+                    {
+                        float distance = Vector3.Distance(transform.position, temperatureObject.GetComponent<Transform>().position);
+                        //float multiplier = 1.0F - Mathf.Clamp01(distance / (GetComponent<SphereCollider>().radius * transform.localScale.x));
+                        float multiplier = 1.0F;
+                        temperatureObject.GetComponent<ITemperature>().ChangeTemperature(multiplier * temperatureValueParam);
+                    }
+                    else
+                    {
+                        float temp = temperatureObject.GetComponent<ITemperature>().CurrentTemperature;
+                        // option caps temp to a power level
+                        if ((CurrentTemperature > 0 && temp < currentTemp))
+                        {
+                            float distance = Vector3.Distance(transform.position, temperatureObject.GetComponent<Transform>().position);
+                            //float multiplier = 1.0F - Mathf.Clamp01(distance / (GetComponent<SphereCollider>().radius * transform.localScale.x));
+                            float multiplier = 1.0F;
+                            temperatureObject.GetComponent<ITemperature>().ChangeTemperature(multiplier * temperatureValueParam);
+                        }
+                        else if ((CurrentTemperature < 0 && temp > currentTemp))
+                        {
+                            float distance = Vector3.Distance(transform.position, temperatureObject.GetComponent<Transform>().position);
+                            //float multiplier = 1.0F - Mathf.Clamp01(distance / (GetComponent<SphereCollider>().radius * transform.localScale.x));
+                            float multiplier = 1.0F;
+                            temperatureObject.GetComponent<ITemperature>().ChangeTemperature(multiplier * temperatureValueParam);
+                        }
+                    }
                 }
                 else
                 {
