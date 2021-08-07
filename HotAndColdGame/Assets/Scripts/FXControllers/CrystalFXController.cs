@@ -23,9 +23,21 @@ public class CrystalFXController : FXController
     public GameObject CrystalGrowth;
 
     private int temp;
+
+    public bool warmup;
+    public bool ready;
+
+    public void Awake()
+    {
+        if (warmup)
+            ready = false;
+    }
+
     // Start is called before the first frame update
     public override void Start()
     {
+       
+
         base.Start();
         
         AffectedObjects = new List<GameObject>();
@@ -35,6 +47,7 @@ public class CrystalFXController : FXController
         //AreaCollider = GetComponent<SphereCollider>();
         AreaSphere = transform.Find("EffectSphere").transform;
         AreaCollider = AreaSphere.GetComponent<SphereCollider>();
+        AreaCollider.enabled = false;
         //MainCrystal.GetComponentInChildren<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.Crystal);
         AreaSphere.gameObject.GetComponent<Renderer>().sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.EffectField);
         vfx = AreaSphere.GetChild(0).GetComponent<VisualEffect>();//= new VisualEffectAsset(GameMaster.instance.colourPallete.VFX.visualEffectAsset);
@@ -45,12 +58,21 @@ public class CrystalFXController : FXController
         }
 
         temp = 0;
+
+        Invoke(nameof(SetReady), 0.5f);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        PerformFX();
+        if(warmup)
+        {
+
+        }
+
+        if(ready)
+            PerformFX();
 
         transform.localScale = new Vector3 (transform.localScale.x, transform.localScale.x, transform.localScale.x) ;       
 
@@ -59,7 +81,11 @@ public class CrystalFXController : FXController
         */
     }
 
-
+    public void SetReady()
+    {
+        AreaCollider.enabled = true;
+        ready = true;
+    }
 
     // perform FX
     public override void PerformFX()
@@ -154,13 +180,7 @@ public class CrystalFXController : FXController
 
     public void GrowAreaCollider()
     {
-        //AreaCollider.radius = Math.Abs(CrystalTemp()) * effectRadius / 100f;
-        //AreaCollider.radius = Math.Abs(CrystalTemp()) / 100;
-        //AreaCollider.gameObject.transform.localScale += Vector3.one * AreaCollider.radius;
-        
-        //AreaCollider.gameObject.transform.localScale = Vector3.one * Math.Abs(CrystalTemp()/10) * (effectRadius/10);
-        AreaCollider.gameObject.transform.localScale = Vector3.one * Math.Abs(CrystalTemp()) * effectRadius / 10f;        
-        //effectRadius = 10 * transform.localScale.x;
+        AreaCollider.gameObject.transform.localScale = Vector3.one * Math.Abs(CrystalTemp()) * effectRadius / 10f;
     }
 
     // get back crystal color

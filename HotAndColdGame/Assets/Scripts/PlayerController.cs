@@ -102,8 +102,8 @@ public class PlayerController : MonoBehaviour, IConditions
 
         playerInput.ActivateInput();      
 
-        if (isGunEnabled)
-            playerInventory.Add("Raygun");
+       /* if (isGunEnabled)
+            playerInventory.Add("Raygun");*/
         LockCursor();
     }
 
@@ -309,6 +309,9 @@ public class PlayerController : MonoBehaviour, IConditions
                     if (currentInteractingObject.GetComponent<CollectInteractable>() != null) 
                     {
                         playerInventory.Add(currentInteractingObject.GetComponent<CollectInteractable>().itemName);
+                        SetShootingEnabled(playerInventory.Contains("Raygun"));
+                        if (playerInventory.Contains("Raygun"))
+                            GetComponent<GunFXController>().EquipTool();
                     }                   
                     ExitInteract(context);
                     break;

@@ -17,7 +17,7 @@ public class CollectInteractable : InteractableBase
     //Runs when interaction begins
     public override void OnInteractEnter(PlayerInput playerInputRef)
     {        
-        
+
         //playerControls = playerControlsRef;
     }
 

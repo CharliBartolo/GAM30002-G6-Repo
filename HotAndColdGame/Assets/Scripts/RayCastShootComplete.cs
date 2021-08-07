@@ -87,7 +87,7 @@ public class RayCastShootComplete : MonoBehaviour {
         }
         */
 
-        if (TriggerHeld && CanShoot) 
+        if (TriggerHeld && CanShoot && !GetComponentInParent<GunFXController>().inspectingWeapon) 
 		{
             if (audioManager != null)
             {

@@ -52,6 +52,22 @@ public class DoorHatch : StateTriggered
     {
         if(Trigger != null && AnimationComplete())
             ListenForTrigger();
+
+        if(Trigger == null)
+        {
+            if (state == DoorState.Open1)
+            {
+                if (isAnimationComplete)
+                {
+                    state = DoorState.Open2;
+                    Anim.Play("Open2");
+                    //ActivateLight(-1);
+                    DeactivateLight(1);
+                    //DeactivateLight(-1);
+                    stateChanged = false;
+                }
+            }
+        }
     }
 
     public override void ListenForTrigger()

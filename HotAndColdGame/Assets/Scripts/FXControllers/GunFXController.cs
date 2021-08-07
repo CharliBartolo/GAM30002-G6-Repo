@@ -14,7 +14,9 @@ public class GunFXController : FXController
    
     // Gun variables 
     public RayCastShootComplete gun;
+    public GameObject arm_obj;
     public GameObject gun_obj;
+
     private bool switchingMode;
 
     // Gun components
@@ -29,7 +31,7 @@ public class GunFXController : FXController
     public GameObject lightning;
 
     private bool inspectWeapon;
-    private bool inspectingWeapon;
+    public bool inspectingWeapon;
     private bool inspectingWeaponComplete;
 
     public enum WeaponState { Idle, TriggerPressed, TriggerReleased, Inspect, SwitchMode}
@@ -37,6 +39,8 @@ public class GunFXController : FXController
     public WeaponState weaponState;
 
     float startRotation;
+
+    public bool equipped;
 
     // Start is called before the first frame update
     public override void Start()
@@ -72,10 +76,29 @@ public class GunFXController : FXController
         SetBackCrystal();
 
 
-        weaponState = WeaponState.Inspect;
-        NextState();
-        inspectingWeapon = true;
+       
         startRotation = CrystalCase.transform.eulerAngles.z;
+        
+        //equipped = gameObject.GetComponent<PlayerController>().playerInventory.Contains("Raygun");
+        equipped = false;
+
+        if (equipped)
+        {
+            if (gun_obj.activeSelf == false)
+                gun_obj.SetActive(true);
+            gun_obj.SetActive(true);
+            weaponState = WeaponState.Inspect;
+            NextState();
+            inspectingWeapon = true;
+        }
+        else
+        {
+           
+          
+            if(gun_obj.activeSelf == true)
+                gun_obj.SetActive(false);
+        }
+        //gun_obj.SetActive(false);
     }
 
     // Update is called once per frame
@@ -84,11 +107,17 @@ public class GunFXController : FXController
         PerformFX();
     }
 
+/*    private void OnEnable()
+    {
+        EquipTool();
+    }*/
 
     // perform FX
     public override void PerformFX()
     {
         base.PerformFX();
+       
+
         // call run gun animation
         AnimateGunTool();
         // call set colour of barrel crystals
@@ -100,6 +129,7 @@ public class GunFXController : FXController
         // call check for gun mode switch
         CheckForModeSwitch();
 
+
         // update cased crystals
         Renderer case1 = CrystalCase1.GetComponent<Renderer>();
         Renderer case2 = CrystalCase2.GetComponent<Renderer>();
@@ -108,11 +138,21 @@ public class GunFXController : FXController
 
     }
 
+    public void EquipTool()
+    {
+        gun_obj.SetActive(true);
+        //equipped = true;
+        inspectingWeapon = true;
+        weaponState = WeaponState.Inspect;
+        
+        NextState();
+    }
+
     // weapon states
     IEnumerator IdleState()
     {
         //Debug.Log("Idle: Enter");
-        gun_obj.GetComponent<Animator>().Play("Idle");
+        arm_obj.GetComponent<Animator>().Play("Idle");
 
         while (weaponState == WeaponState.Idle)
         {
@@ -126,7 +166,7 @@ public class GunFXController : FXController
     IEnumerator TriggerPressedState()
     {
         //Debug.Log("TriggerPressed: Enter");
-        gun_obj.GetComponent<Animator>().Play("TriggerPress");
+        arm_obj.GetComponent<Animator>().Play("TriggerPress");
 
         while (weaponState == WeaponState.TriggerPressed)
         {
@@ -142,7 +182,7 @@ public class GunFXController : FXController
     IEnumerator TriggerReleasedState()
     {
         //Debug.Log("TriggerReleased: Enter");
-        gun_obj.GetComponent<Animator>().Play("TriggerRelease");
+        arm_obj.GetComponent<Animator>().Play("TriggerRelease");
 
         while (weaponState == WeaponState.TriggerReleased)
         {
@@ -159,14 +199,18 @@ public class GunFXController : FXController
     IEnumerator InspectState()
     {
         //Debug.Log("Inspect: Enter");
-        gun_obj.GetComponent<Animator>().Play("InspectTool");
+        arm_obj.GetComponent<Animator>().Play("InspectTool");
 
         while (weaponState == WeaponState.Inspect)
         {
             // do state stuff
 
             if (AnimationComplete())
-                weaponState = WeaponState.Idle;
+            {
+                //
+                //weaponState = WeaponState.Idle;
+            }
+               
                
             yield return 0;
         }
@@ -177,11 +221,13 @@ public class GunFXController : FXController
     IEnumerator SwitchModeState()
     {
         //Debug.Log("SwitchMode: Enter");
-        gun_obj.GetComponent<Animator>().Play("SwitchMode");
+        arm_obj.GetComponent<Animator>().Play("SwitchMode");
         //StartCoroutine(RotateCrystalCase(0.5f));
-        
-        
-        
+
+        if (inspectingWeapon)
+            WeaponInspected();
+
+
         float midRotation = startRotation + 360f;
         float t = 0;
 
@@ -216,12 +262,12 @@ public class GunFXController : FXController
 
     public virtual bool AnimationComplete()
     {
-        return (gun_obj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !gun_obj.GetComponent<Animator>().IsInTransition(0));
+        return (arm_obj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !arm_obj.GetComponent<Animator>().IsInTransition(0));
     }
 
     public virtual bool AnimationComplete(string animationName)
     {
-        return (gun_obj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName(animationName) && gun_obj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !gun_obj.GetComponent<Animator>().IsInTransition(0));
+        return (arm_obj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName(animationName) && arm_obj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !arm_obj.GetComponent<Animator>().IsInTransition(0));
     }
 
     public void WeaponInspected()

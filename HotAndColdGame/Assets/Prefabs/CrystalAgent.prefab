@@ -1365,7 +1365,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 0
   Anim: {fileID: 0}
-  effectRadius: 25.2
+  Crystal_Neutral: {r: 0, g: 0, b: 0, a: 0}
+  Crystal_Hot: {r: 0, g: 0, b: 0, a: 0}
+  Crystal_Cold: {r: 0, g: 0, b: 0, a: 0}
+  effectRadius: 1
   MainCrystal: {fileID: 0}
   CrystalMesh: []
   MainCrystaLight: {fileID: 0}
@@ -1376,6 +1379,8 @@ MonoBehaviour:
   Spotight: {fileID: 0}
   friends: []
   CrystalGrowth: {fileID: 2616860855569024237, guid: 20573d023658814498c6abee0fd96409, type: 3}
+  warmup: 0
+  ready: 0
 --- !u!54 &1387847398
 Rigidbody:
   m_ObjectHideFlags: 0

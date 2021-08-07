@@ -35,6 +35,7 @@ public class LightTexture : MonoBehaviour
         if (crystal != null)
             spotlight = crystal.transform.Find("Spot Light").GetComponent<Light>()?.transform;
         AddHiddenMaterial();
+
     }
 
     // Update is called once per frame
@@ -47,8 +48,7 @@ public class LightTexture : MonoBehaviour
         if (spotlight != null)
         {
             SetShaderProperties();
-            //SetRange((crystal.CurrentTemperature * crystal.GetComponent<CrystalFXController>().effectRadius/10)/2);
-            SetRange(crystal.CurrentTemperature * crystal.GetComponent<CrystalFXController>().effectRadius * crystal.GetComponent<Transform>().localScale.x / 20f);
+            SetRange(crystal.CurrentTemperature);
         }
     }
 
@@ -84,31 +84,27 @@ public class LightTexture : MonoBehaviour
     // set spotlight range
     public void SetRange(float range)
     {
+        spotlight.GetComponent<Light>().range = Mathf.Abs(range) * crystal.GetComponent<CrystalFXController>().effectRadius * crystal.GetComponent<Transform>().localScale.x / 20f;
 
-        // scale spotlight range to temperature range
-        //float OldRange = 100;
-        //float NewRange = 10;
-        //float NewValue = (range * NewRange) / OldRange;
-
-        //spotlight.GetComponent<Light>().range = Mathf.Abs(NewValue);
-        spotlight.GetComponent<Light>().range = Mathf.Abs(range);
-
-        //spotlight.GetComponent<Light>().range = crystal.transform.Find("EffectSphere").transform.localScale.x;
-
-        if (range > 0)
+        if(spotlight.GetComponent<Light>().range != range)
         {
-            SetMaterialProperties(HotColor);
-        }
-        else if (range < 0)
-        {
-            SetMaterialProperties(ColdColor);
-        }
-        else
-        {
-            SetMaterialProperties(NeutralColor);
+            if (range > 0)
+            {
+                //Debug.Log("RUNNING HOT");
+                SetMaterialProperties(HotColor);
+            }
+            else if (range < 0)
+            {
+                //Debug.Log("RUNNING COLD " + " - Range: " + range);
+                SetMaterialProperties(ColdColor);
+            }
+            else
+            {
+                //Debug.Log("RUNNING NEUTRAL");
+                SetMaterialProperties(NeutralColor);
+            }
         }
     }
-
 
     // add HiddenMaterial 
     public void AddHiddenMaterial()
@@ -124,10 +120,12 @@ public class LightTexture : MonoBehaviour
         combo[combo.Length - 1] = new Material(HiddenMaterial);
         gameObject.GetComponent<Renderer>().sharedMaterials = combo;
     }
+
+    // remove HiddenMaterial
     public void RemoveHiddenMaterial(int index)
     {
         Material[] current = gameObject.GetComponent<Renderer>().sharedMaterials;
-        Debug.Log("Removing index: " + index);
+        Debug.Log("Removing index: " + index + " on: " + gameObject.name);
     /*    if(index > gameObject.GetComponent<Renderer>().sharedMaterials.Length)
         {
             Debug.Log("Index out of range, reducing index: " + index);
@@ -150,8 +148,7 @@ public class LightTexture : MonoBehaviour
             m[index].SetVector("_FresnelColorOutside", _color);
             m[index].SetVector("_InnerLightColorOutside", _color);
             m[index].SetVector("_InnerLightColorInside", _color);
-        }
-       
+        }    
     }
 
     // set shader properties
@@ -159,7 +156,6 @@ public class LightTexture : MonoBehaviour
     {
         if (spotlight)
         {
-
             //GetComponent<Renderer>().sharedMaterials[1]?.SetFloat("_SpotAngle", spotlight.GetComponent<Light>().spotAngle);
             if (GetComponent<Renderer>().sharedMaterials.Length > index && GetComponent<Renderer>().sharedMaterials[index]!=null)
             {
