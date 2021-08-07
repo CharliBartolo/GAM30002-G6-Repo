@@ -151,6 +151,7 @@ public class GunFXController : FXController
     // weapon states
     IEnumerator IdleState()
     {
+        WeaponInspected();
         //Debug.Log("Idle: Enter");
         arm_obj.GetComponent<Animator>().Play("Idle");
 
@@ -205,10 +206,10 @@ public class GunFXController : FXController
         {
             // do state stuff
 
-            if (AnimationComplete())
+            if (AnimationComplete("InspectTool"))
             {
-                //
-                //weaponState = WeaponState.Idle;
+                WeaponInspected();
+                weaponState = WeaponState.Idle;
             }
                
                

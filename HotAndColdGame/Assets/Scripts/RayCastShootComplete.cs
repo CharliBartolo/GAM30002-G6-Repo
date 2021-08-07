@@ -63,15 +63,24 @@ public class RayCastShootComplete : MonoBehaviour {
     {
         cold = !cold;
     }
-	
 
-	void LateUpdate () 
-	{
+    void SetMOdeSwitchFalse()
+    {
+       
+        ModeSwitched = false;
+    }
+
+    private void Update()
+    {
         if (ModeSwitched)
         {
             Debug.Log("MODE SWITCHED");
-            ModeSwitched = false;
+            Invoke(nameof(SetMOdeSwitchFalse), Time.deltaTime);
         }
+    }
+    void LateUpdate () 
+	{
+        
            
         // Change Temperature States
         /*        
