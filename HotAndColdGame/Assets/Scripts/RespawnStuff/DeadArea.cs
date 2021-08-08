@@ -15,7 +15,7 @@ public class DeadArea : MonoBehaviour
     //Sets new checkpoint
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.GetComponent<PlayerController>() != null)
             player.transform.position = gm.lastCheckPointPos.position;
     }
 }
