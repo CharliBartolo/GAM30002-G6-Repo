@@ -33,4 +33,13 @@ public class GameMaster : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
+
+    void LoadCheckpoint()
+    {
+
+    }
+
+
+
 }
