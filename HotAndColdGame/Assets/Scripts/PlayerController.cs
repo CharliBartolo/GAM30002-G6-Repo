@@ -100,16 +100,20 @@ public class PlayerController : MonoBehaviour, IConditions
         playerInput.actions.FindAction("Shoot").canceled += raygunScript.FireBeam;
         playerInput.actions.FindAction("Swap Beam").performed += raygunScript.SwapBeam;
 
-        playerInput.ActivateInput();      
-
-       /* if (isGunEnabled)
-            playerInventory.Add("Raygun");*/
+        playerInput.ActivateInput(); 
+        
         LockCursor();
     }
 
     private void Start()
     {
-        SetShootingEnabled(playerInventory.Contains("Raygun"));
+        SetShootingEnabled(isGunEnabled);
+
+        if (isGunEnabled)
+        {
+            playerInventory.Add("Raygun");
+            GetComponent<GunFXController>().EquipTool();            
+        }  
     }
 
     private void Update() 
