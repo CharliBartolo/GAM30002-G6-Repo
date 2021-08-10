@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour, IConditions
     [SerializeField] private bool isGrounded;
     private bool isClimbing = false;
     private RaycastHit groundedHit;
+    private RaycastHit emptyRaycast;
     public PlayerState playerControlState = PlayerState.MoveAndLook;
     public List<string> playerInventory;
     [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
@@ -86,12 +87,8 @@ public class PlayerController : MonoBehaviour, IConditions
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         _activeConditions = new List<IConditions.ConditionTypes>();
-        playerInventory = new List<string>();         
-        
-        // baseMovementSpeed = movementSpeed;            
-        // baseJumpStrength = jumpStrength;
-        // baseAirSpeed = airSpeed;
-        // baseVelocityCap = velocityCap;               
+        playerInventory = new List<string>();   
+        emptyRaycast = new RaycastHit();                 
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
@@ -113,7 +110,10 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             playerInventory.Add("Raygun");
             GetComponent<GunFXController>().EquipTool();            
-        }  
+        }
+
+        
+        playerRB.angularDrag = 100f;
     }
 
     private void Update() 
@@ -186,38 +186,39 @@ public class PlayerController : MonoBehaviour, IConditions
 
         if (audioManager != null)
             PlayFootstepSound();
-        VelocityClamp();
-        SetPlayerFriction();
+        VelocityClamp();        
     }
 
-    // Input functions 
-
+    // Input functions
     void MovePlayer(Vector2 stickMovementVector)
     {
         // Translate 2d analog movement to 3d vector movement            
         Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);   
         movementVector = transform.TransformDirection(movementVector);
 
-        // Reflect along surface if grounded?
-        if (isGrounded)
-        {
-            movementVector = Vector3.ProjectOnPlane(movementVector, groundedHit.normal);
-            Debug.DrawRay(transform.position, movementVector * 100);
-        }
-        else
-        {            
-            //movementVector *= airSpeed;
-            movementVector *= currentMovementSettings.airSpeed;
-        }
-
-         // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
+        // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
         if (movementVector.magnitude > 1f)
         {
             movementVector = movementVector.normalized;
         } 
 
-        //playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);
-        playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed, ForceMode.Acceleration);
+        if (isGrounded)
+        {           
+            // Player's movement input projected on surface, to enable moving up / down ramps 
+            movementVector = Vector3.ProjectOnPlane(movementVector, groundedHit.normal); 
+            // Opposite gravity force, calculated based on incline, so gravity doesn't stop you from moving up and down
+            //Vector3 inverseGravProportion = -Physics.gravity * (1 + Vector3.Dot(Physics.gravity.normalized, groundedHit.normal.normalized));
+            //Vector3 inverseGravProportion = -Physics.gravity;
+            Vector3 inverseGravProportion = Vector3.zero;
+
+            playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed + inverseGravProportion, ForceMode.Acceleration);
+            //Debug.DrawRay(transform.position, movementVector * 100);
+            Debug.Log("Inverse Grav component is :" + inverseGravProportion);
+        }
+        else
+        {                     
+            playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed * currentMovementSettings.airSpeed, ForceMode.Acceleration);
+        }        
     }
 
     void Jump(InputAction.CallbackContext context)
@@ -421,7 +422,7 @@ public class PlayerController : MonoBehaviour, IConditions
         if (isGrounded)
             groundedHit = hit;
         else
-            groundedHit = new RaycastHit();
+            groundedHit = emptyRaycast;
         //Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
     } 
 
