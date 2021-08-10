@@ -92,6 +92,11 @@ MonoBehaviour:
     velocityCap: {x: 8, y: 20}
     antiGravMod: 1
   interactRange: 2
+  timeBetweenFootsteps: 1
+  timeBeforeFrictionReturns: 0.2
+  playerFriction:
+  - 1
+  - 1
   mouseSensitivity: {x: 1.5, y: 1}
   mouseSmoothing: {x: 3, y: 3}
   baseMovementSettings:
@@ -116,7 +121,7 @@ MonoBehaviour:
     velocityCap: {x: 16, y: 20}
     antiGravMod: 1
   isGravityEnabled: 1
-  isGunEnabled: 1
+  isGunEnabled: 0
   isGrounded: 0
   playerControlState: 1
   playerInventory: []
@@ -126,6 +131,7 @@ MonoBehaviour:
   playerInput: {fileID: 7895055578135847147}
   groundChecker: {fileID: 322596506990702351}
   PC: {fileID: 0}
+  audioManager: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   regularPhysicMaterial: {fileID: 13400000, guid: 02cc73f238347254b8ac9ba286b85916, type: 2}
 --- !u!114 &322596506808537513
@@ -177,7 +183,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 50
   m_Drag: 0
-  m_AngularDrag: 1
+  m_AngularDrag: 100
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -325,7 +331,8 @@ MonoBehaviour:
   Crystal_Hot: {r: 0, g: 0, b: 0, a: 0}
   Crystal_Cold: {r: 0, g: 0, b: 0, a: 0}
   gun: {fileID: 3457279385963741915}
-  gun_obj: {fileID: 3283759439096253894}
+  arm_obj: {fileID: 3283759439096253894}
+  gun_obj: {fileID: 3283759438853642769}
   BackCrystals: {fileID: 8141482864838569657}
   CrystalCase: {fileID: 995927392430124005}
   CrystalCase1: {fileID: 380171846181073409}
@@ -333,7 +340,9 @@ MonoBehaviour:
   BarrelCrystals: {fileID: 0}
   emissiveLights: []
   lightning: {fileID: 4048326632345954499}
+  inspectingWeapon: 0
   weaponState: 3
+  equipped: 0
 --- !u!114 &7895055576296621459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,6 +390,14 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Lazer
     clip: {fileID: 8300000, guid: aea441607fe170b4ab19c3b5b355ff17, type: 3}
+    volume: 1
+    pitch: 1
+    space: 0
+    loop: 1
+    spawn_on_object: 0
+    source: {fileID: 0}
+  - name: Footstep
+    clip: {fileID: 8300000, guid: 42e65e088b3f4374e851b8dbd38f3df9, type: 3}
     volume: 1
     pitch: 1
     space: 0
@@ -3893,7 +3910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 44b3c5cb528385a408885e17db0e3023, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919231930128792826, guid: 44b3c5cb528385a408885e17db0e3023, type: 3}
       propertyPath: m_Materials.Array.data[0]
