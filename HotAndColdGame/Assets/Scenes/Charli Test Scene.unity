@@ -146,6 +146,10 @@ PrefabInstance:
       propertyPath: isGunEnabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 322596506808537514, guid: e7f6c9e6b08a43b4288c688abbce8074, type: 3}
+      propertyPath: currentMovementSettings.stoppingForce
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 322596506808537515, guid: e7f6c9e6b08a43b4288c688abbce8074, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -407,6 +411,7 @@ MonoBehaviour:
   Positive: {r: 1, g: 0.06640485, b: 0, a: 0}
   Negative: {r: 0.17475079, g: 0.3965832, b: 0.7264151, a: 0}
   Neutral: {r: 0.83637416, g: 0.990566, b: 0.8941961, a: 0}
+  colourIntensity: 0
   materials:
     Crystal: {fileID: 0}
     EffectField: {fileID: 0}
