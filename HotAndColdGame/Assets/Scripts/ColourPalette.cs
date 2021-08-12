@@ -11,6 +11,9 @@ public class ColourPalette : MonoBehaviour
     public Color Negative;
     public Color Neutral;
 
+    [Range(0,10)]
+    public float colourIntensity;
+
     [System.Serializable]
     public struct MaterialMap
     {

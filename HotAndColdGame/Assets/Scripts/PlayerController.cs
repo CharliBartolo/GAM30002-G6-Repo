@@ -16,9 +16,11 @@ public class PlayerController : MonoBehaviour, IConditions
         public float jumpStrength;
         public float airSpeed; 
         public Vector2 velocityCap;
-        public float antiGravMod; 
+        public float antiGravMod;
+        [Range(0f, 50f)]public float stoppingForce;
+        [Range(0f, 50f)]public float reverseForce; 
 
-        public playerMovementSettings(float movementSpeed, float speedCapSmoothFactor, float jumpStrength, float airSpeed, Vector2 velocityCap, float antiGravMod)
+        public playerMovementSettings(float movementSpeed, float speedCapSmoothFactor, float jumpStrength, float airSpeed, Vector2 velocityCap, float antiGravMod, float stoppingForce, float reverseForce)
         {
             this.movementSpeed = movementSpeed;
             this.speedCapSmoothFactor = speedCapSmoothFactor;
@@ -26,19 +28,20 @@ public class PlayerController : MonoBehaviour, IConditions
             this.airSpeed = airSpeed;
             this.velocityCap = velocityCap;
             this.antiGravMod = antiGravMod;
+            this.stoppingForce = stoppingForce;
+            this.reverseForce = reverseForce;
         }
     }  
 
     [Header("Player Control Settings")]
-    public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2 (8f, 20f), 1f);    
+    public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2 (8f, 20f), 1f, 1.2f, 1.5f);    
     public float interactRange = 2f;
     public float timeBetweenFootsteps = 1f;
     private float currentTimeBetweenFootsteps = 0f;
     public float timeBeforeFrictionReturns = 0.2f;
     private float currentTimeBeforeFrictionReturns = 0f;
     private Vector3 horizVelocity;
-    private Vector3 vertVelocity;
-    public float[] playerFriction = new float[2] {1f, 1f};
+    private Vector3 vertVelocity; 
     
     // Mouse Control Settings   
     public Vector2 mouseSensitivity = new Vector2 (1, 1);
@@ -51,9 +54,9 @@ public class PlayerController : MonoBehaviour, IConditions
     private Vector2 _mouseSmooth;  
 
     [Header("Player Condition Control Settings")]
-    public playerMovementSettings baseMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2 (8f, 20f), 1f);
-    public playerMovementSettings hotMovementSettings = new playerMovementSettings(20f, 3f, 14f, 0.15f, new Vector2 (6f, 10f), 1f);
-    public playerMovementSettings coldMovementSettings = new playerMovementSettings(24f, 15f, 10f, 0.02f, new Vector2 (16f, 20f), 1f);    
+    public playerMovementSettings baseMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2 (8f, 20f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings hotMovementSettings = new playerMovementSettings(20f, 3f, 14f, 0.15f, new Vector2 (6f, 10f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings coldMovementSettings = new playerMovementSettings(24f, 15f, 10f, 0.02f, new Vector2 (16f, 20f), 1f, 1.2f, 1.5f);    
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
@@ -61,6 +64,7 @@ public class PlayerController : MonoBehaviour, IConditions
     [SerializeField] private bool isGrounded;
     private bool isClimbing = false;
     private RaycastHit groundedHit;
+    private RaycastHit emptyRaycast;
     public PlayerState playerControlState = PlayerState.MoveAndLook;
     public List<string> playerInventory;
     [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
@@ -86,12 +90,8 @@ public class PlayerController : MonoBehaviour, IConditions
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         _activeConditions = new List<IConditions.ConditionTypes>();
-        playerInventory = new List<string>();         
-        
-        // baseMovementSpeed = movementSpeed;            
-        // baseJumpStrength = jumpStrength;
-        // baseAirSpeed = airSpeed;
-        // baseVelocityCap = velocityCap;               
+        playerInventory = new List<string>();   
+        emptyRaycast = new RaycastHit();                 
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
@@ -113,7 +113,10 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             playerInventory.Add("Raygun");
             GetComponent<GunFXController>().EquipTool();            
-        }  
+        }
+
+        
+        playerRB.angularDrag = 100f;
     }
 
     private void Update() 
@@ -163,7 +166,10 @@ public class PlayerController : MonoBehaviour, IConditions
     }
 
     private void FixedUpdate() 
-    {        
+    {  
+        horizVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
+        vertVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));  
+
         ExecuteConditions();
         RemoveConditionsIfReturningToNeutral();       
 
@@ -187,37 +193,47 @@ public class PlayerController : MonoBehaviour, IConditions
         if (audioManager != null)
             PlayFootstepSound();
         VelocityClamp();
-        SetPlayerFriction();
+        SetPlayerFriction();        
     }
 
-    // Input functions 
-
+    // Input functions
     void MovePlayer(Vector2 stickMovementVector)
     {
         // Translate 2d analog movement to 3d vector movement            
         Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);   
-        movementVector = transform.TransformDirection(movementVector);
+        movementVector = transform.TransformDirection(movementVector);    
 
-        // Reflect along surface if grounded?
-        if (isGrounded)
-        {
-            movementVector = Vector3.ProjectOnPlane(movementVector, groundedHit.normal);
-            Debug.DrawRay(transform.position, movementVector * 100);
-        }
-        else
-        {            
-            //movementVector *= airSpeed;
-            movementVector *= currentMovementSettings.airSpeed;
-        }
+        //Reduce player's current velocity if new movement direction is slightly different than previously
+        // float dotProd = Vector3.Dot(stickMovementVector.normalized, horizVelocity.normalized);
+        // Debug.Log(dotProd);
+        // if (dotProd < 0.95f && movementVector.magnitude > 0.01f)
+        // {   
+        //     playerRB.velocity = (horizVelocity * 0.99f) + vertVelocity;
+        // }
+        // Debug.DrawRay(transform.position, horizVelocity * 100); 
 
-         // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
+        // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
         if (movementVector.magnitude > 1f)
         {
             movementVector = movementVector.normalized;
         } 
 
-        //playerRB.AddForce(movementVector * movementSpeed, ForceMode.Acceleration);
-        playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed, ForceMode.Acceleration);
+        if (isGrounded)
+        {           
+            // Player's movement input projected on surface, to enable moving up / down ramps 
+            movementVector = Vector3.ProjectOnPlane(movementVector, groundedHit.normal);
+
+            // Opposite gravity force, calculated based on incline, so gravity doesn't stop you from moving up and down
+            Vector3 inverseGravProportion = -Physics.gravity * (1 + Vector3.Dot(Physics.gravity.normalized, groundedHit.normal.normalized));
+
+            playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed + inverseGravProportion, ForceMode.Acceleration);
+            //Debug.DrawRay(transform.position, movementVector * 100);
+            //Debug.Log("Inverse Grav component is :" + inverseGravProportion);
+        }
+        else
+        {                     
+            playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed * currentMovementSettings.airSpeed, ForceMode.Acceleration);
+        }        
     }
 
     void Jump(InputAction.CallbackContext context)
@@ -388,7 +404,6 @@ public class PlayerController : MonoBehaviour, IConditions
     }
 
     // Sound Functions Below
-
     void PlayFootstepSound()
     {
         //Debug.Log(currentTimeBetweenFootsteps);
@@ -421,15 +436,12 @@ public class PlayerController : MonoBehaviour, IConditions
         if (isGrounded)
             groundedHit = hit;
         else
-            groundedHit = new RaycastHit();
+            groundedHit = emptyRaycast;
         //Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
     } 
 
     void VelocityClamp()
-    {
-        horizVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
-        vertVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));        
-        
+    {       
         if (horizVelocity.magnitude > currentMovementSettings.velocityCap.x && currentMovementSettings.velocityCap.x > 0f)
         { 
             // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
@@ -449,7 +461,27 @@ public class PlayerController : MonoBehaviour, IConditions
 
     // TODO: Use forces instead of friction for player control
     void SetPlayerFriction()
-    {
+    {        
+        if (isGrounded)
+        {
+            Vector3 movementDirection = new Vector3 (playerInput.actions.FindAction("Movement").ReadValue<Vector2>().x, 0f, playerInput.actions.FindAction("Movement").ReadValue<Vector2>().y);       
+            
+            float moveDirDotProd = Vector3.Dot(transform.TransformVector(movementDirection.normalized), horizVelocity.normalized);
+
+            // Use DOT product as sliding scale of force I.e. Between 0 and 1, apply less force, between -1 and 0, apply most force
+            // Basically, closer DOT is to 1, the closer the player is to moving in the same direction as their current velocity.
+            if (moveDirDotProd >= 0f && moveDirDotProd < 0.9f)
+            {
+                playerRB.velocity = Vector3.Lerp(transform.TransformDirection(movementDirection.normalized) * horizVelocity.magnitude, horizVelocity, 
+                    Time.deltaTime * 50 / currentMovementSettings.stoppingForce) + vertVelocity;
+            }
+            else if (moveDirDotProd < 0f)
+            {
+                playerRB.velocity = Vector3.Lerp(Vector3.zero, horizVelocity, Time.deltaTime * 50 / currentMovementSettings.reverseForce) + vertVelocity;
+            }
+        }
+
+        /*
         // Player should have no friction when either airborne or providing movement input.
         // Should probably enable friction if trying to move opposite current direction?
         if (!isGrounded || playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude > 0)
@@ -469,23 +501,7 @@ public class PlayerController : MonoBehaviour, IConditions
                 regularPhysicMaterial.staticFriction = playerFriction[0];
                 regularPhysicMaterial.dynamicFriction = playerFriction[1];
             }
-        }
-        /*
-        if (isGrounded)
-        {
-            if (regularPhysicMaterial.staticFriction < playerFriction[0] || regularPhysicMaterial.dynamicFriction < playerFriction[1])
-            {
-                regularPhysicMaterial.staticFriction = Mathf.Clamp(regularPhysicMaterial.staticFriction +
-                    Mathf.Lerp(0f, playerFriction[0], Time.deltaTime), 0, playerFriction[0]);
-                regularPhysicMaterial.dynamicFriction = Mathf.Clamp(regularPhysicMaterial.dynamicFriction +
-                    Mathf.Lerp(0f, playerFriction[1], Time.deltaTime), 0, playerFriction[1]);
-            }            
-        }
-        else
-        {
-            regularPhysicMaterial.staticFriction = 0f;
-            regularPhysicMaterial.dynamicFriction = 0f;
-        }
+        }   
         */
     }
  
