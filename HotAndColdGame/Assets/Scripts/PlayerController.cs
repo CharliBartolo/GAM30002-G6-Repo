@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour, IConditions
 {
+    private float deltaTime = 0.0f;
     [HideInInspector]
     public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}   
 
@@ -121,6 +122,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
     private void Update() 
     {
+        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
         //Debug.Log(playerRB.velocity.magnitude);
 
         if (PC != null)
@@ -521,7 +523,9 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         GUILayout.BeginArea(new Rect(10f, 10f, Screen.width, Screen.height));
         string stringToShow = "Player Inventory: ";
-        float avgFramerate = Time.frameCount / Time.time;
+        //float msec = deltaTime * 1000f;
+        float fps = 1.0f / deltaTime;
+        //float avgFramerate = Time.frameCount / Time.time;
 
         if (playerInventory.Count > 0)
         {            
@@ -537,7 +541,7 @@ public class PlayerController : MonoBehaviour, IConditions
         }
         
         GUILayout.Label(stringToShow);
-        GUILayout.Label("FPS: " + avgFramerate);
+        GUILayout.Label(fps + " frames per second");
 
         GUILayout.EndArea();
     }
