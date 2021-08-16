@@ -28,10 +28,22 @@ public class ChargerFXController : FXController
     // Update is called once per frame
     void Update()
     {
-        if(line != null)
-            UpdateRange();
+        if(isEnabled)
+        {
+            if (!line.enabled)
+                line.enabled = true;
 
-        HitStateBased();
+            if (line != null)
+                UpdateRange();
+
+            HitStateBased();
+        }
+        else
+        {
+            if (line.enabled)
+                line.enabled = false;
+        }
+     
         //Debug.Log("HIT TEMP STATE BASE: " + hit.collider.gameObject.name);
 
 

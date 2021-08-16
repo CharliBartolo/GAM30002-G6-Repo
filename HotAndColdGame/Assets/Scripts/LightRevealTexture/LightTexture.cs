@@ -22,9 +22,10 @@ public class LightTexture : MonoBehaviour
     public Material[] CurrentMaterial;
     private bool materialSet;
 
-    public float range;
+    public float range = 0;
 
     public int index = 1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,20 +40,22 @@ public class LightTexture : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         //spotlight = GetNearestLight();
         UpdateColoursFromPallet();
 
 
-        if (spotlight != null)
+        if (spotlight != null && crystal != null)
         {
             SetShaderProperties();
             SetRange(crystal.CurrentTemperature);
+            if (range != 0)
+                SetMaterial();
         }
     }
 
-/*    public Transform GetNearestLight()
+    /*public Transform GetNearestLight()
     {
         Transform closest = null;
         foreach (Transform t in spotlights)
@@ -84,16 +87,24 @@ public class LightTexture : MonoBehaviour
     // set spotlight range
     public void SetRange(float range)
     {
+        //if(crystal.CurrentTempState != ITemperature.tempState.Neutral)
+        //{
         spotlight.GetComponent<Light>().range = Mathf.Abs(range) * crystal.GetComponent<CrystalFXController>().effectRadius * crystal.GetComponent<Transform>().localScale.x / 20f;
+        this.range = range;
+        //}
+    }
 
-        if(spotlight.GetComponent<Light>().range != range)
+    public void SetMaterial()
+    {
+        //Debug.Log("Range: " + range);
+        if (spotlight.GetComponent<Light>().range != range)
         {
-            if (range > 0)
+            if (range > 1)
             {
                 //Debug.Log("RUNNING HOT");
                 SetMaterialProperties(HotColor);
             }
-            else if (range < 0)
+            else if (range < -1)
             {
                 //Debug.Log("RUNNING COLD " + " - Range: " + range);
                 SetMaterialProperties(ColdColor);
@@ -125,12 +136,12 @@ public class LightTexture : MonoBehaviour
     public void RemoveHiddenMaterial(int index)
     {
         Material[] current = gameObject.GetComponent<Renderer>().sharedMaterials;
-        Debug.Log("Removing index: " + index + " on: " + gameObject.name);
-    /*    if(index > gameObject.GetComponent<Renderer>().sharedMaterials.Length)
-        {
-            Debug.Log("Index out of range, reducing index: " + index);
-            RemoveHiddenMaterial(index - 1);
-        }*/
+        //Debug.Log("Removing index: " + index + " on: " + gameObject.name);
+        /*    if(index > gameObject.GetComponent<Renderer>().sharedMaterials.Length)
+            {
+                Debug.Log("Index out of range, reducing index: " + index);
+                RemoveHiddenMaterial(index - 1);
+            }*/
         Material[] _new = current.Except(new Material[] { current[index] }).ToArray();
 
         gameObject.GetComponent<Renderer>().sharedMaterials = _new;
@@ -140,7 +151,7 @@ public class LightTexture : MonoBehaviour
     public void SetMaterialProperties(Color _color)
     {
         Material[] m = GetComponent<Renderer>().sharedMaterials;
-        if (m[index] != null)
+        if (m != null && m[index] != null)
         {
             //m[index].color = _color;
             m[index].SetVector("_LayerTint", _color);
@@ -148,7 +159,7 @@ public class LightTexture : MonoBehaviour
             m[index].SetVector("_FresnelColorOutside", _color);
             m[index].SetVector("_InnerLightColorOutside", _color);
             m[index].SetVector("_InnerLightColorInside", _color);
-        }    
+        }
     }
 
     // set shader properties
@@ -157,7 +168,7 @@ public class LightTexture : MonoBehaviour
         if (spotlight)
         {
             //GetComponent<Renderer>().sharedMaterials[1]?.SetFloat("_SpotAngle", spotlight.GetComponent<Light>().spotAngle);
-            if (GetComponent<Renderer>().sharedMaterials.Length > index && GetComponent<Renderer>().sharedMaterials[index]!=null)
+            if (GetComponent<Renderer>().sharedMaterials.Length > index && GetComponent<Renderer>().sharedMaterials[index] != null)
             {
                 GetComponent<Renderer>().sharedMaterials[index]?.SetFloat("_Range", spotlight.GetComponent<Light>().range);
                 GetComponent<Renderer>().sharedMaterials[index]?.SetVector("_LightPos", spotlight.position);

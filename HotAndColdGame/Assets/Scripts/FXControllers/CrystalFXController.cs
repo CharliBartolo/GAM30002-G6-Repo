@@ -38,10 +38,10 @@ public class CrystalFXController : FXController
     // Start is called before the first frame update
     public override void Start()
     {
-       
+
 
         base.Start();
-        
+
         AffectedObjects = new List<GameObject>();
         MainCrystal = GetComponent<CrystalBehaviour>();
         MainCrystaLight = transform.Find("Area Light").GetComponent<Light>();
@@ -62,21 +62,21 @@ public class CrystalFXController : FXController
         temp = 0;
 
         Invoke(nameof(SetReady), 0.5f);
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(warmup)
+        if (warmup)
         {
 
         }
 
-        if(ready)
+        if (ready)
             PerformFX();
 
-        transform.localScale = new Vector3 (transform.localScale.x, transform.localScale.x, transform.localScale.x) ;       
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.x, transform.localScale.x);
 
         /*if(AreaColliderAreaCollider.radius > 0.2f)
             Instantiate(CrystalGrowth,GetPointOnMesh().point, Quaternion.FromToRotation(Vector3.forward, GetPointOnMesh().normal));
@@ -109,7 +109,7 @@ public class CrystalFXController : FXController
 
         GrowAreaCollider();
 
-        if(MainCrystal.spreadEffects)
+        if (MainCrystal.spreadEffects)
         {
             ColourAreaSphere();
             ColourFriends();
@@ -246,7 +246,7 @@ public class CrystalFXController : FXController
             //Remove fx
             LightTexture[] comps = other.gameObject.GetComponents<LightTexture>();
 
-            Debug.Log("# of Light Texture componenets: " + comps.Length);
+            //Debug.Log("# of Light Texture componenets: " + comps.Length);
             int myIndex = RemoveMyindex(other);
             AffectedObjects.Remove(other.gameObject);
         }
@@ -292,9 +292,9 @@ public class CrystalFXController : FXController
     }
 
     private void OnTriggerEnter(Collider other)
-    {                 
+    {
         if (other.transform.parent != this.gameObject && MainCrystal.spreadEffects)
-        {            
+        {
             if (other.gameObject.tag != "Player")
             {
                 if (other.transform.parent?.gameObject.tag != "Player")
@@ -306,32 +306,33 @@ public class CrystalFXController : FXController
                         {
                             if (other.gameObject.transform.parent?.GetComponent<CrystalFXController>() == null)
                             {
+                                //add texture component
+                                AddExtraLightTextureComponent(other);
+
                                 //AddLightTextureComponent(other);
                                 // if not have lighttexture, add it
-                                if (other.gameObject.GetComponent<LightTexture>() == null)
+                                /*if (other.gameObject.GetComponent<LightTexture>() == null)
                                 {
                                     AddLightTextureComponent(other);
                                 }
                                 else
                                 {
                                     AddExtraLightTextureComponent(other);
-                                }
+                                }*/
                             }
                         }
                     }
                 }
-            }            
-        }       
+            }
+        }
     }
 
     // detect objects 
     /*
     private void OnTriggerEnter(Collider other)
     {
-
         if (other != null && AreaCollider.radius > 0.01)
         {
-
             if (other.gameObject != this.gameObject)
             {
                 if (other.transform.parent != this.gameObject)
@@ -343,7 +344,6 @@ public class CrystalFXController : FXController
                             if (other.transform.parent?.gameObject.tag != "Player")
                             {
                                 //Debug.Log("COLLISION: " + other.gameObject.name);
-
                                 if (other.gameObject.GetComponent<MeshRenderer>() != null)
                                 {
                                     if (other.gameObject.GetComponent<CrystalFXController>() == null)

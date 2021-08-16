@@ -17,11 +17,9 @@ ScriptedImporter:
     generateAllOutputs: 0
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://rock_wall\" label=\"\" >\n  <presetinput
-      identifier=\"$outputsize\" uid=\"2299555124\" type=\"8\" value=\"10,10\" />\n 
-      <presetinput identifier=\"Moss_Amount\" uid=\"4196807052\" type=\"0\" value=\"0.201\"
-      />\n  <presetinput identifier=\"Snow\" uid=\"4197136033\" type=\"4\" value=\"0\"
-      />\n  <presetinput identifier=\"Slope_Angle\" uid=\"4197136247\" type=\"0\"
-      value=\"0.1375\" />\n </sbspreset>\n"
+      identifier=\"Moss_Amount\" uid=\"4196807052\" type=\"0\" value=\"0.184\" />\n 
+      <presetinput identifier=\"Snow\" uid=\"4197136033\" type=\"4\" value=\"0\"
+      />\n </sbspreset>\n"
     shaderName: HDRP/LitTessellation
     materialProperties:
       shader: {fileID: 4800000, guid: 756bac9090102564582875f4c7e30202, type: 3}
@@ -39,7 +37,7 @@ ScriptedImporter:
         offset: {x: 0, y: 0}
       - name: _BaseColorMap
         texture: {fileID: -6521408559786440303, guid: e971de5c1ba3a634fa25b77c1ca40bd6, type: 3}
-        scale: {x: 1.5, y: 1.5}
+        scale: {x: 4, y: 4}
         offset: {x: 0, y: 0}
       - name: _BentNormalMap
         texture: {instanceID: 0}
@@ -63,7 +61,7 @@ ScriptedImporter:
         offset: {x: 0, y: 0}
       - name: _EmissiveColorMap
         texture: {fileID: 1545135907854649571, guid: e971de5c1ba3a634fa25b77c1ca40bd6, type: 3}
-        scale: {x: 1, y: 1}
+        scale: {x: 1.5, y: 1.5}
         offset: {x: 0, y: 0}
       - name: _HeightMap
         texture: {fileID: 2948721363525565078, guid: e971de5c1ba3a634fa25b77c1ca40bd6, type: 3}
@@ -257,7 +255,7 @@ ScriptedImporter:
       - name: _HeightTessCenter
         float: 0.5
       - name: _InvTilingScale
-        float: 0.6666667
+        float: 0.25
       - name: _Ior
         float: 1
       - name: _IridescenceMask
@@ -479,7 +477,7 @@ ScriptedImporter:
       usage: 3
       bImage: 1
       bNumerical: 0
-      bLinear: 0
+      bLinear: 1
     - outputName: mask
       identifier: mask
       usageName: mask
