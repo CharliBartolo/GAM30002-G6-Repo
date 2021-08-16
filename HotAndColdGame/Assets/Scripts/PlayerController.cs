@@ -521,6 +521,7 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         GUILayout.BeginArea(new Rect(10f, 10f, Screen.width, Screen.height));
         string stringToShow = "Player Inventory: ";
+        float avgFramerate = Time.frameCount / Time.time;
 
         if (playerInventory.Count > 0)
         {            
@@ -536,6 +537,7 @@ public class PlayerController : MonoBehaviour, IConditions
         }
         
         GUILayout.Label(stringToShow);
+        GUILayout.Label("FPS: " + avgFramerate);
 
         GUILayout.EndArea();
     }
