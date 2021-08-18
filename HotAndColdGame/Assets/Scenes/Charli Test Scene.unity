@@ -198,6 +198,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3051205917557390252, guid: e7f6c9e6b08a43b4288c688abbce8074, type: 3}
+      propertyPath: coldPre
+      value: 
+      objectReference: {fileID: 923687833}
+    - target: {fileID: 3051205917557390252, guid: e7f6c9e6b08a43b4288c688abbce8074, type: 3}
+      propertyPath: heatPre
+      value: 
+      objectReference: {fileID: 1092476058}
     - target: {fileID: 4000625252289727693, guid: e7f6c9e6b08a43b4288c688abbce8074, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -393,7 +401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e090e40686b869429d4b8a11ce96cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioManager: {fileID: 0}
+  audioManager: {fileID: 136672048}
   colourPallete: {fileID: 136672047}
   lastCheckPointPos: {fileID: 1152758952}
 --- !u!114 &136672047
@@ -637,7 +645,7 @@ MonoBehaviour:
   IsPaused: 0
   Quitting: 0
   pauseText: {fileID: 1561819255}
-  PC: {fileID: 0}
+  PC: {fileID: 996327609}
   MouseSensitivityXSlider: {fileID: 0}
   MouseSensitivityYSlider: {fileID: 0}
   MouseSensitivityXInput: {fileID: 0}
@@ -1481,6 +1489,11 @@ Transform:
   m_Father: {fileID: 1493906111}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &923687833 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 733248955163601515, guid: e7f6c9e6b08a43b4288c688abbce8074, type: 3}
+  m_PrefabInstance: {fileID: 23475736}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &954726535
 GameObject:
   m_ObjectHideFlags: 0
@@ -1828,6 +1841,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &996327609 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 322596506808537514, guid: e7f6c9e6b08a43b4288c688abbce8074, type: 3}
+  m_PrefabInstance: {fileID: 23475736}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5c3c22e315c7843ab0eb9177d0efa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1014335803
 GameObject:
   m_ObjectHideFlags: 0
@@ -2090,6 +2114,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gm: {fileID: 136672046}
   spawnPos: {fileID: 1853495142}
+--- !u!1 &1092476058 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9162684106826247978, guid: e7f6c9e6b08a43b4288c688abbce8074, type: 3}
+  m_PrefabInstance: {fileID: 23475736}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1138251602
 GameObject:
   m_ObjectHideFlags: 0
