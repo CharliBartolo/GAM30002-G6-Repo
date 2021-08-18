@@ -20,7 +20,7 @@ public class Reticle : MonoBehaviour {
     }
 	
 	void LateUpdate() {
-        UpdateCursor(); //Update Smoothly
+        UpdateCursor(); //Update Smoothly       
         if (Gun.cold)
         {
             hotCursor.gameObject.SetActive(false);
@@ -39,11 +39,11 @@ public class Reticle : MonoBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
-            coldCursor.transform.position = hit.point + hit.normal * 0.01f;
+            coldCursor.transform.position = hit.point + hit.normal * 0.05f;
             coldCursor.transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
             //coldCursor.transform.rotation = hit.rotation;
 
-            hotCursor.transform.position = hit.point + hit.normal * 0.01f;
+            hotCursor.transform.position = hit.point + hit.normal * 0.05f;
             hotCursor.transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
             //hotCursor.transform.rotation = hit.rotation;
         }
