@@ -22,7 +22,8 @@ public class CrystalBehaviour : TemperatureStateBase
     public PhysicMaterial icyPhysicMaterial;
     public Light areaLight;
     public Material coldTempField, hotTempField;
-    public Dictionary<GameObject, PhysicMaterial> objectsInTempArea;
+    //public Dictionary<GameObject, PhysicMaterial> objectsInTempArea;
+    public List<GameObject> objectsInTempArea;
 
     //private float powerDownRate = 0.0333f;  //Operates on a 0-1 percentage basis, Default value 0.0333 takes roughly 30 seconds from max to power down    
     public float temperatureValueToEmit = 5f;
@@ -35,7 +36,7 @@ public class CrystalBehaviour : TemperatureStateBase
     {
         //mat = mat_obj.GetComponent<Renderer>().material;
         base.Start();
-        objectsInTempArea = new Dictionary<GameObject, PhysicMaterial>();
+        //objectsInTempArea = new Dictionary<GameObject, PhysicMaterial>();
     }
 
     // Update is called once per frame
@@ -94,34 +95,41 @@ public class CrystalBehaviour : TemperatureStateBase
                     ApplyTemperatureToOtherObjects(temperatureValueToEmit);
                 if(spreadEffects)
                 {
-                    ResetIce();
+                    //ResetIce();
                     SpreadLowGravToArea();
                 }
                 
             }
             else
             {
-                if(spreadEffects)
-                    ResetIce();
+                //if(spreadEffects)
+                    //ResetIce();
             }
         }                       
     }
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (!objectsInTempArea.ContainsKey(other.gameObject))
+        //if (!objectsInTempArea.ContainsKey(other.gameObject))
+
+        // If the object hasn't already been added, AND uses either IConditions or ITemperature, add it.
+        if (!objectsInTempArea.Contains(other.gameObject) && 
+        //if (!objectsInTempArea.ContainsKey(other.gameObject) && 
+            (other.TryGetComponent<IConditions>(out IConditions conditionComp) || other.TryGetComponent<ITemperature>(out ITemperature temperatureComp)))
         {
             if(!other.gameObject.GetComponent<MachineFXController>())
-                objectsInTempArea.Add(other.gameObject, other.material);
+                //objectsInTempArea.Add(other.gameObject, other.material);
+                objectsInTempArea.Add(other.gameObject);
         }
     }
 
     protected virtual void OnTriggerExit(Collider other)
     {
-        if (objectsInTempArea.ContainsKey(other.gameObject))
+        //if (objectsInTempArea.ContainsKey(other.gameObject))
+        if (objectsInTempArea.Contains(other.gameObject))
         {
             // Remove ice physic material 
-            other.GetComponent<Collider>().material = objectsInTempArea[other.gameObject];
+            //other.GetComponent<Collider>().material = objectsInTempArea[other.gameObject];
 
             objectsInTempArea.Remove(other.gameObject);
         }
@@ -129,7 +137,8 @@ public class CrystalBehaviour : TemperatureStateBase
     //ADDED: speed modifier
     protected virtual void ApplyTemperatureToOtherObjects(float temperatureValueParam)
     {
-        foreach (GameObject temperatureObject in objectsInTempArea.Keys)
+        //foreach (GameObject temperatureObject in objectsInTempArea.Keys)
+        foreach (GameObject temperatureObject in objectsInTempArea)
         {
             //Added proximity
             if (temperatureObject.GetComponent<ITemperature>() != null)
@@ -176,16 +185,19 @@ public class CrystalBehaviour : TemperatureStateBase
         // Could differentiate player / key items and random items via temp / condition system?
 
         // If object has rigidbody component, apply upward force to it as long as it remains in area
-        foreach (GameObject temperatureObject in objectsInTempArea.Keys)
+        //foreach (GameObject temperatureObject in objectsInTempArea.Keys)
+        foreach (GameObject temperatureObject in objectsInTempArea)
         {
-            if (temperatureObject.GetComponent<IConditions>() != null)
+            if (temperatureObject.TryGetComponent<IConditions>(out IConditions objectConditionComponent))
             {
-                temperatureObject.GetComponent<IConditions>().AddCondition(IConditions.ConditionTypes.ConditionHot);
+                objectConditionComponent.AddCondition(IConditions.ConditionTypes.ConditionHot);
             }
-            else if (temperatureObject.GetComponent<Rigidbody>() != null)
+            /*
+            else if (temperatureObject.TryGetComponent<Rigidbody>(out Rigidbody objectRigidbodyComponent))
             {
-                temperatureObject.GetComponent<Rigidbody>().AddForce(-Physics.gravity * 25f * Time.deltaTime, ForceMode.Acceleration);
-            }            
+                objectRigidbodyComponent.AddForce(-Physics.gravity * 25f * Time.deltaTime, ForceMode.Acceleration);
+            }     
+            */   
         }
     }
 
@@ -195,12 +207,14 @@ public class CrystalBehaviour : TemperatureStateBase
             2. Also change physic material to slippery
             3. Do something specific for player too
         */
-        foreach (GameObject temperatureObject in objectsInTempArea.Keys)
+        //foreach (GameObject temperatureObject in objectsInTempArea.Keys)
+        foreach (GameObject temperatureObject in objectsInTempArea)
         {
             if (temperatureObject.GetComponent<IConditions>() != null)
             {
                 temperatureObject.GetComponent<IConditions>().AddCondition(IConditions.ConditionTypes.ConditionCold);
             }
+            /*
             else if (temperatureObject.GetComponent<Collider>() != null && temperatureObject.GetComponent<Rigidbody>() != null)
             {
                 temperatureObject.GetComponent<Collider>().material = icyPhysicMaterial;
@@ -208,12 +222,13 @@ public class CrystalBehaviour : TemperatureStateBase
                 //temperatureObject.GetComponent<Collider>().material.staticFriction = 0.05F;
                 //temperatureObject.GetComponent<Collider>().material.frictionCombine = PhysicMaterialCombine.Minimum;
             }
-
+            */
             //Added IConditions
   
         }
     }
 
+    /*
     private void ResetIce()
     {
         foreach (GameObject temperatureObject in objectsInTempArea.Keys)
@@ -224,5 +239,6 @@ public class CrystalBehaviour : TemperatureStateBase
             }                    
         } 
     }
+    */
 }
 

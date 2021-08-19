@@ -23,7 +23,7 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
     public bool isReturningToNeutral = true;
 
     private float countdownBeforeReturnToNeutral;
-    public float startingCountdownBeforeReturnToNeutral = 2f;
+    public float startingCountdownBeforeReturnToNeutral = 1f;
 
     protected virtual void Start() 
     {
