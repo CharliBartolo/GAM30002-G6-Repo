@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
@@ -19,8 +19,9 @@ public class LightTexture : MonoBehaviour
     // hidden material
     public Material HiddenMaterial;
     // hidden material
-    public Material[] CurrentMaterial;
+    public List<Material> currentMaterials;
     private bool materialSet;
+    private Renderer rendererComponent;
 
     public float range = 0;
 
@@ -29,10 +30,16 @@ public class LightTexture : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        rendererComponent = GetComponent<Renderer>();
         //spotlight = GetNearestLight();
         HiddenMaterial = GameMaster.instance.colourPallete.HiddenMaterial;
-        CurrentMaterial = gameObject.GetComponent<Renderer>().sharedMaterials;
+
+        currentMaterials = new List <Material>();
+        foreach (Material mat in rendererComponent.sharedMaterials)
+        {
+            currentMaterials.Add(mat);
+        }
+        
         if (crystal != null)
             spotlight = crystal.transform.Find("Spot Light").GetComponent<Light>()?.transform;
         AddHiddenMaterial();
@@ -121,45 +128,61 @@ public class LightTexture : MonoBehaviour
     public void AddHiddenMaterial()
     {
         //CurrentMaterial = gameObject.GetComponent<Renderer>().sharedMaterials;
-        Material[] copy = gameObject.GetComponent<Renderer>().sharedMaterials;
-        Material[] combo = new Material[gameObject.GetComponent<Renderer>().sharedMaterials.Length + 1];
-        combo[0] = CurrentMaterial[0];
-        for (int i = 1; i < copy.Length; i++)
+        //Material[] copy = gameObject.GetComponent<Renderer>().sharedMaterials;
+        //Material[] combo = new Material[gameObject.GetComponent<Renderer>().sharedMaterials.Length + 1];
+        //combo[0] = currentMaterials[0];
+        //for (int i = 1; i < copy.Length; i++)
+        //{
+        //    combo[i] = copy[i];
+        //}
+        //combo[combo.Length - 1] = new Material(HiddenMaterial);
+        currentMaterials.Clear();
+        foreach (Material mat in rendererComponent.sharedMaterials)
         {
-            combo[i] = copy[i];
-        }
-        combo[combo.Length - 1] = new Material(HiddenMaterial);
-        gameObject.GetComponent<Renderer>().sharedMaterials = combo;
+            currentMaterials.Add(mat);
+        }        
+
+        currentMaterials.Insert(currentMaterials.Count, new Material (HiddenMaterial));
+        rendererComponent.sharedMaterials = currentMaterials.ToArray();
+        //gameObject.GetComponent<Renderer>().sharedMaterials = combo;
     }
 
     // remove HiddenMaterial
     public void RemoveHiddenMaterial(int index)
     {
-        Material[] current = gameObject.GetComponent<Renderer>().sharedMaterials;
+        //Material[] currentMats = gameObject.GetComponent<Renderer>().sharedMaterials;
         //Debug.Log("Removing index: " + index + " on: " + gameObject.name);
         /*    if(index > gameObject.GetComponent<Renderer>().sharedMaterials.Length)
             {
                 Debug.Log("Index out of range, reducing index: " + index);
                 RemoveHiddenMaterial(index - 1);
             }*/
-        Material[] _new = current.Except(new Material[] { current[index] }).ToArray();
+        if (index < currentMaterials.Count)        
+            currentMaterials.RemoveAt(index);
+        //Material[] _new = currentMats.Except(new Material[] { currentMats[index] }).ToArray();
 
-        gameObject.GetComponent<Renderer>().sharedMaterials = _new;
+        //gameObject.GetComponent<Renderer>().sharedMaterials = _new;
+        rendererComponent.sharedMaterials = currentMaterials.ToArray();
     }
 
     // set material properties
     public void SetMaterialProperties(Color _color)
     {
-        Material[] m = GetComponent<Renderer>().sharedMaterials;
-        if (m != null && m[index] != null)
+        // Problem line
+        //if (m != null && m[index] != null)        
+        
+        if (index < rendererComponent.sharedMaterials.Length)
         {
+            Material[] materials = rendererComponent.sharedMaterials;
             //m[index].color = _color;
-            m[index].SetVector("_LayerTint", _color);
-            m[index].SetVector("_FresnelColorInside", _color);
-            m[index].SetVector("_FresnelColorOutside", _color);
-            m[index].SetVector("_InnerLightColorOutside", _color);
-            m[index].SetVector("_InnerLightColorInside", _color);
+            materials[index].SetVector("_LayerTint", _color);
+            materials[index].SetVector("_FresnelColorInside", _color);
+            materials[index].SetVector("_FresnelColorOutside", _color);
+            materials[index].SetVector("_InnerLightColorOutside", _color);
+            materials[index].SetVector("_InnerLightColorInside", _color);
         }
+            
+        
     }
 
     // set shader properties
@@ -168,11 +191,11 @@ public class LightTexture : MonoBehaviour
         if (spotlight)
         {
             //GetComponent<Renderer>().sharedMaterials[1]?.SetFloat("_SpotAngle", spotlight.GetComponent<Light>().spotAngle);
-            if (GetComponent<Renderer>().sharedMaterials.Length > index && GetComponent<Renderer>().sharedMaterials[index] != null)
+            if (rendererComponent.sharedMaterials.Length > index && rendererComponent.sharedMaterials[index] != null)
             {
-                GetComponent<Renderer>().sharedMaterials[index]?.SetFloat("_Range", spotlight.GetComponent<Light>().range);
-                GetComponent<Renderer>().sharedMaterials[index]?.SetVector("_LightPos", spotlight.position);
-                GetComponent<Renderer>().sharedMaterials[index]?.SetVector("_LightDir", spotlight.forward);
+                rendererComponent.sharedMaterials[index]?.SetFloat("_Range", spotlight.GetComponent<Light>().range);
+                rendererComponent.sharedMaterials[index]?.SetVector("_LightPos", spotlight.position);
+                rendererComponent.sharedMaterials[index]?.SetVector("_LightDir", spotlight.forward);
             }
         }
     }
