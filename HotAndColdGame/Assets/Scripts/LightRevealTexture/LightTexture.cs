@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 //using System.Linq;
 using UnityEngine;
 
@@ -34,12 +35,12 @@ public class LightTexture : MonoBehaviour
         //spotlight = GetNearestLight();
         HiddenMaterial = GameMaster.instance.colourPallete.HiddenMaterial;
 
-        currentMaterials = new List <Material>();
+        currentMaterials = new List<Material>();
         foreach (Material mat in rendererComponent.sharedMaterials)
         {
             currentMaterials.Add(mat);
         }
-        
+
         if (crystal != null)
             spotlight = crystal.transform.Find("Spot Light").GetComponent<Light>()?.transform;
         AddHiddenMaterial();
@@ -140,9 +141,9 @@ public class LightTexture : MonoBehaviour
         foreach (Material mat in rendererComponent.sharedMaterials)
         {
             currentMaterials.Add(mat);
-        }        
+        }
 
-        currentMaterials.Insert(currentMaterials.Count, new Material (HiddenMaterial));
+        currentMaterials.Insert(currentMaterials.Count, new Material(HiddenMaterial));
         rendererComponent.sharedMaterials = currentMaterials.ToArray();
         //gameObject.GetComponent<Renderer>().sharedMaterials = combo;
     }
@@ -150,19 +151,20 @@ public class LightTexture : MonoBehaviour
     // remove HiddenMaterial
     public void RemoveHiddenMaterial(int index)
     {
-        //Material[] currentMats = gameObject.GetComponent<Renderer>().sharedMaterials;
+        Material[] currentMats = gameObject.GetComponent<Renderer>().sharedMaterials;
         //Debug.Log("Removing index: " + index + " on: " + gameObject.name);
         /*    if(index > gameObject.GetComponent<Renderer>().sharedMaterials.Length)
             {
                 Debug.Log("Index out of range, reducing index: " + index);
                 RemoveHiddenMaterial(index - 1);
             }*/
-        if (index < currentMaterials.Count)        
+        if (index < currentMats.Length)
             currentMaterials.RemoveAt(index);
-        //Material[] _new = currentMats.Except(new Material[] { currentMats[index] }).ToArray();
+
+        currentMats = currentMats.Except(new Material[] { currentMats[index] }).ToArray();
 
         //gameObject.GetComponent<Renderer>().sharedMaterials = _new;
-        rendererComponent.sharedMaterials = currentMaterials.ToArray();
+        rendererComponent.sharedMaterials = currentMats.ToArray();
     }
 
     // set material properties
@@ -170,7 +172,7 @@ public class LightTexture : MonoBehaviour
     {
         // Problem line
         //if (m != null && m[index] != null)        
-        
+
         if (index < rendererComponent.sharedMaterials.Length)
         {
             Material[] materials = rendererComponent.sharedMaterials;
@@ -181,8 +183,8 @@ public class LightTexture : MonoBehaviour
             materials[index].SetVector("_InnerLightColorOutside", _color);
             materials[index].SetVector("_InnerLightColorInside", _color);
         }
-            
-        
+
+
     }
 
     // set shader properties

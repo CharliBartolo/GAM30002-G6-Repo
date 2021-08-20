@@ -293,7 +293,7 @@ public class CrystalFXController : FXController
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.parent != this.gameObject && MainCrystal.spreadEffects)
+        if (ready && other.transform.parent != this.gameObject && MainCrystal.spreadEffects)
         {
             if (other.gameObject.tag != "Player")
             {
@@ -326,51 +326,6 @@ public class CrystalFXController : FXController
             }
         }
     }
-
-    // detect objects 
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other != null && AreaCollider.radius > 0.01)
-        {
-            if (other.gameObject != this.gameObject)
-            {
-                if (other.transform.parent != this.gameObject)
-                {
-                    if (other.gameObject != null)
-                    {
-                        if (other.gameObject.tag != "Player")
-                        {
-                            if (other.transform.parent?.gameObject.tag != "Player")
-                            {
-                                //Debug.Log("COLLISION: " + other.gameObject.name);
-                                if (other.gameObject.GetComponent<MeshRenderer>() != null)
-                                {
-                                    if (other.gameObject.GetComponent<CrystalFXController>() == null)
-                                    {
-                                        if (other.gameObject.transform.parent?.GetComponent<CrystalFXController>() == null)
-                                        {
-                                            //AddLightTextureComponent(other);
-                                            // if not have lighttexture, add it
-                                            if (other.gameObject.GetComponent<LightTexture>() == null)
-                                            {
-                                                AddLightTextureComponent(other);
-                                            }
-                                            else
-                                            {
-                                                AddExtraLightTextureComponent(other);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    */
 
     private void OnTriggerExit(Collider other)
     {
