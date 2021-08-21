@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour, IConditions
 {
     private float deltaTime = 0.0f;
     [HideInInspector]
-    public enum PlayerState {ControlsDisabled, MoveAndLook, MoveOnly}   
+    public enum PlayerState { ControlsDisabled, MoveAndLook, MoveOnly }
 
     [System.Serializable]
     public struct playerMovementSettings
@@ -15,11 +15,11 @@ public class PlayerController : MonoBehaviour, IConditions
         public float movementSpeed;
         public float speedCapSmoothFactor;
         public float jumpStrength;
-        public float airSpeed; 
+        public float airSpeed;
         public Vector2 velocityCap;
         public float antiGravMod;
-        [Range(0f, 50f)]public float stoppingForce;
-        [Range(0f, 50f)]public float reverseForce; 
+        [Range(0f, 50f)] public float stoppingForce;
+        [Range(0f, 50f)] public float reverseForce;
 
         public playerMovementSettings(float movementSpeed, float speedCapSmoothFactor, float jumpStrength, float airSpeed, Vector2 velocityCap, float antiGravMod, float stoppingForce, float reverseForce)
         {
@@ -32,67 +32,71 @@ public class PlayerController : MonoBehaviour, IConditions
             this.stoppingForce = stoppingForce;
             this.reverseForce = reverseForce;
         }
-    }  
+    }
 
     [Header("Player Control Settings")]
-    public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2 (8f, 20f), 1f, 1.2f, 1.5f);    
+    public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
     public float interactRange = 2f;
     public float timeBetweenFootsteps = 1f;
     private float currentTimeBetweenFootsteps = 0f;
     public float timeBeforeFrictionReturns = 0.2f;
     private float currentTimeBeforeFrictionReturns = 0f;
     private Vector3 horizVelocity;
-    private Vector3 vertVelocity; 
-    
+    private Vector3 vertVelocity;
+
     // Mouse Control Settings   
-    public Vector2 mouseSensitivity = new Vector2 (1, 1);
-    public Vector2 mouseSmoothing = new Vector2 (2,2);        
+    public Vector2 mouseSensitivity = new Vector2(1, 1);
+    public Vector2 mouseSmoothing = new Vector2(2, 2);
     const float MIN_X = 0.0f;
     const float MAX_X = 360.0f;
     const float MIN_Y = -90.0f;
-    const float MAX_Y = 90.0f;    
+    const float MAX_Y = 90.0f;
     private Vector2 _mouseAbsolute;
-    private Vector2 _mouseSmooth;  
+    private Vector2 _mouseSmooth;
 
     [Header("Player Condition Control Settings")]
-    public playerMovementSettings baseMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2 (8f, 20f), 1f, 1.2f, 1.5f);
-    public playerMovementSettings hotMovementSettings = new playerMovementSettings(20f, 3f, 14f, 0.15f, new Vector2 (6f, 10f), 1f, 1.2f, 1.5f);
-    public playerMovementSettings coldMovementSettings = new playerMovementSettings(24f, 15f, 10f, 0.02f, new Vector2 (16f, 20f), 1f, 1.2f, 1.5f);    
+    public playerMovementSettings baseMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings hotMovementSettings = new playerMovementSettings(20f, 3f, 14f, 0.15f, new Vector2(6f, 10f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings coldMovementSettings = new playerMovementSettings(24f, 15f, 10f, 0.02f, new Vector2(16f, 20f), 1f, 1.2f, 1.5f);
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
-    public bool isGunEnabled = true;
-    [SerializeField] private bool isGrounded;
+    public bool isGunEnabled = true;   
+    [SerializeField] 
+    private bool isGrounded;
     private bool isClimbing = false;
     private RaycastHit groundedHit;
     private RaycastHit emptyRaycast;
     public PlayerState playerControlState = PlayerState.MoveAndLook;
     public List<string> playerInventory;
     [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
-    private bool isConditionChanging = false;    
+    private bool isConditionChanging = false;
 
-    [Header("References")]    
+    [Header("References")]
     public Camera playerCam;
     public RayCastShootComplete raygunScript;
     public PlayerInput playerInput;
     private Rigidbody playerRB;
-    public Transform groundChecker; 
-    private TemperatureStateBase playerTemp;   
+    public Transform groundChecker;
+    private TemperatureStateBase playerTemp;
     private InteractableBase currentInteractingObject;
     public PauseController PC;
     public AudioManager audioManager;
     public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
     public PhysicMaterial regularPhysicMaterial;
 
-    private void Awake() 
-    {   
+    //Walking Change
+    private bool isWalking = false;
+    public float walkingMultiplier = 0.5f;
+    private void Awake()
+    {
         //playerFriction[0] = regularPhysicMaterial.staticFriction;
         //playerFriction[1] = regularPhysicMaterial.dynamicFriction;
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         _activeConditions = new List<IConditions.ConditionTypes>();
-        playerInventory = new List<string>();   
-        emptyRaycast = new RaycastHit();                 
+        playerInventory = new List<string>();
+        emptyRaycast = new RaycastHit();
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
@@ -101,8 +105,8 @@ public class PlayerController : MonoBehaviour, IConditions
         playerInput.actions.FindAction("Shoot").canceled += raygunScript.FireBeam;
         playerInput.actions.FindAction("Swap Beam").performed += raygunScript.SwapBeam;
 
-        playerInput.ActivateInput(); 
-        
+        playerInput.ActivateInput();
+
         LockCursor();
     }
 
@@ -113,14 +117,14 @@ public class PlayerController : MonoBehaviour, IConditions
         if (isGunEnabled)
         {
             playerInventory.Add("Raygun");
-            GetComponent<GunFXController>().EquipTool();            
+            GetComponent<GunFXController>().EquipTool();
         }
 
-        
+
         playerRB.angularDrag = 100f;
     }
 
-    private void Update() 
+    private void Update()
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
         //Debug.Log(playerRB.velocity.magnitude);
@@ -136,7 +140,7 @@ public class PlayerController : MonoBehaviour, IConditions
                 playerControlState = PlayerState.MoveAndLook;
             }
         }
-        
+
         switch (playerControlState)
         {
             case (PlayerState.ControlsDisabled):
@@ -145,12 +149,12 @@ public class PlayerController : MonoBehaviour, IConditions
                 break;
             case (PlayerState.MoveAndLook):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
-                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");                
-                MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>());                
+                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
+                MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>());
                 break;
             case (PlayerState.MoveOnly):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
-                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");                
+                    playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
                 //ResetMouse();
                 break;
             default:
@@ -158,7 +162,7 @@ public class PlayerController : MonoBehaviour, IConditions
                     playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
                 playerControlState = PlayerState.MoveAndLook;
                 break;
-        }       
+        }
 
         // TODO: Add distance + rotation restriction on interacting, so can't keep interacting if too far / not looking at it  
         if (currentInteractingObject != null)
@@ -167,43 +171,76 @@ public class PlayerController : MonoBehaviour, IConditions
         }
     }
 
-    private void FixedUpdate() 
-    {  
-        horizVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (1f, 0f, 1f));
-        vertVelocity = Vector3.Scale(playerRB.velocity, new Vector3 (0f, 1f, 0f));  
+    private void FixedUpdate()
+    {
+        horizVelocity = Vector3.Scale(playerRB.velocity, new Vector3(1f, 0f, 1f));
+        vertVelocity = Vector3.Scale(playerRB.velocity, new Vector3(0f, 1f, 0f));
 
         ExecuteConditions();
-        RemoveConditionsIfReturningToNeutral();       
+        RemoveConditionsIfReturningToNeutral();
 
         switch (playerControlState)
         {
-            case (PlayerState.ControlsDisabled):                
+            case (PlayerState.ControlsDisabled):
                 break;
-            case (PlayerState.MoveAndLook):                
-                GroundedCheck();                
+            case (PlayerState.MoveAndLook):
+                GroundedCheck();
                 MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
                 break;
-            case (PlayerState.MoveOnly):                
+            case (PlayerState.MoveOnly):
                 GroundedCheck();
                 MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
                 //ResetMouse();
                 break;
-            default:               
+            default:
                 break;
         }
 
         if (audioManager != null)
             PlayFootstepSound();
         VelocityClamp();
-        SetPlayerFriction();        
+        SetPlayerFriction();
+             
     }
 
     // Input functions
     void MovePlayer(Vector2 stickMovementVector)
     {
         // Translate 2d analog movement to 3d vector movement            
-        Vector3 movementVector = new Vector3 (stickMovementVector.x, 0f, stickMovementVector.y);   
-        movementVector = transform.TransformDirection(movementVector);    
+        Vector3 movementVector = new Vector3(stickMovementVector.x, 0f, stickMovementVector.y);
+
+        //Walk button changes
+        if (!isWalking)
+        {
+            playerInput.actions.FindAction("Walk").performed +=
+            walk =>
+            {
+                isWalking = true;
+                //Debug.Log("True");
+            };
+        }
+        else
+        {
+            playerInput.actions.FindAction("Walk").canceled +=
+            walk =>
+            {
+                isWalking = false;
+                //Debug.Log("False");
+            };
+        }
+        
+        if (isWalking && isGrounded)
+        {               
+            //Debug.Log("Normal: " + movementVector);
+            movementVector *= walkingMultiplier;
+            //Debug.Log("Walk: " + movementVector);
+     
+        }
+        
+        
+        movementVector = transform.TransformDirection(movementVector);
+        //Debug.Log("Normal2: " + movementVector); 
+
 
         //Reduce player's current velocity if new movement direction is slightly different than previously
         // float dotProd = Vector3.Dot(stickMovementVector.normalized, horizVelocity.normalized);
@@ -228,7 +265,9 @@ public class PlayerController : MonoBehaviour, IConditions
             // Opposite gravity force, calculated based on incline, so gravity doesn't stop you from moving up and down
             Vector3 inverseGravProportion = -Physics.gravity * (1 + Vector3.Dot(Physics.gravity.normalized, groundedHit.normal.normalized));
 
+            
             playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed + inverseGravProportion, ForceMode.Acceleration);
+               
             //Debug.DrawRay(transform.position, movementVector * 100);
             //Debug.Log("Inverse Grav component is :" + inverseGravProportion);
         }
