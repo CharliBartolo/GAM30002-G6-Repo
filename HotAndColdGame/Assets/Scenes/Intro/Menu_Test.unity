@@ -3479,13 +3479,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 922737789}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.08264899, y: -0.027819157, z: 0.14379859}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 0.48067906, z: -0, w: 0.8768966}
+  m_LocalPosition: {x: -33.4, y: -0.027818479, z: 37.6}
+  m_LocalScale: {x: 0.84979, y: 1, z: 0.50745946}
   m_Children: []
   m_Father: {fileID: 1617803007}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 57.459, z: 0}
 --- !u!73398921 &922737791
 VFXRenderer:
   m_ObjectHideFlags: 2
@@ -4497,8 +4497,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1201168527}
   m_LocalRotation: {x: -0.68442315, y: -0.00094666803, z: -0.027864011, w: 0.7285518}
-  m_LocalPosition: {x: -0.09, y: -2.422, z: 4.16}
-  m_LocalScale: {x: 0.32961735, y: 0.29017022, z: 0.11004363}
+  m_LocalPosition: {x: -0.14, y: -2.422, z: 6.46}
+  m_LocalScale: {x: 0.24994224, y: 0.22003026, z: 0.08344388}
   m_Children: []
   m_Father: {fileID: 1291752849}
   m_RootOrder: 0
@@ -4926,7 +4926,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1278714535}
   m_LocalRotation: {x: -0, y: -0.26092613, z: -0, w: 0.96535885}
-  m_LocalPosition: {x: -5.442, y: -2.47, z: 1.966}
+  m_LocalPosition: {x: -6.61, y: -2.91, z: 2}
   m_LocalScale: {x: 0.21017914, y: 0.10238081, z: 0.18889694}
   m_Children: []
   m_Father: {fileID: 1291752849}
@@ -5739,7 +5739,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1379839863}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16f81d48a120f094ba3dcc446345891c, type: 3}
+  m_Script: {fileID: 11500000, guid: baa2332f2cdd2024db93ec835ea5f582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 4b6508d136fd4f64f8a3008aac065704, type: 2}
@@ -5747,48 +5747,93 @@ MonoBehaviour:
   groups:
   - name: Beamgun
     sounds:
-    - name: Beam_Constant
+    - name: Beamgun_Constant
       clip: {fileID: 8300000, guid: 8a92e25d84f729f48949b5628f77c041, type: 3}
       layer: 0
       volume: 1
       pitch: 1
-      space: 1
+      space: 0
       loop: 1
       spawn_on_object: 1
       source: {fileID: 0}
-    - name: Beam_Turnoff
+    - name: Beamgun_TurnOn
       clip: {fileID: 8300000, guid: 61e4444980553a24997dfa5e37a95e50, type: 3}
       layer: 0
       volume: 1
       pitch: 1
-      space: 1
+      space: 0
       loop: 0
       spawn_on_object: 1
       source: {fileID: 0}
-    - name: Beam_Turnon
+    - name: Beamgun_TurnOff
       clip: {fileID: 8300000, guid: 49e5885b0d47f1443b229818b6deab41, type: 3}
       layer: 0
       volume: 1
       pitch: 1
-      space: 1
+      space: 0
       loop: 0
       spawn_on_object: 1
       source: {fileID: 0}
-    - name: Beam_Modeswap
+    - name: Beamgun_ModeSwap
       clip: {fileID: 8300000, guid: 468c798d5963c6e4ab91574d5533c0e1, type: 3}
       layer: 0
       volume: 1
       pitch: 1
-      space: 1
+      space: 0
       loop: 0
       spawn_on_object: 1
       source: {fileID: 0}
   - name: Character
-    sounds: []
+    sounds:
+    - name: Character_Breathing01
+      clip: {fileID: 8300000, guid: 7b2be81f34f4935428f5f9c45e954cb4, type: 3}
+      layer: 0
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 0
+      spawn_on_object: 0
+      source: {fileID: 0}
   - name: Environment
     sounds: []
   - name: Machine
-    sounds: []
+    sounds:
+    - name: Machine_Door01
+      clip: {fileID: 8300000, guid: 26ef045a75db6a44fabb948a5d923916, type: 3}
+      layer: 0
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 0
+      spawn_on_object: 1
+      source: {fileID: 0}
+    - name: Machine_Hum01
+      clip: {fileID: 8300000, guid: ad60104a52a241f40bdf91f983f3d307, type: 3}
+      layer: 0
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 0
+      spawn_on_object: 1
+      source: {fileID: 0}
+    - name: Machine_Motor01
+      clip: {fileID: 8300000, guid: 429b0811a2b2e644995bdfb1c9c4cb93, type: 3}
+      layer: 0
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 0
+      spawn_on_object: 1
+      source: {fileID: 0}
+    - name: Machine_Platform01
+      clip: {fileID: 8300000, guid: 3691a616d88454b48b9a894866a0692f, type: 3}
+      layer: 0
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 0
+      spawn_on_object: 1
+      source: {fileID: 0}
   - name: OST
     sounds:
     - name: OST_Cave_Ambience
@@ -5796,7 +5841,7 @@ MonoBehaviour:
       layer: 0
       volume: 1
       pitch: 1
-      space: 0
+      space: 1
       loop: 1
       spawn_on_object: 0
       source: {fileID: 0}
@@ -5818,7 +5863,7 @@ MonoBehaviour:
       loop: 1
       spawn_on_object: 0
       source: {fileID: 0}
-    - name: OST_Main_Menu
+    - name: OST_MainMenu
       clip: {fileID: 8300000, guid: 905315047d46260418bc685103c57a2a, type: 3}
       layer: 0
       volume: 1
@@ -5828,7 +5873,34 @@ MonoBehaviour:
       spawn_on_object: 0
       source: {fileID: 0}
   - name: UI
-    sounds: []
+    sounds:
+    - name: UI_ButtonHover
+      clip: {fileID: 8300000, guid: 4164ccc9b9f6bb84299fa857054a348b, type: 3}
+      layer: 0
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 0
+      spawn_on_object: 1
+      source: {fileID: 0}
+    - name: UI_ButtonSelect
+      clip: {fileID: 8300000, guid: 0e81b143ed58cb24195ce94fe46501d3, type: 3}
+      layer: 0
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 0
+      spawn_on_object: 1
+      source: {fileID: 0}
+    - name: UI_StartGame
+      clip: {fileID: 8300000, guid: d36a7e4f863b68645b2de127aa9d99e2, type: 3}
+      layer: 0
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 0
+      spawn_on_object: 1
+      source: {fileID: 0}
 --- !u!1 &1402004037
 GameObject:
   m_ObjectHideFlags: 0
@@ -6406,7 +6478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0a8789c9dbf8cc4c829c9421b2513a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clip: OST_Main_Menu
+  Clip: OST_MainMenu
   _randomiseStartTime: 0
   _randomisePitch: 0
   pitch_range: 0
@@ -6565,14 +6637,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1617803006}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 182.2, y: 193.3, z: -273}
+  m_LocalRotation: {x: -0, y: 0.38334405, z: -0, w: 0.9236057}
+  m_LocalPosition: {x: -68.8, y: 298.5, z: -670}
   m_LocalScale: {x: 14.554693, y: 6.6688175, z: 6.6688175}
   m_Children:
   - {fileID: 922737790}
   m_Father: {fileID: 874081323}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 45.082, z: 0}
 --- !u!1 &1638804538
 GameObject:
   m_ObjectHideFlags: 0
@@ -6681,15 +6753,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a101452e9035dd44ab216a4fa309df3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clips:
-  - name: Beamgun_Turnon
-    _randomisePitch: 1
-    _randomiseStartTime: 0
-    pitch: 0.1
-  - name: Beamgun_Turnoff
-    _randomisePitch: 1
-    _randomiseStartTime: 0
-    pitch: 0.1
 --- !u!4 &1644036092
 Transform:
   m_ObjectHideFlags: 0
