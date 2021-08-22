@@ -79,8 +79,8 @@ public class GunFXController : FXController
        
         startRotation = CrystalCase.transform.eulerAngles.z;
         
-        //equipped = gameObject.GetComponent<PlayerController>().playerInventory.Contains("Raygun");
-        equipped = false;
+        equipped = gameObject.GetComponent<PlayerController>().playerInventory.Contains("Raygun");
+        //equipped = false;
 
         if (equipped)
         {
@@ -141,7 +141,8 @@ public class GunFXController : FXController
     public void EquipTool()
     {
         gun_obj.SetActive(true);
-        //equipped = true;
+        arm_obj.SetActive(true);
+        equipped = true;
         inspectingWeapon = true;
         weaponState = WeaponState.Inspect;
         
