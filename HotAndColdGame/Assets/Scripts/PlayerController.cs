@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour, IConditions
     private float currentTimeBeforeFrictionReturns = 0f;
     private Vector3 horizVelocity;
     private Vector3 vertVelocity;
+    private List<ContactPoint> contactPoints;
 
     // Mouse Control Settings   
     public Vector2 mouseSensitivity = new Vector2(1, 1);
@@ -65,6 +66,9 @@ public class PlayerController : MonoBehaviour, IConditions
     [SerializeField] 
     private bool isGrounded;
     private bool isClimbing = false;
+
+    private bool isWalking = false;
+    public float walkingMultiplier = 0.5f;
     private RaycastHit groundedHit;
     private RaycastHit emptyRaycast;
     public PlayerState playerControlState = PlayerState.MoveAndLook;
@@ -85,17 +89,15 @@ public class PlayerController : MonoBehaviour, IConditions
     public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
     public PhysicMaterial regularPhysicMaterial;
 
-    //Walking Change
-    private bool isWalking = false;
-    public float walkingMultiplier = 0.5f;
+
     private void Awake()
     {
-        //playerFriction[0] = regularPhysicMaterial.staticFriction;
-        //playerFriction[1] = regularPhysicMaterial.dynamicFriction;
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         _activeConditions = new List<IConditions.ConditionTypes>();
+        contactPoints = new List<ContactPoint>();
         playerInventory = new List<string>();
+
         emptyRaycast = new RaycastHit();
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
@@ -200,7 +202,10 @@ public class PlayerController : MonoBehaviour, IConditions
             PlayFootstepSound();
         VelocityClamp();
         SetPlayerFriction();
-             
+        ClamberLedge();
+        //ContactPoint groundContact = default(ContactPoint);
+        //bool grounded = FindGround(out groundContact, contactPoints);
+        contactPoints.Clear();
     }
 
     // Input functions
@@ -235,21 +240,10 @@ public class PlayerController : MonoBehaviour, IConditions
             movementVector *= walkingMultiplier;
             //Debug.Log("Walk: " + movementVector);
      
-        }
-        
+        }        
         
         movementVector = transform.TransformDirection(movementVector);
         //Debug.Log("Normal2: " + movementVector); 
-
-
-        //Reduce player's current velocity if new movement direction is slightly different than previously
-        // float dotProd = Vector3.Dot(stickMovementVector.normalized, horizVelocity.normalized);
-        // Debug.Log(dotProd);
-        // if (dotProd < 0.95f && movementVector.magnitude > 0.01f)
-        // {   
-        //     playerRB.velocity = (horizVelocity * 0.99f) + vertVelocity;
-        // }
-        // Debug.DrawRay(transform.position, horizVelocity * 100); 
 
         // If movement vector greater than one, reduce magnitude to one, otherwise leave untouched (in case of analog stick input)
         if (movementVector.magnitude > 1f)
@@ -288,48 +282,91 @@ public class PlayerController : MonoBehaviour, IConditions
     }
     
     private void OnCollisionStay(Collision other) 
+    {  
+        contactPoints.AddRange(other.contacts);      
+    }
+
+    private void OnCollisionEnter(Collision other) 
+    {
+        contactPoints.AddRange(other.contacts);
+    }
+
+    void ClamberLedge()
     {
         //Debug.Log("Collision is happening");
-        Vector3 normal = other.GetContact(0).normal;
+        //Vector3 normal = other.GetContact(0).normal;
         Vector3 horForward = playerCam.transform.forward;
         horForward.y = 0f;
         horForward.Normalize();
 
-        // If we're hitting the wall at no more than a 45 degree angle...
-        if (Vector3.Angle(horForward, -normal) <= 45)
+        foreach(ContactPoint cp in contactPoints)
         {
-            bool ledgeAvailable = true;
-            
-            RaycastHit hit;
-            // If the wall's too tall, don't climb
-            if (Physics.Raycast(playerCam.transform.position + Vector3.up * 0.5f, -normal, out hit, 1, LayerMask.GetMask("Default")))
+            // If we're hitting the wall at no more than a 45 degree angle...
+            if (Vector3.Angle(horForward, -cp.normal) <= 45)
             {
-                ledgeAvailable = false;
+                bool ledgeAvailable = true;
+                
+                RaycastHit hit;
+
+                // If falling too fast, can't climb
+                if (vertVelocity.magnitude < -10f)
+                {
+                    ledgeAvailable = false;
+                }
+
+                // If the wall's too tall, can't climb
+                if (Physics.Raycast(playerCam.transform.position + Vector3.up * 0.5f, -cp.normal, out hit, 1, LayerMask.GetMask("Default")))
+                {
+                    ledgeAvailable = false;
+                }
+
+                if (ledgeAvailable)
+                {
+                    //Debug.Log("Ledge is available!");                
+                    Vector3 currentPos = playerCam.transform.position + Vector3.up * 0.5f + Vector3.down * 0.05f;
+                    while (!Physics.Raycast(currentPos, -cp.normal, out hit, 1, LayerMask.GetMask("Default")))
+                    {
+                        currentPos += Vector3.down * 0.05f;
+                        if (currentPos.y < playerCam.transform.position.y - 2f)
+                            break;
+                    }
+                    
+                    if (playerInput.actions.FindAction("Jump").ReadValue<float>() > 0f && isClimbing == false)
+                    {
+                        // Cancel all vertical velocity, apply a big upward force once
+                        isClimbing = true;
+                        playerRB.velocity = horizVelocity;
+                        //Debug.Log("Direction force is applied in: " + (currentPos - transform.position));
+                        Vector3 forceDir = Vector3.Max(currentPos - transform.position, Vector3.zero) * 10f;
+                        playerRB.AddForce(forceDir, ForceMode.VelocityChange);
+                        Invoke("ClimbingCooldownReset", 1f);
+                    }                    
+                }
             }
+        }        
+    }
 
-            if (ledgeAvailable)
+    void ClimbingCooldownReset()
+    {
+        isClimbing = false;
+    }
+
+    bool FindGround(out ContactPoint groundCP, List<ContactPoint> contactPoints)
+    {
+        groundCP = default(ContactPoint);
+        bool found = false;
+
+        foreach (ContactPoint cp in contactPoints)
+        {
+            // Pointing in some upward direction
+            if (cp.normal.y > 0.0001f && (found == false || cp.normal.y > groundCP.normal.y))
             {
-                //Debug.Log("Ledge is available!");                
-                Vector3 currentPos = playerCam.transform.position + Vector3.up * 0.5f + Vector3.down * 0.05f;
-                while (!Physics.Raycast(currentPos, -normal, out hit, 1, LayerMask.GetMask("Default")))
-                {
-                    currentPos += Vector3.down * 0.05f;
-                    if (currentPos.y < playerCam.transform.position.y - 2f)
-                        break;
-                }
-
-                
-                if (playerInput.actions.FindAction("Jump").ReadValue<float>() > 0f && isClimbing == false)
-                {
-                    //isClimbing = true;
-                    //Debug.Log("Direction force is applied in: " + (currentPos - transform.position));
-                    playerRB.AddForce(Vector3.up * 30, ForceMode.Impulse);
-                }
-                
+                groundCP = cp;
+                found = true;
             }
         }
 
-
+        return found;
     }
     
     void SetShootingEnabled(bool setToEnable)
