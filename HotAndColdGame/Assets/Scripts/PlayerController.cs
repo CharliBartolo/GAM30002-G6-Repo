@@ -481,15 +481,35 @@ public class PlayerController : MonoBehaviour, IConditions
         //Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
     } 
 
+    /// <summary>
+    /// Clamps the Velocity based on the player's current movement settings. Horizontal velocity clamp
+    /// only occurs on the ground, and scales based on movement inputs (as joysticks provide incremental input.)
+    /// </summary>
     void VelocityClamp()
-    {       
-        if (horizVelocity.magnitude > currentMovementSettings.velocityCap.x && currentMovementSettings.velocityCap.x > 0f)
-        { 
-            // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
-            horizVelocity = Vector3.Lerp(horizVelocity, horizVelocity.normalized * currentMovementSettings.velocityCap.x,
-                1 - Mathf.Exp(-currentMovementSettings.speedCapSmoothFactor * Time.deltaTime));                         
-        }
+    {    
+        if (isGrounded)
+        {
+            // Multiply horizontal velocity cap by movement input to limit top speed based on varying stick inputs / walk button
+            float movementInputMultiplier = playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude;
 
+            if (movementInputMultiplier > 1)
+            {
+                movementInputMultiplier = 1f;
+            }
+
+            if (isWalking)
+            {
+                movementInputMultiplier = 1 * walkingMultiplier;
+            }
+
+            if (horizVelocity.magnitude > currentMovementSettings.velocityCap.x * movementInputMultiplier && currentMovementSettings.velocityCap.x > 0f)
+            { 
+                // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
+                horizVelocity = Vector3.Lerp(horizVelocity, horizVelocity.normalized * currentMovementSettings.velocityCap.x * movementInputMultiplier,
+                    1 - Mathf.Exp(-currentMovementSettings.speedCapSmoothFactor * Time.deltaTime));                                                 
+            }
+        }   
+        
         if (vertVelocity.magnitude > currentMovementSettings.velocityCap.y && currentMovementSettings.velocityCap.y > 0f)
         { 
             // First Exp value = smoothing factor, higher values = no smooth, lower = more smooth 
