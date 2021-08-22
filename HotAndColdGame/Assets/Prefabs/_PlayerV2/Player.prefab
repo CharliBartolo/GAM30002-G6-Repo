@@ -140,6 +140,7 @@ MonoBehaviour:
   audioManager: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   regularPhysicMaterial: {fileID: 13400000, guid: 02cc73f238347254b8ac9ba286b85916, type: 2}
+  walkingMultiplier: 0.5
 --- !u!114 &322596506808537513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,6 +299,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 3304f517-fc19-41e9-8233-f36bfe1ee85b
     m_ActionName: Menu/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 41d7f6a6-c7d6-41a7-8431-eca4c51aced1
+    m_ActionName: Player/Walk[/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard And Mouse
   m_DefaultActionMap: Player
@@ -361,55 +366,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3178d91f3cfd2b841a9b21dd8689facc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds:
-  - name: Main
-    clip: {fileID: 8300000, guid: 905315047d46260418bc685103c57a2a, type: 3}
-    volume: 1
-    pitch: 1
-    space: 0
-    loop: 1
-    spawn_on_object: 0
-    source: {fileID: 0}
-  - name: Ice
-    clip: {fileID: 8300000, guid: a9307b9ea9c8e824b90f84dd4263eb37, type: 3}
-    volume: 1
-    pitch: 1
-    space: 0
-    loop: 1
-    spawn_on_object: 0
-    source: {fileID: 0}
-  - name: Heat
-    clip: {fileID: 8300000, guid: 6a0af0dc8f424de4d8d85a546536ec10, type: 3}
-    volume: 1
-    pitch: 1
-    space: 0
-    loop: 1
-    spawn_on_object: 0
-    source: {fileID: 0}
-  - name: Cave
-    clip: {fileID: 8300000, guid: eedbecf419c879f42a56b15221182ff6, type: 3}
-    volume: 1
-    pitch: 1
-    space: 0
-    loop: 1
-    spawn_on_object: 0
-    source: {fileID: 0}
-  - name: Lazer
-    clip: {fileID: 8300000, guid: aea441607fe170b4ab19c3b5b355ff17, type: 3}
-    volume: 1
-    pitch: 1
-    space: 0
-    loop: 1
-    spawn_on_object: 0
-    source: {fileID: 0}
-  - name: Footstep
-    clip: {fileID: 8300000, guid: 42e65e088b3f4374e851b8dbd38f3df9, type: 3}
-    volume: 1
-    pitch: 1
-    space: 0
-    loop: 1
-    spawn_on_object: 0
-    source: {fileID: 0}
+  audioMixer: {fileID: 24100000, guid: 4b6508d136fd4f64f8a3008aac065704, type: 2}
+  list: {fileID: 11400000, guid: db9e4a6418ecaf6409b7ea8a95e4a7c4, type: 2}
+  groups:
+  - name: OST
+    sounds:
+    - name: Cave
+      clip: {fileID: 8300000, guid: eedbecf419c879f42a56b15221182ff6, type: 3}
+      layer: 1
+      volume: 1
+      pitch: 1
+      space: 1
+      loop: 1
+      spawn_on_object: 0
+      source: {fileID: 0}
+    - name: Heat
+      clip: {fileID: 8300000, guid: 6a0af0dc8f424de4d8d85a546536ec10, type: 3}
+      layer: 1
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 1
+      spawn_on_object: 0
+      source: {fileID: 0}
+    - name: Ice
+      clip: {fileID: 8300000, guid: a9307b9ea9c8e824b90f84dd4263eb37, type: 3}
+      layer: 1
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 1
+      spawn_on_object: 0
+      source: {fileID: 0}
+    - name: Main
+      clip: {fileID: 8300000, guid: 905315047d46260418bc685103c57a2a, type: 3}
+      layer: 1
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 1
+      spawn_on_object: 0
+      source: {fileID: 0}
 --- !u!82 &2401307136561403375
 AudioSource:
   m_ObjectHideFlags: 0
@@ -419,7 +416,7 @@ AudioSource:
   m_GameObject: {fileID: 322596506808537517}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 4b6508d136fd4f64f8a3008aac065704, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -513,7 +510,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322596506808537517}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9da54865de12a21489dce4ab84282449, type: 3}
   m_Name: 
@@ -1821,7 +1818,7 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
-  clearColorMode: 2
+  clearColorMode: 0
   backgroundColorHDR: {r: 0.025, g: 0.07, b: 0.19, a: 0}
   clearDepth: 1
   volumeLayerMask:
@@ -5010,6 +5007,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 41d2c792c770b584ca8be5db9323840b, type: 3}
       propertyPath: m_Layer
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 41d2c792c770b584ca8be5db9323840b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1170869935415368859, guid: 41d2c792c770b584ca8be5db9323840b, type: 3}
       propertyPath: m_LocalRotation.w

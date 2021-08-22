@@ -13,6 +13,7 @@ public class PauseController : MonoBehaviour
     /// 
     public bool IsPaused; //Pause boolean that other scripts use
     public bool Quitting; //For quitting confirmation
+    public bool isMenuEnabled = false;
     public Text pauseText; //UI element (Text) (Placeholder)
     public PlayerController PC; //Player Controller - Accesses the mouse sensitivity
 
@@ -34,44 +35,56 @@ public class PauseController : MonoBehaviour
     {
         Quitting = false;
         IsPaused = false;
-        MouseSensitivityXSlider.minValue = 0;
-        MouseSensitivityXSlider.maxValue = 1;
-        MouseSensitivityYSlider.minValue = 0;
-        MouseSensitivityYSlider.maxValue = 1;
 
-        MouseSensitivityXInput.text = PC.mouseSensitivity.x.ToString();
-        MouseSensitivityYInput.text = PC.mouseSensitivity.y.ToString();
+        if (isMenuEnabled)
+        {
+            MouseSensitivityXSlider.minValue = 0;
+            MouseSensitivityXSlider.maxValue = 1;
+                
+            MouseSensitivityYSlider.minValue = 0;
+            MouseSensitivityYSlider.maxValue = 1;
+        
+            MouseSensitivityXInput.text = PC.mouseSensitivity.x.ToString();
+            MouseSensitivityYInput.text = PC.mouseSensitivity.y.ToString();
 
-        //Can't interact with the text fields
-        MouseSensitivityXInput.interactable = false;
-        MouseSensitivityYInput.interactable = false;
+            //Can't interact with the text fields
+            MouseSensitivityXInput.interactable = false;
+            MouseSensitivityYInput.interactable = false;
+        }
+
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
         pauseText.gameObject.SetActive(IsPaused); //Toggles pause text
-        MouseSensitivityXSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity X Slider
-        MouseSensitivityYSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity Y Slider
-        MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
-        MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
-        VolumeSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
-        VolumeInput.gameObject.SetActive(IsPaused); //Toggles Volume Input Field
-        QuitButton.gameObject.SetActive(IsPaused); // TToggles the Quit Button
-        QuitPanel.gameObject.gameObject.SetActive(Quitting); //Toggles panel for confirmation
-        YesButton.gameObject.gameObject.SetActive(Quitting); //Toggles button for confirmation
-        NoButton.gameObject.SetActive(Quitting); // Toggles button for confirmation
 
-        //Keeps the value the same for both slider and input field
-        MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
-        MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-        //MouseSensitivityXInput.onValueChanged.AddListener(delegate { XSliderChange(); });
-        //MouseSensitivityYInput.onValueChanged.AddListener(delegate { YSliderChange(); });
+        if (isMenuEnabled)
+        {
+            MouseSensitivityXSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity X Slider
+            MouseSensitivityYSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity Y Slider
+            MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
+            MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
+            VolumeSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
+            VolumeInput.gameObject.SetActive(IsPaused); //Toggles Volume Input Field
+            QuitButton.gameObject.SetActive(IsPaused); // TToggles the Quit Button
+            QuitPanel.gameObject.gameObject.SetActive(Quitting); //Toggles panel for confirmation
+            YesButton.gameObject.gameObject.SetActive(Quitting); //Toggles button for confirmation
+            NoButton.gameObject.SetActive(Quitting); // Toggles button for confirmation
 
-        QuitButton.onClick.AddListener(delegate { Quitting = true; });
-        YesButton.onClick.AddListener(delegate { Application.Quit(); });
-        NoButton.onClick.AddListener(delegate { Quitting = false; });
+            //Keeps the value the same for both slider and input field
+            MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
+            MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
+            //MouseSensitivityXInput.onValueChanged.AddListener(delegate { XSliderChange(); });
+            //MouseSensitivityYInput.onValueChanged.AddListener(delegate { YSliderChange(); });
 
+            QuitButton.onClick.AddListener(delegate { Quitting = true; });
+            YesButton.onClick.AddListener(delegate { Application.Quit(); });
+            NoButton.onClick.AddListener(delegate { Quitting = false; });
+        }
+        
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             //Toggle paused

@@ -69,10 +69,18 @@ public class AudioManager : MonoBehaviour
     public virtual void Play (string name)
     { //Seach for sound in sounds by name, if it matches, play the sound
             Sound s = sounds.Find(sound => sound.name == name);
-            if (!s.source.isPlaying)
+            if (s!= null)
             {
-                s.source.Play();
+                if (s.source != null)
+                {
+                    if (!s.source.isPlaying)
+                    {
+                        s.source.Play();
+                    }
+                }
+ 
             }
+
     }
     
     // stop sound playing
@@ -137,7 +145,10 @@ public class AudioManager : MonoBehaviour
     public virtual void SetVolume(string name, float volume)
     { //Set the volume of a sound
             Sound s = sounds.Find(sound => sound.name == name);
-            if (s.source != null)
-                s.source.volume = volume;
+            if (s != null)
+            {
+                if (s.source != null)
+                    s.source.volume = volume;
+            }            
     }
 }

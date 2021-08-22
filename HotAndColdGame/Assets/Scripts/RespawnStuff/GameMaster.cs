@@ -26,7 +26,10 @@ public class GameMaster : MonoBehaviour
 
     private void Start()
     {
-        lastCheckPointPos = GameObject.Find("Player").transform;
+        if (GameObject.Find("Player") != null)
+        {
+            lastCheckPointPos = GameObject.Find("Player").transform;
+        }        
     }
 
     public void LoadNextScene()

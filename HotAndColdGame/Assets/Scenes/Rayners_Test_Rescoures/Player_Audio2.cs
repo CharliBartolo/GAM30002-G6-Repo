@@ -23,10 +23,10 @@ public class Player_Audio2 : MonoBehaviour
     void Update()
     {
         //Test playing a sound
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            GetComponent<AudioManager>().Play("Lazer");
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    GetComponent<AudioManager>().Play("Lazer");
+        //}
 
         //Adjust volumes on update
         GetComponent<AudioManager>().SetVolume("Main", main_volume);
