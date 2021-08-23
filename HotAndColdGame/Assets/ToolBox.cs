@@ -14,6 +14,7 @@ public class ToolBox : InteractableBase
     public string itemName;
     private InteractionType interactionType = InteractionType.Use;
     private PlayerInput playerInput;
+    public int gunUpgradeLevel = 0;
 
     private void Start()
     {
@@ -33,6 +34,7 @@ public class ToolBox : InteractableBase
         ToolDisplayObject.SetActive(false);
         Debug.Log("TOOL REQUESTED");
         triggered = true;
+        GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.SetGunUpgradeState(gunUpgradeLevel);
         OpenTray();
         ToolObject.GetComponent<CollectInteractable>().enabled = true;
         Debug.Log("TOOL DELIVERED");
