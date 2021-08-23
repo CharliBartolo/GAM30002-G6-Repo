@@ -144,6 +144,10 @@ PrefabInstance:
       objectReference: {fileID: 136672048}
     - target: {fileID: 322596506808537514, guid: e7f6c9e6b08a43b4288c688abbce8074, type: 3}
       propertyPath: isGunEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 322596506808537514, guid: e7f6c9e6b08a43b4288c688abbce8074, type: 3}
+      propertyPath: isGravityEnabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 322596506808537514, guid: e7f6c9e6b08a43b4288c688abbce8074, type: 3}
@@ -439,15 +443,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16f81d48a120f094ba3dcc446345891c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds:
-  - name: Footstep
-    clip: {fileID: 8300000, guid: 42e65e088b3f4374e851b8dbd38f3df9, type: 3}
-    volume: 1
-    pitch: 0
-    space: 1
-    loop: 0
-    spawn_on_object: 0
-    source: {fileID: 0}
 --- !u!4 &136672049
 Transform:
   m_ObjectHideFlags: 0
@@ -644,6 +639,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPaused: 0
   Quitting: 0
+  isMenuEnabled: 0
   pauseText: {fileID: 1561819255}
   PC: {fileID: 996327609}
   MouseSensitivityXSlider: {fileID: 0}
@@ -1447,6 +1443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPaused: 0
   Quitting: 0
+  isMenuEnabled: 0
   pauseText: {fileID: 1561819255}
   PC: {fileID: 0}
   MouseSensitivityXSlider: {fileID: 0}

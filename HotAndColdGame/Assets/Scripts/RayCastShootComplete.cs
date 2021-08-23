@@ -3,10 +3,14 @@ using System.Collections;
 using UnityEngine.InputSystem;
 
 public class RayCastShootComplete : MonoBehaviour {
+    [HideInInspector]
+    public enum gunUpgrade {None, One, Two}
 
 	public float tempchange = 1f;
 	public float weaponRange = 50f;
 	public float hitForce = 5f;
+
+    public gunUpgrade gunUpgradeState = gunUpgrade.Two; 
 	public Transform gunEnd;
 	private Camera fpsCam;
     public AudioManager audioManager;
@@ -23,6 +27,7 @@ public class RayCastShootComplete : MonoBehaviour {
     //public Color col = Color.blue;
 
     public bool CanShoot { get; set;}
+    public bool CanSwap {get; set;}
     public bool TriggerHeld { get; set;}
     public bool ModeSwitched { get; set;}
 
@@ -30,7 +35,7 @@ public class RayCastShootComplete : MonoBehaviour {
 	{
 		laserLine = GetComponent<LineRenderer>();
 		fpsCam = GetComponentInParent<Camera>();
-        CanShoot = true;
+        UpdateGunState();
 
         Color colour = GameMaster.instance.colourPallete.Neutral;
         laserLine.GetComponent<Renderer>().sharedMaterial.SetColor("_Color", colour);
@@ -38,12 +43,26 @@ public class RayCastShootComplete : MonoBehaviour {
         //lightning.endColor = colour;
     }
 
+    public void UpdateGunState()
+    {
+        CanShoot = (gunUpgradeState == gunUpgrade.One || gunUpgradeState == gunUpgrade.Two);
+        CanSwap = (gunUpgradeState == gunUpgrade.Two);
+    }
+
     public void SwapBeam(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            ModeSwitched = true;
-            ChangeMode();
+            if (gunUpgradeState == gunUpgrade.Two)
+            {
+                ModeSwitched = true;
+                ChangeMode();
+            }
+            else
+            {
+                // Do weird animation stuff to indicate gun can't swap
+                Debug.Log("Can't swap, gun is not sufficiently upgraded!");
+            }            
         } 
     }
 
@@ -58,6 +77,19 @@ public class RayCastShootComplete : MonoBehaviour {
             TriggerHeld = false;
         }
     }   
+
+    
+    public void SetGunUpgradeState(int stateToSet)
+    {
+        gunUpgradeState = (gunUpgrade)stateToSet;
+        UpdateGunState();
+    }
+
+    public void UpgradeGun()
+    {
+        gunUpgradeState = (gunUpgrade)(gunUpgradeState + 1);
+        UpdateGunState();
+    }
 
     public void ChangeMode()
     {
@@ -78,6 +110,7 @@ public class RayCastShootComplete : MonoBehaviour {
             Invoke(nameof(SetMOdeSwitchFalse), Time.deltaTime);
         }
     }
+
     void LateUpdate () 
 	{
         

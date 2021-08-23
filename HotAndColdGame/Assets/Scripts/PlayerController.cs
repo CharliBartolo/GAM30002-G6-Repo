@@ -37,9 +37,9 @@ public class PlayerController : MonoBehaviour, IConditions
     [Header("Player Control Settings")]
     public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
     public float interactRange = 2f;
-    public float timeBetweenFootsteps = 1f;
+    public float timeBetweenFootsteps = 1f;   
     private float currentTimeBetweenFootsteps = 0f;
-    public float timeBeforeFrictionReturns = 0.2f;
+    //public float timeBeforeFrictionReturns = 0.2f;
     private float currentTimeBeforeFrictionReturns = 0f;
     private Vector3 horizVelocity;
     private Vector3 vertVelocity;
@@ -114,12 +114,12 @@ public class PlayerController : MonoBehaviour, IConditions
 
     private void Start()
     {
-        SetShootingEnabled(isGunEnabled);
+        SetShootingEnabled(isGunEnabled);            
 
         if (isGunEnabled)
         {
             playerInventory.Add("Raygun");
-            GetComponent<GunFXController>().EquipTool();
+            GetComponent<GunFXController>().EquipTool();            
         }
 
 
@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour, IConditions
             case (PlayerState.MoveAndLook):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
                     playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
-                MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>());
+                MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>());                
                 break;
             case (PlayerState.MoveOnly):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
@@ -374,16 +374,33 @@ public class PlayerController : MonoBehaviour, IConditions
         if (setToEnable)
         {
             playerInput.actions.FindAction("Shoot").Enable();
-            playerInput.actions.FindAction("Swap Beam").Enable();
+            //playerInput.actions.FindAction("Swap Beam").Enable();
             //raygunScript.gameObject.SetActive(true);
         }
         else
         {
             playerInput.actions.FindAction("Shoot").Disable();
+            //playerInput.actions.FindAction("Swap Beam").Disable();
+            //raygunScript.gameObject.SetActive(false);
+        }
+    }
+
+    void SetSwapEnabled(bool setToEnable)
+    {
+        if (setToEnable)
+        {
+            //playerInput.actions.FindAction("Shoot").Enable();
+            playerInput.actions.FindAction("Swap Beam").Enable();
+            //raygunScript.gameObject.SetActive(true);
+        }
+        else
+        {
+            //playerInput.actions.FindAction("Shoot").Disable();
             playerInput.actions.FindAction("Swap Beam").Disable();
             //raygunScript.gameObject.SetActive(false);
         }
     }
+
 
     public void Interact(InputAction.CallbackContext context)
     {
@@ -406,9 +423,12 @@ public class PlayerController : MonoBehaviour, IConditions
                 case InteractableBase.InteractionType.Use:
                     if (currentInteractingObject.GetComponent<CollectInteractable>() != null) 
                     {
-                        playerInventory.Add(currentInteractingObject.GetComponent<CollectInteractable>().itemName);
-                        SetShootingEnabled(playerInventory.Contains("Raygun"));
+                        playerInventory.Add(currentInteractingObject.GetComponent<CollectInteractable>().itemName);                        
                         if (playerInventory.Contains("Raygun"))
+                            isGunEnabled = true;
+                            SetShootingEnabled(playerInventory.Contains("Raygun"));
+                            //raygunScript.SetGunUpgradeState();
+                            //SetSwapEnabled(gunUpgradeState == gunUpgrade.None);
                             GetComponent<GunFXController>().EquipTool();
                     }                   
                     ExitInteract(context);
