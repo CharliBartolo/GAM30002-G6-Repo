@@ -22,7 +22,7 @@ public class GunFXController : FXController
     // Gun components
     public GameObject BackCrystals;
     public GameObject[] CrystalTubes;
-    public GameObject[] CrystalTubesCrystals;
+    public GameObject[] TubeCrystals;
     public GameObject CrystalCase;
     public GameObject CrystalCase1;
     public GameObject CrystalCase2;
@@ -36,6 +36,9 @@ public class GunFXController : FXController
     public bool inspectingWeapon;
     private bool inspectingWeaponComplete;
 
+    public bool isProp = false;
+    
+    private Material crystal_mat;
     public enum WeaponState { Idle, TriggerPressed, TriggerReleased, Inspect, SwitchMode}
 
     public WeaponState weaponState;
@@ -43,43 +46,23 @@ public class GunFXController : FXController
     float startRotation;
 
     public bool equipped;
-    public int weaponUpgradeState;
+    public int weaponUpgradeState = 0;
 
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
 
-        // initialise barrel crystals materials
-        //Renderer[] renderers = BarrelCrystals.GetComponentsInChildren<Renderer>();
-        // set crystals colour to neutral if not shooting or cannot shoot
-/*        foreach (var item in renderers)
-        {
-            item.sharedMaterial = GameMaster.instance.colourPallete.materials.Crystal;
-        }*/
+        crystal_mat = new Material(GameMaster.instance.colourPallete.materials.Crystal);
 
-        Renderer[] backCrystals = BackCrystals.GetComponentsInChildren<Renderer>();
-        foreach (var item in backCrystals)
-        {
-            // initialise back crystal material
-            if (item.GetComponent<Renderer>() != null)
-                item.GetComponent<Renderer>().sharedMaterial = GameMaster.instance.colourPallete.materials.Crystal;
-        }
+        if (TubeCrystals != null)
+            SetTubeCrystals();
+
         // initialse crystal case materials
-        Renderer case1 = CrystalCase1.GetComponent<Renderer>();
-        Renderer case2 = CrystalCase2.GetComponent<Renderer>();
-        /*foreach (var item in renderers2)
-        {
-            item.sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
-        }*/
-        case1.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
-        case2.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
-        case1.sharedMaterial.color = Crystal_Cold;
-        case2.sharedMaterial.color = Crystal_Hot;
-        SetBackCrystal();
+        
 
+        //SetBackCrystal();
 
-       
         startRotation = CrystalCase.transform.eulerAngles.z;
         
         equipped = gameObject.GetComponent<PlayerController>().playerInventory.Contains("Raygun");
@@ -100,8 +83,15 @@ public class GunFXController : FXController
                 gun_obj.SetActive(false);
         }
 
-        SetWeaponMods(weaponUpgradeState);
+        //UpdateCasedCrystals();
+
+        //SetWeaponMods(weaponUpgradeState);
         //gun_obj.SetActive(false);
+
+        /*Renderer case1 = CrystalCase1.GetComponent<Renderer>();
+        Renderer case2 = CrystalCase2.GetComponent<Renderer>();
+        case1.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+        case2.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);*/
     }
 
     // Update is called once per frame
@@ -120,20 +110,45 @@ public class GunFXController : FXController
 
     public void SetWeaponMods(int state)
     {
+        Debug.Log("WEAPON MOD STATE: " + state);
         switch(state)
         {
             case 0:
                 EnableMod(0, false);
                 EnableMod(1, false);
+                CrystalCase.SetActive(false);
+                CrystalCase1.SetActive(false);
+                CrystalCase2.SetActive(false);
                 break;
 
             case 1:
                 EnableMod(0, true);
                 EnableMod(1, false);
+                CrystalCase.SetActive(true);
+                CrystalCase1.SetActive(true);
+                CrystalCase2.SetActive(false);
+
+                Material mat = new Material(crystal_mat);
+                mat.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                //CrystalCase1.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                CrystalCase1.GetComponent<Renderer>().sharedMaterial = mat;
                 break;
             case 2:
+                EnableMod(0, true);
                 EnableMod(1, true);
-                EnableMod(1, true);
+                CrystalCase.SetActive(true);
+                CrystalCase1.SetActive(true);
+                CrystalCase2.SetActive(true);
+                /*   CrystalCase2.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                   CrystalCase1.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);*/
+                Material mat1 = new Material(crystal_mat);
+                mat1.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                //CrystalCase1.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                CrystalCase1.GetComponent<Renderer>().sharedMaterial = mat1;
+                Material mat2 = new Material(crystal_mat);
+                mat2.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                //CrystalCase1.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                CrystalCase2.GetComponent<Renderer>().sharedMaterial = mat2;
                 break;
 
         }
@@ -156,18 +171,19 @@ public class GunFXController : FXController
         // call set colour of barrel crystals
         //SetBarrelCrystals();
         // call set colour of back crystal
-        SetBackCrystal();
+        //SetBackCrystal();
+        if (TubeCrystals != null)
+            SetTubeCrystals();
         // call set emissive lights
-        SetEmissiveLights();
+        //SetEmissiveLights();
         // call check for gun mode switch
+
+        //UpdateCasedCrystals();
         CheckForModeSwitch();
 
 
         // update cased crystals
-        Renderer case1 = CrystalCase1.GetComponent<Renderer>();
-        Renderer case2 = CrystalCase2.GetComponent<Renderer>();
-        case1.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
-        case2.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+       
 
     }
 
@@ -180,6 +196,39 @@ public class GunFXController : FXController
         weaponState = WeaponState.Inspect;
         
         NextState();
+    }
+    public void UnEquipTool()
+    {
+        equipped = false;
+        gun_obj.SetActive(false);
+        arm_obj.SetActive(true);
+        inspectingWeapon = false;
+        weaponState = WeaponState.Idle;
+    }
+
+    public void UpdateCasedCrystals()
+    {
+        Renderer case1 = CrystalCase1.GetComponent<Renderer>();
+        Renderer case2 = CrystalCase2.GetComponent<Renderer>();
+        case1.sharedMaterial.color = Crystal_Cold;
+        case2.sharedMaterial.color = Crystal_Hot;
+        /*foreach (var item in renderers2)
+        {
+            item.sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
+       *//* }*//*
+        case1.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
+        case2.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
+
+        if (GetComponent<PlayerController>().raygunScript.cold)
+        {
+            case1.sharedMaterial.color = Crystal_Cold;
+            case2.sharedMaterial.color = Crystal_Hot;
+        }
+        else
+        {
+            case2.sharedMaterial.color = Crystal_Cold;
+            case1.sharedMaterial.color = Crystal_Hot;
+        }*/
     }
 
     // weapon states
@@ -314,7 +363,7 @@ public class GunFXController : FXController
 
     void AnimateGunTool()
     {
-        if(!switchingMode)
+        if(!switchingMode && equipped)
         {
             if (gun.TriggerHeld)
             {
@@ -341,7 +390,8 @@ public class GunFXController : FXController
         {
             foreach (var item in emissiveLights)
             {
-                item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Neutral;
+                //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Neutral;
+                item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
             }
         }
         else
@@ -351,7 +401,8 @@ public class GunFXController : FXController
             {
                 foreach (var item in emissiveLights)
                 {
-                    item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
+                    //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
+                    item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
                 }
 
             }
@@ -359,7 +410,8 @@ public class GunFXController : FXController
             {
                 foreach (var item in emissiveLights)
                 {
-                    item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
+                    //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
+                    item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
                 }
             }
         }
@@ -409,7 +461,12 @@ public class GunFXController : FXController
             foreach (var item in renderers)
             {
                 if (item.GetComponent<Renderer>() != null)
-                    item.GetComponent<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+                {
+                    Material mat1 = new Material(crystal_mat);
+                    mat1.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+                    //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+                    item.GetComponent<Renderer>().sharedMaterial = mat1;
+                }
             }
         }
         else
@@ -419,7 +476,12 @@ public class GunFXController : FXController
                 foreach (var item in renderers)
                 {
                     if (item.GetComponent<Renderer>() != null)
-                        item.GetComponent<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                    {
+                        Material mat1 = new Material(crystal_mat);
+                        mat1.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                        //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                        item.GetComponent<Renderer>().sharedMaterial = mat1;
+                    }  
                 }
             }
             else
@@ -427,7 +489,54 @@ public class GunFXController : FXController
                 foreach (var item in renderers)
                 {
                     if (item.GetComponent<Renderer>() != null)
-                        item.GetComponent<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                    {
+                        Material mat1 = new Material(crystal_mat);
+                        mat1.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                        //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                        item.GetComponent<Renderer>().sharedMaterial = mat1;
+                    } 
+                }
+            }
+        }
+    }
+    void SetTubeCrystals()
+    {
+        // set crystals colour to neutral if not shooting or cannot shoot
+        if (switchingMode)
+        {
+            foreach (var item in TubeCrystals)
+            {
+                Material mat1 = new Material(crystal_mat);
+                mat1.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+                //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Neutral;
+                //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+                item.GetComponent<Renderer>().sharedMaterial = mat1;
+            }
+        }
+        else
+        {
+            // set crystal colour to hot or cold depending on gun mode
+            if (gun.cold)
+            {
+                foreach (var item in TubeCrystals)
+                {
+                    Material mat1 = new Material(crystal_mat);
+                    mat1.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                    //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
+                    //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                    item.GetComponent<Renderer>().sharedMaterial = mat1;
+                }
+
+            }
+            else
+            {
+                foreach (var item in TubeCrystals)
+                {
+                    Material mat1 = new Material(crystal_mat);
+                    mat1.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                    //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
+                    //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                    item.GetComponent<Renderer>().sharedMaterial = mat1;
                 }
             }
         }

@@ -9,6 +9,8 @@ public class CollectInteractable : InteractableBase
     private InteractionType interactionType = InteractionType.Use;
     private PlayerInput playerInput;
 
+    public int int_data;
+
     private void Start() 
     {
         
@@ -18,7 +20,13 @@ public class CollectInteractable : InteractableBase
     public override void OnInteractEnter(PlayerInput playerInputRef)
     {        
 
-        //playerControls = playerControlsRef;
+       switch(itemName)
+        {
+            case "Raygun":
+                GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.SetGunUpgradeState(int_data);
+                GameObject.Find("Player").GetComponent<GunFXController>().SetWeaponMods(int_data);
+                break;
+        }
     }
 
     //Runs after interaction is complete

@@ -39,6 +39,7 @@ public class RayCastShootComplete : MonoBehaviour {
 
         Color colour = GameMaster.instance.colourPallete.Neutral;
         laserLine.GetComponent<Renderer>().sharedMaterial.SetColor("_Color", colour);
+        laserLine.SetPosition(0, gunEnd.position);
         //lightning.startColor = colour;
         //lightning.endColor = colour;
     }
@@ -129,7 +130,7 @@ public class RayCastShootComplete : MonoBehaviour {
         }
         */
 
-        if (TriggerHeld && CanShoot && !GetComponentInParent<GunFXController>().inspectingWeapon && !GameObject.Find("UI").GetComponent<PauseController>().IsPaused)
+        if (TriggerHeld && CanShoot && !GetComponentInParent<GunFXController>().inspectingWeapon && GetComponentInParent<GunFXController>().equipped && !GameObject.Find("UI").GetComponent<PauseController>().IsPaused)
 		{
             if (audioManager != null)
             {

@@ -8,37 +8,64 @@ public class ToolBox : InteractableBase
     public GameObject ToolDisplayObject;
     public GameObject ToolObject;
 
-    private bool triggered;
-    public bool destroyOnUse;
+    public float upgradeTime;
 
-    public string itemName;
+    private bool triggered;
+    //public bool destroyOnUse;
+
+    //public string itemName;
     private InteractionType interactionType = InteractionType.Use;
     private PlayerInput playerInput;
-    public int gunUpgradeLevel = 0;
+    //public int gunUpgradeLevel = 0;
 
     private void Start()
     {
-
+        ToolDisplayObject.SetActive(true);
+        ToolObject.SetActive(false);
+        OpenTray();
     }
 
     public void OpenTray()
     {
+        GetComponent<Animator>().speed = 1;
         GetComponent<Animator>().Play("Open");
+    }
+
+    public IEnumerator RunUpgradeSequence()
+    {
+        GetComponent<Animator>().speed = 2;
+        GetComponent<Animator>().Play("Close");
+        
+
+        yield return new WaitForSeconds(upgradeTime);
+
+        GetComponent<Animator>().speed = 2;
+        GetComponent<Animator>().Play("Open");
+        ToolDisplayObject.SetActive(false);
+        ToolObject.SetActive(true);
     }
 
     //Runs when interaction begins
     public override void OnInteractEnter(PlayerInput playerInputRef)
     {
-        GetComponent<Collider>().enabled = false;
-        //playerControls = playerControlsRef;
-        ToolDisplayObject.SetActive(false);
-        Debug.Log("TOOL REQUESTED");
-        triggered = true;
-        GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.SetGunUpgradeState(gunUpgradeLevel);
-        OpenTray();
-        ToolObject.GetComponent<CollectInteractable>().enabled = true;
-        Debug.Log("TOOL DELIVERED");
+        RayCastShootComplete.gunUpgrade currentGunLevel = GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.gunUpgradeState;
 
+        if((int)currentGunLevel < 2 && GameObject.Find("Player").GetComponent<GunFXController>().equipped)
+        {
+            GetComponent<Collider>().enabled = false;
+            //playerControls = playerControlsRef;
+            
+            Debug.Log("TOOL REQUESTED");
+            triggered = true;
+            //GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.SetGunUpgradeState((int)currentGunLevel + 1);
+            GameObject.Find("Player").GetComponent<PlayerController>().isGunEnabled = false;
+            GameObject.Find("Player").GetComponent<GunFXController>().UnEquipTool();
+            //OpenTray();
+            StartCoroutine(RunUpgradeSequence());
+            //ToolObject.GetComponent<CollectInteractable>().int_data = 0;
+            //ToolObject.GetComponent<CollectInteractable>().enabled = true;
+            Debug.Log("TOOL  DELIVERED");
+        }
     }
     
     //Runs after interaction is complete
