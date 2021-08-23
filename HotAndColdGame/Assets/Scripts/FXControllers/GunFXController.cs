@@ -21,6 +21,8 @@ public class GunFXController : FXController
 
     // Gun components
     public GameObject BackCrystals;
+    public GameObject[] CrystalTubes;
+    public GameObject[] CrystalTubesCrystals;
     public GameObject CrystalCase;
     public GameObject CrystalCase1;
     public GameObject CrystalCase2;
@@ -41,6 +43,7 @@ public class GunFXController : FXController
     float startRotation;
 
     public bool equipped;
+    public int weaponUpgradeState;
 
     // Start is called before the first frame update
     public override void Start()
@@ -93,11 +96,11 @@ public class GunFXController : FXController
         }
         else
         {
-           
-          
             if(gun_obj.activeSelf == true)
                 gun_obj.SetActive(false);
         }
+
+        SetWeaponMods(weaponUpgradeState);
         //gun_obj.SetActive(false);
     }
 
@@ -113,6 +116,36 @@ public class GunFXController : FXController
     }*/
 
     // perform FX
+
+
+    public void SetWeaponMods(int state)
+    {
+        switch(state)
+        {
+            case 0:
+                EnableMod(0, false);
+                EnableMod(1, false);
+                break;
+
+            case 1:
+                EnableMod(0, true);
+                EnableMod(1, false);
+                break;
+            case 2:
+                EnableMod(1, true);
+                EnableMod(1, true);
+                break;
+
+        }
+    }
+
+    public void EnableMod(int mod, bool enableState)
+    {
+        CrystalTubes[mod].SetActive(enableState);
+        
+    }
+
+
     public override void PerformFX()
     {
         base.PerformFX();
