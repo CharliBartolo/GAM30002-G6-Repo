@@ -295,7 +295,7 @@ public class CrystalFXController : FXController
     {
         if (ready && other.transform.parent != this.gameObject && MainCrystal.spreadEffects)
         {
-            if (other.gameObject.tag != "Player")
+            if (other.gameObject.tag != "Player" && other.gameObject.tag != "DeathWater")
             {
                 if (other.transform.parent?.gameObject.tag != "Player")
                 {
