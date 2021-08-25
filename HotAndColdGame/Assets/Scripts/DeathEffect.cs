@@ -7,8 +7,8 @@ public class DeathEffect : FXController
 {
     [SerializeField] public Image Fade;//for image wanted on vignette    
     [SerializeField] public TemperatureStateBase crntTemp;//get player temperature
-    [SerializeField] private GameMaster gm;//to get last respawn/checkpoint
-    [SerializeField] private Transform player; //To get Player's position.
+    //[SerializeField] private GameMaster gm;//to get last respawn/checkpoint
+    //[SerializeField] private GameObject player; //To get Player's position.
     bool isResetting = false;
 
     // Start is called before the first frame update
@@ -16,7 +16,11 @@ public class DeathEffect : FXController
     {
         base.Start();
         // makes sure death effect is invisible until function
-        Fade.canvasRenderer.SetAlpha(0.0f);   
+        Fade.canvasRenderer.SetAlpha(0.0f); 
+        //gm = GameMaster.instance;
+        //player = gm.playerRef;
+        if (GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>() != null)
+            crntTemp = GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>();
     }
 
     private void Update() 
@@ -64,7 +68,7 @@ public class DeathEffect : FXController
         yield return new WaitForSeconds(secondsToWait); 
         crntTemp.SetTemperature(crntTemp.tempValueRange[1]);
         crntTemp.CurrentTempState = ITemperature.tempState.Neutral;
-        player.transform.position = gm.lastCheckPointPos.position;
+        GameMaster.instance.playerRef.transform.position = GameMaster.instance.lastCheckPointPos.position;
         //Fade.GetComponent<Image>().color = new Color32(0, 0, 0, 0);//red, green, blue, alpha
         Fade.CrossFadeAlpha(0, 0.5f, false);  
         isResetting = false;      

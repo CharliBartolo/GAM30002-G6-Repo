@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour, IConditions
     private TemperatureStateBase playerTemp;
     private InteractableBase currentInteractingObject;
     public PauseController PC;
-    public AudioManager audioManager;
+    //public AudioManager audioManager;
     public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
     public PhysicMaterial regularPhysicMaterial;
 
@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
+        playerCam = GetComponentInChildren<Camera>();        
         _activeConditions = new List<IConditions.ConditionTypes>();
         contactPoints = new List<ContactPoint>();
         playerInventory = new List<string>();
@@ -198,7 +199,7 @@ public class PlayerController : MonoBehaviour, IConditions
                 break;
         }
 
-        if (audioManager != null)
+        if (GameMaster.instance.audioManager != null)
             PlayFootstepSound();
         VelocityClamp();
         SetPlayerFriction();
@@ -499,7 +500,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
         if (currentTimeBetweenFootsteps <= 0f)
         {
-            audioManager.Play("Footstep");
+            GameMaster.instance.audioManager.Play("Footstep");
             
             currentTimeBetweenFootsteps = timeBetweenFootsteps;
         }
