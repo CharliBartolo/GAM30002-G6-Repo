@@ -171,9 +171,39 @@ public class RayCastShootComplete : MonoBehaviour {
 			laserLine.SetPosition (0, gunEnd.position);
 			//lightning.SetPosition (0, gunEnd.position);
 
-			if (Physics.Raycast (rayOrigin, fpsCam.transform.forward, out hit, weaponRange) && lightning != null)
-			{
+            /// DEMO CODE FOR MAKING THE BEAM MORE GENEROUS 
+            /*
+            RaycastHit[] hits = Physics.SphereCastAll(rayOrigin, 0.5f, fpsCam.transform.forward, weaponRange);
+            if (hits.Length > 0)
+            {
+                Collider priorityCollider = null;
+                RaycastHit priorityHit = new RaycastHit();
 
+                foreach (RaycastHit sphereHit in hits)
+                {
+                    // If player is hit, skip.
+                    if (sphereHit.collider.tag == "Player")
+                        break;
+
+                    // if priority objects found, attach to closest one to beam centre?                                 
+                    priorityCollider = sphereHit.collider;
+                    priorityHit = sphereHit;
+
+                    Debug.Log("Object "+ sphereHit.collider.name + " was hit by the spherecast at point " + sphereHit.point);
+                }
+                
+                if (priorityCollider != null)
+                {
+                    // Target this object with the beam
+                    Vector3 beamEndPos = priorityCollider.ClosestPoint(priorityHit.point);
+                    Debug.DrawLine(transform.position, beamEndPos);
+                }
+            }
+            */
+            /// DEMO CODE END
+
+			if (Physics.Raycast (rayOrigin, fpsCam.transform.forward, out hit, weaponRange) && lightning != null)  
+			{
                 laserLine.SetPosition (1, hit.point);
                 
                 if(lightning.enabled)
