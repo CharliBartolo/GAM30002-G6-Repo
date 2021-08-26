@@ -8,7 +8,7 @@ public class CollectInteractable : InteractableBase
     public string itemName;
     private InteractionType interactionType = InteractionType.Use;
     private PlayerInput playerInput;
-
+    public bool destroyOnCollect = true;
     public int int_data;
 
     private void Start() 
@@ -28,8 +28,8 @@ public class CollectInteractable : InteractableBase
                 break;
 
             case "Journal":
-                GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().text.text = GetComponent<Journal>().EntryLog;
-                GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
+                GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal(GetComponent<Journal>().EntryLog, int_data);
+                //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
                 break;
         }
     }
@@ -37,8 +37,9 @@ public class CollectInteractable : InteractableBase
     //Runs after interaction is complete
     public override void OnInteractExit()
     {
-        //playerControls = null;        
-        Destroy(gameObject);
+        //playerControls = null;      
+        if(destroyOnCollect)
+            Destroy(gameObject);
     }
 
     //Runs every frame the interaction continues

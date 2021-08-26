@@ -411,9 +411,14 @@ public class PlayerController : MonoBehaviour, IConditions
                     {
 
                         playerInventory.Add(currentInteractingObject.GetComponent<CollectInteractable>().itemName);
-                        SetShootingEnabled(playerInventory.Contains("Raygun"));
-                        if (playerInventory.Contains("Raygun"))
-                            GetComponent<GunFXController>().EquipTool();
+                        
+                        if(currentInteractingObject.name.Contains("Raygun"))
+                        {
+                            SetShootingEnabled(playerInventory.Contains("Raygun"));
+                            if (playerInventory.Contains("Raygun"))
+                                GetComponent<GunFXController>().EquipTool();
+                        }
+                       
                     }         
                     
                     ExitInteract(context);
