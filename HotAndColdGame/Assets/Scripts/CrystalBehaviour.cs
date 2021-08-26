@@ -23,6 +23,7 @@ public class CrystalBehaviour : TemperatureStateBase
     public Light areaLight;
     public Material coldTempField, hotTempField;
     public Dictionary<GameObject, PhysicMaterial> objectsInTempArea;
+    private List<GameObject> objectsToRemove;
 
     //private float powerDownRate = 0.0333f;  //Operates on a 0-1 percentage basis, Default value 0.0333 takes roughly 30 seconds from max to power down    
     public float temperatureValueToEmit = 5f;
@@ -36,6 +37,7 @@ public class CrystalBehaviour : TemperatureStateBase
         //mat = mat_obj.GetComponent<Renderer>().material;
         base.Start();
         objectsInTempArea = new Dictionary<GameObject, PhysicMaterial>();
+        objectsToRemove = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -142,11 +144,13 @@ public class CrystalBehaviour : TemperatureStateBase
     //ADDED: speed modifier
     protected virtual void ApplyTemperatureToOtherObjects(float temperatureValueParam)
     {
+        
         foreach (GameObject temperatureObject in objectsInTempArea.Keys)
         {
             if (temperatureObject == null)
             {
-                objectsInTempArea.Remove(temperatureObject); 
+                objectsToRemove.Add(temperatureObject);
+                //objectsInTempArea.Remove(temperatureObject); 
                 continue;
             }
 
@@ -188,6 +192,12 @@ public class CrystalBehaviour : TemperatureStateBase
                 }
             }
         }
+
+        foreach (GameObject destroyedObject in objectsToRemove)
+        {   
+            objectsInTempArea.Remove(destroyedObject);
+        }
+        objectsToRemove.Clear();
     }
 
     protected virtual void SpreadLowGravToArea()
