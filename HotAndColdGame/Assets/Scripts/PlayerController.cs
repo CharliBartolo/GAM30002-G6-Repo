@@ -388,10 +388,11 @@ public class PlayerController : MonoBehaviour, IConditions
 
     public void Interact(InputAction.CallbackContext context)
     {
-        if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward * interactRange, out RaycastHit hit) && 
+        if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out RaycastHit hit, interactRange) && 
             hit.collider.gameObject.GetComponent<InteractableBase>() != null)
         {
             //Debug.Log("Interactable object found, attempting interaction.");
+            Debug.DrawLine(playerCam.transform.position, hit.point);
             currentInteractingObject = hit.collider.gameObject.GetComponent<InteractableBase>();
 
             currentInteractingObject.OnInteractEnter(playerInput);
