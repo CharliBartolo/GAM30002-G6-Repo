@@ -234,7 +234,7 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""44972b02-46f9-448c-85a0-1fbb830c82db"",
                     ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": ""Press(behavior=2)"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Swap Beam"",
