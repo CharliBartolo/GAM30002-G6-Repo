@@ -9,7 +9,7 @@ public class Cube_Test_Player : MonoBehaviour
     private Journal_Reader journalReader;
     private void Update()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
+       /* Rigidbody rb = GetComponent<Rigidbody>();
         if (Input.GetKey(KeyCode.A))
             rb.AddForce(Vector3.left * speed);
         if (Input.GetKey(KeyCode.D))
@@ -17,7 +17,7 @@ public class Cube_Test_Player : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
             rb.AddForce(Vector3.up * speed);
         if (Input.GetKey(KeyCode.S))
-            rb.AddForce(Vector3.down * speed);
+            rb.AddForce(Vector3.down * speed);*/
     }
 
     private void OnTriggerEnter(Collider other)

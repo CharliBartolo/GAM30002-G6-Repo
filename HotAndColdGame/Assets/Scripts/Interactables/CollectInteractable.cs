@@ -26,6 +26,12 @@ public class CollectInteractable : InteractableBase
                 GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.SetGunUpgradeState(int_data);
                 GameObject.Find("Player").GetComponent<GunFXController>().SetWeaponMods(int_data);
                 break;
+
+            case "Journal":
+                GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().text.text = GetComponent<Journal>().EntryLog;
+                GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
+                GameObject.Find("Player").GetComponent<GunFXController>().SetWeaponMods(int_data);
+                break;
         }
     }
 
