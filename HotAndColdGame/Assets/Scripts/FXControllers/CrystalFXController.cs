@@ -45,6 +45,7 @@ public class CrystalFXController : FXController
         AffectedObjects = new List<GameObject>();
         MainCrystal = GetComponent<CrystalBehaviour>();
         MainCrystaLight = transform.Find("Area Light").GetComponent<Light>();
+        //MainCrystaLight.gameObject.SetActive(false);
         CrystalMesh = transform.Find("Mesh").GetComponentsInChildren<Renderer>();
         //AreaCollider = GetComponent<SphereCollider>();
         AreaSphere = transform.Find("EffectSphere").transform;
