@@ -295,10 +295,9 @@ public class CrystalFXController : FXController
     {
         if (ready && other.transform.parent != this.gameObject && MainCrystal.spreadEffects)
         {
-            if (other.gameObject.tag != "Player" && other.gameObject.tag != "DeathWater")
+            if (other.gameObject.tag != "DeathWater")
             {
-                if (other.transform.parent?.gameObject.tag != "Player")
-                {
+               
                     //Debug.Log("COLLISION: " + other.gameObject.name);
                     if (other.gameObject.GetComponent<MeshRenderer>() != null)
                     {
@@ -323,7 +322,7 @@ public class CrystalFXController : FXController
                         }
                     }
                 }
-            }
+            
         }
     }
 

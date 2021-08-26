@@ -125,6 +125,18 @@ public class CrystalBehaviour : TemperatureStateBase
             other.GetComponent<Collider>().material = objectsInTempArea[other.gameObject];
 
             objectsInTempArea.Remove(other.gameObject);
+
+            if (other.TryGetComponent<IConditions>(out IConditions conditionComponent))
+            {
+                if (spreadEffects)
+                {
+                    if (currentTemp > tempValueRange[1])
+                        conditionComponent.RemoveCondition(IConditions.ConditionTypes.ConditionHot);
+                    else if (currentTemp < tempValueRange[1])
+                        conditionComponent.RemoveCondition(IConditions.ConditionTypes.ConditionCold);
+                }
+                
+            }
         }
     }
     //ADDED: speed modifier
