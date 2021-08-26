@@ -144,6 +144,12 @@ public class CrystalBehaviour : TemperatureStateBase
     {
         foreach (GameObject temperatureObject in objectsInTempArea.Keys)
         {
+            if (temperatureObject == null)
+            {
+                objectsInTempArea.Remove(temperatureObject); 
+                continue;
+            }
+
             //Added proximity
             if (temperatureObject.GetComponent<ITemperature>() != null)
             {
