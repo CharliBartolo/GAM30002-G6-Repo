@@ -87,4 +87,32 @@ public class ColourPalette : MonoBehaviour
         ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("negCol" + loadSlot.ToString()), out Negative);
         ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("neutralCol" + loadSlot.ToString()), out Neutral);
     }
+
+    public void UpdateColour(GameObject menuItemSelected)
+    {
+        SaveColourPrefs(10);
+        LoadColourPrefs(10);  
+        
+        //Debug.Log("UpdateColour function is running, using tag "+ menuItemSelected.tag);
+        switch (menuItemSelected.tag)
+        {
+            case "PositiveButton":
+                Positive = menuItemSelected.GetComponent<UnityEngine.UI.Image>().color;
+                break;
+            case "NegativeButton":
+                Debug.Log("Current Negative colour is: " + Negative);
+                Negative = menuItemSelected.GetComponent<UnityEngine.UI.Image>().color;
+                Debug.Log("Color sent to Pallete is " + menuItemSelected.GetComponent<UnityEngine.UI.Image>().color);
+                Debug.Log("New Negative colour is: " + Negative);
+                break;
+            case "NeutralButton":
+                Neutral = menuItemSelected.GetComponent<UnityEngine.UI.Image>().color;
+                break;
+            default:
+                Debug.Log("Colour option was picked, but no matching tag found!");
+                break;
+        }     
+
+         
+    }
 }
