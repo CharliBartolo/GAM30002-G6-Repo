@@ -10,6 +10,7 @@ public class DeadArea : MonoBehaviour
 
     private void Start()
     {
+        gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
         player = GameObject.Find("Player").transform;
     }
     //Sets new checkpoint
