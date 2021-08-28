@@ -269,7 +269,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1561819254, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3665375620786811913, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1612,7 +1612,7 @@ MonoBehaviour:
   Clip: Wind
   _randomiseStartTime: 0
   _randomisePitch: 0
-  pitch_range: 0
+  pitch_range: 0.01
 --- !u!1 &975599415
 GameObject:
   m_ObjectHideFlags: 1
@@ -2450,8 +2450,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: f834dd75be9febf41a34daa865207d52, type: 3}
     - target: {fileID: 8367264434170778536, guid: ea97142086860f944b40480c50ca02eb, type: 3}
+      propertyPath: groups.Array.data[2].sounds.Array.data[0].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367264434170778536, guid: ea97142086860f944b40480c50ca02eb, type: 3}
       propertyPath: groups.Array.data[2].sounds.Array.data[0].name
       value: Wind
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367264434170778536, guid: ea97142086860f944b40480c50ca02eb, type: 3}
+      propertyPath: groups.Array.data[2].sounds.Array.data[0].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367264434170778536, guid: ea97142086860f944b40480c50ca02eb, type: 3}
+      propertyPath: groups.Array.data[2].sounds.Array.data[0].space
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8367264434170778536, guid: ea97142086860f944b40480c50ca02eb, type: 3}
       propertyPath: groups.Array.data[2].sounds.Array.data[0].volume

@@ -29,6 +29,8 @@ public class ColourPalette : MonoBehaviour
     [Header("Materials palette")]
     public MaterialMap materials = new MaterialMap();
 
+    //[InspectorButton("OnButtonClicked")]
+    //public bool saveColoursToPlayerPrefs;
 
     private float t = 0;
     private void Awake()
@@ -69,4 +71,20 @@ public class ColourPalette : MonoBehaviour
     }
     //public Material HiddenMaterial => GetComponent<Renderer>().sharedMaterials[0];
     public Material HiddenMaterial => materials.HiddenTexture;
+
+    public void SaveColourPrefs(int saveSlot)
+    {
+        PlayerPrefs.SetString("posCol" + saveSlot.ToString(), ColorUtility.ToHtmlStringRGBA(Positive));
+        PlayerPrefs.SetString("negCol" + saveSlot.ToString(), ColorUtility.ToHtmlStringRGBA(Negative));
+        PlayerPrefs.SetString("neutralCol" + saveSlot.ToString(), ColorUtility.ToHtmlStringRGBA(Neutral));
+
+        PlayerPrefs.Save();
+    }
+
+    public void LoadColourPrefs(int loadSlot)
+    {
+        ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("posCol" + loadSlot.ToString()), out Positive);
+        ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("negCol" + loadSlot.ToString()), out Negative);
+        ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("neutralCol" + loadSlot.ToString()), out Neutral);
+    }
 }
