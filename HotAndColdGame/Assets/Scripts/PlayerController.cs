@@ -56,9 +56,10 @@ public class PlayerController : MonoBehaviour, IConditions
     private Vector2 _mouseSmooth;
 
     [Header("Player Condition Control Settings")]
-    public playerMovementSettings baseMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
-    public playerMovementSettings hotMovementSettings = new playerMovementSettings(20f, 3f, 14f, 0.15f, new Vector2(6f, 10f), 1f, 1.2f, 1.5f);
-    public playerMovementSettings coldMovementSettings = new playerMovementSettings(24f, 15f, 10f, 0.02f, new Vector2(16f, 20f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings baseMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.15f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings hotMovementSettings = new playerMovementSettings(20f, 3f, 14f, 0.40f, new Vector2(6f, 10f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings coldMovementSettings = new playerMovementSettings(24f, 15f, 10f, 0.15f, new Vector2(16f, 20f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings bothMovementSettings = new playerMovementSettings(24f, 15, 14, 0.4f, new Vector2 (16f, 10f), 1f, 1.2f, 1.5f);
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
@@ -507,7 +508,6 @@ public class PlayerController : MonoBehaviour, IConditions
         if (currentTimeBetweenFootsteps <= 0f)
         {
             GameMaster.instance.audioManager.Play("Footstep");
-            
             currentTimeBetweenFootsteps = timeBetweenFootsteps;
         }
     }
@@ -693,14 +693,14 @@ public class PlayerController : MonoBehaviour, IConditions
     public void ExecuteConditions()
     {
         // If player is hot and NOT cold
-        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
+        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
         {
             UpwardForce();
             //ResetSlip();
         }
 
         // If player is cold and NOT hot
-        else if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
+        if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
         {
             /*
             // If player is making any movement inputs, remove friction, otherwise re-enable it.
@@ -722,30 +722,24 @@ public class PlayerController : MonoBehaviour, IConditions
 
     public void UpdateControlSettingsBasedOnConditions()
     {
+        // If player is Hot and NOT Cold
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
         {
             currentMovementSettings = hotMovementSettings;
-            // movementSpeed = baseMovementSpeed * hotMoveSpeedMod;            
-            // jumpStrength = baseJumpStrength * hotJumpStrengthMod;
-            // airSpeed = baseAirSpeed * hotAirSpeedMod;  
-            // velocityCap = baseVelocityCap * hotVelocityCapMod;    
         }
         // If player is cold and NOT hot
         else if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && !ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
         {   
-            currentMovementSettings = coldMovementSettings;
-            // movementSpeed = baseMovementSpeed * coldMoveSpeedMod;            
-            // jumpStrength = baseJumpStrength * coldJumpStrengthMod;
-            // airSpeed = baseAirSpeed * coldAirSpeedMod; 
-            // velocityCap = baseVelocityCap * coldVelocityCapMod;          
+            currentMovementSettings = coldMovementSettings;         
+        }
+        // If player is BOTH Cold and Hot
+        else if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold) && ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
+        {
+            currentMovementSettings = bothMovementSettings;   
         }
         else
         {
-            currentMovementSettings = baseMovementSettings;
-            // movementSpeed = baseMovementSpeed;            
-            // jumpStrength = baseJumpStrength;
-            // airSpeed = baseAirSpeed;  
-            // velocityCap = baseVelocityCap;    
+            currentMovementSettings = baseMovementSettings;   
         }
     }
 
