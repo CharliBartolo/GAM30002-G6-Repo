@@ -23,7 +23,7 @@ public class Journal_Reader : MonoBehaviour
         text.text = journal_text;
         //textbox.SetActive(true);
         text.gameObject.SetActive(true);
-        image.gameObject.SetActive(true);
+        //image.gameObject.SetActive(true);
 
         SetTimeout(timeoutDisplay);
 
