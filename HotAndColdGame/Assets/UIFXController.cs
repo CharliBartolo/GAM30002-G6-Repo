@@ -19,6 +19,7 @@ public class UIFXController : FXController
         base.Start();
 
         neutral = Slider.value;
+
     }
     void Update()
     {
@@ -39,8 +40,6 @@ public class UIFXController : FXController
             {
                 icon.color = Crystal_Neutral;
             }
-
-
         }
     }
 }

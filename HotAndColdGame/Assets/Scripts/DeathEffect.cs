@@ -12,21 +12,26 @@ public class DeathEffect : FXController
     bool isResetting = false;
 
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
         base.Start();
         // makes sure death effect is invisible until function
         Fade.canvasRenderer.SetAlpha(0.0f); 
         //gm = GameMaster.instance;
         //player = gm.playerRef;
-        if (GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>() != null)
-            crntTemp = GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>();
+        if(GameMaster.instance.playerRef != null)
+        {
+            if (GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>() != null)
+                crntTemp = GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>();
+        }
+       
     }
 
     private void Update() 
     {
         //call fade function
-        DeathFade();
+        if(crntTemp!= null)
+            DeathFade();
     }
 
     // DeathEffect is called once per frame
