@@ -1,0 +1,23 @@
+Instructions for set-up:
+1. the scene running all scene parts will only need the bare minimum essentials(e.g. player, game master etc.)
+2. Scenes need to be added to the build and also made into a prefab
+3. when in the scene that is running all the scenes box collider must be added to 
+each scene part prefab in the hierarchy(please use exact scene name) and for now ScenePartLoader.cs
+
+Warnings:
+- the box collider for scenes parts should not over lap one another otherwise one of the scenes
+will continue to load and unload itself continuously 
+
+Problems: 
+- when player leaves a scene part(e.g. Scene3) the scene will refresh meaning 
+it will as if it is the players first time going into that part
+- when a scene part loads in it will appear in the exact same x,y,z loaction as in the orignal scene
+
+Advice:
+- when making the scene that is going to run all parts you may want to create 
+the whole level there then use the box colliders the act as a measuring tool to see 
+what each part will be loaded in togethet. you could then make multiple copies of this scene
+and delete which parts aren't required for it
+
+Furtue work for multi scene management:
+- integrating ScenePartLoader.cs into checkpoints script
