@@ -267,8 +267,11 @@ public class PlayerController : MonoBehaviour, IConditions
             //Debug.Log("Inverse Grav component is :" + inverseGravProportion);
         }
         else
-        {                     
-            playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed * currentMovementSettings.airSpeed, ForceMode.Acceleration);
+        {      
+            if ((horizVelocity + movementVector).magnitude <= currentMovementSettings.velocityCap.x)
+            {
+                playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed * currentMovementSettings.airSpeed, ForceMode.Acceleration);
+            }              
         }        
     }
 
