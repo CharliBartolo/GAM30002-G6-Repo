@@ -44,11 +44,12 @@ public class GunFXController : FXController
     public WeaponState weaponState;
 
     float startRotation;
+    Quaternion caseRot;
 
     public bool equipped;
     public int weaponUpgradeState = 0;
     public bool isGrabbing = false;
-    public bool isPlacing= false;
+    public bool isPlacing = false;
 
     // Start is called before the first frame update
     public override void Start()
@@ -66,7 +67,8 @@ public class GunFXController : FXController
         //SetBackCrystal();
 
         startRotation = CrystalCase.transform.eulerAngles.z;
-        
+        caseRot = CrystalCase.transform.rotation;
+
         equipped = gameObject.GetComponent<PlayerController>().playerInventory.Contains("Raygun");
         //equipped = false;
 
@@ -206,7 +208,7 @@ public class GunFXController : FXController
         weaponState = WeaponState.Inspect;
         NextState();
     }
-    public void Grab(CollectInteractable obj)
+    public void Grab()
     {
         if(!isGrabbing)
         {
@@ -216,7 +218,7 @@ public class GunFXController : FXController
         }          
     }
 
-    public void PlaceTool(CollectInteractable obj)
+    public void PlaceTool()
     {
         if (!isPlacing)
         {
@@ -263,6 +265,7 @@ public class GunFXController : FXController
     // weapon & arm states
     IEnumerator Idle_EquippedState()
     {
+        isPlacing = false;
         WeaponInspected();
         //Debug.Log("Idle: Enter");
         arm_obj.GetComponent<Animator>().Play("Idle");
@@ -278,6 +281,7 @@ public class GunFXController : FXController
 
     IEnumerator Idle_UnequippedState()
     {
+        isPlacing = false;
         WeaponInspected();
         //Debug.Log("Idle: Enter");
         arm_obj.GetComponent<Animator>().Play("Idle_Unequipped");
@@ -372,7 +376,7 @@ public class GunFXController : FXController
         //Debug.Log("Inspect: Enter");
         arm_obj.GetComponent<Animator>().Play("Place_01");
 
-        while (weaponState == WeaponState.Grab)
+        while (weaponState == WeaponState.Place)
         {
             // do state stuff
 
@@ -385,7 +389,6 @@ public class GunFXController : FXController
         }
         //Debug.Log("Inspect: Exit");
         isPlacing = false;
-        Debug.Log("Weapon state:" + weaponState);
         NextState();
     }
 
@@ -418,11 +421,9 @@ public class GunFXController : FXController
         if (inspectingWeapon)
             WeaponInspected();
 
+       
 
-        float midRotation = startRotation + 360f;
-        float t = 0;
-
-        StartCoroutine(RotateCrystalCase(0.5f));
+        StartCoroutine(RotateCrystalCase(0.6f));
 
         while (weaponState == WeaponState.SwitchMode)
         {
@@ -430,16 +431,18 @@ public class GunFXController : FXController
 
             if (AnimationComplete("SwitchMode"))
             {
-                float endRotation = startRotation + 180f;
-                CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, endRotation);
-                startRotation = CrystalCase.transform.eulerAngles.z;
-                FinishSwitchingMode();
+                //float endRotation = startRotation + 180f;
+               
                 weaponState = WeaponState.Idle_Equipped;
             }
 
             //Debug.Log("Playing switch animation");
             yield return 0;
         }
+       /* float endRotation = caseRot.z + 180f;
+        CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, endRotation);
+        startRotation = endRotation;*/
+        FinishSwitchingMode();
         //Debug.Log("SwitchMode: Exit");
         NextState();
     }
@@ -673,7 +676,6 @@ public class GunFXController : FXController
     // rotate the ammo case
     IEnumerator RotateCrystalCase(float duration)
     {
-
         float startRotation = CrystalCase.transform.eulerAngles.z;
         float endRotation = startRotation + 540.0f;
         float t = 0.0f;
@@ -684,7 +686,12 @@ public class GunFXController : FXController
             CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, zRotation);
             yield return null;
         }
-        CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, endRotation);
+        //Debug.Log("SET STRAIGHT");
+        yield return null;
+        if(gun.cold)
+            CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, 0);
+        else
+            CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, 180);
     }
 
     void FinishSwitchingMode()

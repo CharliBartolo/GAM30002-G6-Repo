@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class CollectInteractable : InteractableBase
 {
     public string itemName;
-    private InteractionType interactionType = InteractionType.Use;
+    protected InteractionType interactionType = InteractionType.Use;
     private PlayerInput playerInput;
     public bool destroyOnCollect = true;
     public int int_data;

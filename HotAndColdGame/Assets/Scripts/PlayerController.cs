@@ -413,13 +413,14 @@ public class PlayerController : MonoBehaviour, IConditions
                          GetComponent<GunFXController>().NextState();*/
 
                         float animTime = 0.61f;
+                        float animTime_place = 3.5f;
 
                         playerInventory.Add(currentInteractingObject.GetComponent<CollectInteractable>().itemName);
 
                         if (currentInteractingObject.name.Contains("Raygun"))
                         {
                            
-                            GetComponent<GunFXController>().Grab(currentInteractingObject.GetComponent<CollectInteractable>());
+                            GetComponent<GunFXController>().Grab();
                             currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
                             playerControlState = PlayerState.ControlsDisabled;
                             StartCoroutine(CollectItem("Raygun", animTime));
@@ -432,10 +433,11 @@ public class PlayerController : MonoBehaviour, IConditions
 
                         } else if (currentInteractingObject.name.Contains("Toolbox"))
                         {
-                            GetComponent<GunFXController>().Grab(currentInteractingObject.GetComponent<CollectInteractable>());
-                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
+                            //GetComponent<GunFXController>().Grab(currentInteractingObject.GetComponent<CollectInteractable>());
+                            GetComponent<GunFXController>().PlaceTool();
+                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime_place);
                             playerControlState = PlayerState.ControlsDisabled;
-                            StartCoroutine(CollectItem("Toolbox", animTime));
+                            StartCoroutine(CollectItem("Toolbox", animTime_place));
                         }
 
             }
@@ -490,7 +492,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
     void CollectJournal()
     {
-        playerControlState = PlayerState.MoveAndLook;
+        //playerControlState = PlayerState.MoveAndLook;
     }
 
     private void ExitInteract(InputAction.CallbackContext context)

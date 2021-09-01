@@ -14,8 +14,8 @@ public class ToolBox : CollectInteractable
     //public bool destroyOnUse;
 
     //public string itemName;
-    private InteractionType interactionType = InteractionType.Use;
-    private PlayerInput playerInput;
+    //private InteractionType interactionType = InteractionType.Use;
+    private PlayerInput _playerInput;
     //public int gunUpgradeLevel = 0;
 
     private void Start()
@@ -62,7 +62,7 @@ public class ToolBox : CollectInteractable
             GetComponent<Collider>().enabled = false;
             //playerControls = playerControlsRef;
 
-            Debug.Log("TOOL REQUESTED");
+            //Debug.Log("TOOL REQUESTED");
             triggered = true;
             //GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.SetGunUpgradeState((int)currentGunLevel + 1);
             GameObject.Find("Player").GetComponent<PlayerController>().isGunEnabled = false;
@@ -71,7 +71,7 @@ public class ToolBox : CollectInteractable
             StartCoroutine(RunUpgradeSequence());
             //ToolObject.GetComponent<CollectInteractable>().int_data = 0;
             //ToolObject.GetComponent<CollectInteractable>().enabled = true;
-            Debug.Log("TOOL  DELIVERED");
+            //Debug.Log("TOOL  DELIVERED");
         }
     }
     
@@ -101,11 +101,11 @@ public class ToolBox : CollectInteractable
     {
         get
         {
-            return playerInput;
+            return _playerInput;
         }
         set
         {
-            playerInput = value;
+            _playerInput = value;
         }
     }
 
