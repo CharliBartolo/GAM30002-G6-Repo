@@ -27,7 +27,7 @@ public class MountedRotateInteractable : InteractableBase
     }
 
     //Runs when interaction begins
-    public override void OnInteractEnter(PlayerInput playerInputRef)
+    public override void OnInteractEnter(PlayerInput playerInputRef, float delay = 0)
     {
         pPlayerInput = playerInputRef;
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ToolBox : InteractableBase
+public class ToolBox : CollectInteractable
 {
     public GameObject ToolDisplayObject;
     public GameObject ToolObject;
@@ -46,15 +46,22 @@ public class ToolBox : InteractableBase
     }
 
     //Runs when interaction begins
-    public override void OnInteractEnter(PlayerInput playerInputRef)
+    public override void OnInteractEnter(PlayerInput playerInputRef, float delay = 0)
     {
+        StartCoroutine(InteractAction(delay));
+    }
+
+    IEnumerator InteractAction(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
         RayCastShootComplete.gunUpgrade currentGunLevel = GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.gunUpgradeState;
 
-        if((int)currentGunLevel < 2 && GameObject.Find("Player").GetComponent<GunFXController>().equipped)
+        if ((int)currentGunLevel < 2 && GameObject.Find("Player").GetComponent<GunFXController>().equipped)
         {
             GetComponent<Collider>().enabled = false;
             //playerControls = playerControlsRef;
-            
+
             Debug.Log("TOOL REQUESTED");
             triggered = true;
             //GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.SetGunUpgradeState((int)currentGunLevel + 1);

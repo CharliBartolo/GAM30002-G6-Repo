@@ -39,7 +39,7 @@ public class GunFXController : FXController
     public bool isProp = false;
     
     private Material crystal_mat;
-    public enum WeaponState { Idle, TriggerPressed, TriggerReleased, Inspect, SwitchMode}
+    public enum WeaponState { Idle_Equipped, Idle_Unequipped, TriggerPressed, TriggerReleased, Inspect, SwitchMode, Grab, Place, GrabRetract}
 
     public WeaponState weaponState;
 
@@ -47,6 +47,8 @@ public class GunFXController : FXController
 
     public bool equipped;
     public int weaponUpgradeState = 0;
+    public bool isGrabbing = false;
+    public bool isPlacing= false;
 
     // Start is called before the first frame update
     public override void Start()
@@ -79,7 +81,9 @@ public class GunFXController : FXController
         }
         else
         {
-            if(gun_obj.activeSelf == true)
+            weaponState = WeaponState.Idle_Unequipped;
+            NextState();
+            if (gun_obj.activeSelf == true)
                 gun_obj.SetActive(false);
         }
 
@@ -110,7 +114,7 @@ public class GunFXController : FXController
 
     public void SetWeaponMods(int state)
     {
-        Debug.Log("WEAPON MOD STATE: " + state);
+        //Debug.Log("WEAPON MOD STATE: " + state);
         switch(state)
         {
             case 0:
@@ -187,23 +191,48 @@ public class GunFXController : FXController
 
     }
 
+    public void InteractCalled()
+    {
+
+    }
+
     public void EquipTool()
     {
+        isGrabbing = false;
         gun_obj.SetActive(true);
         arm_obj.SetActive(true);
         equipped = true;
         inspectingWeapon = true;
         weaponState = WeaponState.Inspect;
-        
         NextState();
     }
+    public void Grab(CollectInteractable obj)
+    {
+        if(!isGrabbing)
+        {
+            weaponState = WeaponState.Grab;
+            NextState();
+            isGrabbing = true;
+        }          
+    }
+
+    public void PlaceTool(CollectInteractable obj)
+    {
+        if (!isPlacing)
+        {
+            weaponState = WeaponState.Place;
+            NextState();
+            isPlacing = true;
+        }
+    }
+
     public void UnEquipTool()
     {
         equipped = false;
         gun_obj.SetActive(false);
         arm_obj.SetActive(true);
         inspectingWeapon = false;
-        weaponState = WeaponState.Idle;
+        weaponState = WeaponState.Idle_Unequipped;
     }
 
     public void UpdateCasedCrystals()
@@ -231,14 +260,29 @@ public class GunFXController : FXController
         }*/
     }
 
-    // weapon states
-    IEnumerator IdleState()
+    // weapon & arm states
+    IEnumerator Idle_EquippedState()
     {
         WeaponInspected();
         //Debug.Log("Idle: Enter");
         arm_obj.GetComponent<Animator>().Play("Idle");
 
-        while (weaponState == WeaponState.Idle)
+        while (weaponState == WeaponState.Idle_Equipped)
+        {
+            // do state stuff
+            yield return 0;
+        }
+        //Debug.Log("Idle: Exit");
+        NextState();
+    }
+
+    IEnumerator Idle_UnequippedState()
+    {
+        WeaponInspected();
+        //Debug.Log("Idle: Enter");
+        arm_obj.GetComponent<Animator>().Play("Idle_Unequipped");
+
+        while (weaponState == WeaponState.Idle_Unequipped)
         {
             // do state stuff
             yield return 0;
@@ -272,7 +316,7 @@ public class GunFXController : FXController
         {
             // do state stuff
             if (AnimationComplete("TriggerRelease"))
-                weaponState = WeaponState.Idle;
+                weaponState = WeaponState.Idle_Equipped;
 
             yield return 0;
         }
@@ -292,10 +336,73 @@ public class GunFXController : FXController
             if (AnimationComplete("InspectTool"))
             {
                 WeaponInspected();
-                weaponState = WeaponState.Idle;
+                weaponState = WeaponState.Idle_Equipped;
             }
                
                
+            yield return 0;
+        }
+        //Debug.Log("Inspect: Exit");
+        NextState();
+    }
+
+    IEnumerator GrabState()
+    {
+        //Debug.Log("Inspect: Enter");
+        arm_obj.GetComponent<Animator>().Play("Grab_01");
+
+        while (weaponState == WeaponState.Grab)
+        {
+            // do state stuff
+
+            if (AnimationComplete("Grab_01"))
+            {   
+                weaponState = WeaponState.GrabRetract;
+            }
+
+            yield return 0;
+        }
+        //Debug.Log("Inspect: Exit");
+        Debug.Log("Weapon state:" + weaponState);
+        NextState();
+    }
+
+    IEnumerator PlaceState()
+    {
+        //Debug.Log("Inspect: Enter");
+        arm_obj.GetComponent<Animator>().Play("Place_01");
+
+        while (weaponState == WeaponState.Grab)
+        {
+            // do state stuff
+
+            if (AnimationComplete("Place_01"))
+            {
+                weaponState = WeaponState.GrabRetract;
+            }
+
+            yield return 0;
+        }
+        //Debug.Log("Inspect: Exit");
+        isPlacing = false;
+        Debug.Log("Weapon state:" + weaponState);
+        NextState();
+    }
+
+    IEnumerator GrabRetractState()
+    {
+        //Debug.Log("Inspect: Enter");
+        arm_obj.GetComponent<Animator>().Play("GrabRetract_01");
+
+        while (weaponState == WeaponState.GrabRetract)
+        {
+            // do state stuff
+
+            if (AnimationComplete("GrabRetract_01"))
+            {
+                weaponState = WeaponState.Idle_Unequipped;
+            }
+
             yield return 0;
         }
         //Debug.Log("Inspect: Exit");
@@ -327,7 +434,7 @@ public class GunFXController : FXController
                 CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, endRotation);
                 startRotation = CrystalCase.transform.eulerAngles.z;
                 FinishSwitchingMode();
-                weaponState = WeaponState.Idle;
+                weaponState = WeaponState.Idle_Equipped;
             }
 
             //Debug.Log("Playing switch animation");
@@ -337,7 +444,7 @@ public class GunFXController : FXController
         NextState();
     }
 
-    void NextState()
+    public void NextState()
     {
         string methodName = weaponState.ToString() + "State";
         System.Reflection.MethodInfo info = GetType().GetMethod(methodName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -356,6 +463,7 @@ public class GunFXController : FXController
 
     public void WeaponInspected()
     {
+        isGrabbing = false;
         inspectingWeapon = false;
     }
 

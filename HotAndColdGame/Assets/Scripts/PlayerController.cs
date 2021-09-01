@@ -124,7 +124,6 @@ public class PlayerController : MonoBehaviour, IConditions
             GetComponent<GunFXController>().EquipTool();
         }
 
-
         playerRB.angularDrag = 100f;
     }
 
@@ -396,7 +395,7 @@ public class PlayerController : MonoBehaviour, IConditions
             Debug.DrawLine(playerCam.transform.position, hit.point);
             currentInteractingObject = hit.collider.gameObject.GetComponent<InteractableBase>();
 
-            currentInteractingObject.OnInteractEnter(playerInput);
+            //currentInteractingObject.OnInteractEnter(playerInput);
 
             switch (currentInteractingObject.pInteractionType)
             {
@@ -410,18 +409,37 @@ public class PlayerController : MonoBehaviour, IConditions
 
                     if (currentInteractingObject.GetComponent<CollectInteractable>() != null) 
                     {
+                        /* GetComponent<GunFXController>().weaponState = GunFXController.WeaponState.Grab;
+                         GetComponent<GunFXController>().NextState();*/
+
+                        float animTime = 0.61f;
 
                         playerInventory.Add(currentInteractingObject.GetComponent<CollectInteractable>().itemName);
-                        
-                        if(currentInteractingObject.name.Contains("Raygun"))
+
+                        if (currentInteractingObject.name.Contains("Raygun"))
                         {
-                            SetShootingEnabled(playerInventory.Contains("Raygun"));
-                            if (playerInventory.Contains("Raygun"))
-                                GetComponent<GunFXController>().EquipTool();
+                           
+                            GetComponent<GunFXController>().Grab(currentInteractingObject.GetComponent<CollectInteractable>());
+                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
+                            playerControlState = PlayerState.ControlsDisabled;
+                            StartCoroutine(CollectItem("Raygun", animTime));
+
+                        }else if (currentInteractingObject.name.Contains("Journal"))
+                        {
+                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, 0);
+                            playerControlState = PlayerState.ControlsDisabled;
+                            StartCoroutine(CollectItem("Journal", 0));
+
+                        } else if (currentInteractingObject.name.Contains("Toolbox"))
+                        {
+                            GetComponent<GunFXController>().Grab(currentInteractingObject.GetComponent<CollectInteractable>());
+                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
+                            playerControlState = PlayerState.ControlsDisabled;
+                            StartCoroutine(CollectItem("Toolbox", animTime));
                         }
-                       
-                    }         
-                    
+
+            }
+
                     ExitInteract(context);
                     break;
                 default:
@@ -433,6 +451,46 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             //Debug.Log("Interaction failed, as no object was found capable of being interacted with.");
         }
+    }
+
+    IEnumerator CollectItem(string item, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        switch (item)
+        {
+            case "Raygun":
+                CollectRaygun();
+                CollectItem();
+                break;
+
+            case "Journal":
+                CollectJournal();
+                CollectItem();
+                break;
+
+            case "Toolbox":
+                CollectItem();
+                break;
+        }
+     
+    }
+
+    void CollectItem()
+    {
+        playerControlState = PlayerState.MoveAndLook;
+    }
+
+    void CollectRaygun()
+    {
+        SetShootingEnabled(playerInventory.Contains("Raygun"));
+        if (playerInventory.Contains("Raygun"))
+            GetComponent<GunFXController>().EquipTool();
+    }
+
+    void CollectJournal()
+    {
+        playerControlState = PlayerState.MoveAndLook;
     }
 
     private void ExitInteract(InputAction.CallbackContext context)

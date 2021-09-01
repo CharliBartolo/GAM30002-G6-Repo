@@ -10,7 +10,7 @@ public abstract class InteractableBase : MonoBehaviour
     //Use = Use and that's it, e.g. a button, holding Interact does nothing.
     public enum InteractionType {Carry, RotateOnly, Use}; 
     
-    public abstract void OnInteractEnter(PlayerInput playerInputRef);        
+    public abstract void OnInteractEnter(PlayerInput playerInputRef, float delay = 0);        
 
     public abstract void OnInteracting();
     public abstract void OnInteractExit();
