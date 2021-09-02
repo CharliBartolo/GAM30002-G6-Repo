@@ -136,11 +136,14 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             if (PC.GetPause())
             {
+                Debug.Log("PAUSED");
                 playerControlState = PlayerState.ControlsDisabled;
+                UnlockCursor();
             }
             else
             {
                 playerControlState = PlayerState.MoveAndLook;
+                LockCursor();
             }
         }
 

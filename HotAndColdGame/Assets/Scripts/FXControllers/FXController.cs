@@ -23,6 +23,7 @@ public class FXController : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
+
         colourIntensity = GameMaster.instance.colourPallete.colourIntensity;
 
         Crystal_Hot = GameMaster.instance.colourPallete.Positive * colourIntensity;

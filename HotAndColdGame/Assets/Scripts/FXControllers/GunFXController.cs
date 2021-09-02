@@ -389,6 +389,7 @@ public class GunFXController : FXController
         }
         //Debug.Log("Inspect: Exit");
         isPlacing = false;
+        weaponState = WeaponState.GrabRetract;
         NextState();
     }
 
