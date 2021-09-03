@@ -10,18 +10,20 @@ public class Reticle : MonoBehaviour {
     public RayCastShootComplete Gun;
     public bool cold = true;
 
-    private GameObject coldCursor;
-    private GameObject hotCursor;
+    public GameObject coldCursor;
+    public GameObject hotCursor;
 
-    void Start() {
+    
+
+    void Start() 
+    {
         coldCursor = Instantiate(coldPre); //Draw Reticle
         hotCursor = Instantiate(heatPre); //Draw Reticle
- 
     }
 	
 	void LateUpdate() {
-        UpdateCursor(); //Update Smoothly       
-        if (Gun.cold)
+        UpdateCursorPosition(); //Update Smoothly       
+       /* if (Gun.cold)
         {
             hotCursor.gameObject.SetActive(false);
             coldCursor.gameObject.SetActive(true);
@@ -30,11 +32,13 @@ public class Reticle : MonoBehaviour {
         {
             hotCursor.gameObject.SetActive(true);
             coldCursor.gameObject.SetActive(false);
-        }
+        }*/
     }
 
-    private void UpdateCursor()
+    private void UpdateCursorPosition()
     {
+      
+
         Ray ray = new Ray(Cam.transform.position, Cam.transform.rotation * Vector3.forward);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))

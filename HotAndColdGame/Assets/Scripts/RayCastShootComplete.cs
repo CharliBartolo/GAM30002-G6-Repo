@@ -12,7 +12,7 @@ public class RayCastShootComplete : MonoBehaviour {
 
     public gunUpgrade gunUpgradeState = gunUpgrade.Two; 
 	public Transform gunEnd;
-	private Camera fpsCam;
+	public Camera fpsCam;
     public AudioManager audioManager;
     public GameObject spherecollider;
     public GameObject particleAtEnd_ice;
@@ -218,7 +218,9 @@ public class RayCastShootComplete : MonoBehaviour {
 				if (objtemp != null)
 				{
 					objtemp.ChangeTemperature(tempchange);
-				}
+                    
+
+                }
 
 				if (hit.rigidbody != null)
 				{
@@ -241,14 +243,17 @@ public class RayCastShootComplete : MonoBehaviour {
                     //particleAtEnd_ice.SetActive(false);
                     particleAtEnd_fire.transform.position = hit.point;
                 }
-                
 
+                GetComponentInParent<ReticleFXController>().objHit = hit.collider.gameObject;
             }
 			else
 			{
                 laserLine.SetPosition (1, rayOrigin + (fpsCam.transform.forward * weaponRange));
                 //lightning.SetPosition (1, rayOrigin + (fpsCam.transform.forward * 2));
-			}
+
+                GetComponentInParent<ReticleFXController>().objHit = null;
+
+            }
 		}
         else
         {

@@ -39,6 +39,22 @@ public class CollectInteractable : InteractableBase
         // do stuff
         GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.SetGunUpgradeState(int_data);
         GameObject.Find("Player").GetComponent<GunFXController>().SetWeaponMods(int_data);
+
+        switch(GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.gunUpgradeState)
+        {
+            case  RayCastShootComplete.gunUpgrade.None:
+                GameObject.Find("Player").GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
+                break;
+
+            case RayCastShootComplete.gunUpgrade.One:
+                GameObject.Find("Player").GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Negative);
+                break;
+
+            case RayCastShootComplete.gunUpgrade.Two:
+                GameObject.Find("Player").GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Positive);
+                break;
+        }
+
         if (destroyOnCollect)
             Destroy(gameObject);
 

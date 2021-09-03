@@ -89,7 +89,7 @@ public class DoorHatch : StateTriggered
                         //ActivateLight(-1);
                         DeactivateLight(-1);
                         stateChanged = false;
-                        Debug.Log("STATE CHANGED");
+                        //Debug.Log("STATE CHANGED");
                     }
                 }else if (state == DoorState.Open1)
                 {

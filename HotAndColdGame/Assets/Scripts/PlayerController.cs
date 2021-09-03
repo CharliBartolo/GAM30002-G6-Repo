@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviour, IConditions
     [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
     private bool isConditionChanging = false;
     private bool isPaused = false;
+    private bool isInitialised = false;
 
     [Header("References")]
     public Camera playerCam;
@@ -127,6 +128,20 @@ public class PlayerController : MonoBehaviour, IConditions
         }
 
         playerRB.angularDrag = 100f;
+
+
+        // set initial stating state
+        playerControlState = PlayerState.ControlsDisabled;
+        // set controls to enable after a delay
+
+        StartCoroutine(EnableControls(2));
+    }
+
+    IEnumerator EnableControls(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        playerControlState = PlayerState.MoveAndLook;
+        isInitialised = true;
     }
 
     private void Update()

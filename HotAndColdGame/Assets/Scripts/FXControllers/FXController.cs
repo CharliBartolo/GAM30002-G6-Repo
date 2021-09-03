@@ -14,9 +14,9 @@ public class FXController : MonoBehaviour
     public Animator Anim;
 
     // Gun crystal colours
-    public Color Crystal_Neutral;
-    public Color Crystal_Hot;
-    public Color Crystal_Cold;
+    protected Color Crystal_Neutral;
+    protected Color Crystal_Hot;
+    protected Color Crystal_Cold;
 
     private float colourIntensity = 1;
 

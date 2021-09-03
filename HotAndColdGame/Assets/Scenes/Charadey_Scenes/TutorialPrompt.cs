@@ -133,6 +133,18 @@ public class TutorialPrompt : MonoBehaviour
     }
 
     [SerializeField]
+    private Image _imageTutorialPrompt;
+    public Image ImageTutorialPrompt
+    {
+        get => _imageTutorialPrompt;
+        set
+        {
+            _imageTutorialPrompt = value;
+        }
+    }
+
+
+    [SerializeField]
     private List<Prompt> _listTutorialPrompts;
     public List<Prompt> ListTutorialPrompts
     {
@@ -211,6 +223,7 @@ public class TutorialPrompt : MonoBehaviour
             {
                 //Toggles Tutorial Prompt Text based on the bool IsActive
                 _textTutorialPrompt.enabled = _currentPrompt.IsActive;
+                _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
                 
                 //When the Prompt object has outlived its usefulness
                 if (_currentPrompt.IsAchieved)
