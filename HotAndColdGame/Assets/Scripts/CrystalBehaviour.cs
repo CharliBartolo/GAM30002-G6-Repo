@@ -247,7 +247,7 @@ public class CrystalBehaviour : TemperatureStateBase
     {
         foreach (GameObject temperatureObject in objectsInTempArea.Keys)
         {
-            if (temperatureObject.GetComponent<Collider>() != null)
+            if (temperatureObject.GetComponent<Collider>() != null && temperatureObject.GetComponent<IConditions>() == null)
             {
                 temperatureObject.GetComponent<Collider>().material = null;                            
             }                    

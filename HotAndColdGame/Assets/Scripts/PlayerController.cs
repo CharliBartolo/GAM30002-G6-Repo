@@ -751,8 +751,9 @@ public class PlayerController : MonoBehaviour, IConditions
         if (!ActiveConditions.Contains(nameOfCondition))
         {
             _activeConditions.Add(nameOfCondition);
-            isConditionChanging = true;
-        }        
+            isConditionChanging = true; 
+        }       
+        
     }
 
     public void RemoveCondition(IConditions.ConditionTypes nameOfCondition)
@@ -760,8 +761,9 @@ public class PlayerController : MonoBehaviour, IConditions
         if (ActiveConditions.Contains(nameOfCondition))
         {
             _activeConditions.Remove(nameOfCondition);
-            isConditionChanging = true;
-        }       
+            isConditionChanging = true;  
+        }  
+           
     }
 
     // In future, could edit list to store separate condition timers for each. For now, using isReturningToNeutral works.

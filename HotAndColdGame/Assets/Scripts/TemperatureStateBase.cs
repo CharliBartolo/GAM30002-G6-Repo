@@ -166,9 +166,10 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
     {
         if (isReturningToNeutral)
         {
-            isReturningToNeutral = false;
-            countdownBeforeReturnToNeutral = startingCountdownBeforeReturnToNeutral;                
+            isReturningToNeutral = false;                            
         }
+        
+        countdownBeforeReturnToNeutral = startingCountdownBeforeReturnToNeutral;
     }
 
     public void CheckIfShouldReturnToNeutral()
