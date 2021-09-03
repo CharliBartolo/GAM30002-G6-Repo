@@ -139,22 +139,24 @@ public class PlayerController : MonoBehaviour, IConditions
             if (PC.GetPause())
             {
                 if(!isPaused)
-                Debug.Log("PAUSED");
-                playerControlState_copy = playerControlState;
-                playerControlState = PlayerState.ControlsDisabled;
-                UnlockCursor();
-                isPaused = true;
+                {
+                    Debug.Log("PAUSED");
+                    playerControlState_copy = playerControlState;
+                    playerControlState = PlayerState.ControlsDisabled;
+                    UnlockCursor();
+                    isPaused = true;
+                }
             }
             else
             {
-                if(isPaused)
+
+                if (isPaused)
                 {
                     playerControlState = playerControlState_copy;
+                    LockCursor();
                     isPaused = false;
                 }
-                
                 //playerControlState = PlayerState.MoveAndLook;
-                LockCursor();
             }
         }
 
