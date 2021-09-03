@@ -78,7 +78,7 @@ public class PauseController : MonoBehaviour
         DebugValues();
 
         pauseText.gameObject.SetActive(IsPaused); //Toggles pause text
-        isMenuEnabled = IsPaused; //Toggles pause text
+        //isMenuEnabled = IsPaused; //Toggles pause text
 
         if (isMenuEnabled)
         {
