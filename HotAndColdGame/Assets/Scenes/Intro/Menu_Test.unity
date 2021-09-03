@@ -6575,7 +6575,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1279686517
 Transform:
   m_ObjectHideFlags: 0
@@ -8250,7 +8250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1600512569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11069,6 +11069,7 @@ MonoBehaviour:
   isGrounded: 0
   walkingMultiplier: 0.5
   playerControlState: 1
+  playerControlState_copy: 1
   playerInventory: []
   _activeConditions: 
   playerCam: {fileID: 2908391624405287695}
@@ -16322,6 +16323,8 @@ MonoBehaviour:
   weaponState: 3
   equipped: 0
   weaponUpgradeState: 0
+  isGrabbing: 0
+  isPlacing: 0
 --- !u!114 &6952919437063350118
 MonoBehaviour:
   m_ObjectHideFlags: 0
