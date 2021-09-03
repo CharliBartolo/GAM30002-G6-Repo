@@ -51,7 +51,7 @@ public class CollectInteractable : InteractableBase
                 break;
 
             case RayCastShootComplete.gunUpgrade.Two:
-                GameObject.Find("Player").GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Positive);
+                //GameObject.Find("Player").GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Positive);
                 break;
         }
 

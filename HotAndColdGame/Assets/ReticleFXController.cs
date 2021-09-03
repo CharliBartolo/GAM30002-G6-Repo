@@ -43,11 +43,8 @@ public class ReticleFXController : ToolboxFXController
         // update reticle size
         UpdateReticleSize();
 
-       
-
         ReticleBehaviour();
 
-      
     }
     
     public void ReticleBehaviour()
@@ -55,17 +52,11 @@ public class ReticleFXController : ToolboxFXController
 
         if (hitTempObject)
         {
-            if (objHit.GetComponentInParent<TemperatureStateBase>() != null)
-            {
-                Debug.Log("CURRENT HIT TEMPERATURE" + objHit.GetComponentInParent<TemperatureStateBase>().CurrentTemperature);
+         
 
-            }
-            if (objHit.GetComponentInChildren<TemperatureStateBase>() != null)
-            {
-                Debug.Log("CURRENT HIT TEMPERATURE" + objHit.GetComponentInChildren<TemperatureStateBase>().CurrentTemperature);
-
-            }
-
+        }
+        else
+        {
 
         }
     }
@@ -75,9 +66,6 @@ public class ReticleFXController : ToolboxFXController
         if(objHit != null)
         {
             return true;
-           
-
-           
         }
         return false;
     }
@@ -103,7 +91,6 @@ public class ReticleFXController : ToolboxFXController
                 reticle.coldCursor.gameObject.SetActive(false);
                 break;
             case ReticleState.Neutral:
-
                 reticle.hotCursor.gameObject.SetActive(false);
                 reticle.coldCursor.gameObject.SetActive(false);
                 break;
@@ -112,8 +99,8 @@ public class ReticleFXController : ToolboxFXController
                 reticle.coldCursor.gameObject.SetActive(true);
                 break;
             case ReticleState.Positive:
-                reticle.hotCursor.gameObject.SetActive(false);
-                reticle.coldCursor.gameObject.SetActive(true);
+                reticle.hotCursor.gameObject.SetActive(true);
+                reticle.coldCursor.gameObject.SetActive(false);
                 break;
             case ReticleState.Machine:
                 reticle.hotCursor.gameObject.SetActive(false);
