@@ -73,9 +73,11 @@ public class PlayerController : MonoBehaviour, IConditions
     private RaycastHit groundedHit;
     private RaycastHit emptyRaycast;
     public PlayerState playerControlState = PlayerState.MoveAndLook;
+    public PlayerState playerControlState_copy = PlayerState.MoveAndLook;
     public List<string> playerInventory;
     [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
     private bool isConditionChanging = false;
+    private bool isPaused = false;
 
     [Header("References")]
     public Camera playerCam;
@@ -136,13 +138,22 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             if (PC.GetPause())
             {
+                if(!isPaused)
                 Debug.Log("PAUSED");
+                playerControlState_copy = playerControlState;
                 playerControlState = PlayerState.ControlsDisabled;
                 UnlockCursor();
+                isPaused = true;
             }
             else
             {
-                playerControlState = PlayerState.MoveAndLook;
+                if(isPaused)
+                {
+                    playerControlState = playerControlState_copy;
+                    isPaused = false;
+                }
+                
+                //playerControlState = PlayerState.MoveAndLook;
                 LockCursor();
             }
         }
