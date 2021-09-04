@@ -20,7 +20,8 @@ public class ChargerFXController : FXController
     {
         base.Start();
         rayOrigin = transform.Find("RayOrigin");
-        line = GetComponentInChildren<LineRenderer>();
+        if(line == null)
+            line = GetComponentInChildren<LineRenderer>();
 
         UpdateLine();
     }
