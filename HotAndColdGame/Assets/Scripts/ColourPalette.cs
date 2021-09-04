@@ -23,6 +23,7 @@ public class ColourPalette : MonoBehaviour
         public Material EmissiveLights;
         public Material HiddenTexture;
         public LineRenderer LightningStrike;
+        public Material CrystalCharger;
     }
 
     //public List<MaterialMap> mapObjs;
