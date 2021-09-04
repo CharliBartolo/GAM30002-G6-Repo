@@ -120,26 +120,17 @@ public class PauseController : MonoBehaviour
 
         }
 
-        playerInput.actions.FindAction("Pause").performed +=
+        playerInput.actions.FindActionMap("Player").FindAction("Pause").performed +=
             pauseText =>
             {
-                Debug.Log("TEST Pause");
-                //Toggle paused
-                Quitting = false;
-                IsPaused = !IsPaused;
-
-                /*
-                if (IsPaused)
+                
+                if(!IsPaused)
                 {
-                    PC.GetComponent<Player_Audio_Renamed>().main_volume = 0f;
+                    Debug.Log("TEST PAUSE");
+                    Quitting = false;
+                    IsPaused = true;
+                    Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
                 }
-                else
-                {
-                    VolumeChange();
-                }
-                */
-
-                Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
             };
 
         if(IsPaused)
@@ -147,16 +138,17 @@ public class PauseController : MonoBehaviour
             playerInput.actions.FindActionMap("Menu").FindAction("Pause").performed +=
             pauseText =>
             {
-                Debug.Log("TEST MENU PAUSE");
-                //Toggle paused
-                Quitting = false;
-                IsPaused = !IsPaused;
-
-
-                Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
+                if(IsPaused)
+                {
+                    Debug.Log("TEST UNPAUSE");
+                    Quitting = false;
+                    IsPaused = false;
+                    Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
+                }
             };
         }
     }
+
 
     //Getter for IsPaused boolean
     public bool GetPause()
@@ -164,43 +156,6 @@ public class PauseController : MonoBehaviour
         return IsPaused;
     }
 
-    //Commented out because can't change value properly
-    /* 
-    //Changes Slider based on Input Field
-    public void XSliderChange()
-    {
-        float value = float.Parse(MouseSensitivityXInput.text);
-        if (value > 1.0f)
-        {
-            value = 1.0f;
-        }
-
-        if (value < 0.0f)
-        {
-            value = 0.1f;
-        }
-        MouseSensitivityXSlider.value = value;
-        MouseSensitivityXInput.text = value.ToString();
-        PC.mouseSensitivity.x = MouseSensitivityXSlider.value;
-
-    }
-    public void YSliderChange()
-    {
-        float value = float.Parse(MouseSensitivityYInput.text);
-        if (value > 1.0f)
-        {
-            value = 1.0f;
-        }
-
-        if (value < 0.0f)
-        {
-            value = 0.0f;
-        }
-        MouseSensitivityYSlider.value = value;
-        MouseSensitivityYInput.text = value.ToString();
-        PC.mouseSensitivity.y = MouseSensitivityYSlider.value;
-    }
-    */
 
     public void VolumeChange()
     {
