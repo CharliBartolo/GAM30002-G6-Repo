@@ -32,6 +32,7 @@ public class PauseController : MonoBehaviour
     public Button NoButton; //No Confirmation Button
 
     public PlayerInput playerInput;
+    public PlayerInput menuInput;
 
     //Events
     private UnityEvent _eventVolumeSlider = new UnityEvent();
@@ -61,6 +62,8 @@ public class PauseController : MonoBehaviour
             VolumeInput.gameObject.SetActive(false);
 
             //VolumeSlider
+
+           
 
         }
 
@@ -138,7 +141,21 @@ public class PauseController : MonoBehaviour
 
                 Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
             };
-        
+
+        if(IsPaused)
+        {
+            playerInput.actions.FindActionMap("Menu").FindAction("Pause").performed +=
+            pauseText =>
+            {
+                Debug.Log("TEST MENU PAUSE");
+                //Toggle paused
+                Quitting = false;
+                IsPaused = !IsPaused;
+
+
+                Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
+            };
+        }
     }
 
     //Getter for IsPaused boolean
