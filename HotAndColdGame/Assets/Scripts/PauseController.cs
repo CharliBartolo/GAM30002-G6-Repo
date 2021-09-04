@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PauseController : MonoBehaviour
 {
@@ -24,12 +25,16 @@ public class PauseController : MonoBehaviour
 
     public Slider VolumeSlider; //Slider option for Volume
     public InputField VolumeInput; //Input Field for Volume
-                                   
+
     public Button QuitButton; //Button for quitiing game
     public GameObject QuitPanel; //Panel for Confirmation buttons
     public Button YesButton; //Yes Confirmation Button
     public Button NoButton; //No Confirmation Button
 
+    public PlayerInput playerInput;
+
+    //Events
+    private UnityEvent _eventVolumeSlider = new UnityEvent();
     // Start is called before the first frame update
     void Start()
     {
@@ -38,12 +43,12 @@ public class PauseController : MonoBehaviour
 
         if (isMenuEnabled)
         {
-           /* MouseSensitivityXSlider.minValue = 0;
-            MouseSensitivityXSlider.maxValue = 1;
-                
-            MouseSensitivityYSlider.minValue = 0;
-            MouseSensitivityYSlider.maxValue = 1;*/
-        
+            /* MouseSensitivityXSlider.minValue = 0;
+             MouseSensitivityXSlider.maxValue = 1;
+
+             MouseSensitivityYSlider.minValue = 0;
+             MouseSensitivityYSlider.maxValue = 1;*/
+
             MouseSensitivityXInput.text = PC.mouseSensitivity.x.ToString();
             MouseSensitivityYInput.text = PC.mouseSensitivity.y.ToString();
 
@@ -60,6 +65,18 @@ public class PauseController : MonoBehaviour
         }
 
         PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
+
+        //Listeners
+        MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
+        MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
+        //MouseSensitivityXInput.onValueChanged.AddListener(delegate { XSliderChange(); });
+        //MouseSensitivityYInput.onValueChanged.AddListener(delegate { YSliderChange(); });
+
+        QuitButton.onClick.AddListener(delegate { Quitting = true; });
+        YesButton.onClick.AddListener(delegate { Application.Quit(); });
+        NoButton.onClick.AddListener(delegate { Quitting = false; });
+
+        VolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
 
     }
 
@@ -94,26 +111,34 @@ public class PauseController : MonoBehaviour
             NoButton.gameObject.SetActive(Quitting); // Toggles button for confirmation
 
             //Keeps the value the same for both slider and input field
-            MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
-            MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-            //MouseSensitivityXInput.onValueChanged.AddListener(delegate { XSliderChange(); });
-            //MouseSensitivityYInput.onValueChanged.AddListener(delegate { YSliderChange(); });
 
-            VolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
 
-            QuitButton.onClick.AddListener(delegate { Quitting = true; });
-            YesButton.onClick.AddListener(delegate { Application.Quit(); });
-            NoButton.onClick.AddListener(delegate { Quitting = false; });
+
+
         }
+
+        playerInput.actions.FindAction("Pause").performed +=
+            pauseText =>
+            {
+                Debug.Log("TEST Pause");
+                //Toggle paused
+                Quitting = false;
+                IsPaused = !IsPaused;
+
+                /*
+                if (IsPaused)
+                {
+                    PC.GetComponent<Player_Audio_Renamed>().main_volume = 0f;
+                }
+                else
+                {
+                    VolumeChange();
+                }
+                */
+
+                Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
+            };
         
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            //Toggle paused
-            Quitting = false;
-            IsPaused = !IsPaused;
-            Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mailny things that use time.deltatime)
-        }
-
     }
 
     //Getter for IsPaused boolean
@@ -164,6 +189,8 @@ public class PauseController : MonoBehaviour
     {
         VolumeInput.text = VolumeSlider.value.ToString();
         PC.GetComponent<Player_Audio_Renamed>().main_volume = VolumeSlider.value;
+
+
     }
     //Changes Input Field based on Slider
     public void XInputChange()
