@@ -134,7 +134,7 @@ public class PlayerController : MonoBehaviour, IConditions
         playerControlState = PlayerState.ControlsDisabled;
         // set controls to enable after a delay
 
-        StartCoroutine(EnableControls(2));
+        StartCoroutine(EnableControls(1f));
     }
 
     IEnumerator EnableControls(float delay)
