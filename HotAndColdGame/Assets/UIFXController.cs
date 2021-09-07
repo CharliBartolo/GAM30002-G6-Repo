@@ -8,9 +8,13 @@ public class UIFXController : FXController
     public Slider Slider;
     public Image Positive;
     public Image Negative;
-    public Image[] Icons;
+    //public Image[] Icons;
+    public Image Icon_CrystalBig;
+    public Image Icon_CrystalSmall;
 
     public float neutral = 0;
+
+    public PlayerController player;
 
     // Update is called once per frame
 
@@ -18,15 +22,59 @@ public class UIFXController : FXController
     {
         base.Start();
 
+        Positive.color = Crystal_Cold;
+        Negative.color = Crystal_Hot;
+
         neutral = Slider.value;
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
 
     }
     void Update()
     {
-        Positive.color = Crystal_Cold;
-        Negative.color = Crystal_Hot;
 
-        foreach (var icon in Icons)
+        UpdatePlayerTempUI();
+
+    }
+
+    public void UpdatePlayerTempUI()
+    {
+        List<IConditions.ConditionTypes> activeConditions = player.ActiveConditions;
+
+        if (player.ActiveConditions.Count == 2)
+        {
+            IConditions.ConditionTypes cond = player.ActiveConditions[1];
+
+            if (cond == IConditions.ConditionTypes.ConditionCold)
+            {
+                Icon_CrystalSmall.color = Crystal_Cold;
+            }
+            else
+            {
+                Icon_CrystalSmall.color = Crystal_Hot;
+            }
+        }
+        else if (player.ActiveConditions.Count == 1)
+        {
+            IConditions.ConditionTypes cond = player.ActiveConditions[0];
+
+            if(cond == IConditions.ConditionTypes.ConditionCold)
+            {
+                Icon_CrystalBig.color = Crystal_Cold;
+                Icon_CrystalSmall.color = Crystal_Cold;
+            }
+            else
+            {
+                Icon_CrystalBig.color = Crystal_Hot;
+                Icon_CrystalSmall.color = Crystal_Hot;
+            }
+        }
+        else
+        {
+            Icon_CrystalBig.color = Crystal_Neutral;
+            Icon_CrystalSmall.color = Crystal_Neutral;
+        }
+
+      /*  foreach (var icon in Icons)
         {
             if (Slider.GetComponent<Slider>().value < (neutral - 0.5f))
             {
@@ -40,6 +88,6 @@ public class UIFXController : FXController
             {
                 icon.color = Crystal_Neutral;
             }
-        }
+        }*/
     }
 }
