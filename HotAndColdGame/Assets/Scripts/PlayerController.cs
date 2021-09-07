@@ -36,9 +36,15 @@ public class PlayerController : MonoBehaviour, IConditions
     public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.5f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
     public float interactRange = 2f;
     public float timeBetweenFootsteps = 1f;
+
+    //[SerializeField] [Range(0f, 1f)] private float RunstepLenghten; // set around 0.65 for now
+    [SerializeField] private List<AudioClip> FootstepSounds = new List<AudioClip>(); 
+    private AudioSource step_AudioSource;
+
     [Range(0f, 90f)]public float slopeWalkingLimit = 45f;
     public float antiGravMod = 1f;
     private float currentTimeBetweenFootsteps = 0f;
+    
     public float timeBeforeFrictionReturns = 0.2f;
     private float currentTimeBeforeFrictionReturns = 0f;
     private Vector3 horizVelocity;
@@ -89,7 +95,8 @@ public class PlayerController : MonoBehaviour, IConditions
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         playerCam = GetComponentInChildren<Camera>(); 
-        playerMouseLook = GetComponent<PlayerMouseLook>();       
+        playerMouseLook = GetComponent<PlayerMouseLook>();      
+        step_AudioSource = GetComponent<AudioSource>(); 
         _activeConditions = new List<IConditions.ConditionTypes>();
         contactPoints = new List<ContactPoint>();
         playerInventory = new List<string>();        
@@ -180,10 +187,12 @@ public class PlayerController : MonoBehaviour, IConditions
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
                     playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
                 playerMouseLook.MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>(), playerCam);
+                //ProgressStepCycle(1.5f);
                 break;
             case (PlayerState.MoveOnly):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
                     playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
+                //ProgressStepCycle(1.5f);
                 //ResetMouse();
                 break;
             default:
@@ -536,11 +545,49 @@ public class PlayerController : MonoBehaviour, IConditions
 
         if (currentTimeBetweenFootsteps <= 0f)
         {
-            GameMaster.instance.audioManager.Play("Footstep");
+            //GameMaster.instance.audioManager.Play("Footstep");
+            PlayFootStepAudio();
             currentTimeBetweenFootsteps = timeBetweenFootsteps;
         }
     }
 
+    private void PlayFootStepAudio()
+    {
+        if(!isGrounded)
+        {
+            return;
+        }
+        
+        if (FootstepSounds.Count > 0)
+        {
+            int n = Random.Range(1, FootstepSounds.Count);
+            step_AudioSource.clip = FootstepSounds[n];
+            step_AudioSource.pitch = Random.Range(0.8f, 1.2f);
+            step_AudioSource.PlayOneShot(step_AudioSource.clip);
+            FootstepSounds[n] = FootstepSounds[0];
+            FootstepSounds[0] = step_AudioSource.clip;
+        }        
+    }
+
+    /*
+    private void ProgressStepCycle(float speed) //input speed
+        {
+            if (m_CharacterController.velocity.sqrMagnitude > 0 && (Input.x != 0 || Input.y != 0))
+            {
+                StepCycle += (CharacterController.velocity.magnitude + (speed*(IsWalking ? 1f : RunstepLenghten)))*
+                             Time.fixedDeltaTime;
+            }
+
+            if (!(StepCycle > NextStep))
+            {
+                return;
+            }
+
+            NextStep = StepCycle + StepInterval;
+
+            PlayFootStepAudio();
+        }
+    */
 
     // Utility Functions below
     bool FindGround(out ContactPoint groundCP, List<ContactPoint> contactPoints)
