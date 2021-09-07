@@ -16,8 +16,7 @@ public class PlayerController : MonoBehaviour, IConditions
         public float speedCapSmoothFactor;
         public float jumpStrength;
         public float airSpeed;
-        public Vector2 velocityCap;
-        public float antiGravMod;
+        public Vector2 velocityCap;        
         [Range(0f, 50f)] public float stoppingForce;
         [Range(0f, 50f)] public float reverseForce;
 
@@ -28,7 +27,6 @@ public class PlayerController : MonoBehaviour, IConditions
             this.jumpStrength = jumpStrength;
             this.airSpeed = airSpeed;
             this.velocityCap = velocityCap;
-            this.antiGravMod = antiGravMod;
             this.stoppingForce = stoppingForce;
             this.reverseForce = reverseForce;
         }
@@ -38,6 +36,8 @@ public class PlayerController : MonoBehaviour, IConditions
     public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
     public float interactRange = 2f;
     public float timeBetweenFootsteps = 1f;
+    [Range(0f, 90f)]public float slopeWalkingLimit = 45f;
+    public float antiGravMod;
     private float currentTimeBetweenFootsteps = 0f;
     public float timeBeforeFrictionReturns = 0.2f;
     private float currentTimeBeforeFrictionReturns = 0f;
@@ -56,10 +56,10 @@ public class PlayerController : MonoBehaviour, IConditions
     private Vector2 _mouseSmooth;
 
     [Header("Player Condition Control Settings")]
-    public playerMovementSettings baseMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.15f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
-    public playerMovementSettings hotMovementSettings = new playerMovementSettings(20f, 3f, 14f, 0.40f, new Vector2(6f, 10f), 1f, 1.2f, 1.5f);
-    public playerMovementSettings coldMovementSettings = new playerMovementSettings(24f, 15f, 10f, 0.15f, new Vector2(16f, 20f), 1f, 1.2f, 1.5f);
-    public playerMovementSettings bothMovementSettings = new playerMovementSettings(24f, 15, 14, 0.4f, new Vector2 (16f, 10f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings baseMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.5f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings hotMovementSettings = new playerMovementSettings(20f, 3f, 14f, 0.75f, new Vector2(6f, 10f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings coldMovementSettings = new playerMovementSettings(24f, 15f, 10f, 0.5f, new Vector2(16f, 20f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings bothMovementSettings = new playerMovementSettings(24f, 15, 14, 0.75f, new Vector2 (16f, 10f), 1f, 1.2f, 1.5f);
 
     [Header("Player State Settings")]
     public bool isGravityEnabled = true;
@@ -70,8 +70,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
     private bool isWalking = false;
     public float walkingMultiplier = 0.5f;
-    private RaycastHit groundedHit;
-    private RaycastHit emptyRaycast;
+    private ContactPoint groundContactPoint;
     public PlayerState playerControlState = PlayerState.MoveAndLook;
     public PlayerState playerControlState_copy = PlayerState.MoveAndLook;
     public List<string> playerInventory;
@@ -85,7 +84,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public RayCastShootComplete raygunScript;
     public PlayerInput playerInput;
     private Rigidbody playerRB;
-    public Transform groundChecker;
+    //public Transform groundChecker;
     private TemperatureStateBase playerTemp;
     private InteractableBase currentInteractingObject;
     public PauseController PC;
@@ -103,7 +102,7 @@ public class PlayerController : MonoBehaviour, IConditions
         contactPoints = new List<ContactPoint>();
         playerInventory = new List<string>();
 
-        emptyRaycast = new RaycastHit();
+        //emptyRaycast = new RaycastHit();
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
@@ -129,6 +128,9 @@ public class PlayerController : MonoBehaviour, IConditions
 
         playerRB.angularDrag = 100f;
 
+        regularPhysicMaterial.dynamicFriction = 0f;
+        regularPhysicMaterial.staticFriction = 0f;
+        regularPhysicMaterial.frictionCombine = PhysicMaterialCombine.Minimum;
 
         // set initial stating state
         playerControlState = PlayerState.ControlsDisabled;
@@ -217,12 +219,12 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             case (PlayerState.ControlsDisabled):
                 break;
-            case (PlayerState.MoveAndLook):
-                GroundedCheck();
+            case (PlayerState.MoveAndLook):                
+                isGrounded = FindGround(out groundContactPoint, contactPoints);
                 MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
                 break;
             case (PlayerState.MoveOnly):
-                GroundedCheck();
+                isGrounded = FindGround(out groundContactPoint, contactPoints);
                 MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
                 //ResetMouse();
                 break;
@@ -235,8 +237,6 @@ public class PlayerController : MonoBehaviour, IConditions
         VelocityClamp();
         SetPlayerFriction();
         ClamberLedge();
-        //ContactPoint groundContact = default(ContactPoint);
-        //bool grounded = FindGround(out groundContact, contactPoints);
         contactPoints.Clear();
     }
 
@@ -286,10 +286,10 @@ public class PlayerController : MonoBehaviour, IConditions
         if (isGrounded)
         {           
             // Player's movement input projected on surface, to enable moving up / down ramps 
-            movementVector = Vector3.ProjectOnPlane(movementVector, groundedHit.normal);
+            movementVector = Vector3.ProjectOnPlane(movementVector, groundContactPoint.normal);
 
             // Opposite gravity force, calculated based on incline, so gravity doesn't stop you from moving up and down
-            Vector3 inverseGravProportion = -Physics.gravity * (1 + Vector3.Dot(Physics.gravity.normalized, groundedHit.normal.normalized));
+            Vector3 inverseGravProportion = -Physics.gravity * (1 + Vector3.Dot(Physics.gravity.normalized, groundContactPoint.normal.normalized));
 
             
             playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed + inverseGravProportion, ForceMode.Acceleration);
@@ -386,23 +386,7 @@ public class PlayerController : MonoBehaviour, IConditions
         isClimbing = false;
     }
 
-    bool FindGround(out ContactPoint groundCP, List<ContactPoint> contactPoints)
-    {
-        groundCP = default(ContactPoint);
-        bool found = false;
-
-        foreach (ContactPoint cp in contactPoints)
-        {
-            // Pointing in some upward direction
-            if (cp.normal.y > 0.0001f && (found == false || cp.normal.y > groundCP.normal.y))
-            {
-                groundCP = cp;
-                found = true;
-            }
-        }
-
-        return found;
-    }
+    
     
     void SetShootingEnabled(bool setToEnable)
     {
@@ -608,19 +592,23 @@ public class PlayerController : MonoBehaviour, IConditions
 
 
     // Utility Functions below
-    void GroundedCheck()
+    bool FindGround(out ContactPoint groundCP, List<ContactPoint> contactPoints)
     {
-        //isGrounded = Physics.CheckSphere(groundChecker.position, 0.01f, -1, QueryTriggerInteraction.Ignore);
-        //isGrounded = Physics.SphereCast(groundChecker.position, GetComponent<CapsuleCollider>().radius, Vector3.down, out RaycastHit hit, 1f);
-        isGrounded = Physics.SphereCast(transform.position, GetComponent<CapsuleCollider>().radius - 0.01f, 
-            Vector3.down, out RaycastHit hit, (GetComponent<CapsuleCollider>().height / 2 + 0.01f));
+        groundCP = default(ContactPoint);
+        bool found = false;
 
-        if (isGrounded)
-            groundedHit = hit;
-        else
-            groundedHit = emptyRaycast;
-        //Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
-    } 
+        foreach (ContactPoint cp in contactPoints)
+        {
+            // Pointing in some upward direction            
+            if (cp.normal.y > slopeWalkingLimit / 90f && (found == false || cp.normal.y > groundCP.normal.y))
+            {
+                groundCP = cp;
+                found = true;
+            }
+        }
+
+        return found;
+    }    
 
     /// <summary>
     /// Clamps the Velocity based on the player's current movement settings. Horizontal velocity clamp
@@ -683,27 +671,7 @@ public class PlayerController : MonoBehaviour, IConditions
             }
         }
 
-        /*
-        // Player should have no friction when either airborne or providing movement input.
-        // Should probably enable friction if trying to move opposite current direction?
-        if (!isGrounded || playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude > 0)
-        {
-            //Debug.Log("Friction disabled");
-            regularPhysicMaterial.staticFriction = 0f;
-            regularPhysicMaterial.dynamicFriction = 0f;
-            currentTimeBeforeFrictionReturns = timeBeforeFrictionReturns;
-        }
-        else
-        {
-            currentTimeBeforeFrictionReturns -= Time.deltaTime;
-
-            if (currentTimeBeforeFrictionReturns <= 0f)
-            {
-                //Debug.Log("Friction enabled");
-                regularPhysicMaterial.staticFriction = playerFriction[0];
-                regularPhysicMaterial.dynamicFriction = playerFriction[1];
-            }
-        }   
+        /*        
         */
     }
  
@@ -843,7 +811,7 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         if (GetComponent<Rigidbody>() != null)
         {
-            GetComponent<Rigidbody>().AddForce(-Physics.gravity * currentMovementSettings.antiGravMod * Time.deltaTime * 25f, ForceMode.Acceleration);
+            GetComponent<Rigidbody>().AddForce(-Physics.gravity * antiGravMod * Time.deltaTime * 25f, ForceMode.Acceleration);
         }
     }
 
@@ -864,3 +832,54 @@ public class PlayerController : MonoBehaviour, IConditions
     }
 }
 
+
+/* Legacy Functions
+    void GroundedCheck()
+    {
+        //isGrounded = Physics.CheckSphere(groundChecker.position, 0.01f, -1, QueryTriggerInteraction.Ignore);
+        //isGrounded = Physics.SphereCast(groundChecker.position, GetComponent<CapsuleCollider>().radius, Vector3.down, out RaycastHit hit, 1f);
+        bool potentialGroundFound = Physics.SphereCast(transform.position, GetComponent<CapsuleCollider>().radius - 0.01f, 
+            Vector3.down, out RaycastHit hit, (GetComponent<CapsuleCollider>().height / 2 + 0.01f));
+
+        Debug.Log(Vector3.Dot(hit.normal, Vector3.up));
+        if (Vector3.Dot(hit.normal, Vector3.up) > 0.6f)
+        {
+            groundedHit = hit;
+            isGrounded = true;
+        }
+        else
+        {
+            groundedHit = emptyRaycast;
+            isGrounded = false;
+        }
+            
+        if (isGrounded)
+            groundedHit = hit;
+        else
+            groundedHit = emptyRaycast;
+        
+        //Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
+    } 
+
+    void SetPlayerFriction
+    // Player should have no friction when either airborne or providing movement input.
+        // Should probably enable friction if trying to move opposite current direction?
+        if (!isGrounded || playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude > 0)
+        {
+            //Debug.Log("Friction disabled");
+            regularPhysicMaterial.staticFriction = 0f;
+            regularPhysicMaterial.dynamicFriction = 0f;
+            currentTimeBeforeFrictionReturns = timeBeforeFrictionReturns;
+        }
+        else
+        {
+            currentTimeBeforeFrictionReturns -= Time.deltaTime;
+
+            if (currentTimeBeforeFrictionReturns <= 0f)
+            {
+                //Debug.Log("Friction enabled");
+                regularPhysicMaterial.staticFriction = playerFriction[0];
+                regularPhysicMaterial.dynamicFriction = playerFriction[1];
+            }
+        }   
+*/
