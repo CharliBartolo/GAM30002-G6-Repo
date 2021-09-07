@@ -87,6 +87,7 @@ public class GunFXController : FXController
             NextState();
             if (gun_obj.activeSelf == true)
                 gun_obj.SetActive(false);
+                arm_obj.SetActive(false);
         }
 
         //UpdateCasedCrystals();
@@ -361,16 +362,40 @@ public class GunFXController : FXController
     IEnumerator GrabState()
     {
         //Debug.Log("Inspect: Enter");
-        arm_obj.GetComponent<Animator>().Play("Grab_01");
+        bool firstHandShow;
+
+        if (GetComponent<GunFXController>().arm_obj.activeSelf == false)
+        {
+            firstHandShow = true;
+            arm_obj.GetComponent<Animator>().Play("Grab_Enter");
+            GetComponent<GunFXController>().arm_obj.SetActive(true);
+        }
+        else
+        {
+            firstHandShow = false;
+            arm_obj.GetComponent<Animator>().Play("Grab_01");
+        }
+           
+        
 
         while (weaponState == WeaponState.Grab)
         {
             // do state stuff
-
-            if (AnimationComplete("Grab_01"))
-            {   
-                weaponState = WeaponState.GrabRetract;
+            if(firstHandShow)
+            {
+                if (AnimationComplete("Grab_Enter"))
+                {
+                    weaponState = WeaponState.GrabRetract;
+                }
             }
+            else
+            {
+                if (AnimationComplete("Grab_01"))
+                {
+                    weaponState = WeaponState.GrabRetract;
+                }
+            }
+           
 
             yield return 0;
         }

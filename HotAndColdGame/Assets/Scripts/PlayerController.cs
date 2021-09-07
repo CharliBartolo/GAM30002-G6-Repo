@@ -453,11 +453,14 @@ public class PlayerController : MonoBehaviour, IConditions
 
                         } else if (currentInteractingObject.name.Contains("Toolbox"))
                         {
-                            //GetComponent<GunFXController>().Grab(currentInteractingObject.GetComponent<CollectInteractable>());
-                            GetComponent<GunFXController>().PlaceTool();
-                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime_place);
-                            playerControlState = PlayerState.ControlsDisabled;
-                            StartCoroutine(CollectItem("Toolbox", animTime_place));
+                            if (playerInventory.Contains("Raygun"))
+                            {
+                                //GetComponent<GunFXController>().Grab(currentInteractingObject.GetComponent<CollectInteractable>());
+                                GetComponent<GunFXController>().PlaceTool();
+                                currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime_place);
+                                playerControlState = PlayerState.ControlsDisabled;
+                                StartCoroutine(CollectItem("Toolbox", animTime_place));
+                            }
                         }
 
             }

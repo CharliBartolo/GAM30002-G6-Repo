@@ -178,6 +178,7 @@ public class LightTexture : MonoBehaviour
             Material[] materials = rendererComponent.sharedMaterials;
             //m[index].color = _color;
             materials[index].SetVector("_LayerTint", _color);
+            materials[index].SetVector("_SurfaceAlphaColor", _color);
             materials[index].SetVector("_FresnelColorInside", _color);
             materials[index].SetVector("_FresnelColorOutside", _color);
             materials[index].SetVector("_InnerLightColorOutside", _color);
