@@ -33,27 +33,17 @@ public class PlayerController : MonoBehaviour, IConditions
     }
 
     [Header("Player Control Settings")]
-    public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.02f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
+    public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.5f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
     public float interactRange = 2f;
     public float timeBetweenFootsteps = 1f;
     [Range(0f, 90f)]public float slopeWalkingLimit = 45f;
-    public float antiGravMod;
+    public float antiGravMod = 1f;
     private float currentTimeBetweenFootsteps = 0f;
     public float timeBeforeFrictionReturns = 0.2f;
     private float currentTimeBeforeFrictionReturns = 0f;
     private Vector3 horizVelocity;
     private Vector3 vertVelocity;
     private List<ContactPoint> contactPoints;
-
-    // Mouse Control Settings   
-    public Vector2 mouseSensitivity = new Vector2(1, 1);
-    public Vector2 mouseSmoothing = new Vector2(2, 2);
-    const float MIN_X = 0.0f;
-    const float MAX_X = 360.0f;
-    const float MIN_Y = -90.0f;
-    const float MAX_Y = 90.0f;
-    private Vector2 _mouseAbsolute;
-    private Vector2 _mouseSmooth;
 
     [Header("Player Condition Control Settings")]
     public playerMovementSettings baseMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.5f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
@@ -83,6 +73,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public Camera playerCam;
     public RayCastShootComplete raygunScript;
     public PlayerInput playerInput;
+    public PlayerMouseLook playerMouseLook;
     private Rigidbody playerRB;
     //public Transform groundChecker;
     private TemperatureStateBase playerTemp;
@@ -97,12 +88,11 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
-        playerCam = GetComponentInChildren<Camera>();        
+        playerCam = GetComponentInChildren<Camera>(); 
+        playerMouseLook = GetComponent<PlayerMouseLook>();       
         _activeConditions = new List<IConditions.ConditionTypes>();
         contactPoints = new List<ContactPoint>();
-        playerInventory = new List<string>();
-
-        //emptyRaycast = new RaycastHit();
+        playerInventory = new List<string>();        
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
@@ -112,13 +102,14 @@ public class PlayerController : MonoBehaviour, IConditions
         playerInput.actions.FindAction("Swap Beam").performed += raygunScript.SwapBeam;
 
         playerInput.ActivateInput();
+        currentMovementSettings = baseMovementSettings;
 
         LockCursor();
     }
 
     private void Start()
     {
-        SetShootingEnabled(isGunEnabled);
+        SetShootingEnabled(isGunEnabled);        
 
         if (isGunEnabled)
         {
@@ -127,10 +118,12 @@ public class PlayerController : MonoBehaviour, IConditions
         }
 
         playerRB.angularDrag = 100f;
-
         regularPhysicMaterial.dynamicFriction = 0f;
         regularPhysicMaterial.staticFriction = 0f;
         regularPhysicMaterial.frictionCombine = PhysicMaterialCombine.Minimum;
+
+        playerMouseLook.ResetMouse(transform);
+        //playerMouseLook.MouseAbsolute = new Vector2 (transform.eulerAngles.y, 0f);   
 
         // set initial stating state
         playerControlState = PlayerState.ControlsDisabled;
@@ -186,7 +179,7 @@ public class PlayerController : MonoBehaviour, IConditions
             case (PlayerState.MoveAndLook):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
                     playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
-                MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>());
+                playerMouseLook.MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>(), playerCam);
                 break;
             case (PlayerState.MoveOnly):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
@@ -527,49 +520,7 @@ public class PlayerController : MonoBehaviour, IConditions
         }
     }
 
-    // Mouse Functions below
-    Vector2 MouseSmooth(Vector2 deltaParam)
-    {
-        Vector2 mouseDelta = deltaParam;
-        mouseDelta = Vector2.Scale(mouseDelta, new Vector2 (mouseSensitivity.x * mouseSmoothing.x / 10f, mouseSensitivity.y * mouseSmoothing.y / 10f));
-
-        // Interpolate mouse movement over time to smooth delta
-        _mouseSmooth.x = Mathf.Lerp(_mouseSmooth.x, mouseDelta.x, 1f / mouseSmoothing.x);
-        _mouseSmooth.y = Mathf.Lerp(_mouseSmooth.y, mouseDelta.y, 1f / mouseSmoothing.y);
-
-        return _mouseSmooth;
-    }
-
-    void ResetMouse()
-    {
-        //_mouseAbsolute = Vector2.zero;
-        _mouseSmooth = Vector2.zero;
-    }
-
-    private void MouseClamp()
-    {
-         // Manages and clamps X axis rotation        
-        if (_mouseAbsolute.x < MIN_X)
-            _mouseAbsolute.x += MAX_X;
-        else if (_mouseAbsolute.x > MAX_X)
-            _mouseAbsolute.x -= MAX_X;
-
-        // Manages and clamps Y axis rotation
-        if (_mouseAbsolute.y < MIN_Y)
-            _mouseAbsolute.y = MIN_Y;
-        else if (_mouseAbsolute.y > MAX_Y)
-            _mouseAbsolute.y = MAX_Y;
-    }
-
-    void MouseLook(Vector2 deltaParam)
-    {
-        _mouseAbsolute += MouseSmooth(deltaParam);
-        MouseClamp();
-
-        transform.rotation = Quaternion.Euler(0f, _mouseAbsolute.x, 0f);
-        playerCam.transform.rotation = Quaternion.Euler(-_mouseAbsolute.y, transform.eulerAngles.y, transform.eulerAngles.z);      
-    }
-
+    
     // Sound Functions Below
     void PlayFootstepSound()
     {

@@ -50,8 +50,8 @@ public class PauseController : MonoBehaviour
              MouseSensitivityYSlider.minValue = 0;
              MouseSensitivityYSlider.maxValue = 1;*/
 
-            MouseSensitivityXInput.text = PC.mouseSensitivity.x.ToString();
-            MouseSensitivityYInput.text = PC.mouseSensitivity.y.ToString();
+            MouseSensitivityXInput.text = PC.playerMouseLook.mouseSensitivity.x.ToString();
+            MouseSensitivityYInput.text = PC.playerMouseLook.mouseSensitivity.y.ToString();
 
             //Can't interact with the text fields
             MouseSensitivityXInput.interactable = false;
@@ -86,8 +86,8 @@ public class PauseController : MonoBehaviour
     // log values
     public void DebugValues()
     {
-        Debug.Log("Current X sensitivity: " + PC.mouseSensitivity.x.ToString());
-        Debug.Log("Current Y sensitivity: " + PC.mouseSensitivity.y.ToString());
+        Debug.Log("Current X sensitivity: " + PC.playerMouseLook.mouseSensitivity.x.ToString());
+        Debug.Log("Current Y sensitivity: " + PC.playerMouseLook.mouseSensitivity.y.ToString());
         Debug.Log("Current main volume: " + PC.GetComponent<Player_Audio_Renamed>().main_volume.ToString());
     }
 
@@ -168,11 +168,11 @@ public class PauseController : MonoBehaviour
     public void XInputChange()
     {
         MouseSensitivityXInput.text = MouseSensitivityXSlider.value.ToString();
-        PC.mouseSensitivity.x = MouseSensitivityXSlider.value;
+        PC.playerMouseLook.mouseSensitivity.x = MouseSensitivityXSlider.value;
     }
     public void YInputChange()
     {
         MouseSensitivityYInput.text = MouseSensitivityYSlider.value.ToString();
-        PC.mouseSensitivity.y = MouseSensitivityYSlider.value;
+        PC.playerMouseLook.mouseSensitivity.y = MouseSensitivityYSlider.value;
     }
 }

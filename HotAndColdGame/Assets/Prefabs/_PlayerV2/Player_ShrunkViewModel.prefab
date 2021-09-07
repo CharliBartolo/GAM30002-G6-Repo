@@ -1083,6 +1083,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1132983919121844881}
   - component: {fileID: 1132983919121844880}
+  - component: {fileID: 607755757}
   - component: {fileID: 1132983919121844883}
   - component: {fileID: 1132983919121844882}
   - component: {fileID: 1132983919121844892}
@@ -1093,6 +1094,7 @@ GameObject:
   - component: {fileID: 7373485749146394281}
   - component: {fileID: 3066974510176292565}
   - component: {fileID: 2421584830609612950}
+  - component: {fileID: 607755758}
   m_Layer: 11
   m_Name: Player_ShrunkViewModel
   m_TagString: Player
@@ -1132,58 +1134,76 @@ MonoBehaviour:
     movementSpeed: 20
     speedCapSmoothFactor: 15
     jumpStrength: 10
-    airSpeed: 0.02
+    airSpeed: 0.5
     velocityCap: {x: 8, y: 20}
-    antiGravMod: 1
     stoppingForce: 1.2
     reverseForce: 1.5
   interactRange: 2
   timeBetweenFootsteps: 1
+  slopeWalkingLimit: 45
+  antiGravMod: 1
   timeBeforeFrictionReturns: 0.2
-  mouseSensitivity: {x: 1.5, y: 1}
-  mouseSmoothing: {x: 3, y: 3}
   baseMovementSettings:
     movementSpeed: 20
     speedCapSmoothFactor: 15
     jumpStrength: 10
-    airSpeed: 0.02
+    airSpeed: 0.5
     velocityCap: {x: 8, y: 20}
-    antiGravMod: 1
     stoppingForce: 1.2
     reverseForce: 1.5
   hotMovementSettings:
     movementSpeed: 20
     speedCapSmoothFactor: 3
     jumpStrength: 14
-    airSpeed: 0.15
+    airSpeed: 0.75
     velocityCap: {x: 6, y: 10}
-    antiGravMod: 1
     stoppingForce: 1.2
     reverseForce: 1.5
   coldMovementSettings:
     movementSpeed: 24
     speedCapSmoothFactor: 15
     jumpStrength: 10
-    airSpeed: 0.02
+    airSpeed: 0.5
     velocityCap: {x: 16, y: 20}
-    antiGravMod: 1
+    stoppingForce: 1.2
+    reverseForce: 1.5
+  bothMovementSettings:
+    movementSpeed: 24
+    speedCapSmoothFactor: 15
+    jumpStrength: 14
+    airSpeed: 0.75
+    velocityCap: {x: 16, y: 10}
     stoppingForce: 1.2
     reverseForce: 1.5
   isGravityEnabled: 1
-  isGunEnabled: 0
+  isGunEnabled: 1
   isGrounded: 0
   walkingMultiplier: 0.5
   playerControlState: 1
+  playerControlState_copy: 1
   playerInventory: []
   _activeConditions: 
   playerCam: {fileID: 3347009733882093496}
   raygunScript: {fileID: 2610262902883506657}
   playerInput: {fileID: 7373485747256884177}
-  groundChecker: {fileID: 1132983919290905653}
+  playerMouseLook: {fileID: 607755757}
   PC: {fileID: 0}
-  audioManager: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   regularPhysicMaterial: {fileID: 13400000, guid: 02cc73f238347254b8ac9ba286b85916, type: 2}
+--- !u!114 &607755757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132983919121844887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7d27d2fe63438d499005edc3ad47846, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: {x: 1, y: 1}
+  mouseSmoothing: {x: 2, y: 2}
 --- !u!114 &1132983919121844883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1346,6 +1366,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 41d7f6a6-c7d6-41a7-8431-eca4c51aced1
     m_ActionName: Player/Walk[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 11594c9e-1a43-4a4a-9be6-8b3de0949c74
+    m_ActionName: Player/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d0aa5a7e-8a8f-4164-8766-9effad880068
+    m_ActionName: Menu/Pause[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard And Mouse
   m_DefaultActionMap: Player
@@ -1381,14 +1409,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 0.5
   Anim: {fileID: 0}
-  Crystal_Neutral: {r: 0, g: 0, b: 0, a: 0}
-  Crystal_Hot: {r: 0, g: 0, b: 0, a: 0}
-  Crystal_Cold: {r: 0, g: 0, b: 0, a: 0}
   gun: {fileID: 2610262902883506657}
   arm_obj: {fileID: 2761125213823112956}
   gun_obj: {fileID: 2761125213613785387}
   BackCrystals: {fileID: 8880929727834486147}
   CrystalTubes: []
+  TubeCrystals: []
   CrystalCase: {fileID: 437134627757813983}
   CrystalCase1: {fileID: 1046411026513013051}
   CrystalCase2: {fileID: 4091405667120288043}
@@ -1396,9 +1422,12 @@ MonoBehaviour:
   emissiveLights: []
   lightning: {fileID: 3741847599148037113}
   inspectingWeapon: 0
+  isProp: 0
   weaponState: 3
   equipped: 0
   weaponUpgradeState: 0
+  isGrabbing: 0
+  isPlacing: 0
 --- !u!114 &7373485749146394281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1555,7 +1584,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132983919121844887}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9da54865de12a21489dce4ab84282449, type: 3}
   m_Name: 
@@ -1566,6 +1595,31 @@ MonoBehaviour:
   maxDistance: 30
   Gun: {fileID: 2610262902883506657}
   cold: 1
+  coldCursor: {fileID: 0}
+  hotCursor: {fileID: 0}
+--- !u!114 &607755758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132983919121844887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f021b30a339a36544806201f337918bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0
+  Anim: {fileID: 0}
+  positive_emissiive_lights: []
+  negative_emissiive_lights: []
+  neutral_emissiive_lights: []
+  emissionValue: 5
+  reticle: {fileID: 2421584830609612950}
+  isVisible: 0
+  reticleSize: 0.25
+  hitTempObject: 0
+  state: 0
 --- !u!1 &1132983919290905658
 GameObject:
   m_ObjectHideFlags: 0
@@ -12957,7 +13011,9 @@ MonoBehaviour:
   tempchange: 0
   weaponRange: 50
   hitForce: 5
+  gunUpgradeState: 2
   gunEnd: {fileID: 4094827009817838343}
+  fpsCam: {fileID: 3347009733882093496}
   audioManager: {fileID: 0}
   spherecollider: {fileID: 0}
   particleAtEnd_ice: {fileID: 7262967669988715492}
