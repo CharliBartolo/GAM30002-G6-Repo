@@ -2234,7 +2234,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 428034411}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 465552536}
+        m_TargetAssemblyTypeName: ColourPalette, Assembly-CSharp
+        m_MethodName: UpdateColour
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 428034408}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &428034411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2424,7 +2436,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 470978660}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 465552536}
+        m_TargetAssemblyTypeName: ColourPalette, Assembly-CSharp
+        m_MethodName: UpdateColour
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 470978657}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &470978660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4970,7 +4994,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 951137104}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 465552536}
+        m_TargetAssemblyTypeName: ColourPalette, Assembly-CSharp
+        m_MethodName: UpdateColour
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 951137101}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &951137104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5407,6 +5443,8 @@ MonoBehaviour:
   QuitPanel: {fileID: 0}
   YesButton: {fileID: 0}
   NoButton: {fileID: 0}
+  playerInput: {fileID: 0}
+  menuInput: {fileID: 0}
 --- !u!1 &1021160787
 GameObject:
   m_ObjectHideFlags: 0
@@ -10795,7 +10833,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2145121244}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 465552536}
+        m_TargetAssemblyTypeName: ColourPalette, Assembly-CSharp
+        m_MethodName: UpdateColour
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2145121241}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &2145121244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11020,21 +11070,19 @@ MonoBehaviour:
     jumpStrength: 10
     airSpeed: 0.02
     velocityCap: {x: 8, y: 20}
-    antiGravMod: 1
     stoppingForce: 1.2
     reverseForce: 1.5
   interactRange: 2
   timeBetweenFootsteps: 1
+  slopeWalkingLimit: 45
+  antiGravMod: 1
   timeBeforeFrictionReturns: 0.2
-  mouseSensitivity: {x: 1.5, y: 1}
-  mouseSmoothing: {x: 3, y: 3}
   baseMovementSettings:
     movementSpeed: 20
     speedCapSmoothFactor: 15
     jumpStrength: 10
     airSpeed: 0.02
     velocityCap: {x: 8, y: 20}
-    antiGravMod: 1
     stoppingForce: 1.2
     reverseForce: 1.5
   hotMovementSettings:
@@ -11043,7 +11091,6 @@ MonoBehaviour:
     jumpStrength: 14
     airSpeed: 0.15
     velocityCap: {x: 6, y: 10}
-    antiGravMod: 1
     stoppingForce: 1.2
     reverseForce: 1.5
   coldMovementSettings:
@@ -11052,7 +11099,6 @@ MonoBehaviour:
     jumpStrength: 10
     airSpeed: 0.02
     velocityCap: {x: 16, y: 20}
-    antiGravMod: 1
     stoppingForce: 1.2
     reverseForce: 1.5
   bothMovementSettings:
@@ -11061,7 +11107,6 @@ MonoBehaviour:
     jumpStrength: 14
     airSpeed: 0.4
     velocityCap: {x: 16, y: 10}
-    antiGravMod: 1
     stoppingForce: 1.2
     reverseForce: 1.5
   isGravityEnabled: 1
@@ -11075,7 +11120,7 @@ MonoBehaviour:
   playerCam: {fileID: 2908391624405287695}
   raygunScript: {fileID: 2456675236355458390}
   playerInput: {fileID: 6952919437063350118}
-  groundChecker: {fileID: 691148080244287618}
+  playerMouseLook: {fileID: 0}
   PC: {fileID: 972480624}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   regularPhysicMaterial: {fileID: 13400000, guid: 02cc73f238347254b8ac9ba286b85916, type: 2}
@@ -11472,6 +11517,7 @@ MonoBehaviour:
   hitForce: 5
   gunUpgradeState: 2
   gunEnd: {fileID: 4539037037850337200}
+  fpsCam: {fileID: 0}
   audioManager: {fileID: 0}
   spherecollider: {fileID: 0}
   particleAtEnd_ice: {fileID: 1783923733}
@@ -16303,9 +16349,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 0.5
   Anim: {fileID: 0}
-  Crystal_Neutral: {r: 0, g: 0, b: 0, a: 0}
-  Crystal_Hot: {r: 0, g: 0, b: 0, a: 0}
-  Crystal_Cold: {r: 0, g: 0, b: 0, a: 0}
   gun: {fileID: 2456675236355458390}
   arm_obj: {fileID: 0}
   gun_obj: {fileID: 1079498603}
