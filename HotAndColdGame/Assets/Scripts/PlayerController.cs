@@ -453,7 +453,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
                         } else if (currentInteractingObject.name.Contains("Toolbox"))
                         {
-                            if (playerInventory.Contains("Raygun"))
+                            if (playerInventory.Contains("Raygun") && raygunScript.gunUpgradeState != RayCastShootComplete.gunUpgrade.Two)
                             {
                                 //GetComponent<GunFXController>().Grab(currentInteractingObject.GetComponent<CollectInteractable>());
                                 GetComponent<GunFXController>().PlaceTool();
