@@ -13,12 +13,11 @@ public class Reticle : MonoBehaviour {
     public GameObject coldCursor;
     public GameObject hotCursor;
 
-    
-
+ 
     void Start() 
     {
-        coldCursor = Instantiate(coldPre); //Draw Reticle
-        hotCursor = Instantiate(heatPre); //Draw Reticle
+        //coldCursor = Instantiate(coldPre); //Draw Reticle
+        //hotCursor = Instantiate(heatPre); //Draw Reticle
     }
 	
 	void LateUpdate() {

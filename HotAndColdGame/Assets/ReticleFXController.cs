@@ -91,14 +91,27 @@ public class ReticleFXController : ToolboxFXController
                 reticle.coldCursor.gameObject.SetActive(false);
                 break;
             case ReticleState.Neutral:
+               
                 reticle.hotCursor.gameObject.SetActive(false);
                 reticle.coldCursor.gameObject.SetActive(false);
                 break;
             case ReticleState.Negative:
+
+                GameObject[] lightSet_neg = new GameObject[1];
+                lightSet_neg[0] = reticle.coldCursor.gameObject;
+                negative_emissiive_lights = lightSet_neg;
+                reticle.coldCursor.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
+
                 reticle.hotCursor.gameObject.SetActive(false);
                 reticle.coldCursor.gameObject.SetActive(true);
                 break;
             case ReticleState.Positive:
+
+                GameObject[] lightSet_pos = new GameObject[1];
+                lightSet_pos[0] = reticle.hotCursor.gameObject;
+                positive_emissiive_lights = lightSet_pos;
+                reticle.hotCursor.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
+
                 reticle.hotCursor.gameObject.SetActive(true);
                 reticle.coldCursor.gameObject.SetActive(false);
                 break;
