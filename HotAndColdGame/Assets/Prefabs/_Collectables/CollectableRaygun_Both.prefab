@@ -3109,6 +3109,7 @@ GameObject:
   - component: {fileID: 6569969616804567498}
   - component: {fileID: 6569969616804567501}
   - component: {fileID: 6569969616804567499}
+  - component: {fileID: 4763561028909649612}
   m_Layer: 0
   m_Name: CollectableRaygun_Both
   m_TagString: Untagged
@@ -3159,6 +3160,26 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.77, y: 1.17, z: 1.96}
   m_Center: {x: -0.03, y: 0.03, z: 0.07}
+--- !u!114 &4763561028909649612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6569969616804567500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbcd2f471a469f94ca7d51165454ac6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0
+  Anim: {fileID: 0}
+  positive_emissiive_lights:
+  - {fileID: 6569969616253414835}
+  negative_emissiive_lights:
+  - {fileID: 6569969616448925911}
+  neutral_emissiive_lights: []
+  emissionValue: 5
 --- !u!1 &6569969616805189987
 GameObject:
   m_ObjectHideFlags: 0
@@ -8052,9 +8073,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 0
   Anim: {fileID: 0}
-  Crystal_Neutral: {r: 0, g: 0, b: 0, a: 0}
-  Crystal_Hot: {r: 0, g: 0, b: 0, a: 0}
-  Crystal_Cold: {r: 0, g: 0, b: 0, a: 0}
   gun: {fileID: 0}
   arm_obj: {fileID: 0}
   gun_obj: {fileID: 0}
