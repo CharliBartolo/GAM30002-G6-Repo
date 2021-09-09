@@ -34,16 +34,10 @@ public class PlayerController : MonoBehaviour, IConditions
 
     [Header("Player Control Settings")]
     public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.5f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
-    public float interactRange = 2f;
-    public float timeBetweenFootsteps = 1f;
-
-    //[SerializeField] [Range(0f, 1f)] private float RunstepLenghten; // set around 0.65 for now
-    [SerializeField] private List<AudioClip> FootstepSounds = new List<AudioClip>(); 
-    private AudioSource step_AudioSource;
+    public float interactRange = 2f;    
 
     [Range(0f, 90f)]public float slopeWalkingLimit = 45f;
-    public float antiGravMod = 1f;
-    private float currentTimeBetweenFootsteps = 0f;
+    public float antiGravMod = 1f;    
     
     public float timeBeforeFrictionReturns = 0.2f;
     private float currentTimeBeforeFrictionReturns = 0f;
@@ -80,6 +74,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public RayCastShootComplete raygunScript;
     public PlayerInput playerInput;
     public PlayerMouseLook playerMouseLook;
+    public PlayerSoundControl playerSoundControl;
     private Rigidbody playerRB;
     //public Transform groundChecker;
     private TemperatureStateBase playerTemp;
@@ -95,8 +90,8 @@ public class PlayerController : MonoBehaviour, IConditions
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
         playerCam = GetComponentInChildren<Camera>(); 
-        playerMouseLook = GetComponent<PlayerMouseLook>();      
-        step_AudioSource = GetComponent<AudioSource>(); 
+        playerMouseLook = GetComponent<PlayerMouseLook>();   
+        playerSoundControl = GetComponent<PlayerSoundControl>();     
         _activeConditions = new List<IConditions.ConditionTypes>();
         contactPoints = new List<ContactPoint>();
         playerInventory = new List<string>();        
@@ -235,7 +230,7 @@ public class PlayerController : MonoBehaviour, IConditions
         }
 
         if (GameMaster.instance.audioManager != null)
-            PlayFootstepSound();
+            playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded);
         VelocityClamp();
         SetPlayerFriction();
         ClamberLedge();
@@ -351,21 +346,23 @@ public class PlayerController : MonoBehaviour, IConditions
                     ledgeAvailable = false;
                 }
 
-                // If the wall's too tall, can't climb
-                if (Physics.Raycast(playerCam.transform.position + Vector3.up * 0.5f, -cp.normal, out hit, 1, LayerMask.GetMask("Default")))
+                // If the wall's too tall or too short, can't climb
+                if (Physics.Raycast(playerCam.transform.position + Vector3.up * 0.5f, -cp.normal, out hit, 1, LayerMask.GetMask("Default")))  
                 {
                     ledgeAvailable = false;
                 }
 
                 if (ledgeAvailable)
                 {
+                    // Start high and keep casting rays until we hit the wall, finding the ledge. If too low, don't clamber
                     //Debug.Log("Ledge is available!");                
                     Vector3 currentPos = playerCam.transform.position + Vector3.up * 0.5f + Vector3.down * 0.05f;
                     while (!Physics.Raycast(currentPos, -cp.normal, out hit, 1, LayerMask.GetMask("Default")))
                     {
                         currentPos += Vector3.down * 0.05f;
-                        if (currentPos.y < playerCam.transform.position.y - 2f)
-                            break;
+                        if (currentPos.y < playerCam.transform.position.y - 0.5f)
+                            return;
+                            //break;
                     }
                     
                     if (playerInput.actions.FindAction("Jump").ReadValue<float>() > 0f && isClimbing == false)
@@ -374,8 +371,12 @@ public class PlayerController : MonoBehaviour, IConditions
                         isClimbing = true;
                         playerRB.velocity = horizVelocity;
                         //Debug.Log("Direction force is applied in: " + (currentPos - transform.position));
-                        Vector3 forceDir = Vector3.Max(currentPos - transform.position, Vector3.zero) * 10f;
+                        //Vector3 dirToLedge = transform.position - -cp.normal;
+                        Vector3 forceDir = Vector3.Max(currentPos - transform.position, Vector3.up * 1f) * 10f; //+ dirToLedge;
+                        //forceDir = Vector3.ClampMagnitude(forceDir, 1f);
                         playerRB.AddForce(forceDir, ForceMode.VelocityChange);
+                        if (GameMaster.instance.audioManager != null)
+                            playerSoundControl.PlayClamberingAudio();
                         Invoke("ClimbingCooldownReset", 1f);
                     }                    
                 }
@@ -386,9 +387,7 @@ public class PlayerController : MonoBehaviour, IConditions
     void ClimbingCooldownReset()
     {
         isClimbing = false;
-    }
-
-    
+    }    
     
     void SetShootingEnabled(bool setToEnable)
     {
@@ -426,7 +425,6 @@ public class PlayerController : MonoBehaviour, IConditions
                     break;
                 // Use object, trigger exit interaction, and remove object from script.
                 case InteractableBase.InteractionType.Use:
-
                     if (currentInteractingObject.GetComponent<CollectInteractable>() != null) 
                     {
                         /* GetComponent<GunFXController>().weaponState = GunFXController.WeaponState.Grab;
@@ -438,8 +436,7 @@ public class PlayerController : MonoBehaviour, IConditions
                         playerInventory.Add(currentInteractingObject.GetComponent<CollectInteractable>().itemName);
 
                         if (currentInteractingObject.name.Contains("Raygun"))
-                        {
-                           
+                        {                           
                             GetComponent<GunFXController>().Grab();
                             currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
                             playerControlState = PlayerState.ControlsDisabled;
@@ -531,66 +528,6 @@ public class PlayerController : MonoBehaviour, IConditions
             currentInteractingObject = null;
         }
     }
-
-    
-    // Sound Functions Below
-    void PlayFootstepSound()
-    {
-        //Debug.Log(currentTimeBetweenFootsteps);
-        if (horizVelocity.magnitude > 0f && isGrounded)
-        {
-            currentTimeBetweenFootsteps -= 5f * horizVelocity.magnitude * Time.deltaTime;
-        }   
-        else
-        {
-            currentTimeBetweenFootsteps = 0.01f;
-        }
-
-        if (currentTimeBetweenFootsteps <= 0f)
-        {
-            //GameMaster.instance.audioManager.Play("Footstep");
-            PlayFootStepAudio();
-            currentTimeBetweenFootsteps = timeBetweenFootsteps;
-        }
-    }
-
-    private void PlayFootStepAudio()
-    {
-        if(!isGrounded)
-        {
-            return;
-        }
-        
-        if (FootstepSounds.Count > 0)
-        {
-            int n = Random.Range(1, FootstepSounds.Count);
-            step_AudioSource.clip = FootstepSounds[n];
-            step_AudioSource.pitch = Random.Range(0.8f, 1.2f);
-            step_AudioSource.PlayOneShot(step_AudioSource.clip);
-            FootstepSounds[n] = FootstepSounds[0];
-            FootstepSounds[0] = step_AudioSource.clip;
-        }        
-    }
-
-    /*
-    private void ProgressStepCycle(float speed) //input speed
-        {
-            if (m_CharacterController.velocity.sqrMagnitude > 0 && (Input.x != 0 || Input.y != 0))
-            {
-                StepCycle += (CharacterController.velocity.magnitude + (speed*(IsWalking ? 1f : RunstepLenghten)))*
-                             Time.fixedDeltaTime;
-            }
-
-            if (!(StepCycle > NextStep))
-            {
-                return;
-            }
-
-            NextStep = StepCycle + StepInterval;
-
-            PlayFootStepAudio();
-        }
-    */
 
     // Utility Functions below
     bool FindGround(out ContactPoint groundCP, List<ContactPoint> contactPoints)

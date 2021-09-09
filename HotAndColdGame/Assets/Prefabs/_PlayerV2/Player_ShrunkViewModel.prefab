@@ -1083,6 +1083,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1132983919121844881}
   - component: {fileID: 1132983919121844880}
+  - component: {fileID: 233292407}
   - component: {fileID: 607755757}
   - component: {fileID: 1132983919121844883}
   - component: {fileID: 1132983919121844882}
@@ -1139,7 +1140,6 @@ MonoBehaviour:
     stoppingForce: 1.2
     reverseForce: 1.5
   interactRange: 2
-  timeBetweenFootsteps: 1
   slopeWalkingLimit: 45
   antiGravMod: 1
   timeBeforeFrictionReturns: 0.2
@@ -1187,9 +1187,31 @@ MonoBehaviour:
   raygunScript: {fileID: 2610262902883506657}
   playerInput: {fileID: 7373485747256884177}
   playerMouseLook: {fileID: 607755757}
+  playerSoundControl: {fileID: 0}
   PC: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   regularPhysicMaterial: {fileID: 13400000, guid: 02cc73f238347254b8ac9ba286b85916, type: 2}
+--- !u!114 &233292407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132983919121844887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4bf283c46294749a1437e1c53f19d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeBetweenFootsteps: 10
+  footstepSounds:
+  - {fileID: 8300000, guid: 42e65e088b3f4374e851b8dbd38f3df9, type: 3}
+  - {fileID: 8300000, guid: 8bc94ec6ed537e743b481638bdcd503d, type: 3}
+  landingSounds:
+  - {fileID: 8300000, guid: 5897aeed9b676024fbb8c694b421a861, type: 3}
+  clamberingSounds:
+  - {fileID: 8300000, guid: 4ccac6a283a87024da5f257c204175eb, type: 3}
+  raygunSounds: []
 --- !u!114 &607755757
 MonoBehaviour:
   m_ObjectHideFlags: 0
