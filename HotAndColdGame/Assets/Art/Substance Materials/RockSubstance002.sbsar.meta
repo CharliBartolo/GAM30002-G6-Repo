@@ -9,7 +9,7 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 232528478, guid: 43a8bbf65be290d44ba52b94476242b9, type: 3}
   version: 29
-  projectContext: 1
+  projectContext: 0
   mGraphInstanceData:
   - graphLabel: Rock
     prototypeName: Rock
@@ -37,15 +37,14 @@ ScriptedImporter:
     shaderName: Standard
     materialProperties:
       shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-      shaderKeywords: _DISPLACEMENT_LOCK_TILING_SCALE _HEIGHTMAP _MASKMAP _NORMALMAP_TANGENT_SPACE
-        _OCCLUSIONMAP _ROUGHNESSMAP _TESSELLATION_DISPLACEMENT _VERTEX_DISPLACEMENT_LOCK_OBJECT_SCALE
+      shaderKeywords: _MAINTEX _NORMALMAP _OCCLUSIONMAP _PARALLAXMAP
       lightmapFlags: 4
       enableInstancingVariants: 0
       doubleSidedGI: 0
       customRenderQueue: -1
       texEnvs:
       - name: _BumpMap
-        texture: {instanceID: 0}
+        texture: {fileID: -2324850155280342480, guid: a60af1f2fc7b6424ebdf3abb25161067, type: 3}
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _DetailAlbedoMap
@@ -65,7 +64,7 @@ ScriptedImporter:
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _MainTex
-        texture: {instanceID: 0}
+        texture: {fileID: -3545901500533339292, guid: a60af1f2fc7b6424ebdf3abb25161067, type: 3}
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _MetallicGlossMap
@@ -77,7 +76,7 @@ ScriptedImporter:
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       - name: _ParallaxMap
-        texture: {instanceID: 0}
+        texture: {fileID: -4076749126328735209, guid: a60af1f2fc7b6424ebdf3abb25161067, type: 3}
         scale: {x: 1, y: 1}
         offset: {x: 0, y: 0}
       floats:
@@ -96,7 +95,7 @@ ScriptedImporter:
       - name: _GlossyReflections
         float: 1
       - name: _Metallic
-        float: 1
+        float: 0
       - name: _Mode
         float: 0
       - name: _OcclusionStrength
@@ -117,7 +116,7 @@ ScriptedImporter:
       - name: _Color
         color: {r: 1, g: 1, b: 1, a: 1}
       - name: _EmissionColor
-        color: {r: 1, g: 1, b: 1, a: 1}
+        color: {r: 0, g: 0, b: 0, a: 1}
     outputDescList:
     - outputName: baseColor
       identifier: basecolor
@@ -164,15 +163,6 @@ ScriptedImporter:
       bImage: 1
       bNumerical: 0
       bLinear: 1
-    - outputName: mask
-      identifier: mask
-      usageName: mask
-      channelStr: mask
-      label: Mask
-      usage: 6
-      bImage: 1
-      bNumerical: 0
-      bLinear: 1
     texturePackingList:
     - targetName: baseColor
       components:
@@ -199,20 +189,6 @@ ScriptedImporter:
       - sourceName: ambientOcclusion
         from: 0
         to: 3
-    - targetName: mask
-      components:
-      - sourceName: mask
-        from: 0
-        to: 0
-      - sourceName: ambientOcclusion
-        from: 0
-        to: 1
-      - sourceName: mask
-        from: 0
-        to: 2
-      - sourceName: smoothness
-        from: 0
-        to: 3
     textureParameters:
     - textureName: Rock - baseColor
       wrapMode: 0
@@ -234,10 +210,6 @@ ScriptedImporter:
       wrapMode: 0
       filterMode: 1
       aniso: 1
-    - textureName: Rock - mask
-      wrapMode: 0
-      filterMode: 1
-      aniso: 1
     colorSpaceList: []
     inputTextureMap: []
     targetSettingList:
@@ -251,4 +223,7 @@ ScriptedImporter:
       bGenerateOnLoad: 1
     material: {fileID: 3986188387995331715, guid: a60af1f2fc7b6424ebdf3abb25161067, type: 3}
     generatedTextures:
+    - {fileID: -3545901500533339292, guid: a60af1f2fc7b6424ebdf3abb25161067, type: 3}
+    - {fileID: -2324850155280342480, guid: a60af1f2fc7b6424ebdf3abb25161067, type: 3}
+    - {fileID: -4076749126328735209, guid: a60af1f2fc7b6424ebdf3abb25161067, type: 3}
     - {fileID: -943998101246830882, guid: a60af1f2fc7b6424ebdf3abb25161067, type: 3}
