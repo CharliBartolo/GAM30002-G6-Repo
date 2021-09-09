@@ -18,7 +18,7 @@ public class FXController : MonoBehaviour
     protected Color Crystal_Hot;
     protected Color Crystal_Cold;
 
-    private float colourIntensity = 1;
+    protected float colourIntensity = 1;
 
     // Start is called before the first frame update
     public virtual void Start()

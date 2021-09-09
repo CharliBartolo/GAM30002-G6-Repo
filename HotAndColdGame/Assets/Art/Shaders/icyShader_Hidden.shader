@@ -162,7 +162,7 @@ Shader "Custom/Hidden_CrystalIce"
 
 					// light direction stuff
 					half dist = saturate(1 - (length(i.lightDir) / _Range)); // get distance factor
-					
+
 					float3 view_dir = normalize(_WorldSpaceCameraPos - i.lightDir);
 					float3 half_way = normalize(view_dir + _LightDir);
 
@@ -199,10 +199,10 @@ Shader "Custom/Hidden_CrystalIce"
 					color = saturate(color);
 					alpha = alpha * _Alpha;
 					alpha = saturate(alpha);
-					
+
 					// area mask
 					half alpha_m = saturate(dist * _Contrast);
-					
+
 					// refraction
 					float3 screenUV = float3(i.screenPos.xy / i.screenPos.w,1);
 					half4 bgcolor = texCUBE(_Cubemap,screenUV + (-i.viewNormal.xyz * 0.5 + float3(height, 1,0)) * _RefractionStrength);
@@ -213,7 +213,7 @@ Shader "Custom/Hidden_CrystalIce"
 					half4 result;
 					result.a = alpha_m;
 					result.rgb = color;
-					
+
 
 					//return float4(color, alpha);
 					return result;

@@ -22,6 +22,10 @@ public class UIFXController : FXController
     {
         base.Start();
 
+        Crystal_Cold /= colourIntensity;
+        Crystal_Hot /= colourIntensity;
+        Crystal_Neutral /= colourIntensity;
+
         Positive.color = Crystal_Cold;
         Negative.color = Crystal_Hot;
 

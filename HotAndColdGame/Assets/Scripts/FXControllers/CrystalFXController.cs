@@ -183,7 +183,7 @@ public class CrystalFXController : FXController
         {
             foreach (var item in CrystalMesh)
             {
-                item.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+                item.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral / colourIntensity);
             }
         }
     }
