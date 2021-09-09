@@ -263,7 +263,7 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""dae25c61-5199-4a0b-9472-d84f7db40199"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard And Mouse"",
