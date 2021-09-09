@@ -23,6 +23,7 @@ public class CrystalBehaviour : TemperatureStateBase
     public Light areaLight;
     public Material coldTempField, hotTempField;
     public Dictionary<GameObject, PhysicMaterial> objectsInTempArea;
+    private List<GameObject> objectsToRemove;
 
     //private float powerDownRate = 0.0333f;  //Operates on a 0-1 percentage basis, Default value 0.0333 takes roughly 30 seconds from max to power down    
     public float temperatureValueToEmit = 5f;
@@ -36,6 +37,7 @@ public class CrystalBehaviour : TemperatureStateBase
         //mat = mat_obj.GetComponent<Renderer>().material;
         base.Start();
         objectsInTempArea = new Dictionary<GameObject, PhysicMaterial>();
+        objectsToRemove = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -111,7 +113,8 @@ public class CrystalBehaviour : TemperatureStateBase
     {
         if (!objectsInTempArea.ContainsKey(other.gameObject))
         {
-            if(!other.gameObject.GetComponent<MachineFXController>())
+            if(!other.gameObject.GetComponent<MachineFXController>() && (other.gameObject.GetComponent<Rigidbody>() != null || 
+                other.gameObject.GetComponent<ITemperature>() != null || other.gameObject.GetComponent<IConditions>() != null))
                 objectsInTempArea.Add(other.gameObject, other.material);
         }
     }
@@ -124,13 +127,33 @@ public class CrystalBehaviour : TemperatureStateBase
             other.GetComponent<Collider>().material = objectsInTempArea[other.gameObject];
 
             objectsInTempArea.Remove(other.gameObject);
+
+            if (other.TryGetComponent<IConditions>(out IConditions conditionComponent))
+            {
+                if (spreadEffects)
+                {
+                    if (currentTemp > tempValueRange[1])
+                        conditionComponent.RemoveCondition(IConditions.ConditionTypes.ConditionHot);
+                    else if (currentTemp < tempValueRange[1])
+                        conditionComponent.RemoveCondition(IConditions.ConditionTypes.ConditionCold);
+                }
+                
+            }
         }
     }
     //ADDED: speed modifier
     protected virtual void ApplyTemperatureToOtherObjects(float temperatureValueParam)
     {
+        
         foreach (GameObject temperatureObject in objectsInTempArea.Keys)
         {
+            if (temperatureObject == null)
+            {
+                objectsToRemove.Add(temperatureObject);
+                //objectsInTempArea.Remove(temperatureObject); 
+                continue;
+            }
+
             //Added proximity
             if (temperatureObject.GetComponent<ITemperature>() != null)
             {
@@ -169,6 +192,12 @@ public class CrystalBehaviour : TemperatureStateBase
                 }
             }
         }
+
+        foreach (GameObject destroyedObject in objectsToRemove)
+        {   
+            objectsInTempArea.Remove(destroyedObject);
+        }
+        objectsToRemove.Clear();
     }
 
     protected virtual void SpreadLowGravToArea()
@@ -218,7 +247,7 @@ public class CrystalBehaviour : TemperatureStateBase
     {
         foreach (GameObject temperatureObject in objectsInTempArea.Keys)
         {
-            if (temperatureObject.GetComponent<Collider>() != null)
+            if (temperatureObject.GetComponent<Collider>() != null && temperatureObject.GetComponent<IConditions>() == null)
             {
                 temperatureObject.GetComponent<Collider>().material = null;                            
             }                    

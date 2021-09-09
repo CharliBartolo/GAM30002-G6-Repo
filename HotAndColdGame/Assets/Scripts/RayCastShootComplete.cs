@@ -3,12 +3,16 @@ using System.Collections;
 using UnityEngine.InputSystem;
 
 public class RayCastShootComplete : MonoBehaviour {
+    [HideInInspector]
+    public enum gunUpgrade {None, One, Two}
 
 	public float tempchange = 1f;
 	public float weaponRange = 50f;
 	public float hitForce = 5f;
+
+    public gunUpgrade gunUpgradeState = gunUpgrade.Two; 
 	public Transform gunEnd;
-	private Camera fpsCam;
+	public Camera fpsCam;
     public AudioManager audioManager;
     public GameObject spherecollider;
     public GameObject particleAtEnd_ice;
@@ -23,6 +27,7 @@ public class RayCastShootComplete : MonoBehaviour {
     //public Color col = Color.blue;
 
     public bool CanShoot { get; set;}
+    public bool CanSwap {get; set;}
     public bool TriggerHeld { get; set;}
     public bool ModeSwitched { get; set;}
 
@@ -30,20 +35,35 @@ public class RayCastShootComplete : MonoBehaviour {
 	{
 		laserLine = GetComponent<LineRenderer>();
 		fpsCam = GetComponentInParent<Camera>();
-        CanShoot = true;
+        UpdateGunState();
 
         Color colour = GameMaster.instance.colourPallete.Neutral;
         laserLine.GetComponent<Renderer>().sharedMaterial.SetColor("_Color", colour);
+        laserLine.SetPosition(0, gunEnd.position);
         //lightning.startColor = colour;
         //lightning.endColor = colour;
+    }
+
+    public void UpdateGunState()
+    {
+        CanShoot = (gunUpgradeState == gunUpgrade.One || gunUpgradeState == gunUpgrade.Two);
+        CanSwap = (gunUpgradeState == gunUpgrade.Two);
     }
 
     public void SwapBeam(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            ModeSwitched = true;
-            ChangeMode();
+            if (gunUpgradeState == gunUpgrade.Two)
+            {
+                ModeSwitched = true;
+                ChangeMode();
+            }
+            else
+            {
+                // Do weird animation stuff to indicate gun can't swap
+                Debug.Log("Can't swap, gun is not sufficiently upgraded!");
+            }            
         } 
     }
 
@@ -58,6 +78,19 @@ public class RayCastShootComplete : MonoBehaviour {
             TriggerHeld = false;
         }
     }   
+
+    
+    public void SetGunUpgradeState(int stateToSet)
+    {
+        gunUpgradeState = (gunUpgrade)stateToSet;
+        UpdateGunState();
+    }
+
+    public void UpgradeGun()
+    {
+        gunUpgradeState = (gunUpgrade)(gunUpgradeState + 1);
+        UpdateGunState();
+    }
 
     public void ChangeMode()
     {
@@ -78,6 +111,7 @@ public class RayCastShootComplete : MonoBehaviour {
             Invoke(nameof(SetMOdeSwitchFalse), Time.deltaTime);
         }
     }
+
     void LateUpdate () 
 	{
         
@@ -96,7 +130,7 @@ public class RayCastShootComplete : MonoBehaviour {
         }
         */
 
-        if (TriggerHeld && CanShoot && !GetComponentInParent<GunFXController>().inspectingWeapon && !GameObject.Find("UI").GetComponent<PauseController>().IsPaused)
+        if (TriggerHeld && CanShoot && !GetComponentInParent<GunFXController>().inspectingWeapon && GetComponentInParent<GunFXController>().equipped && !GameObject.Find("UI").GetComponent<PauseController>().IsPaused)
 		{
             if (audioManager != null)
             {
@@ -137,9 +171,39 @@ public class RayCastShootComplete : MonoBehaviour {
 			laserLine.SetPosition (0, gunEnd.position);
 			//lightning.SetPosition (0, gunEnd.position);
 
-			if (Physics.Raycast (rayOrigin, fpsCam.transform.forward, out hit, weaponRange) && lightning != null)
-			{
+            /// DEMO CODE FOR MAKING THE BEAM MORE GENEROUS 
+            /*
+            RaycastHit[] hits = Physics.SphereCastAll(rayOrigin, 0.5f, fpsCam.transform.forward, weaponRange);
+            if (hits.Length > 0)
+            {
+                Collider priorityCollider = null;
+                RaycastHit priorityHit = new RaycastHit();
 
+                foreach (RaycastHit sphereHit in hits)
+                {
+                    // If player is hit, skip.
+                    if (sphereHit.collider.tag == "Player")
+                        break;
+
+                    // if priority objects found, attach to closest one to beam centre?                                 
+                    priorityCollider = sphereHit.collider;
+                    priorityHit = sphereHit;
+
+                    Debug.Log("Object "+ sphereHit.collider.name + " was hit by the spherecast at point " + sphereHit.point);
+                }
+                
+                if (priorityCollider != null)
+                {
+                    // Target this object with the beam
+                    Vector3 beamEndPos = priorityCollider.ClosestPoint(priorityHit.point);
+                    Debug.DrawLine(transform.position, beamEndPos);
+                }
+            }
+            */
+            /// DEMO CODE END
+
+			if (Physics.Raycast (rayOrigin, fpsCam.transform.forward, out hit, weaponRange) && lightning != null)  
+			{
                 laserLine.SetPosition (1, hit.point);
                 
                 if(lightning.enabled)
@@ -154,7 +218,9 @@ public class RayCastShootComplete : MonoBehaviour {
 				if (objtemp != null)
 				{
 					objtemp.ChangeTemperature(tempchange);
-				}
+                    
+
+                }
 
 				if (hit.rigidbody != null)
 				{
@@ -177,14 +243,17 @@ public class RayCastShootComplete : MonoBehaviour {
                     //particleAtEnd_ice.SetActive(false);
                     particleAtEnd_fire.transform.position = hit.point;
                 }
-                
 
+                GetComponentInParent<ReticleFXController>().objHit = hit.collider.gameObject;
             }
 			else
 			{
                 laserLine.SetPosition (1, rayOrigin + (fpsCam.transform.forward * weaponRange));
                 //lightning.SetPosition (1, rayOrigin + (fpsCam.transform.forward * 2));
-			}
+
+                GetComponentInParent<ReticleFXController>().objHit = null;
+
+            }
 		}
         else
         {

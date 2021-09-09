@@ -84,18 +84,33 @@ public class DoorHatch : StateTriggered
                     
                     if (isAnimationComplete)
                     {
-                        Anim.Play("Open1");
+                        //Anim.Play("Open1");
                         state = DoorState.Open1;
                         //ActivateLight(-1);
                         DeactivateLight(-1);
                         stateChanged = false;
-                        Debug.Log("STATE CHANGED");
+                        //Debug.Log("STATE CHANGED");
                     }
-                }else if (state == DoorState.Open1)
+                }
+                else if (state == DoorState.Open2)
                 {
                     if (isAnimationComplete)
                     {
-                        Anim.Play("Close1");
+                        state = DoorState.Locked;
+                        Anim.Play("Close2");
+
+                        ActivateLight(-1);
+                        ActivateLight(1);
+                        //DeactivateLight(1);
+                        stateChanged = false;
+                    }
+                    break;
+                }
+                /*else if (state == DoorState.Open1)
+                {
+                    if (isAnimationComplete)
+                    {
+                        //Anim.Play("Close1");
                         state = DoorState.Locked;
                         ActivateLight(-1);
                         ActivateLight(1);
@@ -103,10 +118,10 @@ public class DoorHatch : StateTriggered
                         //DeactivateLight(1);
                         stateChanged = false;
                     }
-                
+
                     break;
-                }
-              
+                }*/
+
                 break;
 
             case ITemperature.tempState.Hot:
@@ -124,21 +139,22 @@ public class DoorHatch : StateTriggered
                         //DeactivateLight(-1);
                         stateChanged = false;
                     }
-                }else if (state == DoorState.Open2)
+                }
+                else if (state == DoorState.Open2)
                 {
                     if (isAnimationComplete)
                     {
-                        state = DoorState.Open1;
+                        state = DoorState.Locked;
                         Anim.Play("Close2");
-                        
-                        //ActivateLight(-1);
+
+                        ActivateLight(-1);
                         ActivateLight(1);
                         //DeactivateLight(1);
                         stateChanged = false;
                     }
                     break;
                 }
-       
+
                 break;
         }
     }
@@ -188,7 +204,7 @@ public class DoorHatch : StateTriggered
                     if (r != null)
                     {
                         //r.sharedMaterial = new Material(emissiveMaterial);
-                        r.sharedMaterial.SetColor("_EmissiveColor", Crystal_Hot);
+                        r.sharedMaterial.SetColor("_EmissiveColor", Crystal_Hot * emissionValue);
                     }
                 }
                 //item.SetActive(true);
@@ -205,7 +221,7 @@ public class DoorHatch : StateTriggered
                     if (r != null)
                     {
                         //r.sharedMaterial = new Material(emissiveMaterial);
-                        r.sharedMaterial.SetColor("_EmissiveColor", Crystal_Cold);
+                        r.sharedMaterial.SetColor("_EmissiveColor", Crystal_Cold * emissionValue);
                     }
                 }
                 //item.SetActive(true);

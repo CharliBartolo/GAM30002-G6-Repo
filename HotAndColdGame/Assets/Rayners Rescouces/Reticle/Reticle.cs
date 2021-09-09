@@ -10,49 +10,53 @@ public class Reticle : MonoBehaviour {
     public RayCastShootComplete Gun;
     public bool cold = true;
 
-    private GameObject cursorInstance;
-    private GameObject cursorInstance2;
+    public GameObject coldCursor;
+    public GameObject hotCursor;
 
-    void Start () {
-        cursorInstance = Instantiate(coldPre); //Draw Reticle
-        cursorInstance2 = Instantiate(heatPre); //Draw Reticle
  
+    void Start() 
+    {
+        //coldCursor = Instantiate(coldPre); //Draw Reticle
+        //hotCursor = Instantiate(heatPre); //Draw Reticle
     }
 	
-	void LateUpdate () {
-        UpdateCursor(); //Update Smoothly
-        cold = Gun.cold; //Check Gun State (Bad, Change this)
-        if (cold)
+	void LateUpdate() {
+        UpdateCursorPosition(); //Update Smoothly       
+       /* if (Gun.cold)
         {
-            cursorInstance2.gameObject.SetActive(false);
-            cursorInstance.gameObject.SetActive(true);
+            hotCursor.gameObject.SetActive(false);
+            coldCursor.gameObject.SetActive(true);
         }
         else
         {
-            cursorInstance2.gameObject.SetActive(true);
-            cursorInstance.gameObject.SetActive(false);
-        }
+            hotCursor.gameObject.SetActive(true);
+            coldCursor.gameObject.SetActive(false);
+        }*/
     }
 
-    private void UpdateCursor()
+    private void UpdateCursorPosition()
     {
+      
+
         Ray ray = new Ray(Cam.transform.position, Cam.transform.rotation * Vector3.forward);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
-            cursorInstance.transform.position = hit.point;
-            cursorInstance.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            coldCursor.transform.position = hit.point + hit.normal * 0.05f;
+            coldCursor.transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
+            //coldCursor.transform.rotation = hit.rotation;
 
-            cursorInstance2.transform.position = hit.point;
-            cursorInstance2.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            hotCursor.transform.position = hit.point + hit.normal * 0.05f;
+            hotCursor.transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
+            //hotCursor.transform.rotation = hit.rotation;
         }
         else
         {
-            cursorInstance.transform.position = ray.origin + ray.direction.normalized * maxDistance;
-            cursorInstance.transform.rotation = Quaternion.FromToRotation(Vector3.up, -ray.direction);
+            coldCursor.transform.position = ray.origin + ray.direction.normalized * maxDistance;
+            coldCursor.transform.rotation = Quaternion.FromToRotation(Vector3.up, -ray.direction);
 
-            cursorInstance2.transform.position = ray.origin + ray.direction.normalized * maxDistance;
-            cursorInstance2.transform.rotation = Quaternion.FromToRotation(Vector3.up, -ray.direction);
+            hotCursor.transform.position = ray.origin + ray.direction.normalized * maxDistance;
+            hotCursor.transform.rotation = Quaternion.FromToRotation(Vector3.up, -ray.direction);
         }
     }
 }

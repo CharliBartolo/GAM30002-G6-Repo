@@ -21,6 +21,8 @@ public class GunFXController : FXController
 
     // Gun components
     public GameObject BackCrystals;
+    public GameObject[] CrystalTubes;
+    public GameObject[] TubeCrystals;
     public GameObject CrystalCase;
     public GameObject CrystalCase1;
     public GameObject CrystalCase2;
@@ -34,53 +36,41 @@ public class GunFXController : FXController
     public bool inspectingWeapon;
     private bool inspectingWeaponComplete;
 
-    public enum WeaponState { Idle, TriggerPressed, TriggerReleased, Inspect, SwitchMode}
+    public bool isProp = false;
+    
+    private Material crystal_mat;
+    public enum WeaponState { Idle_Equipped, Idle_Unequipped, TriggerPressed, TriggerReleased, Inspect, SwitchMode, Grab, Place, GrabRetract}
 
     public WeaponState weaponState;
 
     float startRotation;
+    Quaternion caseRot;
 
     public bool equipped;
+    public int weaponUpgradeState = 0;
+    public bool isGrabbing = false;
+    public bool isPlacing = false;
 
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
 
-        // initialise barrel crystals materials
-        //Renderer[] renderers = BarrelCrystals.GetComponentsInChildren<Renderer>();
-        // set crystals colour to neutral if not shooting or cannot shoot
-/*        foreach (var item in renderers)
-        {
-            item.sharedMaterial = GameMaster.instance.colourPallete.materials.Crystal;
-        }*/
+        crystal_mat = new Material(GameMaster.instance.colourPallete.materials.Crystal);
 
-        Renderer[] backCrystals = BackCrystals.GetComponentsInChildren<Renderer>();
-        foreach (var item in backCrystals)
-        {
-            // initialise back crystal material
-            if (item.GetComponent<Renderer>() != null)
-                item.GetComponent<Renderer>().sharedMaterial = GameMaster.instance.colourPallete.materials.Crystal;
-        }
+        if (TubeCrystals != null)
+            SetTubeCrystals();
+
         // initialse crystal case materials
-        Renderer case1 = CrystalCase1.GetComponent<Renderer>();
-        Renderer case2 = CrystalCase2.GetComponent<Renderer>();
-        /*foreach (var item in renderers2)
-        {
-            item.sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
-        }*/
-        case1.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
-        case2.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
-        case1.sharedMaterial.color = Crystal_Cold;
-        case2.sharedMaterial.color = Crystal_Hot;
-        SetBackCrystal();
-
-
-       
-        startRotation = CrystalCase.transform.eulerAngles.z;
         
-        //equipped = gameObject.GetComponent<PlayerController>().playerInventory.Contains("Raygun");
-        equipped = false;
+
+        //SetBackCrystal();
+
+        startRotation = CrystalCase.transform.eulerAngles.z;
+        caseRot = CrystalCase.transform.rotation;
+
+        equipped = gameObject.GetComponent<PlayerController>().playerInventory.Contains("Raygun");
+        //equipped = false;
 
         if (equipped)
         {
@@ -93,12 +83,22 @@ public class GunFXController : FXController
         }
         else
         {
-           
-          
-            if(gun_obj.activeSelf == true)
+            weaponState = WeaponState.Idle_Unequipped;
+            NextState();
+            if (gun_obj.activeSelf == true)
                 gun_obj.SetActive(false);
+                arm_obj.SetActive(false);
         }
+
+        //UpdateCasedCrystals();
+
+        //SetWeaponMods(weaponUpgradeState);
         //gun_obj.SetActive(false);
+
+        /*Renderer case1 = CrystalCase1.GetComponent<Renderer>();
+        Renderer case2 = CrystalCase2.GetComponent<Renderer>();
+        case1.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+        case2.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);*/
     }
 
     // Update is called once per frame
@@ -113,6 +113,61 @@ public class GunFXController : FXController
     }*/
 
     // perform FX
+
+
+    public void SetWeaponMods(int state)
+    {
+        //Debug.Log("WEAPON MOD STATE: " + state);
+        switch(state)
+        {
+            case 0:
+                EnableMod(0, false);
+                EnableMod(1, false);
+                CrystalCase.SetActive(false);
+                CrystalCase1.SetActive(false);
+                CrystalCase2.SetActive(false);
+                break;
+
+            case 1:
+                EnableMod(0, true);
+                EnableMod(1, false);
+                CrystalCase.SetActive(true);
+                CrystalCase1.SetActive(true);
+                CrystalCase2.SetActive(false);
+
+                Material mat = new Material(crystal_mat);
+                mat.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                //CrystalCase1.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                CrystalCase1.GetComponent<Renderer>().sharedMaterial = mat;
+                break;
+            case 2:
+                EnableMod(0, true);
+                EnableMod(1, true);
+                CrystalCase.SetActive(true);
+                CrystalCase1.SetActive(true);
+                CrystalCase2.SetActive(true);
+                /*   CrystalCase2.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                   CrystalCase1.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);*/
+                Material mat1 = new Material(crystal_mat);
+                mat1.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                //CrystalCase1.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                CrystalCase1.GetComponent<Renderer>().sharedMaterial = mat1;
+                Material mat2 = new Material(crystal_mat);
+                mat2.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                //CrystalCase1.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                CrystalCase2.GetComponent<Renderer>().sharedMaterial = mat2;
+                break;
+
+        }
+    }
+
+    public void EnableMod(int mod, bool enableState)
+    {
+        CrystalTubes[mod].SetActive(enableState);
+        
+    }
+
+
     public override void PerformFX()
     {
         base.PerformFX();
@@ -123,39 +178,124 @@ public class GunFXController : FXController
         // call set colour of barrel crystals
         //SetBarrelCrystals();
         // call set colour of back crystal
-        SetBackCrystal();
+        //SetBackCrystal();
+        if (TubeCrystals != null)
+            SetTubeCrystals();
         // call set emissive lights
-        SetEmissiveLights();
+        //SetEmissiveLights();
         // call check for gun mode switch
+
+        //UpdateCasedCrystals();
         CheckForModeSwitch();
 
 
         // update cased crystals
-        Renderer case1 = CrystalCase1.GetComponent<Renderer>();
-        Renderer case2 = CrystalCase2.GetComponent<Renderer>();
-        case1.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
-        case2.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+       
+
+    }
+
+    public void InteractCalled()
+    {
 
     }
 
     public void EquipTool()
     {
+        isGrabbing = false;
         gun_obj.SetActive(true);
-        //equipped = true;
+        arm_obj.SetActive(true);
+        equipped = true;
         inspectingWeapon = true;
         weaponState = WeaponState.Inspect;
-        
         NextState();
     }
-
-    // weapon states
-    IEnumerator IdleState()
+    public void Grab()
     {
+        if(!isGrabbing)
+        {
+            weaponState = WeaponState.Grab;
+            NextState();
+            isGrabbing = true;
+        }          
+    }
+
+    public void PlaceTool()
+    {
+        if (!isPlacing)
+        {
+            weaponState = WeaponState.Place;
+            NextState();
+            isPlacing = true;
+        }
+    }
+
+    public void UnEquipTool()
+    {
+        equipped = false;
+        gun_obj.SetActive(false);
+        arm_obj.SetActive(true);
+        inspectingWeapon = false;
+        weaponState = WeaponState.Idle_Unequipped;
+    }
+
+    public void UpdateCasedCrystals()
+    {
+        Renderer case1 = CrystalCase1.GetComponent<Renderer>();
+        Renderer case2 = CrystalCase2.GetComponent<Renderer>();
+        case1.sharedMaterial.color = Crystal_Cold;
+        case2.sharedMaterial.color = Crystal_Hot;
+        /*foreach (var item in renderers2)
+        {
+            item.sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
+       *//* }*//*
+        case1.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
+        case2.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
+
+        if (GetComponent<PlayerController>().raygunScript.cold)
+        {
+            case1.sharedMaterial.color = Crystal_Cold;
+            case2.sharedMaterial.color = Crystal_Hot;
+        }
+        else
+        {
+            case2.sharedMaterial.color = Crystal_Cold;
+            case1.sharedMaterial.color = Crystal_Hot;
+        }*/
+    }
+
+    // weapon & arm states
+    IEnumerator Idle_EquippedState()
+    {
+        isPlacing = false;
         WeaponInspected();
         //Debug.Log("Idle: Enter");
         arm_obj.GetComponent<Animator>().Play("Idle");
+        if (gun.cold)
+        {
+            GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Negative);
+        }
+        else
+        {
+            GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Positive);
+        }
 
-        while (weaponState == WeaponState.Idle)
+        while (weaponState == WeaponState.Idle_Equipped)
+        {
+            // do state stuff
+            yield return 0;
+        }
+        //Debug.Log("Idle: Exit");
+        NextState();
+    }
+
+    IEnumerator Idle_UnequippedState()
+    {
+        isPlacing = false;
+        WeaponInspected();
+        //Debug.Log("Idle: Enter");
+        arm_obj.GetComponent<Animator>().Play("Idle_Unequipped");
+
+        while (weaponState == WeaponState.Idle_Unequipped)
         {
             // do state stuff
             yield return 0;
@@ -189,7 +329,7 @@ public class GunFXController : FXController
         {
             // do state stuff
             if (AnimationComplete("TriggerRelease"))
-                weaponState = WeaponState.Idle;
+                weaponState = WeaponState.Idle_Equipped;
 
             yield return 0;
         }
@@ -209,10 +349,97 @@ public class GunFXController : FXController
             if (AnimationComplete("InspectTool"))
             {
                 WeaponInspected();
-                weaponState = WeaponState.Idle;
+                weaponState = WeaponState.Idle_Equipped;
             }
                
                
+            yield return 0;
+        }
+        //Debug.Log("Inspect: Exit");
+        NextState();
+    }
+
+    IEnumerator GrabState()
+    {
+        //Debug.Log("Inspect: Enter");
+        bool firstHandShow;
+
+        if (GetComponent<GunFXController>().arm_obj.activeSelf == false)
+        {
+            firstHandShow = true;
+            arm_obj.GetComponent<Animator>().Play("Grab_Enter");
+            GetComponent<GunFXController>().arm_obj.SetActive(true);
+        }
+        else
+        {
+            firstHandShow = false;
+            arm_obj.GetComponent<Animator>().Play("Grab_01");
+        }
+           
+        
+
+        while (weaponState == WeaponState.Grab)
+        {
+            // do state stuff
+            if(firstHandShow)
+            {
+                if (AnimationComplete("Grab_Enter"))
+                {
+                    weaponState = WeaponState.GrabRetract;
+                }
+            }
+            else
+            {
+                if (AnimationComplete("Grab_01"))
+                {
+                    weaponState = WeaponState.GrabRetract;
+                }
+            }
+           
+
+            yield return 0;
+        }
+        //Debug.Log("Inspect: Exit");
+        Debug.Log("Weapon state:" + weaponState);
+        NextState();
+    }
+
+    IEnumerator PlaceState()
+    {
+        //Debug.Log("Inspect: Enter");
+        arm_obj.GetComponent<Animator>().Play("Place_01");
+
+        while (weaponState == WeaponState.Place)
+        {
+            // do state stuff
+
+            if (AnimationComplete("Place_01"))
+            {
+                weaponState = WeaponState.GrabRetract;
+            }
+
+            yield return 0;
+        }
+        //Debug.Log("Inspect: Exit");
+        isPlacing = false;
+        weaponState = WeaponState.GrabRetract;
+        NextState();
+    }
+
+    IEnumerator GrabRetractState()
+    {
+        //Debug.Log("Inspect: Enter");
+        arm_obj.GetComponent<Animator>().Play("GrabRetract_01");
+
+        while (weaponState == WeaponState.GrabRetract)
+        {
+            // do state stuff
+
+            if (AnimationComplete("GrabRetract_01"))
+            {
+                weaponState = WeaponState.Idle_Unequipped;
+            }
+
             yield return 0;
         }
         //Debug.Log("Inspect: Exit");
@@ -224,15 +451,14 @@ public class GunFXController : FXController
         //Debug.Log("SwitchMode: Enter");
         arm_obj.GetComponent<Animator>().Play("SwitchMode");
         //StartCoroutine(RotateCrystalCase(0.5f));
+        GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
 
         if (inspectingWeapon)
             WeaponInspected();
 
+       
 
-        float midRotation = startRotation + 360f;
-        float t = 0;
-
-        StartCoroutine(RotateCrystalCase(0.5f));
+        StartCoroutine(RotateCrystalCase(0.6f));
 
         while (weaponState == WeaponState.SwitchMode)
         {
@@ -240,21 +466,23 @@ public class GunFXController : FXController
 
             if (AnimationComplete("SwitchMode"))
             {
-                float endRotation = startRotation + 180f;
-                CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, endRotation);
-                startRotation = CrystalCase.transform.eulerAngles.z;
-                FinishSwitchingMode();
-                weaponState = WeaponState.Idle;
+                //float endRotation = startRotation + 180f;
+               
+                weaponState = WeaponState.Idle_Equipped;
             }
 
             //Debug.Log("Playing switch animation");
             yield return 0;
         }
+       /* float endRotation = caseRot.z + 180f;
+        CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, endRotation);
+        startRotation = endRotation;*/
+        FinishSwitchingMode();
         //Debug.Log("SwitchMode: Exit");
         NextState();
     }
 
-    void NextState()
+    public void NextState()
     {
         string methodName = weaponState.ToString() + "State";
         System.Reflection.MethodInfo info = GetType().GetMethod(methodName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -273,6 +501,7 @@ public class GunFXController : FXController
 
     public void WeaponInspected()
     {
+        isGrabbing = false;
         inspectingWeapon = false;
     }
 
@@ -280,7 +509,7 @@ public class GunFXController : FXController
 
     void AnimateGunTool()
     {
-        if(!switchingMode)
+        if(!switchingMode && equipped)
         {
             if (gun.TriggerHeld)
             {
@@ -307,7 +536,8 @@ public class GunFXController : FXController
         {
             foreach (var item in emissiveLights)
             {
-                item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Neutral;
+                //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Neutral;
+                item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
             }
         }
         else
@@ -317,7 +547,8 @@ public class GunFXController : FXController
             {
                 foreach (var item in emissiveLights)
                 {
-                    item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
+                    //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
+                    item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
                 }
 
             }
@@ -325,7 +556,8 @@ public class GunFXController : FXController
             {
                 foreach (var item in emissiveLights)
                 {
-                    item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
+                    //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
+                    item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
                 }
             }
         }
@@ -375,7 +607,12 @@ public class GunFXController : FXController
             foreach (var item in renderers)
             {
                 if (item.GetComponent<Renderer>() != null)
-                    item.GetComponent<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+                {
+                    Material mat1 = new Material(crystal_mat);
+                    mat1.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+                    //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+                    item.GetComponent<Renderer>().sharedMaterial = mat1;
+                }
             }
         }
         else
@@ -385,7 +622,12 @@ public class GunFXController : FXController
                 foreach (var item in renderers)
                 {
                     if (item.GetComponent<Renderer>() != null)
-                        item.GetComponent<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                    {
+                        Material mat1 = new Material(crystal_mat);
+                        mat1.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                        //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                        item.GetComponent<Renderer>().sharedMaterial = mat1;
+                    }  
                 }
             }
             else
@@ -393,7 +635,54 @@ public class GunFXController : FXController
                 foreach (var item in renderers)
                 {
                     if (item.GetComponent<Renderer>() != null)
-                        item.GetComponent<Renderer>().material.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                    {
+                        Material mat1 = new Material(crystal_mat);
+                        mat1.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                        //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                        item.GetComponent<Renderer>().sharedMaterial = mat1;
+                    } 
+                }
+            }
+        }
+    }
+    void SetTubeCrystals()
+    {
+        // set crystals colour to neutral if not shooting or cannot shoot
+        if (switchingMode)
+        {
+            foreach (var item in TubeCrystals)
+            {
+                Material mat1 = new Material(crystal_mat);
+                mat1.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+                //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Neutral;
+                //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral);
+                item.GetComponent<Renderer>().sharedMaterial = mat1;
+            }
+        }
+        else
+        {
+            // set crystal colour to hot or cold depending on gun mode
+            if (gun.cold)
+            {
+                foreach (var item in TubeCrystals)
+                {
+                    Material mat1 = new Material(crystal_mat);
+                    mat1.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                    //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
+                    //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                    item.GetComponent<Renderer>().sharedMaterial = mat1;
+                }
+
+            }
+            else
+            {
+                foreach (var item in TubeCrystals)
+                {
+                    Material mat1 = new Material(crystal_mat);
+                    mat1.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                    //item.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
+                    //item.GetComponent<Renderer>().sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                    item.GetComponent<Renderer>().sharedMaterial = mat1;
                 }
             }
         }
@@ -422,7 +711,6 @@ public class GunFXController : FXController
     // rotate the ammo case
     IEnumerator RotateCrystalCase(float duration)
     {
-
         float startRotation = CrystalCase.transform.eulerAngles.z;
         float endRotation = startRotation + 540.0f;
         float t = 0.0f;
@@ -433,7 +721,12 @@ public class GunFXController : FXController
             CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, zRotation);
             yield return null;
         }
-        CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, endRotation);
+        //Debug.Log("SET STRAIGHT");
+        yield return null;
+        if(gun.cold)
+            CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, 0);
+        else
+            CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, 180);
     }
 
     void FinishSwitchingMode()

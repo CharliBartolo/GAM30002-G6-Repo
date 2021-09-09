@@ -13,15 +13,20 @@ public class ChargerFXController : FXController
     private RaycastHit hit;
     public Transform rayOrigin;
 
+    private Material laserMaterial;
 
 
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
-        rayOrigin = transform.Find("RayOrigin");
-        line = GetComponentInChildren<LineRenderer>();
+        laserMaterial = new Material(GameMaster.instance.colourPallete.materials.CrystalCharger);
 
+        rayOrigin = transform.Find("RayOrigin");
+        if(line == null)
+            line = GetComponentInChildren<LineRenderer>();
+
+        line.GetComponent<Renderer>().sharedMaterial = laserMaterial;
         UpdateLine();
     }
 
@@ -62,7 +67,8 @@ public class ChargerFXController : FXController
 
     public void UpdateLine()
     {
-        if(power > 0)
+       
+        if (power > 0)
         {
             Color colour = GameMaster.instance.colourPallete.Positive;
             line.GetComponent<Renderer>().sharedMaterial.SetColor("_Color", colour);
@@ -102,10 +108,11 @@ public class ChargerFXController : FXController
              }*/
 
             CrystalBehaviour objtemp = hit.collider.GetComponentInParent<CrystalBehaviour>();
+            TemperatureStateBase objtempBase = hit.collider.GetComponentInParent<TemperatureStateBase>();
 
-            if (objtemp != null)
+            if (objtempBase != null)
             {
-                objtemp.ChangeTemperature(power * Time.deltaTime);
+                objtempBase.ChangeTemperature(power * Time.deltaTime);
                 //Debug.Log("OBJECT HIT: " + hit.collider.gameObject.GetComponentInParent<CrystalBehaviour>().gameObject.name);
                 //Debug.Log("OBJECT HIT CURRENT TEMP: " + hit.collider.gameObject.GetComponentInParent<CrystalBehaviour>().CurrentTemperature);
             }

@@ -23,12 +23,15 @@ public class ColourPalette : MonoBehaviour
         public Material EmissiveLights;
         public Material HiddenTexture;
         public LineRenderer LightningStrike;
+        public Material CrystalCharger;
     }
 
     //public List<MaterialMap> mapObjs;
     [Header("Materials palette")]
     public MaterialMap materials = new MaterialMap();
 
+    //[InspectorButton("OnButtonClicked")]
+    //public bool saveColoursToPlayerPrefs;
 
     private float t = 0;
     private void Awake()
@@ -69,4 +72,48 @@ public class ColourPalette : MonoBehaviour
     }
     //public Material HiddenMaterial => GetComponent<Renderer>().sharedMaterials[0];
     public Material HiddenMaterial => materials.HiddenTexture;
+
+    public void SaveColourPrefs(int saveSlot)
+    {
+        PlayerPrefs.SetString("posCol" + saveSlot.ToString(), ColorUtility.ToHtmlStringRGBA(Positive));
+        PlayerPrefs.SetString("negCol" + saveSlot.ToString(), ColorUtility.ToHtmlStringRGBA(Negative));
+        PlayerPrefs.SetString("neutralCol" + saveSlot.ToString(), ColorUtility.ToHtmlStringRGBA(Neutral));
+
+        PlayerPrefs.Save();
+    }
+
+    public void LoadColourPrefs(int loadSlot)
+    {
+        ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("posCol" + loadSlot.ToString()), out Positive);
+        ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("negCol" + loadSlot.ToString()), out Negative);
+        ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString("neutralCol" + loadSlot.ToString()), out Neutral);
+    }
+
+    public void UpdateColour(GameObject menuItemSelected)
+    {
+        SaveColourPrefs(10);
+        LoadColourPrefs(10);  
+        
+        //Debug.Log("UpdateColour function is running, using tag "+ menuItemSelected.tag);
+        switch (menuItemSelected.tag)
+        {
+            case "PositiveButton":
+                Positive = menuItemSelected.GetComponent<UnityEngine.UI.Image>().color;
+                break;
+            case "NegativeButton":
+                Debug.Log("Current Negative colour is: " + Negative);
+                Negative = menuItemSelected.GetComponent<UnityEngine.UI.Image>().color;
+                Debug.Log("Color sent to Pallete is " + menuItemSelected.GetComponent<UnityEngine.UI.Image>().color);
+                Debug.Log("New Negative colour is: " + Negative);
+                break;
+            case "NeutralButton":
+                Neutral = menuItemSelected.GetComponent<UnityEngine.UI.Image>().color;
+                break;
+            default:
+                Debug.Log("Colour option was picked, but no matching tag found!");
+                break;
+        }     
+
+         
+    }
 }

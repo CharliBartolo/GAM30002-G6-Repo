@@ -11,7 +11,7 @@ public class PickUp2 : InteractableBase
     private PlayerInput playerInput;
 
     //Runs when interaction begins
-    public override void OnInteractEnter(PlayerInput playerInputRef)
+    public override void OnInteractEnter(PlayerInput playerInputRef, float delay = 0)
     {
         playerInput = playerInputRef;
 

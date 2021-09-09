@@ -14,15 +14,16 @@ public class FXController : MonoBehaviour
     public Animator Anim;
 
     // Gun crystal colours
-    public Color Crystal_Neutral;
-    public Color Crystal_Hot;
-    public Color Crystal_Cold;
+    protected Color Crystal_Neutral;
+    protected Color Crystal_Hot;
+    protected Color Crystal_Cold;
 
-    private float colourIntensity = 1;
+    protected float colourIntensity = 1;
 
     // Start is called before the first frame update
     public virtual void Start()
     {
+
         colourIntensity = GameMaster.instance.colourPallete.colourIntensity;
 
         Crystal_Hot = GameMaster.instance.colourPallete.Positive * colourIntensity;

@@ -3,42 +3,121 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ToolBox : InteractableBase
+public class ToolBox : CollectInteractable
 {
     public GameObject ToolDisplayObject;
     public GameObject ToolObject;
+    private GameObject currentLevelToolgun;
+
+    public Transform ref_level0;
+    public Transform ref_level1;
+    public Transform ref_level2;
+
+    public float upgradeTime;
 
     private bool triggered;
-    public bool destroyOnUse;
+    //public bool destroyOnUse;
 
-    public string itemName;
-    private InteractionType interactionType = InteractionType.Use;
-    private PlayerInput playerInput;
+    //public string itemName;
+    //private InteractionType interactionType = InteractionType.Use;
+    private PlayerInput _playerInput;
+    //public int gunUpgradeLevel = 0;
 
     private void Start()
     {
-
+        ToolDisplayObject.SetActive(true);
+        ToolObject.SetActive(false);
+        OpenTray();
     }
 
     public void OpenTray()
     {
+        GetComponent<Animator>().speed = 1;
         GetComponent<Animator>().Play("Open");
     }
 
-    //Runs when interaction begins
-    public override void OnInteractEnter(PlayerInput playerInputRef)
+    public IEnumerator RunUpgradeSequence()
     {
-        GetComponent<Collider>().enabled = false;
-        //playerControls = playerControlsRef;
-        ToolDisplayObject.SetActive(false);
-        Debug.Log("TOOL REQUESTED");
-        triggered = true;
-        OpenTray();
-        ToolObject.GetComponent<CollectInteractable>().enabled = true;
-        Debug.Log("TOOL DELIVERED");
+        GetComponent<Animator>().speed = 2;
+        GetComponent<Animator>().Play("Close");
+        
 
+        yield return new WaitForSeconds(upgradeTime);
+
+        GetComponent<Animator>().speed = 2;
+        GetComponent<Animator>().Play("Open");
+        ToolObject.GetComponent<CollectInteractable>().enabled = true;
+        //ToolDisplayObject.SetActive(false);
+        PlaceCurrentWeapon((int)GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.gunUpgradeState, false);
+        ToolObject.SetActive(true);
+    }
+
+    //Runs when interaction begins
+    public override void OnInteractEnter(PlayerInput playerInputRef, float delay = 0)
+    {
+        StartCoroutine(InteractAction(delay));
+    }
+
+    IEnumerator InteractAction(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        RayCastShootComplete.gunUpgrade currentGunLevel = GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.gunUpgradeState;
+
+        if ((int)currentGunLevel < 2 && GameObject.Find("Player").GetComponent<GunFXController>().equipped)
+        {
+            GetComponent<Collider>().enabled = false;
+            //playerControls = playerControlsRef;
+
+            //Debug.Log("TOOL REQUESTED");
+            triggered = true;
+            ToolDisplayObject.SetActive(false);
+
+
+            PlaceCurrentWeapon((int)currentGunLevel, true);
+
+
+            //ToolObject.SetActive(true);
+
+            ToolObject.GetComponent<CollectInteractable>().enabled = false;
+            //GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.SetGunUpgradeState((int)currentGunLevel + 1);
+            GameObject.Find("Player").GetComponent<PlayerController>().isGunEnabled = false;
+            GameObject.Find("Player").GetComponent<GunFXController>().UnEquipTool();
+            //OpenTray();
+            StartCoroutine(RunUpgradeSequence());
+            //ToolObject.GetComponent<CollectInteractable>().int_data = 0;
+            //ToolObject.GetComponent<CollectInteractable>().enabled = true;
+            //Debug.Log("TOOL  DELIVERED");
+        }
     }
     
+    public void PlaceCurrentWeapon(int currentLevel, bool state)
+    {
+        switch (currentLevel)
+        {
+            case 0:
+                //transform.Find("CollectableRaygun").gameObject.SetActive(true);
+                ref_level0.gameObject.SetActive(state);
+                break;
+            case 1:
+                //transform.Find("CollectableRaygun_NegativeOnly").gameObject.SetActive(true);
+                ref_level1.gameObject.SetActive(state);
+                break;
+        }
+    }
+    public void HideCurrentWeapon(int currentLevel)
+    {
+        switch (currentLevel)
+        {
+            case 0:
+                transform.Find("CollectableRaygun").gameObject.SetActive(false);
+                break;
+            case 1:
+                transform.Find("CollectableRaygun_NegativeOnly").gameObject.SetActive(false);
+                break;
+        }
+    }
+
     //Runs after interaction is complete
     public override void OnInteractExit()
     {
@@ -65,11 +144,11 @@ public class ToolBox : InteractableBase
     {
         get
         {
-            return playerInput;
+            return _playerInput;
         }
         set
         {
-            playerInput = value;
+            _playerInput = value;
         }
     }
 
