@@ -7,6 +7,11 @@ public class ToolBox : CollectInteractable
 {
     public GameObject ToolDisplayObject;
     public GameObject ToolObject;
+    private GameObject currentLevelToolgun;
+
+    public Transform ref_level0;
+    public Transform ref_level1;
+    public Transform ref_level2;
 
     public float upgradeTime;
 
@@ -41,7 +46,9 @@ public class ToolBox : CollectInteractable
 
         GetComponent<Animator>().speed = 2;
         GetComponent<Animator>().Play("Open");
-        ToolDisplayObject.SetActive(false);
+        ToolObject.GetComponent<CollectInteractable>().enabled = true;
+        //ToolDisplayObject.SetActive(false);
+        PlaceCurrentWeapon((int)GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.gunUpgradeState, false);
         ToolObject.SetActive(true);
     }
 
@@ -64,6 +71,15 @@ public class ToolBox : CollectInteractable
 
             //Debug.Log("TOOL REQUESTED");
             triggered = true;
+            ToolDisplayObject.SetActive(false);
+
+
+            PlaceCurrentWeapon((int)currentGunLevel, true);
+
+
+            //ToolObject.SetActive(true);
+
+            ToolObject.GetComponent<CollectInteractable>().enabled = false;
             //GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.SetGunUpgradeState((int)currentGunLevel + 1);
             GameObject.Find("Player").GetComponent<PlayerController>().isGunEnabled = false;
             GameObject.Find("Player").GetComponent<GunFXController>().UnEquipTool();
@@ -75,6 +91,33 @@ public class ToolBox : CollectInteractable
         }
     }
     
+    public void PlaceCurrentWeapon(int currentLevel, bool state)
+    {
+        switch (currentLevel)
+        {
+            case 0:
+                //transform.Find("CollectableRaygun").gameObject.SetActive(true);
+                ref_level0.gameObject.SetActive(state);
+                break;
+            case 1:
+                //transform.Find("CollectableRaygun_NegativeOnly").gameObject.SetActive(true);
+                ref_level1.gameObject.SetActive(state);
+                break;
+        }
+    }
+    public void HideCurrentWeapon(int currentLevel)
+    {
+        switch (currentLevel)
+        {
+            case 0:
+                transform.Find("CollectableRaygun").gameObject.SetActive(false);
+                break;
+            case 1:
+                transform.Find("CollectableRaygun_NegativeOnly").gameObject.SetActive(false);
+                break;
+        }
+    }
+
     //Runs after interaction is complete
     public override void OnInteractExit()
     {
