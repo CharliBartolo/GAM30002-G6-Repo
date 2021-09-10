@@ -37,10 +37,13 @@ public class PlayerController : MonoBehaviour, IConditions
     public float interactRange = 2f;    
 
     [Range(0f, 90f)]public float slopeWalkingLimit = 45f;
-    public float antiGravMod = 1f;    
+    public float antiGravMod = 1f;  
     
     public float timeBeforeFrictionReturns = 0.2f;
     private float currentTimeBeforeFrictionReturns = 0f;
+
+    private ContactPoint ledgeContact;
+    private Vector3 ledgePos;
     private Vector3 horizVelocity;
     private Vector3 vertVelocity;
     private List<ContactPoint> contactPoints;
@@ -326,8 +329,9 @@ public class PlayerController : MonoBehaviour, IConditions
     void ClamberLedge()
     {
         //Debug.Log("Collision is happening");
-        //Vector3 normal = other.GetContact(0).normal;
+        //Vector3 normal = other.GetContact(0).normal;        
         Vector3 horForward = playerCam.transform.forward;
+        
         horForward.y = 0f;
         horForward.Normalize();
 
@@ -336,19 +340,23 @@ public class PlayerController : MonoBehaviour, IConditions
             // If we're hitting the wall at no more than a 45 degree angle...
             if (Vector3.Angle(horForward, -cp.normal) <= 45)
             {
+                //Debug.Log("Wall at less than 45 degrees detected");
                 bool ledgeAvailable = true;
                 
-                RaycastHit hit;
+                RaycastHit hit;                
 
                 // If falling too fast, can't climb
                 if (vertVelocity.magnitude < -10f)
                 {
                     ledgeAvailable = false;
+                    //Debug.Log("Falling too fast, ledge unavailable!");
                 }
 
-                // If the wall's too tall or too short, can't climb
-                if (Physics.Raycast(playerCam.transform.position + Vector3.up * 0.5f, -cp.normal, out hit, 1, LayerMask.GetMask("Default")))  
+                // If the wall's too tall, can't climb
+                if (Physics.Raycast(transform.position + Vector3.up * 2f, -cp.normal, out hit, 0.75f, LayerMask.GetMask("Default")))  
                 {
+                    //Debug.Log("Wall is too tall, ledge unavailable!");
+                    //Debug.DrawRay(transform.position + Vector3.up * 1f, -cp.normal);
                     ledgeAvailable = false;
                 }
 
@@ -356,37 +364,62 @@ public class PlayerController : MonoBehaviour, IConditions
                 {
                     // Start high and keep casting rays until we hit the wall, finding the ledge. If too low, don't clamber
                     //Debug.Log("Ledge is available!");                
-                    Vector3 currentPos = playerCam.transform.position + Vector3.up * 0.5f + Vector3.down * 0.05f;
-                    while (!Physics.Raycast(currentPos, -cp.normal, out hit, 1, LayerMask.GetMask("Default")))
+                    ledgePos = transform.position + Vector3.up * 1f + Vector3.down * 0.05f;
+                    while (!Physics.Raycast(ledgePos, -cp.normal, out hit, 1, LayerMask.GetMask("Default")))
                     {
-                        currentPos += Vector3.down * 0.05f;
-                        if (currentPos.y < playerCam.transform.position.y - 0.5f)
-                            return;
-                            //break;
+                        ledgePos += Vector3.down * 0.05f;
+                        if (ledgePos.y < transform.position.y + 0.5f)
+                            //return;
+                            break;
                     }
                     
                     if (playerInput.actions.FindAction("Jump").ReadValue<float>() > 0f && isClimbing == false)
                     {
                         // Cancel all vertical velocity, apply a big upward force once
                         isClimbing = true;
-                        playerRB.velocity = horizVelocity;
+                        //playerRB.velocity = horizVelocity;
+                        playerRB.velocity = Vector3.zero;
                         //Debug.Log("Direction force is applied in: " + (currentPos - transform.position));
-                        //Vector3 dirToLedge = transform.position - -cp.normal;
-                        Vector3 forceDir = Vector3.Max(currentPos - transform.position, Vector3.up * 1f) * 10f; //+ dirToLedge;
-                        //forceDir = Vector3.ClampMagnitude(forceDir, 1f);
-                        playerRB.AddForce(forceDir, ForceMode.VelocityChange);
+                        //Vector3 dirToLedge = ledgePos - transform.position;
+                        //Vector3 forceDir = Vector3.Max(dirToLedge, dirToLedge.normalized) * 14f; //+ dirToLedge;
+                        //playerRB.AddForce(forceDir, ForceMode.VelocityChange);
+                        ledgeContact = cp;
                         if (GameMaster.instance.audioManager != null)
                             playerSoundControl.PlayClamberingAudio();
                         Invoke("ClimbingCooldownReset", 1f);
-                    }                    
+                    }                             
                 }
             }
-        }        
+        }
+
+        // If the player is climbing, keep applying upward force. If obstacle is cleared vertically, 
+        // apply some forward force and consider them no longer climbing
+        if (isClimbing == true)  
+        {   
+            playerRB.velocity = Vector3.zero;
+
+            Vector3 playerFeetPos = new Vector3 (transform.position.x,
+                transform.position.y - (GetComponent<CapsuleCollider>().height / 2), transform.position.z);     
+            Vector3 dirToLedge = ledgePos - playerFeetPos + Vector3.up;
+
+            playerRB.AddForce(dirToLedge * 3f, ForceMode.VelocityChange);
+
+            if (playerFeetPos.y > ledgePos.y - 0.1f)
+            {
+                //Debug.Log("Forward force applied!");
+                playerRB.velocity = Vector3.zero;
+                Vector3 dirToWall = Vector3.Scale(-ledgeContact.normal, new Vector3 (1f, 0f, 1f));
+                playerRB.AddForce(dirToWall.normalized * 1.5f , ForceMode.VelocityChange);
+                CancelInvoke("ClimbingCooldownReset");
+                ClimbingCooldownReset();                
+            }                    
+        }            
     }
 
     void ClimbingCooldownReset()
     {
         isClimbing = false;
+        ledgePos = transform.position;
     }    
     
     void SetShootingEnabled(bool setToEnable)
