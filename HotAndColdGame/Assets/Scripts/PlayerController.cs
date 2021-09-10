@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour, IConditions
     [Header("Player Control Settings")]
     public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.5f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
     public float interactRange = 2f;    
+    public float maxStepHeight = 0.4f;        // The maximum a player can set upwards in units when they hit a wall that's potentially a step
+    public float stepSearchOvershoot = 0.01f; // How much to overshoot into the direction a potential step in units when testing. High values prevent player from walking up tiny steps but may cause problems.
 
     [Range(0f, 90f)]public float slopeWalkingLimit = 45f;
     public float antiGravMod = 1f;  
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviour, IConditions
     private Vector3 ledgePos;
     private Vector3 horizVelocity;
     private Vector3 vertVelocity;
+    private Vector3 prevVelocity;
     private List<ContactPoint> contactPoints;
 
     [Header("Player Condition Control Settings")]
@@ -72,12 +75,12 @@ public class PlayerController : MonoBehaviour, IConditions
     private bool isPaused = false;
     private bool isInitialised = false;
 
-    [Header("References")]
-    public Camera playerCam;
+    [Header("References")]    
     public RayCastShootComplete raygunScript;
     public PlayerInput playerInput;
     public PlayerMouseLook playerMouseLook;
     public PlayerSoundControl playerSoundControl;
+    public PlayerCameraControl playerCamControl;
     private Rigidbody playerRB;
     //public Transform groundChecker;
     private TemperatureStateBase playerTemp;
@@ -91,9 +94,9 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
-        playerCam = GetComponentInChildren<Camera>(); 
         playerMouseLook = GetComponent<PlayerMouseLook>();   
-        playerSoundControl = GetComponent<PlayerSoundControl>();     
+        playerSoundControl = GetComponent<PlayerSoundControl>();
+        playerCamControl = GetComponent<PlayerCameraControl>();     
         _activeConditions = new List<IConditions.ConditionTypes>();
         contactPoints = new List<ContactPoint>();
         playerInventory = new List<string>();        
@@ -146,6 +149,7 @@ public class PlayerController : MonoBehaviour, IConditions
     private void Update()
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        playerCamControl.UpdateFOVBasedOnSpeed(playerRB.velocity.magnitude);
         //Debug.Log(playerRB.velocity.magnitude);
 
         if (PC != null)
@@ -183,7 +187,7 @@ public class PlayerController : MonoBehaviour, IConditions
             case (PlayerState.MoveAndLook):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
                     playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
-                playerMouseLook.MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>(), playerCam);
+                playerMouseLook.MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>(), playerCamControl.playerCam);
                 //ProgressStepCycle(1.5f);
                 break;
             case (PlayerState.MoveOnly):
@@ -210,20 +214,21 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         horizVelocity = Vector3.Scale(playerRB.velocity, new Vector3(1f, 0f, 1f));
         vertVelocity = Vector3.Scale(playerRB.velocity, new Vector3(0f, 1f, 0f));
+        Vector3 stepUpOffset = default(Vector3);
 
         ExecuteConditions();
         RemoveConditionsIfReturningToNeutral();
+
+        isGrounded = FindGround(out groundContactPoint, contactPoints);
 
         switch (playerControlState)
         {
             case (PlayerState.ControlsDisabled):
                 break;
-            case (PlayerState.MoveAndLook):                
-                isGrounded = FindGround(out groundContactPoint, contactPoints);
+            case (PlayerState.MoveAndLook):
                 MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
                 break;
             case (PlayerState.MoveOnly):
-                isGrounded = FindGround(out groundContactPoint, contactPoints);
                 MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
                 //ResetMouse();
                 break;
@@ -236,8 +241,11 @@ public class PlayerController : MonoBehaviour, IConditions
         ToggleGravity(!isGrounded);
         VelocityClamp();
         SetPlayerFrictionAndDrag();
+        if (FindStep(out stepUpOffset) && isGrounded)
+            StepUp(stepUpOffset);
         ClamberLedge();
         contactPoints.Clear();
+        prevVelocity = playerRB.velocity;
     }
 
     // Input functions
@@ -330,7 +338,7 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         //Debug.Log("Collision is happening");
         //Vector3 normal = other.GetContact(0).normal;        
-        Vector3 horForward = playerCam.transform.forward;
+        Vector3 horForward = transform.forward;
         
         horForward.y = 0f;
         horForward.Normalize();
@@ -421,7 +429,82 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         isClimbing = false;
         ledgePos = transform.position;
-    }    
+    }  
+
+    bool FindStep(out Vector3 stepUpOffset)  
+    {
+        stepUpOffset = default(Vector3);
+
+        // Can't step up if player is not moving.
+        if (horizVelocity.sqrMagnitude < 0.01f)
+        {
+            //Debug.Log("Player's not moving");
+            return false;
+        }
+
+        foreach (ContactPoint cp in contactPoints)
+        {
+            bool test = ResolveStepUp(out stepUpOffset, cp);
+            if (test)
+                return test;
+        }
+        //Debug.Log("No valid step detected");
+        return false;
+    }
+
+    bool ResolveStepUp(out Vector3 stepUpOffset, ContactPoint stepTestCP)
+    {
+        stepUpOffset = default(Vector3);
+        Collider stepCol = stepTestCP.otherCollider;
+
+        // Check if contact point normal matches that of a short wall (low Y value)
+        if (Mathf.Abs(stepTestCP.normal.y) <= 0.01f)
+        {   
+            //Debug.Log("Contact point does not match that of a wall, step failed.");
+            return false;
+        }
+
+        // Make sure contact point is not the ground
+        if (stepTestCP.point == groundContactPoint.point)
+        {
+            return false;
+        }
+            
+        
+        // Make sure contact point is low enough to be a step
+        if (!(stepTestCP.point.y - groundContactPoint.point.y < maxStepHeight))
+        {
+            //Debug.Log("Contact point is too tall, step failed.");
+            return false;
+        }
+            
+        
+        // Check to see if there's a place to step up to
+        RaycastHit hitInfo;
+        float stepHeight = groundContactPoint.point.y + maxStepHeight + 0.0001f;
+        Vector3 stepTestInvDir = new Vector3(-stepTestCP.normal.x, 0, -stepTestCP.normal.z).normalized;
+        Vector3 origin = new Vector3(stepTestCP.point.x, stepHeight, stepTestCP.point.z) + (stepTestInvDir * stepSearchOvershoot);
+        Vector3 direction = Vector3.down;        
+        if( !(stepCol.Raycast(new Ray(origin, direction), out hitInfo, maxStepHeight)) )
+        {
+            //Debug.Log("No place detected to step up to, step failed.");
+            return false;
+        }
+
+        Vector3 stepUpPoint = new Vector3 (stepTestCP.point.x, hitInfo.point.y + 0.0001f, 
+            stepTestCP.point.z) + (stepTestInvDir * stepSearchOvershoot);
+        Vector3 stepUpPointOffset = stepUpPoint - new Vector3(stepTestCP.point.x, groundContactPoint.point.y, 
+            stepTestCP.point.z);
+        stepUpOffset = stepUpPointOffset;
+        Debug.Log("Step up successful!");
+        return true;
+    }
+
+    void StepUp(Vector3 stepUpOffset)
+    {
+        transform.position += stepUpOffset;
+        playerRB.velocity = prevVelocity;
+    }
     
     void SetShootingEnabled(bool setToEnable)
     {
@@ -441,11 +524,11 @@ public class PlayerController : MonoBehaviour, IConditions
 
     public void Interact(InputAction.CallbackContext context)
     {
-        if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out RaycastHit hit, interactRange) && 
+        if (Physics.Raycast(playerCamControl.playerCam.transform.position, playerCamControl.playerCam.transform.forward, out RaycastHit hit, interactRange) && 
             hit.collider.gameObject.GetComponent<InteractableBase>() != null)
         {
             //Debug.Log("Interactable object found, attempting interaction.");
-            Debug.DrawLine(playerCam.transform.position, hit.point);
+            Debug.DrawLine(playerCamControl.playerCam.transform.position, hit.point);
             currentInteractingObject = hit.collider.gameObject.GetComponent<InteractableBase>();
 
             //currentInteractingObject.OnInteractEnter(playerInput);

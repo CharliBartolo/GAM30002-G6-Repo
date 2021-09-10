@@ -1086,6 +1086,7 @@ GameObject:
   - component: {fileID: 233292407}
   - component: {fileID: 607755757}
   - component: {fileID: 1132983919121844883}
+  - component: {fileID: 8456973324207213757}
   - component: {fileID: 1132983919121844882}
   - component: {fileID: 1132983919121844892}
   - component: {fileID: 1132983919121844893}
@@ -1183,11 +1184,11 @@ MonoBehaviour:
   playerControlState_copy: 1
   playerInventory: []
   _activeConditions: 
-  playerCam: {fileID: 3347009733882093496}
   raygunScript: {fileID: 2610262902883506657}
   playerInput: {fileID: 7373485747256884177}
   playerMouseLook: {fileID: 607755757}
-  playerSoundControl: {fileID: 0}
+  playerSoundControl: {fileID: 233292407}
+  playerCamControl: {fileID: 8456973324207213757}
   PC: {fileID: 0}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   regularPhysicMaterial: {fileID: 13400000, guid: 02cc73f238347254b8ac9ba286b85916, type: 2}
@@ -1251,6 +1252,24 @@ MonoBehaviour:
   - 100
   isReturningToNeutral: 1
   startingCountdownBeforeReturnToNeutral: 2
+--- !u!114 &8456973324207213757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132983919121844887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b5b77a9110967449342382edd108e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCam: {fileID: 3347009733882093496}
+  baseFOV: 67
+  currentFOV: 67
+  fovCap: 72
+  velocityFloor: 8
+  velocityCap: 12
 --- !u!114 &1132983919121844882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1617,8 +1636,8 @@ MonoBehaviour:
   maxDistance: 30
   Gun: {fileID: 2610262902883506657}
   cold: 1
-  coldCursor: {fileID: 0}
-  hotCursor: {fileID: 0}
+  coldCursor: {fileID: 678590870695814377, guid: 60fa056472dae2f468a26a3a4aa9ae5b, type: 3}
+  hotCursor: {fileID: 678590870695814377, guid: 0877a02d3bb2cd2428ee8d91686bbf00, type: 3}
 --- !u!114 &607755758
 MonoBehaviour:
   m_ObjectHideFlags: 0
