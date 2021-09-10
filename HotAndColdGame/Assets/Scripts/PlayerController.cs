@@ -235,7 +235,7 @@ public class PlayerController : MonoBehaviour, IConditions
             playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded);
         ToggleGravity(!isGrounded);
         VelocityClamp();
-        SetPlayerFriction();
+        SetPlayerFrictionAndDrag();
         ClamberLedge();
         contactPoints.Clear();
     }
@@ -292,15 +292,14 @@ public class PlayerController : MonoBehaviour, IConditions
             //Vector3 inverseGravProportion = -Physics.gravity * (1 + Vector3.Dot(Physics.gravity.normalized, groundContactPoint.normal.normalized));
             //Vector3 inverseGravProportion = -Physics.gravity;
             
-            //playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed + inverseGravProportion, ForceMode.Acceleration);
-            //Vector3 groundDir = (groundContactPoint.point - transform.position).normalized;
             playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed + -groundContactPoint.normal, ForceMode.Acceleration);
             //Debug.DrawRay(transform.position, movementVector * 100);
             //Debug.Log("Inverse Grav component is :" + inverseGravProportion);
         }
         else
         {      
-            if ((horizVelocity + movementVector).magnitude <= currentMovementSettings.velocityCap.x)
+            if ((horizVelocity + movementVector).magnitude <= currentMovementSettings.velocityCap.x || 
+                Vector3.Dot(horizVelocity, movementVector) <= 0)
             {
                 playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed * currentMovementSettings.airSpeed, ForceMode.Acceleration);
             }              
@@ -623,17 +622,16 @@ public class PlayerController : MonoBehaviour, IConditions
     }
 
     // TODO: Use forces instead of friction for player control
-    void SetPlayerFriction()
+    void SetPlayerFrictionAndDrag()
     {        
+        Vector3 movementDirection = new Vector3 (playerInput.actions.FindAction("Movement").ReadValue<Vector2>().x, 0f, playerInput.actions.FindAction("Movement").ReadValue<Vector2>().y);        
+        float moveDirDotProd = Vector3.Dot(transform.TransformVector(movementDirection.normalized), horizVelocity.normalized);
+
+        // Use DOT product as sliding scale of force I.e. Between 0 and 1, apply less force, between -1 and 0, apply most force
+        // Basically, closer DOT is to 1, the closer the player is to moving in the same direction as their current velocity.
         if (isGrounded)
         {
-            Vector3 movementDirection = new Vector3 (playerInput.actions.FindAction("Movement").ReadValue<Vector2>().x, 0f, playerInput.actions.FindAction("Movement").ReadValue<Vector2>().y);       
-            
-            float moveDirDotProd = Vector3.Dot(transform.TransformVector(movementDirection.normalized), horizVelocity.normalized);
-
-            // Use DOT product as sliding scale of force I.e. Between 0 and 1, apply less force, between -1 and 0, apply most force
-            // Basically, closer DOT is to 1, the closer the player is to moving in the same direction as their current velocity.
-            if (moveDirDotProd >= 0f && moveDirDotProd < 0.9f)
+            if (moveDirDotProd >= 0f && moveDirDotProd < 1f)
             {
                 playerRB.velocity = Vector3.Lerp(transform.TransformDirection(movementDirection.normalized) * horizVelocity.magnitude, horizVelocity, 
                     Time.deltaTime * 50 / currentMovementSettings.stoppingForce) + vertVelocity;
@@ -641,11 +639,26 @@ public class PlayerController : MonoBehaviour, IConditions
             else if (moveDirDotProd < 0f)
             {
                 playerRB.velocity = Vector3.Lerp(Vector3.zero, horizVelocity, Time.deltaTime * 50 / currentMovementSettings.reverseForce) + vertVelocity;
+            }      
+        }
+        else
+        {
+            if (movementDirection.magnitude < 0.05f)
+            {
+                return;
             }
+
+            if (moveDirDotProd >= 0f && moveDirDotProd < 1f)
+            {
+                playerRB.velocity = Vector3.Lerp(transform.TransformDirection(movementDirection.normalized) * horizVelocity.magnitude, horizVelocity, 
+                    Time.deltaTime * 50 / currentMovementSettings.stoppingForce * 5) + vertVelocity;
+            }
+            else if (moveDirDotProd < 0f)
+            {
+                playerRB.velocity = Vector3.Lerp(Vector3.zero, horizVelocity, Time.deltaTime * 50 / currentMovementSettings.reverseForce * 5) + vertVelocity;
+            }      
         }
 
-        /*        
-        */
     }
  
     private void LockCursor()
@@ -782,10 +795,10 @@ public class PlayerController : MonoBehaviour, IConditions
 
     public void UpwardForce()
     {
-        if (GetComponent<Rigidbody>() != null)
+        if (!isGrounded)
         {
-            GetComponent<Rigidbody>().AddForce(-Physics.gravity * antiGravMod * Time.deltaTime * 25f, ForceMode.Acceleration);
-        }
+            playerRB.AddForce(-Physics.gravity * antiGravMod * Time.deltaTime * 25f, ForceMode.Acceleration);
+        }        
     }
 
     public void IcySlip()
