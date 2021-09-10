@@ -87,7 +87,6 @@ public class PlayerController : MonoBehaviour, IConditions
     public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
     public PhysicMaterial regularPhysicMaterial;
 
-
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody>();
@@ -234,6 +233,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
         if (GameMaster.instance.audioManager != null)
             playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded);
+        ToggleGravity(!isGrounded);
         VelocityClamp();
         SetPlayerFriction();
         ClamberLedge();
@@ -289,11 +289,12 @@ public class PlayerController : MonoBehaviour, IConditions
             movementVector = Vector3.ProjectOnPlane(movementVector, groundContactPoint.normal);
 
             // Opposite gravity force, calculated based on incline, so gravity doesn't stop you from moving up and down
-            Vector3 inverseGravProportion = -Physics.gravity * (1 + Vector3.Dot(Physics.gravity.normalized, groundContactPoint.normal.normalized));
-
+            //Vector3 inverseGravProportion = -Physics.gravity * (1 + Vector3.Dot(Physics.gravity.normalized, groundContactPoint.normal.normalized));
+            //Vector3 inverseGravProportion = -Physics.gravity;
             
-            playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed + inverseGravProportion, ForceMode.Acceleration);
-               
+            //playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed + inverseGravProportion, ForceMode.Acceleration);
+            //Vector3 groundDir = (groundContactPoint.point - transform.position).normalized;
+            playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed + -groundContactPoint.normal, ForceMode.Acceleration);
             //Debug.DrawRay(transform.position, movementVector * 100);
             //Debug.Log("Inverse Grav component is :" + inverseGravProportion);
         }
@@ -340,7 +341,7 @@ public class PlayerController : MonoBehaviour, IConditions
             // If we're hitting the wall at no more than a 45 degree angle...
             if (Vector3.Angle(horForward, -cp.normal) <= 45)
             {
-                //Debug.Log("Wall at less than 45 degrees detected");
+                Debug.Log("Wall at less than 45 degrees detected");
                 bool ledgeAvailable = true;
                 
                 RaycastHit hit;                
@@ -349,14 +350,15 @@ public class PlayerController : MonoBehaviour, IConditions
                 if (vertVelocity.magnitude < -10f)
                 {
                     ledgeAvailable = false;
-                    //Debug.Log("Falling too fast, ledge unavailable!");
+                    Debug.Log("Falling too fast, ledge unavailable!");
                 }
 
                 // If the wall's too tall, can't climb
-                if (Physics.Raycast(transform.position + Vector3.up * 2f, -cp.normal, out hit, 0.75f, LayerMask.GetMask("Default")))  
+                if (Physics.Raycast(transform.position + Vector3.up * 3f, Vector3.Scale(-cp.normal, new Vector3 (1f, 0f, 1f)),
+                    out hit, 2f, LayerMask.GetMask("Default")))  
                 {
-                    //Debug.Log("Wall is too tall, ledge unavailable!");
-                    //Debug.DrawRay(transform.position + Vector3.up * 1f, -cp.normal);
+                    Debug.Log("Wall is too tall, ledge unavailable!");
+                    Debug.DrawRay(transform.position + Vector3.up * 1f, -cp.normal);
                     ledgeAvailable = false;
                 }
 
@@ -800,6 +802,11 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             GetComponent<Collider>().material = regularPhysicMaterial;
         }
+    }
+
+    private void ToggleGravity(bool gravValueToSet)
+    {
+        playerRB.useGravity = gravValueToSet;
     }
 }
 
