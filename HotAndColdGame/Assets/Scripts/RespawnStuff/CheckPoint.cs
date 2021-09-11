@@ -13,7 +13,7 @@ public class CheckPoint : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //PutOutCampfires();
+        PutOutCampfires();
         //get game master last position
         gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
 
@@ -30,6 +30,7 @@ public class CheckPoint : MonoBehaviour
         if(campfire != null)
         {
             campfire.isPermanentlyPowered = true;
+            campfire.transform.Find("EffectLight").GetComponent<Light>().enabled = true;
             campfire.SetTemperature(campfireTemp);
             this.triggered = true;
         }
@@ -43,6 +44,7 @@ public class CheckPoint : MonoBehaviour
         {
             foreach (var item in campfires)
             {
+                item.transform.Find("EffectAreaOnly").transform.Find("EffectLight").GetComponent<Light>().enabled = false;
                 item.GetComponentInParent<CheckPoint>().triggered = false;
                 item.GetComponentInChildren<CrystalBehaviour>().SetTemperature(0);
                 item.GetComponentInChildren<CrystalBehaviour>().isPermanentlyPowered = false;

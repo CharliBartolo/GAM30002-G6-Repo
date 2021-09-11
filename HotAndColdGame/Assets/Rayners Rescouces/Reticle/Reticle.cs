@@ -22,7 +22,7 @@ public class Reticle : MonoBehaviour {
 	
 	void LateUpdate() {
         UpdateCursorPosition(); //Update Smoothly       
-       /* if (Gun.cold)
+        if (Gun.cold)
         {
             hotCursor.gameObject.SetActive(false);
             coldCursor.gameObject.SetActive(true);
@@ -31,7 +31,7 @@ public class Reticle : MonoBehaviour {
         {
             hotCursor.gameObject.SetActive(true);
             coldCursor.gameObject.SetActive(false);
-        }*/
+        }
     }
 
     private void UpdateCursorPosition()

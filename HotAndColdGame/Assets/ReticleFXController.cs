@@ -41,7 +41,7 @@ public class ReticleFXController : ToolboxFXController
         hitTempObject = DetectRangeHit();
 
         // update reticle size
-        UpdateReticleSize();
+        //UpdateReticleSize();
 
         ReticleBehaviour();
 
@@ -73,7 +73,7 @@ public class ReticleFXController : ToolboxFXController
     public void ChangeState(ReticleState newState)
     {
         state = newState;
-        UpdateReticalState();
+        //UpdateReticalState();
     }
     
     public void UpdateReticalState()
