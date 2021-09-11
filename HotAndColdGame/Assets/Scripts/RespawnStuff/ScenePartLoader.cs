@@ -11,6 +11,7 @@ public class ScenePartLoader : MonoBehaviour
     [SerializeField] public Transform player;
     [SerializeField] public CheckMethod checkMethod;
     [SerializeField] public float loadRange;
+    [SerializeField] public bool meshOnly;
 
     //Scene state
     private bool isLoaded;
@@ -26,6 +27,15 @@ public class ScenePartLoader : MonoBehaviour
                 if (scene.name == gameObject.name)
                 {
                     isLoaded = true;
+                    //added 8-9-21
+                    /*GameObject[] gameObjs = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+                    foreach (GameObject go in gameObjs)
+                    {
+                        if (go.hideFlags == HideFlags.HideInInspector)
+                        {
+                            go.hideFlags = 0;
+                        }
+                    }*/
                 }
             }
         }
@@ -66,15 +76,18 @@ public class ScenePartLoader : MonoBehaviour
             //We set it to true to avoid loading the scene twice
             isLoaded = true;
         }
+        //need to add function to turn on render
     }
 
     void UnLoadScene()
     {
+        //original code
         if (isLoaded)
         {
             SceneManager.UnloadSceneAsync(gameObject.name);
             isLoaded = false;
         }
+        //need to add function to turn off render
     }
 
     private void OnTriggerEnter(Collider other)
