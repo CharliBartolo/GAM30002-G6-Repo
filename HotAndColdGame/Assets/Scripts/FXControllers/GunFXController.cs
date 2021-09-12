@@ -375,6 +375,7 @@ public class GunFXController : FXController
     IEnumerator InspectState()
     {
         //Debug.Log("Inspect: Enter");
+        inspectingWeapon = true;
         arm_obj.GetComponent<Animator>().Play("InspectTool");
 
         while (weaponState == WeaponState.Inspect)
@@ -753,6 +754,9 @@ public class GunFXController : FXController
             {
                 if (equipped && !inspectingWeapon)
                 {
+                    if (gun_obj.GetComponent<AudioSource>().isPlaying)
+                        gun_obj.GetComponent<AudioSource>().Stop();
+
                     weaponState = WeaponState.Inspect;
                 }
             }
