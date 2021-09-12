@@ -230,6 +230,7 @@ public class GunFXController : FXController
         if (!isPlacing)
         {
             weaponState = WeaponState.Place;
+            GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
             NextState();
             isPlacing = true;
         }
@@ -276,14 +277,27 @@ public class GunFXController : FXController
         WeaponInspected();
         //Debug.Log("Idle: Enter");
         arm_obj.GetComponent<Animator>().Play("Idle");
-        if (gun.cold)
+        if(gun.gunUpgradeState == RayCastShootComplete.gunUpgrade.None)
+        {
+            GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
+        }
+        else if (gun.gunUpgradeState == RayCastShootComplete.gunUpgrade.One)
         {
             GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Negative);
         }
         else
         {
-            GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Positive);
+            if (gun.cold)
+            {
+                GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Negative);
+            }
+            else
+            {
+                GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Positive);
+            }
         }
+
+       
 
         while (weaponState == WeaponState.Idle_Equipped)
         {
