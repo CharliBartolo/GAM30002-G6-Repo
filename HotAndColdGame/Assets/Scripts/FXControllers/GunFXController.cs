@@ -184,8 +184,8 @@ public class GunFXController : FXController
         // call set colour of barrel crystals
         //SetBarrelCrystals();
         // call set colour of back crystal
-        //SetBackCrystal();
-        if (TubeCrystals != null)
+        SetBackCrystal();
+        if (TubeCrystals != null && gun.gunUpgradeState != RayCastShootComplete.gunUpgrade.None)
             SetTubeCrystals();
         // call set emissive lights
         //SetEmissiveLights();
@@ -729,20 +729,33 @@ public class GunFXController : FXController
     // check for gun mode switch
     public void CheckForModeSwitch()
     {
-        // get gun switch bool 
-        if(gun.ModeSwitched && !switchingMode)
+        if(gun.gunUpgradeState == RayCastShootComplete.gunUpgrade.Two)
         {
-            switchingMode = true;
-            // disable shooting
-            DisableShooting();
+            // get gun switch bool 
+            if (gun.ModeSwitched && !switchingMode)
+            {
+                switchingMode = true;
+                // disable shooting
+                DisableShooting();
 
+            }
+
+            // while switching mode 
+            if (switchingMode)
+            {
+                if (weaponState != WeaponState.SwitchMode)
+                    weaponState = WeaponState.SwitchMode;
+            }
         }
-
-        // while switching mode 
-        if(switchingMode)
+        else
         {
-            if (weaponState != WeaponState.SwitchMode)
-                weaponState = WeaponState.SwitchMode;
+            if (gun.ModeSwitched && !switchingMode)
+            {
+                if (equipped && !inspectingWeapon)
+                {
+                    weaponState = WeaponState.Inspect;
+                }
+            }
         }
     }
 
