@@ -489,6 +489,7 @@ public class GunFXController : FXController
 
         gun_obj.GetComponent<AudioSource>().pitch = raygunPitch_Neutral;
         GetComponent<PlayerSoundControl>().PlayRaygunAudio(3, true);
+        GetComponent<PlayerSoundControl>().PlayRaygunAudio(5, true);
 
         GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
 
