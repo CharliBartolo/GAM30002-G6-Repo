@@ -332,7 +332,7 @@ public class PlayerController : MonoBehaviour, IConditions
             // If moving down, cancel downward force.
             if (vertVelocity.y < 0f)
                 playerRB.velocity = horizVelocity;
-            transform.position += Vector3.up * 0.05f;   //To remove grounded contact
+            transform.position += Vector3.up * 0.1f;   //To remove grounded contact
             contactPoints.Clear();
             playerRB.AddForce(Vector3.up * currentMovementSettings.jumpStrength, ForceMode.VelocityChange);
             currentCoyoteTimer = 0; 
@@ -341,7 +341,7 @@ public class PlayerController : MonoBehaviour, IConditions
         }   
         else
         {
-            jumpBufferTimer -= Time.deltaTime;
+            jumpBufferTimer = (jumpBufferTimer - Time.deltaTime);
         }  
     }
 
