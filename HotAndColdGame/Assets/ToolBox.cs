@@ -22,6 +22,7 @@ public class ToolBox : CollectInteractable
     //private InteractionType interactionType = InteractionType.Use;
     private PlayerInput _playerInput;
     //public int gunUpgradeLevel = 0;
+    [SerializeField] private List<AudioClip> sounds = new List<AudioClip>();
 
     private void Start()
     {
@@ -30,8 +31,15 @@ public class ToolBox : CollectInteractable
         OpenTray();
     }
 
+    public void PlayAudio(int clip)
+    {
+        AudioClip toPlay = sounds[clip];
+        AudioSource.PlayClipAtPoint(toPlay, transform.position);
+    }
+
     public void OpenTray()
     {
+        PlayAudio(0);
         GetComponent<Animator>().speed = 1;
         GetComponent<Animator>().Play("Open");
     }
@@ -40,10 +48,12 @@ public class ToolBox : CollectInteractable
     {
         GetComponent<Animator>().speed = 2;
         GetComponent<Animator>().Play("Close");
-        
+        PlayAudio(0);
+        PlayAudio(1);
 
         yield return new WaitForSeconds(upgradeTime);
 
+        PlayAudio(0);
         GetComponent<Animator>().speed = 2;
         GetComponent<Animator>().Play("Open");
         ToolObject.GetComponent<CollectInteractable>().enabled = true;

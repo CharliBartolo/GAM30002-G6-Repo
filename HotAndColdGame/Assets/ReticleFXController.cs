@@ -125,9 +125,6 @@ public class ReticleFXController : ToolboxFXController
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colPickup;
                 reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.hand;
                 reticleSize = 2f;
-                //reticle.Cursor.GetComponent<SpriteRenderer>().color = Color.white;
-                /*reticle.hotCursor.gameObject.SetActive(false);
-                reticle.coldCursor.gameObject.SetActive(false);*/
                 break;
             case ReticleState.Neutral:
                 Color colNeutral = Color.white;
@@ -135,9 +132,6 @@ public class ReticleFXController : ToolboxFXController
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colNeutral;
                 reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.neutralCursor;
                 reticleSize = 0.085f;
-                /*reticle.coldCursor.gameObject.SetActive(true);
-                reticle.hotCursor.gameObject.SetActive(false);*/
-                //reticle.coldCursor.gameObject.SetActive(false);
                 break;
             case ReticleState.Negative:
                 Color colCold = Crystal_Cold;
@@ -145,13 +139,6 @@ public class ReticleFXController : ToolboxFXController
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colCold;
                 reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.coldCursor;
                 reticleSize = 0.05f;
-                /*GameObject[] lightSet_neg = new GameObject[1];
-                lightSet_neg[0] = reticle.coldCursor.gameObject;
-                negative_emissiive_lights = lightSet_neg;
-                reticle.coldCursor.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;*/
-                /*reticle.coldCursor.GetComponent<SpriteRenderer>().color = Crystal_Cold;
-                reticle.hotCursor.gameObject.SetActive(false);
-                reticle.coldCursor.gameObject.SetActive(true);*/
                 break;
             case ReticleState.Positive:
                 Color colHot = Crystal_Hot;
@@ -159,13 +146,6 @@ public class ReticleFXController : ToolboxFXController
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colHot;
                 reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.hotCursor;
                 reticleSize = 0.05f;
-                /*GameObject[] lightSet_pos = new GameObject[1];
-                lightSet_pos[0] = reticle.hotCursor.gameObject;
-                positive_emissiive_lights = lightSet_pos;
-                reticle.hotCursor.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;*/
-                /* reticle.hotCursor.GetComponent<SpriteRenderer>().color = Crystal_Hot;
-                 reticle.hotCursor.gameObject.SetActive(true);
-                 reticle.coldCursor.gameObject.SetActive(false);*/
                 break;
             case ReticleState.Machine:
                 reticleSize = reticleOpacity;

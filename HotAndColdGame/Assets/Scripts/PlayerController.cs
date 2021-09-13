@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public bool isGravityEnabled = true;
     public bool isGunEnabled = true;   
     [SerializeField] 
-    private bool isGrounded;
+    public bool isGrounded;
     private bool isClimbing = false;
 
     private bool isWalking = false;
