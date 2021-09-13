@@ -307,18 +307,18 @@ public class CrystalFXController : FXController
                             if (other.gameObject.transform.parent?.GetComponent<CrystalFXController>() == null)
                             {
                                 //add texture component
-                                AddExtraLightTextureComponent(other);
+                                //AddExtraLightTextureComponent(other);
 
                                 //AddLightTextureComponent(other);
                                 // if not have lighttexture, add it
-                                /*if (other.gameObject.GetComponent<LightTexture>() == null)
+                                if (other.gameObject.GetComponent<LightTexture>() == null)
                                 {
                                     AddLightTextureComponent(other);
                                 }
                                 else
                                 {
                                     AddExtraLightTextureComponent(other);
-                                }*/
+                                }
                             }
                         }
                     }
