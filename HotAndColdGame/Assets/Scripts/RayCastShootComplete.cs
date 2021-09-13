@@ -62,6 +62,7 @@ public class RayCastShootComplete : MonoBehaviour {
             else
             {
                 // Do weird animation stuff to indicate gun can't swap
+                ModeSwitched = true;
                 Debug.Log("Can't swap, gun is not sufficiently upgraded!");
             }            
         } 

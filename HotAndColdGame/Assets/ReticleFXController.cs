@@ -10,6 +10,7 @@ public class ReticleFXController : ToolboxFXController
 
     public bool isVisible = false;
     public float reticleSize = 0.25f;
+    public float reticleOpacity = 0.5f;
 
     public bool hitTempObject = false;
 
@@ -33,12 +34,31 @@ public class ReticleFXController : ToolboxFXController
         PerformFX();
     }
 
+    public void Show()
+    {
+        reticle.Cursor.SetActive(true);
+        //reticle.hotCursor.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        reticle.Cursor.SetActive(false);
+        //reticle.hotCursor.SetActive(false);
+    }
+
     public override void PerformFX()
     {
         base.PerformFX();
 
-        // check if raycast hit object
-        hitTempObject = DetectRangeHit();
+        // check if looking at hit object
+       /* if (DetectRangeHit())
+        {
+            Show();
+        }
+        else
+        {
+            Hide();
+        }*/
 
         // update reticle size
         UpdateReticleSize();
@@ -65,7 +85,15 @@ public class ReticleFXController : ToolboxFXController
     {
         if(objHit != null)
         {
-            return true;
+            Camera cam = GetComponentInChildren<Camera>();
+            Vector3 rayOrigin = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
+            RaycastHit hit;
+            if (Physics.Raycast(rayOrigin, cam.transform.forward, out hit, GetComponent<RayCastShootComplete>().weaponRange))
+            {
+                return true;
+               
+            }
+                
         }
         return false;
     }
@@ -82,42 +110,67 @@ public class ReticleFXController : ToolboxFXController
         {
             case ReticleState.Unequipped:
                 isVisible = false;
-                reticle.hotCursor.gameObject.SetActive(false);
-                reticle.coldCursor.gameObject.SetActive(false);
+                Color colUnequipped = Color.white;
+                colUnequipped.a = reticleOpacity;
+                reticle.Cursor.GetComponent<SpriteRenderer>().color = colUnequipped;
+                reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.neutralCursor;
+                reticleSize = 0.085f;
+                /* reticle.hotCursor.gameObject.SetActive(false);
+                 reticle.coldCursor.gameObject.SetActive(false);*/
                 break;
             case ReticleState.Pickup:
                 isVisible = true;
-                reticle.hotCursor.gameObject.SetActive(false);
-                reticle.coldCursor.gameObject.SetActive(false);
+                Color colPickup = Color.white;
+                colPickup.a = reticleOpacity;
+                reticle.Cursor.GetComponent<SpriteRenderer>().color = colPickup;
+                reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.hand;
+                reticleSize = 2f;
+                //reticle.Cursor.GetComponent<SpriteRenderer>().color = Color.white;
+                /*reticle.hotCursor.gameObject.SetActive(false);
+                reticle.coldCursor.gameObject.SetActive(false);*/
                 break;
             case ReticleState.Neutral:
-               
-                reticle.hotCursor.gameObject.SetActive(false);
-                reticle.coldCursor.gameObject.SetActive(false);
+                Color colNeutral = Color.white;
+                colNeutral.a = reticleOpacity;
+                reticle.Cursor.GetComponent<SpriteRenderer>().color = colNeutral;
+                reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.neutralCursor;
+                reticleSize = 0.085f;
+                /*reticle.coldCursor.gameObject.SetActive(true);
+                reticle.hotCursor.gameObject.SetActive(false);*/
+                //reticle.coldCursor.gameObject.SetActive(false);
                 break;
             case ReticleState.Negative:
-
-                GameObject[] lightSet_neg = new GameObject[1];
+                Color colCold = Crystal_Cold;
+                colCold.a = reticleOpacity;
+                reticle.Cursor.GetComponent<SpriteRenderer>().color = colCold;
+                reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.coldCursor;
+                reticleSize = 0.05f;
+                /*GameObject[] lightSet_neg = new GameObject[1];
                 lightSet_neg[0] = reticle.coldCursor.gameObject;
                 negative_emissiive_lights = lightSet_neg;
-                reticle.coldCursor.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;
-
+                reticle.coldCursor.GetComponent<Renderer>().sharedMaterial.color = Crystal_Cold;*/
+                /*reticle.coldCursor.GetComponent<SpriteRenderer>().color = Crystal_Cold;
                 reticle.hotCursor.gameObject.SetActive(false);
-                reticle.coldCursor.gameObject.SetActive(true);
+                reticle.coldCursor.gameObject.SetActive(true);*/
                 break;
             case ReticleState.Positive:
-
-                GameObject[] lightSet_pos = new GameObject[1];
+                Color colHot = Crystal_Hot;
+                colHot.a = reticleOpacity;
+                reticle.Cursor.GetComponent<SpriteRenderer>().color = colHot;
+                reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.hotCursor;
+                reticleSize = 0.05f;
+                /*GameObject[] lightSet_pos = new GameObject[1];
                 lightSet_pos[0] = reticle.hotCursor.gameObject;
                 positive_emissiive_lights = lightSet_pos;
-                reticle.hotCursor.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;
-
-                reticle.hotCursor.gameObject.SetActive(true);
-                reticle.coldCursor.gameObject.SetActive(false);
+                reticle.hotCursor.GetComponent<Renderer>().sharedMaterial.color = Crystal_Hot;*/
+                /* reticle.hotCursor.GetComponent<SpriteRenderer>().color = Crystal_Hot;
+                 reticle.hotCursor.gameObject.SetActive(true);
+                 reticle.coldCursor.gameObject.SetActive(false);*/
                 break;
             case ReticleState.Machine:
-                reticle.hotCursor.gameObject.SetActive(false);
-                reticle.coldCursor.gameObject.SetActive(true);
+                reticleSize = reticleOpacity;
+                /* reticle.hotCursor.gameObject.SetActive(false);
+                 reticle.coldCursor.gameObject.SetActive(true);*/
                 break;
         }
     }
@@ -126,15 +179,15 @@ public class ReticleFXController : ToolboxFXController
     {
         if (reticle.Gun.cold)
         {
-            float size = (Camera.main.transform.position - reticle.coldCursor.transform.position).magnitude;
+            float size = (Camera.main.transform.position - reticle.Cursor.transform.position).magnitude;
             Vector3 newSize = new Vector3(size, size, size) * reticleSize;
-            reticle.coldCursor.transform.localScale = newSize;
+            reticle.Cursor.transform.localScale = newSize;
         }
         else
         {
-            float size = (Camera.main.transform.position - reticle.hotCursor.transform.position).magnitude;
+            float size = (Camera.main.transform.position - reticle.Cursor.transform.position).magnitude;
             Vector3 newSize = new Vector3(size, size, size) * reticleSize;
-            reticle.hotCursor.transform.localScale = newSize;
+            reticle.Cursor.transform.localScale = newSize;
         }
     }
 }

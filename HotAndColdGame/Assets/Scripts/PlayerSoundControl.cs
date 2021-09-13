@@ -13,11 +13,14 @@ public class PlayerSoundControl : MonoBehaviour
     [SerializeField] private List<AudioClip> raygunSounds = new List<AudioClip>();
 
     private AudioSource playerAudio;
+    public AudioSource raygunAudio;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerAudio = GetComponent<AudioSource>(); 
+        playerAudio = GetComponent<AudioSource>();
+
+        raygunAudio = GetComponent<GunFXController>().gun_obj.GetComponent<AudioSource>();
     }
 
     // Sound Functions Below
@@ -64,6 +67,15 @@ public class PlayerSoundControl : MonoBehaviour
         }    
         */
         SelectAndPlayRandomClip(footstepSounds);    
+    }
+
+    public void PlayRaygunAudio(int state, bool once)
+    {
+        raygunAudio.clip = raygunSounds[state];
+        if(once)
+            raygunAudio.PlayOneShot(raygunAudio.clip);
+        else
+            raygunAudio.Play();
     }
 
     public void PlayLandingAudio()

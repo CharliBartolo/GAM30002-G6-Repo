@@ -2126,8 +2126,8 @@ MonoBehaviour:
 
     Matt Smith
 
-    Artist,
-    Tech Artist, Assistant Programmer, Design
+    Tech
+    Artist, 3D Artist, Animator, Programmer, Designer
 
 
     Lachlan Thomson
@@ -11073,7 +11073,8 @@ MonoBehaviour:
     stoppingForce: 1.2
     reverseForce: 1.5
   interactRange: 2
-  timeBetweenFootsteps: 1
+  maxStepHeight: 0.4
+  stepSearchOvershoot: 0.01
   slopeWalkingLimit: 45
   antiGravMod: 1
   timeBeforeFrictionReturns: 0.2
@@ -11117,10 +11118,11 @@ MonoBehaviour:
   playerControlState_copy: 1
   playerInventory: []
   _activeConditions: 
-  playerCam: {fileID: 2908391624405287695}
   raygunScript: {fileID: 2456675236355458390}
   playerInput: {fileID: 6952919437063350118}
   playerMouseLook: {fileID: 0}
+  playerSoundControl: {fileID: 0}
+  playerCamControl: {fileID: 0}
   PC: {fileID: 972480624}
   icyPhysicMaterial: {fileID: 13400000, guid: c7e7c77b297208744a3084d42c31d537, type: 2}
   regularPhysicMaterial: {fileID: 13400000, guid: 02cc73f238347254b8ac9ba286b85916, type: 2}
@@ -16368,6 +16370,10 @@ MonoBehaviour:
   weaponUpgradeState: 0
   isGrabbing: 0
   isPlacing: 0
+  triggerHeld: 0
+  raygunPitch_Positive: 2
+  raygunPitch_Negative: 2.75
+  raygunPitch_Neutral: 1
 --- !u!114 &6952919437063350118
 MonoBehaviour:
   m_ObjectHideFlags: 0
