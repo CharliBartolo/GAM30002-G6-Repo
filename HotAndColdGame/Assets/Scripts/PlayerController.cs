@@ -34,15 +34,18 @@ public class PlayerController : MonoBehaviour, IConditions
 
     [Header("Player Control Settings")]
     public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.5f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
-    public float interactRange = 2f;    
+    public float interactRange = 2f;   
+    public float coyoteTimer = 0.5f;
+    private float currentCoyoteTimer; 
+    private float jumpBufferTimer = 0f;
     public float maxStepHeight = 0.4f;        // The maximum a player can set upwards in units when they hit a wall that's potentially a step
     public float stepSearchOvershoot = 0.01f; // How much to overshoot into the direction a potential step in units when testing. High values prevent player from walking up tiny steps but may cause problems.
 
     [Range(0f, 90f)]public float slopeWalkingLimit = 45f;
     public float antiGravMod = 1f;  
     
-    public float timeBeforeFrictionReturns = 0.2f;
-    private float currentTimeBeforeFrictionReturns = 0f;
+    //public float timeBeforeFrictionReturns = 0.2f;
+    //private float currentTimeBeforeFrictionReturns = 0f;
 
     private ContactPoint ledgeContact;
     private Vector3 ledgePos;
@@ -61,7 +64,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public bool isGravityEnabled = true;
     public bool isGunEnabled = true;   
     [SerializeField] 
-    private bool isGrounded;
+    public bool isGrounded;
     private bool isClimbing = false;
 
     private bool isWalking = false;
@@ -103,7 +106,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
         playerInput.actions.FindAction("Interact").performed += context => Interact(context);
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
-        playerInput.actions.FindAction("Jump").performed += Jump;
+        playerInput.actions.FindAction("Jump").performed += JumpInput;
         playerInput.actions.FindAction("Shoot").performed += raygunScript.FireBeam;
         playerInput.actions.FindAction("Shoot").canceled += raygunScript.FireBeam;
         playerInput.actions.FindAction("Swap Beam").performed += raygunScript.SwapBeam;
@@ -128,6 +131,8 @@ public class PlayerController : MonoBehaviour, IConditions
         regularPhysicMaterial.dynamicFriction = 0f;
         regularPhysicMaterial.staticFriction = 0f;
         regularPhysicMaterial.frictionCombine = PhysicMaterialCombine.Minimum;
+        jumpBufferTimer = 0f;
+        currentCoyoteTimer = coyoteTimer;
 
         playerMouseLook.ResetMouse(transform);
         //playerMouseLook.MouseAbsolute = new Vector2 (transform.eulerAngles.y, 0f);   
@@ -149,7 +154,7 @@ public class PlayerController : MonoBehaviour, IConditions
     private void Update()
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-        playerCamControl.UpdateFOVBasedOnSpeed(playerRB.velocity.magnitude);
+        playerCamControl.UpdateFOVBasedOnSpeed(playerRB.velocity.magnitude);        
         //Debug.Log(playerRB.velocity.magnitude);
 
         if (PC != null)
@@ -219,14 +224,15 @@ public class PlayerController : MonoBehaviour, IConditions
         ExecuteConditions();
         RemoveConditionsIfReturningToNeutral();
 
-        isGrounded = FindGround(out groundContactPoint, contactPoints);
+        isGrounded = FindGround(out groundContactPoint, contactPoints);  
+        Jump();      
 
         switch (playerControlState)
         {
             case (PlayerState.ControlsDisabled):
                 break;
             case (PlayerState.MoveAndLook):
-                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
+                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());               
                 break;
             case (PlayerState.MoveOnly):
                 MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
@@ -237,13 +243,14 @@ public class PlayerController : MonoBehaviour, IConditions
         }
 
         if (GameMaster.instance.audioManager != null)
-            playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded);
+            playerSoundControl.CalculateTimeToFootstep(horizVelocity, (currentCoyoteTimer > 0 || isGrounded));
         ToggleGravity(!isGrounded);
         VelocityClamp();
         SetPlayerFrictionAndDrag();
-        if (FindStep(out stepUpOffset) && isGrounded)
+        if (FindStep(out stepUpOffset) && currentCoyoteTimer > 0)
             StepUp(stepUpOffset);
         ClamberLedge();
+        CoyoteTimeTick();
         contactPoints.Clear();
         prevVelocity = playerRB.velocity;
     }
@@ -274,7 +281,7 @@ public class PlayerController : MonoBehaviour, IConditions
             };
         }
         
-        if (isWalking && isGrounded)
+        if (isWalking && (coyoteTimer > 0 || isGrounded))
         {               
             //Debug.Log("Normal: " + movementVector);
             movementVector *= walkingMultiplier;
@@ -304,6 +311,10 @@ public class PlayerController : MonoBehaviour, IConditions
             //Debug.DrawRay(transform.position, movementVector * 100);
             //Debug.Log("Inverse Grav component is :" + inverseGravProportion);
         }
+        else if (currentCoyoteTimer > 0)
+        {
+            playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed, ForceMode.Acceleration);
+        }
         else
         {      
             if ((horizVelocity + movementVector).magnitude <= currentMovementSettings.velocityCap.x || 
@@ -314,14 +325,29 @@ public class PlayerController : MonoBehaviour, IConditions
         }        
     }
 
-    void Jump(InputAction.CallbackContext context)
+    void Jump()
     {
-        if (isGrounded)
+        if ((isGrounded || currentCoyoteTimer > 0) && jumpBufferTimer > 0) 
         {
-            //Debug.Log("Jump attempted");
-            //playerRB.AddForce(Vector3.up * jumpStrength, ForceMode.VelocityChange);
+            // If moving down, cancel downward force.
+            if (vertVelocity.y < 0f)
+                playerRB.velocity = horizVelocity;
+            transform.position += Vector3.up * 0.1f;   //To remove grounded contact
+            contactPoints.Clear();
             playerRB.AddForce(Vector3.up * currentMovementSettings.jumpStrength, ForceMode.VelocityChange);
-        }
+            currentCoyoteTimer = 0; 
+            jumpBufferTimer = 0;
+            isGrounded = false;        
+        }   
+        else
+        {
+            jumpBufferTimer = (jumpBufferTimer - Time.deltaTime);
+        }  
+    }
+
+    void JumpInput(InputAction.CallbackContext context)
+    {
+        jumpBufferTimer = 0.15f;
     }
     
     private void OnCollisionStay(Collision other) 
@@ -348,7 +374,7 @@ public class PlayerController : MonoBehaviour, IConditions
             // If we're hitting the wall at no more than a 45 degree angle...
             if (Vector3.Angle(horForward, -cp.normal) <= 45)
             {
-                Debug.Log("Wall at less than 45 degrees detected");
+                //Debug.Log("Wall at less than 45 degrees detected");
                 bool ledgeAvailable = true;
                 
                 RaycastHit hit;                
@@ -357,15 +383,15 @@ public class PlayerController : MonoBehaviour, IConditions
                 if (vertVelocity.magnitude < -10f)
                 {
                     ledgeAvailable = false;
-                    Debug.Log("Falling too fast, ledge unavailable!");
+                    //Debug.Log("Falling too fast, ledge unavailable!");
                 }
 
                 // If the wall's too tall, can't climb
                 if (Physics.Raycast(transform.position + Vector3.up * 3f, Vector3.Scale(-cp.normal, new Vector3 (1f, 0f, 1f)),
                     out hit, 2f, LayerMask.GetMask("Default")))  
                 {
-                    Debug.Log("Wall is too tall, ledge unavailable!");
-                    Debug.DrawRay(transform.position + Vector3.up * 1f, -cp.normal);
+                    //Debug.Log("Wall is too tall, ledge unavailable!");
+                    //Debug.DrawRay(transform.position + Vector3.up * 1f, -cp.normal);
                     ledgeAvailable = false;
                 }
 
@@ -496,7 +522,7 @@ public class PlayerController : MonoBehaviour, IConditions
         Vector3 stepUpPointOffset = stepUpPoint - new Vector3(stepTestCP.point.x, groundContactPoint.point.y, 
             stepTestCP.point.z);
         stepUpOffset = stepUpPointOffset;
-        Debug.Log("Step up successful!");
+        //Debug.Log("Step up successful!");
         return true;
     }
 
@@ -658,7 +684,7 @@ public class PlayerController : MonoBehaviour, IConditions
             if (cp.normal.y > slopeWalkingLimit / 90f && (found == false || cp.normal.y > groundCP.normal.y))
             {
                 groundCP = cp;
-                found = true;
+                found = true;                
             }
         }
 
@@ -671,7 +697,7 @@ public class PlayerController : MonoBehaviour, IConditions
     /// </summary>
     void VelocityClamp()
     {    
-        if (isGrounded)
+        if (isGrounded || currentCoyoteTimer > 0)
         {
             // Multiply horizontal velocity cap by movement input to limit top speed based on varying stick inputs / walk button
             float movementInputMultiplier = playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude;
@@ -704,7 +730,7 @@ public class PlayerController : MonoBehaviour, IConditions
         playerRB.velocity = horizVelocity + vertVelocity;
     }
 
-    // TODO: Use forces instead of friction for player control
+    // Uses forces fur the purposes of player control
     void SetPlayerFrictionAndDrag()
     {        
         Vector3 movementDirection = new Vector3 (playerInput.actions.FindAction("Movement").ReadValue<Vector2>().x, 0f, playerInput.actions.FindAction("Movement").ReadValue<Vector2>().y);        
@@ -712,7 +738,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
         // Use DOT product as sliding scale of force I.e. Between 0 and 1, apply less force, between -1 and 0, apply most force
         // Basically, closer DOT is to 1, the closer the player is to moving in the same direction as their current velocity.
-        if (isGrounded)
+        if (isGrounded || currentCoyoteTimer > 0)
         {
             if (moveDirDotProd >= 0f && moveDirDotProd < 1f)
             {
@@ -825,14 +851,14 @@ public class PlayerController : MonoBehaviour, IConditions
 
     public void ExecuteConditions()
     {
-        // If player is hot and NOT cold
+        // If player is hot
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
         {
             UpwardForce();
             //ResetSlip();
         }
 
-        // If player is cold and NOT hot
+        // If player is cold
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
         {
             /*
@@ -903,6 +929,19 @@ public class PlayerController : MonoBehaviour, IConditions
     private void ToggleGravity(bool gravValueToSet)
     {
         playerRB.useGravity = gravValueToSet;
+    }
+
+    private void CoyoteTimeTick()
+    {
+        if (isGrounded)
+        {
+            currentCoyoteTimer = coyoteTimer;            
+        }
+        else
+        {
+            currentCoyoteTimer = Mathf.Clamp(currentCoyoteTimer - Time.deltaTime, 0, coyoteTimer);
+            //Debug.Log("Player left the ground!");
+        }
     }
 }
 

@@ -47,15 +47,20 @@ public class Reticle : MonoBehaviour {
         RaycastHit hit;
         float distance = GetComponent<RayCastShootComplete>().weaponRange;
         //if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+
         if (Physics.Raycast(ray, out hit, distance))
         {
+            Debug.Log("HIT AHEAD");
+            GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Pickup);
+            
             Cursor.transform.position = hit.point + hit.normal * 0.05f;
             Cursor.transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
 
-            if(hit.collider.gameObject.GetComponent<CollectInteractable>() != null)
+            /*if(hit.collider.gameObject.GetComponent<CollectInteractable>() != null)
             {
                 GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Pickup);
-            }
+            }*/
+
             //coldCursor.transform.position = hit.point;
             /*coldCursor.transform.position = hit.point + hit.normal * 0.125f;
             coldCursor.transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);*/
@@ -68,6 +73,8 @@ public class Reticle : MonoBehaviour {
         }
         else
         {
+            Debug.Log("NO HIT AHEAD");
+            GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
             Cursor.transform.position = ray.origin + ray.direction.normalized * maxDistance;
             Cursor.transform.rotation = Quaternion.FromToRotation(Vector3.up, -ray.direction);
             /*coldCursor.transform.position = ray.origin + ray.direction.normalized * maxDistance;
