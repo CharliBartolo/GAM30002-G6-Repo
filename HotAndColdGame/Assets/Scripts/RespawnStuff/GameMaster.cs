@@ -9,7 +9,8 @@ public class GameMaster : MonoBehaviour
     public AudioManager audioManager;
     public ColourPalette colourPallete;
     public GameObject playerRef;
-    //Vector 3 works, had problems with transform but maybe there is a way to use transform
+    public int difficultyNum;   // 0 is standard, 1 is hard
+
     [SerializeField] public Transform lastCheckPointPos;
 
     void Awake() 
@@ -24,8 +25,14 @@ public class GameMaster : MonoBehaviour
             Destroy(gameObject);
         }
 
-        SearchForPlayer();
+        SearchForPlayer();        
     }
+
+    private void Start() 
+    {
+        LoadDifficulty();
+    }
+    
 
     private void Update() 
     {
@@ -58,6 +65,50 @@ public class GameMaster : MonoBehaviour
 
     }
 
+    public void SetDifficulty(int difficultyNum)
+    {
+        PlayerPrefs.SetInt("Difficulty", difficultyNum);
+    }
 
+    public void LoadDifficulty()
+    {
+        difficultyNum = PlayerPrefs.GetInt("Difficulty");
+        Debug.Log("Difficulty loaded!");
 
+        switch (difficultyNum)
+        {
+            case 0:
+                Debug.Log("Standard difficulty selected");
+                if (playerRef != null)
+                {
+                    if (playerRef.TryGetComponent<PlayerTemperature>(out PlayerTemperature playerTempComp))
+                    {
+                        playerTempComp.TempStatesAllowed = ITemperature.tempStatesAllowed.OnlyNeutral;
+                        playerTempComp.tempValueRange[0] = -50;
+                        playerTempComp.tempValueRange[2] = 50;
+                    }
+                    else
+                    Debug.Log("Player temperature component not found!");
+                }
+                else
+                    Debug.Log("Player not found!");
+                break;
+            case 1:
+                if (playerRef != null)
+                    {
+                        if (TryGetComponent<PlayerTemperature>(out PlayerTemperature playerTempComp))
+                        {
+                            playerTempComp.TempStatesAllowed = ITemperature.tempStatesAllowed.HotAndCold;
+                            playerTempComp.tempValueRange[0] = -100;
+                            playerTempComp.tempValueRange[2] = 100;
+                        }
+                    }
+                break;
+            default:
+                Debug.Log("Invalid difficulty entered, loading Standard (0) instead...");
+                SetDifficulty(0);
+                LoadDifficulty();
+                break;
+        }
+    }
 }
