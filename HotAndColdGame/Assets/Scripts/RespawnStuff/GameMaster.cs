@@ -23,13 +23,12 @@ public class GameMaster : MonoBehaviour
         else 
         {
             Destroy(gameObject);
-        }
-
-        SearchForPlayer();        
+        }                
     }
 
     private void Start() 
     {
+        SearchForPlayer();
         LoadDifficulty();
     }
     
@@ -38,20 +37,28 @@ public class GameMaster : MonoBehaviour
     {
         if (playerRef == null)
         {
-            SearchForPlayer();
+            if (SearchForPlayer())
+                LoadDifficulty();
         }
     }
 
-    private void SearchForPlayer()
+    private bool SearchForPlayer()
     {
-        if (GameObject.Find("Player") != null)
+        Debug.Log("GameManager is searching for a Player object...");
+        //if (GameObject.Find("Player") != null)
+        if (GameObject.FindGameObjectWithTag("Player"))
         {
             playerRef = GameObject.FindGameObjectWithTag("Player");
             GameObject checkpointObject = new GameObject ("SpawnedCheckpoint");
             checkpointObject.transform.position = playerRef.transform.position;
             checkpointObject.transform.rotation = playerRef.transform.rotation;
             lastCheckPointPos = checkpointObject.transform;
-        }     
+            Debug.Log("Player object found, reference stored!");
+            return true;
+        } 
+
+        Debug.Log("Player not found by GameManager!");
+        return false;            
     }
 
     public void LoadNextScene()
