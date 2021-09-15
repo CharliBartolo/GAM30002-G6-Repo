@@ -207,6 +207,10 @@ PrefabInstance:
       propertyPath: playerInput
       value: 
       objectReference: {fileID: 607755751}
+    - target: {fileID: 156945886, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 821249528}
     - target: {fileID: 1561819254, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -323,6 +327,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3665375622426646039, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -32.00006
+      objectReference: {fileID: 0}
     - target: {fileID: 3665375622738269863, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: gm
       value: 
@@ -353,46 +361,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3665375622089406116, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
   m_PrefabInstance: {fileID: 156945881}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &156945884 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3665375622089406119, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
-  m_PrefabInstance: {fileID: 156945881}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &156945885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 156945884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 256b712a0424b774c80fe047dadc4b16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsPaused: 0
-  Quitting: 0
-  isMenuEnabled: 0
-  pauseText: {fileID: 1561819255}
-  PC: {fileID: 821249528}
-  MouseSensitivityXSlider: {fileID: 0}
-  MouseSensitivityYSlider: {fileID: 0}
-  MouseSensitivityXInput: {fileID: 0}
-  MouseSensitivityYInput: {fileID: 0}
-  VolumeSlider: {fileID: 0}
-  VolumeInput: {fileID: 0}
-  QuitButton: {fileID: 0}
-  QuitPanel: {fileID: 0}
-  YesButton: {fileID: 0}
-  NoButton: {fileID: 0}
-  playerInput: {fileID: 607755751}
-  menuInput: {fileID: 607755751}
 --- !u!114 &156945887 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 156945885, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
   m_PrefabInstance: {fileID: 156945881}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 156945884}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 256b712a0424b774c80fe047dadc4b16, type: 3}
@@ -449,7 +423,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4cfed8bdc3602c242b40336c8c64a875, type: 2}
+  - {fileID: 2100000, guid: d4ce371f8dd48624b92a2dc85a2fbafa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2216,7 +2190,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4cfed8bdc3602c242b40336c8c64a875, type: 2}
+  - {fileID: 2100000, guid: d4ce371f8dd48624b92a2dc85a2fbafa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2453,7 +2427,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4cfed8bdc3602c242b40336c8c64a875, type: 2}
+  - {fileID: 2100000, guid: d4ce371f8dd48624b92a2dc85a2fbafa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
