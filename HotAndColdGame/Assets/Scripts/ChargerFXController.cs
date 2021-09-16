@@ -5,6 +5,7 @@ using UnityEngine;
 public class ChargerFXController : FXController
 {
     public bool isEnabled;
+    public bool isLaserEnabled;
     public float power = 0.25f;
     public float range;
 
@@ -28,6 +29,9 @@ public class ChargerFXController : FXController
 
         line.GetComponent<Renderer>().sharedMaterial = laserMaterial;
         UpdateLine();
+
+        if(!isLaserEnabled)
+            line.enabled = false;
     }
 
     // Update is called once per frame
@@ -35,11 +39,15 @@ public class ChargerFXController : FXController
     {
         if(isEnabled)
         {
-            if (!line.enabled)
-                line.enabled = true;
+            if(isLaserEnabled)
+            {
+                if (!line.enabled)
+                    line.enabled = true;
 
-            if (line != null)
-                UpdateRange();
+                if (line != null)
+                    UpdateRange();
+            }
+          
 
             HitStateBased();
         }
