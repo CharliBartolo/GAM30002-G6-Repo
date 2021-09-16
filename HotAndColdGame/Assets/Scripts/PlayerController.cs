@@ -223,9 +223,9 @@ public class PlayerController : MonoBehaviour, IConditions
 
         ExecuteConditions();
         RemoveConditionsIfReturningToNeutral();
-
+                
         isGrounded = FindGround(out groundContactPoint, contactPoints);  
-        Jump();      
+        Jump();  
 
         switch (playerControlState)
         {
@@ -240,7 +240,7 @@ public class PlayerController : MonoBehaviour, IConditions
                 break;
             default:
                 break;
-        }
+        } 
 
         if (GameMaster.instance.audioManager != null)
             playerSoundControl.CalculateTimeToFootstep(horizVelocity, (currentCoyoteTimer > 0 || isGrounded));
@@ -330,8 +330,14 @@ public class PlayerController : MonoBehaviour, IConditions
         if ((isGrounded || currentCoyoteTimer > 0) && jumpBufferTimer > 0) 
         {
             // If moving down, cancel downward force.
-            if (vertVelocity.y < 0f)
+            if (playerRB.velocity.y < 0f)
+            {
                 playerRB.velocity = horizVelocity;
+                vertVelocity = Vector3.zero;
+                Debug.Log("Player's velocity is now: " + playerRB.velocity);
+                
+            }
+                
             transform.position += Vector3.up * 0.1f;   //To remove grounded contact
             contactPoints.Clear();
             playerRB.AddForce(Vector3.up * currentMovementSettings.jumpStrength, ForceMode.VelocityChange);
