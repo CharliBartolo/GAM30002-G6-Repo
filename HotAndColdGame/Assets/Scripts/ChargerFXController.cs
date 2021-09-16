@@ -16,6 +16,8 @@ public class ChargerFXController : FXController
 
     private Material laserMaterial;
 
+    public AudioClip laserSound;
+
 
     // Start is called before the first frame update
     public override void Start()
@@ -30,8 +32,14 @@ public class ChargerFXController : FXController
         line.GetComponent<Renderer>().sharedMaterial = laserMaterial;
         UpdateLine();
 
-        if(!isLaserEnabled)
+        if(isLaserEnabled)
+        {
+            PlayLaserSound();
+        }
+        else
+        {
             line.enabled = false;
+        }
     }
 
     // Update is called once per frame
@@ -127,5 +135,11 @@ public class ChargerFXController : FXController
         }
 
         //return false;
+    }
+
+    public void PlayLaserSound()
+    {
+        //AudioSource.PlayClipAtPoint(sparks, position);
+        GetComponent<AudioSource>().Play();
     }
 }
