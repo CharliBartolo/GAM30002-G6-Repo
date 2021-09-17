@@ -9,6 +9,7 @@ public class EndGameTrigger : MonoBehaviour
     public bool isEnabled;
     public DeathEffect screenEffects;
     public Image darknessOverlay;
+    public bool travellingBackwards;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +41,10 @@ public class EndGameTrigger : MonoBehaviour
         GameMaster.instance.playerRef.GetComponent<PlayerController>().playerControlState = PlayerController.PlayerState.ControlsDisabled;
         DarknessFadeIn(delay);
         yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if(!travellingBackwards)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        else
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
 
     }
 

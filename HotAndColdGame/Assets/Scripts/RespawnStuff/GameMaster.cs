@@ -25,12 +25,14 @@ public class GameMaster : MonoBehaviour
         else 
         {
             Destroy(gameObject);
-        }                
+        }
+
+        SearchForPlayer();
     }
 
     private void Start() 
     {
-        SearchForPlayer();
+        
         LoadDifficulty();
     }
     

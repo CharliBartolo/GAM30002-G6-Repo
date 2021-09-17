@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour, IConditions
         if (isGunEnabled)
         {
             playerInventory.Add("Raygun");
-            GetComponent<GunFXController>().EquipTool();
+            GetComponent<GunFXController>().EquipTool(false);
         }
 
         playerRB.angularDrag = 100f;
@@ -557,7 +557,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public void Interact(InputAction.CallbackContext context)
     {
         if (Physics.Raycast(playerCamControl.playerCam.transform.position, playerCamControl.playerCam.transform.forward, out RaycastHit hit, interactRange) && 
-            hit.collider.gameObject.GetComponent<InteractableBase>() != null)
+            hit.collider.gameObject.GetComponent<InteractableBase>() != null && playerCamControl != null)
         {
             //Debug.Log("Interactable object found, attempting interaction.");
             Debug.DrawLine(playerCamControl.playerCam.transform.position, hit.point);

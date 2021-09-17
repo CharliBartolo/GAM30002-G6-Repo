@@ -82,10 +82,10 @@ public class GunFXController : FXController
         {
             if (gun_obj.activeSelf == false)
                 gun_obj.SetActive(true);
-            gun_obj.SetActive(true);
-            weaponState = WeaponState.Inspect;
-            NextState();
-            inspectingWeapon = true;
+            //gun_obj.SetActive(true);
+            //weaponState = WeaponState.Inspect;
+            //NextState();
+            //inspectingWeapon = true;
         }
         else
         {
@@ -93,9 +93,12 @@ public class GunFXController : FXController
             NextState();
             if (gun_obj.activeSelf == true)
                 gun_obj.SetActive(false);
-                arm_obj.SetActive(false);
         }
 
+        if(gun_obj != null && gun.gunUpgradeState == RayCastShootComplete.gunUpgrade.Two)
+        {
+            SetWeaponMods((int)gun.gunUpgradeState);
+        }
         //UpdateCasedCrystals();
 
         //SetWeaponMods(weaponUpgradeState);
@@ -205,15 +208,26 @@ public class GunFXController : FXController
 
     }
 
-    public void EquipTool()
+    public void EquipTool(bool inspect = true)
     {
         isGrabbing = false;
         gun_obj.SetActive(true);
         arm_obj.SetActive(true);
         equipped = true;
-        inspectingWeapon = true;
-        weaponState = WeaponState.Inspect;
-        NextState();
+       
+        if(inspect)
+        {
+            inspectingWeapon = true;
+            weaponState = WeaponState.Inspect;
+            NextState();
+        }
+        else
+        {
+            inspectingWeapon = false;
+            weaponState = WeaponState.Idle_Equipped;
+            NextState();
+        }
+      
     }
     public void Grab()
     {

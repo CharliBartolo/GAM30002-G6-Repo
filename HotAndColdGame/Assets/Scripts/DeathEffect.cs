@@ -17,6 +17,7 @@ public class DeathEffect : FXController
     public Sprite Overlay_Green;
     public Color Darkness = Color.black;
 
+
     // Start is called before the first frame update
     public override void Start()
     {
@@ -25,11 +26,11 @@ public class DeathEffect : FXController
         Fade.canvasRenderer.SetAlpha(0.0f); 
         //gm = GameMaster.instance;
         //player = gm.playerRef;
-        if(GameMaster.instance.playerRef != null)
+       /* if(GameMaster.instance.playerRef != null)
         {
             if (GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>() != null)
                 crntTemp = GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>();
-        }
+        }*/
        
     }
 
@@ -38,6 +39,15 @@ public class DeathEffect : FXController
         //call fade function
         if(crntTemp!= null)
             DeathFade();
+    }
+
+    void FindPlayer()
+    {
+        if (GameMaster.instance != null && GameMaster.instance.playerRef != null)
+        {
+            if (GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>() != null)
+                crntTemp = GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>();
+        }
     }
 
     // DeathEffect is called once per frame
@@ -106,6 +116,8 @@ public class DeathEffect : FXController
     }
     public void GreenDeath(float delay)
     {
+        if (crntTemp == null)
+            FindPlayer();
         if(!isResetting)
         {
             crntTemp.GetComponent<PlayerController>().playerControlState = PlayerController.PlayerState.ControlsDisabled;

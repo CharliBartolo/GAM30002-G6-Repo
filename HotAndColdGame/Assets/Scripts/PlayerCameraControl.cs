@@ -15,7 +15,10 @@ public class PlayerCameraControl : MonoBehaviour
     public float velocityFloor = 8f;    // The minimum value for which FOV changes occur. Velocity below this = no change.
     public float velocityCap = 12f;     // The value at which the FOV will cap at max. Velocity higher than this = no change.
 
-
+    private void Awake()
+    {
+        playerCam = GetComponentInChildren<Camera>();
+    }
 
     // Start is called before the first frame update
     void Start()
