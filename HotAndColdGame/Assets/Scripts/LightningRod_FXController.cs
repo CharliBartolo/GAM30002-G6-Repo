@@ -19,6 +19,8 @@ public class LightningRod_FXController : FXController
     public float minTriggerTime;
     public float maxTriggerTime;
 
+    public AudioClip sparks;
+
     // Start is called before the first frame update
     public override void Start()
     {
@@ -44,9 +46,16 @@ public class LightningRod_FXController : FXController
             crystalChargers[crystalToHit].isEnabled = true;
 
             if (crystalToHit == 0)
+            {
+                PlaySparkSound(LightningEndL.position);
                 LightningEndL.gameObject.SetActive(true);
+            }
             else
+            {
+                PlaySparkSound(LightningEndR.position);
                 LightningEndR.gameObject.SetActive(true);
+            }
+               
 
             Invoke(nameof(StopLightningHit), 0.2f);
             // Do the thing
@@ -62,5 +71,11 @@ public class LightningRod_FXController : FXController
             LightningEndL.gameObject.SetActive(false);
             LightningEndR.gameObject.SetActive(false);
         }
+    }
+
+    public void PlaySparkSound(Vector3 position)
+    {
+        //AudioSource.PlayClipAtPoint(sparks, position);
+        GetComponent<AudioSource>().PlayOneShot(sparks);
     }
 }
