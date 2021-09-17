@@ -13,7 +13,12 @@ public class ScenePartLoader : MonoBehaviour
     [SerializeField] public Scene sceneToLoad;
     [SerializeField] public CheckMethod checkMethod;
     [SerializeField] public float loadRange;
-    [SerializeField] public bool meshOnly;    
+    [SerializeField] public bool meshOnly;
+    [SerializeField] public OnTrigger loadTrigger;
+    [SerializeField] public OnTrigger unloadTrigger;
+
+    //public GameObject loadTrigger;
+    //public GameObject unloadTrigger;
 
     //Scene state
     private bool isLoaded;
@@ -125,8 +130,24 @@ public class ScenePartLoader : MonoBehaviour
         }
         //need to add function to turn off render
     }
+    //added 16-09-21
+    private void TriggerLoad()
+    {
+        if (loadTrigger.Enter)
+        {
+            shouldLoad = true;
+        }
+    }
 
-    private void OnTriggerEnter(Collider other)
+    private void TriggerUnload() 
+    {
+        if (unloadTrigger.Enter)
+        {
+            shouldLoad = false;
+        }
+    }
+
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -134,20 +155,22 @@ public class ScenePartLoader : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)//commented out but kept incase needed later
     {
         if (other.CompareTag("Player"))
         {
             shouldLoad = false;
         }
-    }
+    }*/
 
     void TriggerCheck()
     {
         //shouldLoad is set from the Trigger methods
+        TriggerLoad();
+        TriggerUnload();
         if (shouldLoad)
         {
-            LoadScene();
+            LoadScene();            
         }
         else
         {
