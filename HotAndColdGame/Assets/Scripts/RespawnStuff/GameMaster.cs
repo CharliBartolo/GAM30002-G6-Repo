@@ -11,6 +11,8 @@ public class GameMaster : MonoBehaviour
     public GameObject playerRef;
     public int difficultyNum;   // 0 is standard, 1 is hard
 
+    public bool LoadingCheckpoint;
+
     [SerializeField] public Transform lastCheckPointPos;
 
     void Awake() 
@@ -69,7 +71,7 @@ public class GameMaster : MonoBehaviour
 
     void LoadCheckpoint()
     {
-
+        LoadingCheckpoint = true;
     }
 
     public void SetDifficulty(int difficultyNum)

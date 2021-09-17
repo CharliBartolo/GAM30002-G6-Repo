@@ -9,7 +9,7 @@ public class DeathEffect : FXController
     [SerializeField] public TemperatureStateBase crntTemp;//get player temperature
     //[SerializeField] private GameMaster gm;//to get last respawn/checkpoint
     //[SerializeField] private GameObject player; //To get Player's position.
-    bool isResetting = false;
+    public bool isResetting = false;
 
     public Sprite Overlay_Crystal_Passive;
     public Sprite Overlay_Crystal_Death;
