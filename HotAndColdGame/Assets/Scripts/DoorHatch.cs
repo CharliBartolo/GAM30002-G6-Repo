@@ -26,6 +26,9 @@ public class DoorHatch : StateTriggered
     protected Color Crystal_Hot;
     protected Color Crystal_Cold;
 
+    public AudioClip Sound_Open;
+    public AudioClip Sound_Close;
+
     //public LineRenderer Lightning;
 
     //public TemperatureStateBase machine;
@@ -70,6 +73,27 @@ public class DoorHatch : StateTriggered
         }
     }
 
+    public void PlaySound(int state)
+    {
+       
+
+        // open
+        if (state == 0)
+        {
+            GetComponent<AudioSource>().clip = Sound_Open;
+           
+        }
+        // close
+        else if (state == 1)
+        {
+            GetComponent<AudioSource>().clip = Sound_Close;
+        }
+
+
+        GetComponent<AudioSource>().Play();
+
+    }
+
     public override void ListenForTrigger()
     {
         isAnimationComplete = AnimationComplete();
@@ -98,7 +122,7 @@ public class DoorHatch : StateTriggered
                     {
                         state = DoorState.Locked;
                         Anim.Play("Close2");
-
+                        PlaySound(1);
                         ActivateLight(-1);
                         ActivateLight(1);
                         //DeactivateLight(1);
@@ -134,6 +158,7 @@ public class DoorHatch : StateTriggered
                     {
                         state = DoorState.Open2;
                         Anim.Play("Open2");
+                        PlaySound(0);
                         //ActivateLight(-1);
                         DeactivateLight(1);
                         //DeactivateLight(-1);
@@ -146,7 +171,7 @@ public class DoorHatch : StateTriggered
                     {
                         state = DoorState.Locked;
                         Anim.Play("Close2");
-
+                        PlaySound(1);
                         ActivateLight(-1);
                         ActivateLight(1);
                         //DeactivateLight(1);
@@ -268,75 +293,6 @@ public class DoorHatch : StateTriggered
         }
     }
 
-    /* public void SetLights(GameObject[] lights, int state)
-     {
-         switch(state)
-         {
-             case -1:
-                 foreach (var item in lights)
-                 {
-                     Renderer[] rs = item.GetComponentsInChildren<Renderer>();
-                     foreach (var r in rs)
-                     {
-                         if (r != null)
-                         {
-                             //r.sharedMaterial = emissiveMaterial;
-                             r.sharedMaterial.SetColor("_EmissiveColor", GameMaster.instance.colourPallete.Negative);
-                         }
-                     }
-
-                 }
-             break;
-
-             case 0:
-                 foreach (var item in lights)
-                 {
-                     Renderer[] rs = item.GetComponentsInChildren<Renderer>();
-
-                     if (rs != null)
-                     {
-                         foreach (var r in rs)
-                         {
-                             //r.sharedMaterial = emissiveMaterial;
-                             r.sharedMaterial.SetColor("_EmissiveColor", GameMaster.instance.colourPallete.Neutral);
-                         }
-                     }
-                 }
-                 break;
-
-             case 1:
-                 foreach (var item in lights)
-                 {
-                     Renderer[] rs = item.GetComponentsInChildren<Renderer>();
-
-                     if (rs != null)
-                     {
-                         foreach (var r in rs)
-                         {
-                             //r.sharedMaterial = emissiveMaterial;
-                             r.sharedMaterial.SetColor("_EmissiveColor", GameMaster.instance.colourPallete.Positive);
-                         }
-                     }
-                 }
-                 break;
-         }
-
-
-         foreach (var item in lights)
-         {
-             Renderer[] rs = item.GetComponentsInChildren<Renderer>();
-
-             if (rs != null)
-             {
-                 foreach (var r in rs)
-                 {
-                     //r.sharedMaterial = emissiveMaterial;
-                     r.sharedMaterial.SetColor("_EmissiveColor", GameMaster.instance.colourPallete.Neutral);
-                 }
-             }
-         }
-     }
- */
 
     public virtual bool AnimationComplete()
     {
