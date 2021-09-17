@@ -10,6 +10,9 @@ public class CheckPoint : MonoBehaviour
 
     private bool triggered;
 
+    public AudioClip activationSound;
+    public AudioClip passiveSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,14 +29,30 @@ public class CheckPoint : MonoBehaviour
     public void LightCampfire()
     {
         CrystalBehaviour campfire = GetComponentInChildren<CrystalBehaviour>();
+        PlayActivationSound();
+        PlayPassiveSound();
 
-        if(campfire != null)
+        if (campfire != null)
         {
+            
             campfire.isPermanentlyPowered = true;
             campfire.transform.Find("EffectLight").GetComponent<Light>().enabled = true;
             campfire.SetTemperature(campfireTemp);
             this.triggered = true;
         }
+    }
+
+    public void PlayActivationSound()
+    {
+        GetComponent<AudioSource>().clip = activationSound;
+        GetComponent<AudioSource>().Play();
+    }
+
+    public void PlayPassiveSound()
+    {
+        GetComponent<AudioSource>().clip = passiveSound;
+        GetComponent<AudioSource>().loop = true;
+        GetComponent<AudioSource>().Play();
     }
 
     public void PutOutCampfires()
@@ -48,6 +67,8 @@ public class CheckPoint : MonoBehaviour
                 item.GetComponentInParent<CheckPoint>().triggered = false;
                 item.GetComponentInChildren<CrystalBehaviour>().SetTemperature(0);
                 item.GetComponentInChildren<CrystalBehaviour>().isPermanentlyPowered = false;
+                GetComponent<AudioSource>().loop = false;
+                GetComponent<AudioSource>().Stop();
             }
         }
     }
