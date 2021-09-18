@@ -35,8 +35,8 @@ public class UIFXController : FXController
     }
     void Update()
     {
-
-        UpdatePlayerTempUI();
+        if(player != null)
+            UpdatePlayerTempUI();
 
     }
 

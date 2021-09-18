@@ -15,17 +15,23 @@ public class SFXInteractable: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (DE.isResetting)
+        if(DE != null)
         {
-            gameObject.GetComponent<VisualEffect>().enabled = true;          
+            if (DE.isResetting)
+            {
+                gameObject.GetComponent<VisualEffect>().enabled = true;
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other == InteractingObject.GetComponent<Collider>())
+        if(InteractingObject != null)
         {
-            gameObject.GetComponent<VisualEffect>().enabled = false;
+            if (other == InteractingObject.GetComponent<Collider>())
+            {
+                gameObject.GetComponent<VisualEffect>().enabled = false;
+            }
         }
     }
 }

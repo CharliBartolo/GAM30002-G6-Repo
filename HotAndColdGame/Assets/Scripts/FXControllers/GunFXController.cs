@@ -191,7 +191,9 @@ public class GunFXController : FXController
         // call set colour of barrel crystals
         //SetBarrelCrystals();
         // call set colour of back crystal
-        SetBackCrystal();
+        if(BackCrystals != null)
+            SetBackCrystal();
+
         if (TubeCrystals != null && gun.gunUpgradeState != RayCastShootComplete.gunUpgrade.None)
             SetTubeCrystals();
         // call set emissive lights
