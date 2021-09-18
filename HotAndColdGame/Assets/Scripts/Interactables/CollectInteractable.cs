@@ -44,6 +44,8 @@ public class CollectInteractable : InteractableBase
         {
             case  RayCastShootComplete.gunUpgrade.None:
                 GameObject.Find("Player").GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
+                Camera.main.GetComponent<AudioSource>().clip = GameObject.Find("Player").GetComponent<PlayerController>().GetComponent<GunFXController>().discoverRaygun;
+                Camera.main.GetComponent<AudioSource>().Play();
                 break;
 
             case RayCastShootComplete.gunUpgrade.One:
