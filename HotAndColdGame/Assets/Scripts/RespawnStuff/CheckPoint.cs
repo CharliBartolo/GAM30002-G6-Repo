@@ -44,8 +44,8 @@ public class CheckPoint : MonoBehaviour
 
     public void PlayActivationSound()
     {
-        GetComponent<AudioSource>().clip = activationSound;
-        GetComponent<AudioSource>().Play();
+        //GetComponent<AudioSource>().clip = activationSound;
+        GetComponent<AudioSource>().PlayOneShot(activationSound);
     }
 
     public void PlayPassiveSound()
