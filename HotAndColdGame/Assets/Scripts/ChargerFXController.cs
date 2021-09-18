@@ -25,7 +25,11 @@ public class ChargerFXController : FXController
         base.Start();
         laserMaterial = new Material(GameMaster.instance.colourPallete.materials.CrystalCharger);
 
-        rayOrigin = transform.Find("RayOrigin");
+        if(transform.Find("RayOrigin") != null)
+        {
+            rayOrigin = transform.Find("RayOrigin");
+        }
+       
         if(line == null)
             line = GetComponentInChildren<LineRenderer>();
 
@@ -49,20 +53,22 @@ public class ChargerFXController : FXController
         {
             if(isLaserEnabled)
             {
-                if (!line.enabled)
-                    line.enabled = true;
-
                 if (line != null)
+                {
+                    if (!line.enabled)
+                        line.enabled = true;
                     UpdateRange();
+                }
             }
-          
-
             HitStateBased();
         }
         else
         {
-            if (line.enabled)
-                line.enabled = false;
+            if(line != null)
+            {
+                if (line.enabled)
+                    line.enabled = false;
+            }
         }
      
         //Debug.Log("HIT TEMP STATE BASE: " + hit.collider.gameObject.name);
