@@ -84,6 +84,9 @@ public class GunFXController : FXController
         {
             if (gun_obj.activeSelf == false)
                 gun_obj.SetActive(true);
+
+            weaponState = WeaponState.Idle_Equipped;
+            NextState();
             //gun_obj.SetActive(true);
             //weaponState = WeaponState.Inspect;
             //NextState();
@@ -100,6 +103,7 @@ public class GunFXController : FXController
         if(gun_obj != null && gun.gunUpgradeState == RayCastShootComplete.gunUpgrade.Two)
         {
             SetWeaponMods((int)gun.gunUpgradeState);
+            equipped = true;
         }
         //UpdateCasedCrystals();
 

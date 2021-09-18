@@ -44,6 +44,7 @@ public class RayCastShootComplete : MonoBehaviour {
         laserLine.SetPosition(0, gunEnd.position);
         //lightning.startColor = colour;
         //lightning.endColor = colour;
+
     }
 
     public void UpdateGunState()
