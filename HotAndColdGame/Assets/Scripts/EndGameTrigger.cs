@@ -16,9 +16,12 @@ public class EndGameTrigger : MonoBehaviour
     {
         screenEffects = GameObject.Find("UI").GetComponentInChildren<DeathEffect>();
         darknessOverlay = screenEffects.Fade;
+        darknessOverlay.GetComponent<Image>().sprite = screenEffects.Overlay_Crystal_Death;
+        darknessOverlay.GetComponent<Image>().color = screenEffects.Darkness;
 
         //StartCoroutine(StartScene(1));
-       DarknessFadeOut(1);
+        StartCoroutine(DarknessFadeIn(0));
+        StartCoroutine(DarknessFadeOut(1, 0.25f));
     }
 
     // Update is called once per frame
@@ -39,7 +42,7 @@ public class EndGameTrigger : MonoBehaviour
     IEnumerator LoadNextScene(float delay)
     {
         GameMaster.instance.playerRef.GetComponent<PlayerController>().playerControlState = PlayerController.PlayerState.ControlsDisabled;
-        DarknessFadeIn(delay);
+        StartCoroutine(DarknessFadeIn(delay));
         yield return new WaitForSeconds(delay);
         if(!travellingBackwards)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -50,22 +53,30 @@ public class EndGameTrigger : MonoBehaviour
 
     IEnumerator StartScene(float delay)
     {
+        darknessOverlay.GetComponent<Image>().sprite = screenEffects.Overlay_Crystal_Death;
+        darknessOverlay.GetComponent<Image>().color = screenEffects.Darkness;
         yield return new WaitForSeconds(delay);
         DarknessFadeOut(delay);
     }
 
-    public void DarknessFadeIn(float duration)
+    public IEnumerator DarknessFadeIn(float duration, float delay = 0)
     {
         darknessOverlay.GetComponent<Image>().sprite = screenEffects.Overlay_Crystal_Death;
         darknessOverlay.GetComponent<Image>().color = screenEffects.Darkness;
+
+        yield return new WaitForSeconds(delay);
+
         darknessOverlay.CrossFadeAlpha(1, duration, false);
         
     }
 
-    public void DarknessFadeOut(float duration)
+    public IEnumerator DarknessFadeOut(float duration, float delay = 0)
     {
         darknessOverlay.GetComponent<Image>().sprite = screenEffects.Overlay_Crystal_Death;
         darknessOverlay.GetComponent<Image>().color = screenEffects.Darkness;
+
+        yield return new WaitForSeconds(delay);
+
         darknessOverlay.CrossFadeAlpha(0, duration, false);
 
     }
