@@ -57,6 +57,8 @@ public class GunFXController : FXController
     public float raygunPitch_Negative = 2.75f;
     public float raygunPitch_Neutral = 1f;
 
+    public AudioClip discoverRaygun;
+
     // Start is called before the first frame update
     public override void Start()
     {
@@ -108,6 +110,8 @@ public class GunFXController : FXController
         Renderer case2 = CrystalCase2.GetComponent<Renderer>();
         case1.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
         case2.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);*/
+
+
     }
 
     // Update is called once per frame
@@ -265,23 +269,6 @@ public class GunFXController : FXController
         Renderer case2 = CrystalCase2.GetComponent<Renderer>();
         case1.sharedMaterial.color = Crystal_Cold;
         case2.sharedMaterial.color = Crystal_Hot;
-        /*foreach (var item in renderers2)
-        {
-            item.sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
-       *//* }*//*
-        case1.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
-        case2.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
-
-        if (GetComponent<PlayerController>().raygunScript.cold)
-        {
-            case1.sharedMaterial.color = Crystal_Cold;
-            case2.sharedMaterial.color = Crystal_Hot;
-        }
-        else
-        {
-            case2.sharedMaterial.color = Crystal_Cold;
-            case1.sharedMaterial.color = Crystal_Hot;
-        }*/
     }
 
     // weapon & arm states
@@ -447,6 +434,7 @@ public class GunFXController : FXController
             // do state stuff
             if(firstHandShow)
             {
+               
                 if (AnimationComplete("Grab_Enter"))
                 {
                     weaponState = WeaponState.GrabRetract;
