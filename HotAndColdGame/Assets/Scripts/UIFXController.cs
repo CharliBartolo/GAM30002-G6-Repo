@@ -30,7 +30,9 @@ public class UIFXController : FXController
         Negative.color = Crystal_Hot;
 
         neutral = Slider.value;
-        player = GameObject.Find("Player").GetComponent<PlayerController>();
+        
+        if (GameObject.Find("Player") != null)
+            player = GameObject.Find("Player").GetComponent<PlayerController>();
 
     }
     void Update()

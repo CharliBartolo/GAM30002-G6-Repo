@@ -67,7 +67,8 @@ public class PauseController : MonoBehaviour
 
         }
 
-        PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
+        if(PC != null)
+            PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
 
         //Listeners
         MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
@@ -120,11 +121,13 @@ public class PauseController : MonoBehaviour
 
         }
 
-        playerInput.actions.FindActionMap("Player").FindAction("Pause").performed +=
+        if(playerInput != null)
+        {
+            playerInput.actions.FindActionMap("Player").FindAction("Pause").performed +=
             pauseText =>
             {
-                
-                if(!IsPaused)
+
+                if (!IsPaused)
                 {
                     Debug.Log("TEST PAUSE");
                     Quitting = false;
@@ -133,20 +136,22 @@ public class PauseController : MonoBehaviour
                 }
             };
 
-        if(IsPaused)
-        {
-            playerInput.actions.FindActionMap("Menu").FindAction("Pause").performed +=
-            pauseText =>
+            if (IsPaused)
             {
-                if(IsPaused)
+                playerInput.actions.FindActionMap("Menu").FindAction("Pause").performed +=
+                pauseText =>
                 {
-                    Debug.Log("TEST UNPAUSE");
-                    Quitting = false;
-                    IsPaused = false;
-                    Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
+                    if (IsPaused)
+                    {
+                        Debug.Log("TEST UNPAUSE");
+                        Quitting = false;
+                        IsPaused = false;
+                        Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
                 }
-            };
+                };
+            }
         }
+        
     }
 
 

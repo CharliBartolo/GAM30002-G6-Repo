@@ -473,7 +473,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &157207113
 Light:
   m_ObjectHideFlags: 0
@@ -5544,9 +5544,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 48898115, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1047577248, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1561819254, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3665375620786811913, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3665375620786811913, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5554,7 +5566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3665375621385087423, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -5.000061
+      value: -5.000122
       objectReference: {fileID: 0}
     - target: {fileID: 3665375622089406116, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_Pivot.x
@@ -17151,6 +17163,7 @@ MonoBehaviour:
   raygunPitch_Positive: 2
   raygunPitch_Negative: 2.75
   raygunPitch_Neutral: 1
+  discoverRaygun: {fileID: 0}
 --- !u!114 &6952919437063350118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17244,6 +17257,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 41d7f6a6-c7d6-41a7-8431-eca4c51aced1
     m_ActionName: Player/Walk[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 11594c9e-1a43-4a4a-9be6-8b3de0949c74
+    m_ActionName: Player/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d0aa5a7e-8a8f-4164-8766-9effad880068
+    m_ActionName: Menu/Pause[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard And Mouse
   m_DefaultActionMap: Player

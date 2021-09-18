@@ -11,7 +11,8 @@ public class CollectInteractable : InteractableBase
     public bool destroyOnCollect = true;
     public int int_data;
 
-    private void Start() 
+
+    public void Start() 
     {
         
     }
