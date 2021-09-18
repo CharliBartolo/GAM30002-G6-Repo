@@ -238,8 +238,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 342a08ec246036945b9313d2e1a3b6e7, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4545,8 +4545,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 35
+    m_Font: {fileID: 12800000, guid: f90c0cd07d6f13f43844db8e4ae01ab2, type: 3}
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -6965,6 +6965,7 @@ MonoBehaviour:
     EmissiveLights: {fileID: 2100000, guid: 02d64e42cfc6b2144bcc23ce5799e94e, type: 2}
     HiddenTexture: {fileID: 2100000, guid: 6edfd67cb66f4e645b951c00d64cceb1, type: 2}
     LightningStrike: {fileID: 12080208, guid: a84cb58ef7faa67488076810242453b9, type: 3}
+    CrystalCharger: {fileID: 0}
 --- !u!114 &1969793147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6979,6 +6980,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioManager: {fileID: 647679430}
   colourPallete: {fileID: 1969793146}
+  playerRef: {fileID: 0}
+  difficultyNum: 0
+  LoadingCheckpoint: 0
   lastCheckPointPos: {fileID: 0}
 --- !u!4 &1969793148
 Transform:
@@ -7053,7 +7057,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: f90c0cd07d6f13f43844db8e4ae01ab2, type: 3}
     m_FontSize: 80
     m_FontStyle: 1
     m_BestFit: 0
