@@ -139,7 +139,7 @@ public class DeathEffect : FXController
         GameMaster.instance.playerRef.GetComponent<PlayerController>().
             playerMouseLook.ResetMouse(GameMaster.instance.lastCheckPointPos);
         //Fade.GetComponent<Image>().color = new Color32(0, 0, 0, 0);//red, green, blue, alpha
-        Fade.CrossFadeAlpha(0, 0.5f, false);  
+        Fade.CrossFadeAlpha(0, 1f, false);  
         isResetting = false;      
     }
 }
