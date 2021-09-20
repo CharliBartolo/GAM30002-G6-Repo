@@ -703,7 +703,7 @@ public class PlayerController : MonoBehaviour, IConditions
     /// </summary>
     void VelocityClamp()
     {    
-        if (isGrounded || currentCoyoteTimer > 0)
+        if (isGrounded)
         {
             // Multiply horizontal velocity cap by movement input to limit top speed based on varying stick inputs / walk button
             float movementInputMultiplier = playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude;
@@ -744,7 +744,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
         // Use DOT product as sliding scale of force I.e. Between 0 and 1, apply less force, between -1 and 0, apply most force
         // Basically, closer DOT is to 1, the closer the player is to moving in the same direction as their current velocity.
-        if (isGrounded || currentCoyoteTimer > 0)
+        if (isGrounded)
         {
             if (moveDirDotProd >= 0f && moveDirDotProd < 1f)
             {
