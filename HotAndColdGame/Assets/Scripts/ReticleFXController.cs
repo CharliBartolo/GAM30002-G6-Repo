@@ -12,18 +12,40 @@ public class ReticleFXController : ToolboxFXController
     public float reticleSize = 0.25f;
     public float reticleOpacity = 0.5f;
 
-    public bool hitTempObject = false;
+    // raycast components
+    Vector3 rayOrigin = Vector3.zero;
+    Camera cam = null;
+
+    // range properties
+    public float range_raygun;
+    public float range_interact;
+
+    // reticle display properties
+    public float size_unequipped = 0.09f;
+    public float size_pickup = 0.09f;
+    public float size_negative = 0.05f;
+    public float size_positive = 0.05f;
+    public float size_neutral = 0.05f;
+    
 
     public GameObject objHit{ get; set;}
 
     public enum ReticleState { Unequipped, Pickup, Neutral, Negative, Positive, Machine, }
 
     public ReticleState state = ReticleState.Unequipped;
+    ReticleState prevState = ReticleState.Unequipped;
 
     // Start is called before the first frame update
     public override void  Start()
     {
         base.Start();
+
+        cam = GetComponentInChildren<Camera>();
+       
+        range_raygun = GetComponentInChildren<RayCastShootComplete>().weaponRange;
+        range_interact = GetComponentInChildren<PlayerController>().interactRange;
+       
+        
 
         ChangeState(ReticleState.Unequipped);
     }
@@ -62,26 +84,106 @@ public class ReticleFXController : ToolboxFXController
 
         // update reticle size
         UpdateReticleSize();
-
-        ReticleBehaviour();
+       
+        ResponsiveReticle();
+       
+        
 
     }
-    
-    public void ReticleBehaviour()
+
+    public void ResponsiveReticle()
     {
+        DetectObjectAhead();
+        //Debug.Log("HIT OBJECT: " + objHit);
 
-        if (hitTempObject)
+        bool hitCrystal = false;
+        bool hitCollectable = false;
+
+
+        if (objHit != null)
         {
-         
+            // check for temp state based object
+            if (objHit.GetComponentInParent<CrystalBehaviour>() != null)
+            {
+                Debug.Log("HIT CRYSTAL OBJECT: " + objHit);
+                if (!hitCrystal)
+                    hitCrystal = true;
 
+            }
+            // check for collectable object
+            else if (objHit.GetComponent<CollectInteractable>() != null)
+            {
+                Debug.Log("HIT COLLECTABLE OBJECT: " + objHit);
+
+                // check if within interact range
+                if (Vector3.Distance(objHit.transform.position, cam.transform.position) < range_interact)
+                {
+                    if (state != ReticleState.Pickup)
+                    {
+                        prevState = state;
+                        ChangeState(ReticleState.Pickup);
+                    }
+
+                    if (!hitCollectable)
+                        hitCollectable = true;
+                }
+                else
+                {
+                    if (hitCollectable)
+                        hitCollectable = false;
+                }
+               
+              
+            }
+            else
+            {
+                hitCrystal = false;
+                hitCollectable = false;
+
+                if (state != prevState)
+                {
+                    if(state == ReticleState.Negative)
+                    {
+                        prevState = ReticleState.Negative;
+                    }
+                    else if (state == ReticleState.Positive)
+                    {
+                        prevState = ReticleState.Positive;
+                    }
+
+                    ChangeState(prevState);
+                }
+                    
+                //ChangeState(ReticleState.Unequipped);
+                //UpdateReticalState();
+            }
+           
+
+        }
+        // return to prev reticle state
+        else
+        {
+           
+        }
+    }
+
+    public void DetectObjectAhead()
+    {
+        RaycastHit hit;
+        rayOrigin = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
+        bool hitSomething = Physics.Raycast(rayOrigin, cam.transform.forward, out hit, 100);
+
+        if(hitSomething)
+        {
+            objHit = hit.collider.gameObject;
         }
         else
         {
-
+            objHit = null;
         }
     }
 
-    public bool DetectRangeHit()
+   /* public bool DetectRangeHit()
     {
         if(objHit != null)
         {
@@ -96,10 +198,12 @@ public class ReticleFXController : ToolboxFXController
                 
         }
         return false;
-    }
+    }*/
 
     public void ChangeState(ReticleState newState)
     {
+        //prevState = state;
+        Debug.Log("PREVSTATE: " +  prevState);
         state = newState;
         UpdateReticalState();
     }
@@ -114,7 +218,7 @@ public class ReticleFXController : ToolboxFXController
                 colUnequipped.a = reticleOpacity;
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colUnequipped;
                 reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.neutralCursor;
-                reticleSize = 0.085f;
+                reticleSize = size_unequipped;
                 /* reticle.hotCursor.gameObject.SetActive(false);
                  reticle.coldCursor.gameObject.SetActive(false);*/
                 break;
@@ -124,31 +228,32 @@ public class ReticleFXController : ToolboxFXController
                 colPickup.a = reticleOpacity;
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colPickup;
                 reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.hand;
-                reticleSize = 2f;
+                reticleSize = size_pickup;
                 break;
             case ReticleState.Neutral:
                 Color colNeutral = Color.white;
                 colNeutral.a = reticleOpacity;
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colNeutral;
                 reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.neutralCursor;
-                reticleSize = 0.085f;
+                reticleSize = size_unequipped;
                 break;
             case ReticleState.Negative:
                 Color colCold = Crystal_Cold;
                 colCold.a = reticleOpacity;
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colCold;
                 reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.coldCursor;
-                reticleSize = 0.05f;
+                reticleSize = size_negative;
                 break;
             case ReticleState.Positive:
                 Color colHot = Crystal_Hot;
                 colHot.a = reticleOpacity;
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colHot;
                 reticle.Cursor.GetComponent<SpriteRenderer>().sprite = reticle.hotCursor;
-                reticleSize = 0.05f;
+                reticleSize = size_positive;
                 break;
             case ReticleState.Machine:
                 reticleSize = reticleOpacity;
+                size_unequipped = size_neutral;
                 /* reticle.hotCursor.gameObject.SetActive(false);
                  reticle.coldCursor.gameObject.SetActive(true);*/
                 break;
