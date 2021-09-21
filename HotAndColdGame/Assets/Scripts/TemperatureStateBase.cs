@@ -98,7 +98,7 @@ public class TemperatureStateBase : MonoBehaviour, ITemperature
         currentTemp = Mathf.Clamp(currentTemp, tempValueRange[0], tempValueRange[2]);     
     }
 
-    public void ChangeTemperature(float valueToAdd)
+    public virtual void ChangeTemperature(float valueToAdd)
     {
         if (canTempChange)
         {
