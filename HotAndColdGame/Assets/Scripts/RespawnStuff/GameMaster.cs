@@ -89,7 +89,7 @@ public class GameMaster : MonoBehaviour
         switch (difficultyNum)
         {
             case 0:
-                Debug.Log("Standard difficulty selected");
+                //Debug.Log("Story difficulty selected");
                 if (playerRef != null)
                 {
                     if (playerRef.TryGetComponent<PlayerTemperature>(out PlayerTemperature playerTempComp))
@@ -97,14 +97,16 @@ public class GameMaster : MonoBehaviour
                         playerTempComp.TempStatesAllowed = ITemperature.tempStatesAllowed.OnlyNeutral;
                         playerTempComp.tempValueRange[0] = -50;
                         playerTempComp.tempValueRange[2] = 50;
+                        playerTempComp.startingCountdownBeforeReturnToNeutral = 0.1f;
                     }
                     else
                     Debug.Log("Player temperature component not found!");
                 }
                 else
-                    Debug.Log("Player not found!");
+                   Debug.Log("Player not found!");
                 break;
             case 1:
+                //Debug.Log("Challenger difficulty selected");
                 if (playerRef != null)
                     {
                         if (TryGetComponent<PlayerTemperature>(out PlayerTemperature playerTempComp))
@@ -112,11 +114,12 @@ public class GameMaster : MonoBehaviour
                             playerTempComp.TempStatesAllowed = ITemperature.tempStatesAllowed.HotAndCold;
                             playerTempComp.tempValueRange[0] = -100;
                             playerTempComp.tempValueRange[2] = 100;
+                            playerTempComp.startingCountdownBeforeReturnToNeutral = 2;
                         }
                     }
                 break;
             default:
-                Debug.Log("Invalid difficulty entered, loading Standard (0) instead...");
+                Debug.Log("Invalid difficulty entered, loading Story (0) instead...");
                 SetDifficulty(0);
                 LoadDifficulty();
                 break;

@@ -7,6 +7,7 @@ public class CheckPoint : MonoBehaviour
     [SerializeField] private GameMaster gm;//reference game master script
     [SerializeField] private Transform spawnPos;
     [SerializeField] public float campfireTemp = 30.0f;
+    [SerializeField] private bool isActiveInChallenger = true;
 
     private bool triggered;
 
@@ -19,6 +20,12 @@ public class CheckPoint : MonoBehaviour
         PutOutCampfires();
         //get game master last position
         gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
+
+        // Disable campfire and checkpoint if not supposed to be active in challenger difficulty, and challenger is enabled
+        if (!isActiveInChallenger && gm.difficultyNum == 1)
+        {
+            gameObject.SetActive(false);
+        }
 
         if (spawnPos == null)
         {
