@@ -11,6 +11,8 @@ public class CollectInteractable : InteractableBase
     public bool destroyOnCollect = true;
     public int int_data;
 
+    public AudioClip pickup_sound;
+
 
     public void Start() 
     {
@@ -45,7 +47,7 @@ public class CollectInteractable : InteractableBase
         {
             case  RayCastShootComplete.gunUpgrade.None:
                 GameObject.Find("Player").GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
-                Camera.main.GetComponent<AudioSource>().clip = GameObject.Find("Player").GetComponent<PlayerController>().GetComponent<GunFXController>().discoverRaygun;
+                Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
                 Camera.main.GetComponent<AudioSource>().Play();
                 break;
 
@@ -68,6 +70,8 @@ public class CollectInteractable : InteractableBase
         // wait for animation and stuff
         yield return new WaitForSeconds(delay);
         GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal(GetComponent<Journal>().EntryLog, int_data);
+        Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
+        Camera.main.GetComponent<AudioSource>().Play();
         //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
         // do stuff
         if (destroyOnCollect)
