@@ -14,7 +14,6 @@ public class PauseController : MonoBehaviour
     /// 
     public bool IsPaused; //Pause boolean that other scripts use
     public bool Quitting; //For quitting confirmation
-    public bool isMenuEnabled = false;
     public Text pauseText; //UI element (Text) (Placeholder)
     public PlayerController PC; //Player Controller - Accesses the mouse sensitivity
 
@@ -34,38 +33,81 @@ public class PauseController : MonoBehaviour
     public PlayerInput playerInput;
     public PlayerInput menuInput;
 
+    public GameMaster GM;
+
     //Events
     private UnityEvent _eventVolumeSlider = new UnityEvent();
+
+    private void Awake()
+    {
+        //Game Master
+        if (!GM)
+        {
+            GM = GameObject.Find("GameMaster").GetComponent<GameMaster>();
+        }
+
+        //Player Controller
+        if (!PC)
+        {
+            PC = GameObject.Find("Player").GetComponent<PlayerController>();
+        }
+
+        //Player Input
+        if (playerInput != null)
+        {
+            playerInput.actions.FindActionMap("Player").FindAction("Pause").performed +=
+            pauseText =>
+            {
+
+                if (!IsPaused)
+                {
+                    Debug.Log("TEST PAUSE");
+                    //Quitting = false;
+                    IsPaused = true;
+                    Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
+                }
+            };
+
+            if (IsPaused)
+            {
+                playerInput.actions.FindActionMap("Menu").FindAction("Pause").performed +=
+                pauseText =>
+                {
+                    if (IsPaused)
+                    {
+                        Debug.Log("TEST UNPAUSE");
+                        //Quitting = false;
+                        IsPaused = false;
+                        Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
+                    }
+                };
+            }
+        }
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         Quitting = false;
         IsPaused = false;
 
-        if (isMenuEnabled)
-        {
-            /* MouseSensitivityXSlider.minValue = 0;
-             MouseSensitivityXSlider.maxValue = 1;
+        MouseSensitivityXSlider.value = GM.CS.XSensitivity;
+        MouseSensitivityYSlider.value = GM.CS.YSensitivity;
+        VolumeSlider.value = GM.CS.Volume;
 
-             MouseSensitivityYSlider.minValue = 0;
-             MouseSensitivityYSlider.maxValue = 1;*/
+        MouseSensitivityXInput.text = GM.CS.XSensitivity.ToString(); 
+        MouseSensitivityYInput.text = GM.CS.YSensitivity.ToString();
+        VolumeInput.text = GM.CS.Volume.ToString();
 
-            MouseSensitivityXInput.text = PC.playerMouseLook.mouseSensitivity.x.ToString();
-            MouseSensitivityYInput.text = PC.playerMouseLook.mouseSensitivity.y.ToString();
+        PC.playerMouseLook.mouseSensitivity.x = GM.CS.XSensitivity;
+        PC.playerMouseLook.mouseSensitivity.y = GM.CS.YSensitivity;
+        PC.GetComponent<Player_Audio_Renamed>().main_volume = GM.CS.Volume;
 
-            //Can't interact with the text fields
-            MouseSensitivityXInput.interactable = false;
-            MouseSensitivityYInput.interactable = false;
-
-            MouseSensitivityXInput.gameObject.SetActive(false);
-            MouseSensitivityYInput.gameObject.SetActive(false);
-            VolumeInput.gameObject.SetActive(false);
-
-            //VolumeSlider
-
-           
-
-        }
+        //Can't interact with the text fields
+        MouseSensitivityXInput.interactable = false;
+        MouseSensitivityYInput.interactable = false;
+        VolumeInput.interactable = false;
 
         if(PC != null)
             PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
@@ -73,14 +115,13 @@ public class PauseController : MonoBehaviour
         //Listeners
         MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
         MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-        //MouseSensitivityXInput.onValueChanged.AddListener(delegate { XSliderChange(); });
-        //MouseSensitivityYInput.onValueChanged.AddListener(delegate { YSliderChange(); });
+        VolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
 
         QuitButton.onClick.AddListener(delegate { Quitting = true; });
         YesButton.onClick.AddListener(delegate { Application.Quit(); });
         NoButton.onClick.AddListener(delegate { Quitting = false; });
 
-        VolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
+       
 
     }
 
@@ -100,58 +141,18 @@ public class PauseController : MonoBehaviour
 
         pauseText.gameObject.SetActive(IsPaused); //Toggles pause text
         //isMenuEnabled = IsPaused; //Toggles pause text
-
-        if (isMenuEnabled)
-        {
-            MouseSensitivityXSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity X Slider
-            MouseSensitivityYSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity Y Slider
-            MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
-            MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
-            VolumeSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
-            VolumeInput.gameObject.SetActive(IsPaused); //Toggles Volume Input Field
-            QuitButton.gameObject.SetActive(IsPaused); // TToggles the Quit Button
-            QuitPanel.gameObject.gameObject.SetActive(Quitting); //Toggles panel for confirmation
-            YesButton.gameObject.gameObject.SetActive(Quitting); //Toggles button for confirmation
-            NoButton.gameObject.SetActive(Quitting); // Toggles button for confirmation
-
-            //Keeps the value the same for both slider and input field
-
-
-
-
-        }
-
-        if(playerInput != null)
-        {
-            playerInput.actions.FindActionMap("Player").FindAction("Pause").performed +=
-            pauseText =>
-            {
-
-                if (!IsPaused)
-                {
-                    Debug.Log("TEST PAUSE");
-                    Quitting = false;
-                    IsPaused = true;
-                    Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
-                }
-            };
-
-            if (IsPaused)
-            {
-                playerInput.actions.FindActionMap("Menu").FindAction("Pause").performed +=
-                pauseText =>
-                {
-                    if (IsPaused)
-                    {
-                        Debug.Log("TEST UNPAUSE");
-                        Quitting = false;
-                        IsPaused = false;
-                        Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
-                }
-                };
-            }
-        }
         
+        MouseSensitivityXSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity X Slider
+        MouseSensitivityYSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity Y Slider
+        MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
+        MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
+        VolumeSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
+        VolumeInput.gameObject.SetActive(IsPaused); //Toggles Volume Input Field
+        QuitButton.gameObject.SetActive(IsPaused); // TToggles the Quit Button
+        QuitPanel.gameObject.gameObject.SetActive(Quitting); //Toggles panel for confirmation
+        YesButton.gameObject.gameObject.SetActive(Quitting); //Toggles button for confirmation
+        NoButton.gameObject.SetActive(Quitting); // Toggles button for confirmation
+             
     }
 
 
@@ -160,24 +161,26 @@ public class PauseController : MonoBehaviour
     {
         return IsPaused;
     }
-
-
-    public void VolumeChange()
-    {
-        VolumeInput.text = VolumeSlider.value.ToString();
-        PC.GetComponent<Player_Audio_Renamed>().main_volume = VolumeSlider.value;
-
-
-    }
+    
     //Changes Input Field based on Slider
     public void XInputChange()
     {
         MouseSensitivityXInput.text = MouseSensitivityXSlider.value.ToString();
-        PC.playerMouseLook.mouseSensitivity.x = MouseSensitivityXSlider.value;
+        GM.CS.XSensitivity = MouseSensitivityXSlider.value;
+        PC.playerMouseLook.mouseSensitivity.x = GM.CS.XSensitivity;
     }
+
     public void YInputChange()
     {
         MouseSensitivityYInput.text = MouseSensitivityYSlider.value.ToString();
-        PC.playerMouseLook.mouseSensitivity.y = MouseSensitivityYSlider.value;
+        GM.CS.YSensitivity = MouseSensitivityYSlider.value;
+        PC.playerMouseLook.mouseSensitivity.y = GM.CS.YSensitivity;
+    }
+
+    public void VolumeChange()
+    {
+        VolumeInput.text = VolumeSlider.value.ToString();
+        GM.CS.Volume = VolumeSlider.value;
+        PC.GetComponent<Player_Audio_Renamed>().main_volume = GM.CS.Volume;
     }
 }
