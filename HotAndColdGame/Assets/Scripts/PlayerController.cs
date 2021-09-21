@@ -222,6 +222,7 @@ public class PlayerController : MonoBehaviour, IConditions
         Vector3 stepUpOffset = default(Vector3);
 
         ExecuteConditions();
+        playerSoundControl.UpdateActiveConditions(_activeConditions);
         RemoveConditionsIfReturningToNeutral();
                 
         isGrounded = FindGround(out groundContactPoint, contactPoints);  
@@ -243,7 +244,16 @@ public class PlayerController : MonoBehaviour, IConditions
         } 
 
         if (GameMaster.instance.audioManager != null)
-            playerSoundControl.CalculateTimeToFootstep(horizVelocity, (currentCoyoteTimer > 0 || isGrounded));
+        {
+            //playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded);
+            
+            if (!_activeConditions.Contains(IConditions.ConditionTypes.ConditionCold))
+                playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded);
+            else
+                playerSoundControl.CalculateSlide(horizVelocity, isGrounded);
+            
+        }
+            
         ToggleGravity(!isGrounded);
         VelocityClamp();
         SetPlayerFrictionAndDrag();
