@@ -8,8 +8,8 @@ public class Player_Audio_Renamed : MonoBehaviour
     //Current volume is not currently set to match temperature value, This will need to be further implemented depending on how we want it to work
 
     //Song Theme volumes
-    float max_volume = 1;
-    float min_volume = 0;
+    public float max_volume = 1;
+    public float min_volume = 0;
     public float main_volume = 1;
     public float ice_volume = 0;
     public float heat_volume = 0;
@@ -23,10 +23,10 @@ public class Player_Audio_Renamed : MonoBehaviour
     void Update()
     {
         //Test playing a sound
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            GetComponent<AudioManager>().Play("Lazer");
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    GetComponent<AudioManager>().Play("Lazer");
+        //}
 
         //Adjust volumes on update
         GetComponent<AudioManager>().SetVolume("Main", main_volume);

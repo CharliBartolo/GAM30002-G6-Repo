@@ -34,7 +34,7 @@ public class PlayerSoundControl : MonoBehaviour
     }
 
     // Sound Functions Below
-    public void CalculateTimeToFootstep(Vector3 horizVelocity, bool isGrounded)
+    public void CalculateTimeToFootstep(Vector3 horizVelocity, bool isGrounded, float coyoteTimer)
     {
         if (slidingAudio.isPlaying)
         {
@@ -42,7 +42,11 @@ public class PlayerSoundControl : MonoBehaviour
         }
 
         //Debug.Log(currentTimeBetweenFootsteps);
-        if (horizVelocity.magnitude > 0f && horizVelocity.magnitude < 10f && isGrounded)
+        if (!isGrounded && coyoteTimer > 0f)
+        {
+            // Do nothing
+        }
+        else if (horizVelocity.magnitude > 0f && horizVelocity.magnitude < 10f && isGrounded)
         {
             currentTimeBetweenFootsteps -= 5f * horizVelocity.magnitude * Time.deltaTime;
         }   

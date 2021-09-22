@@ -61,14 +61,23 @@ public class PauseController : MonoBehaviour
             MouseSensitivityYInput.gameObject.SetActive(false);
             VolumeInput.gameObject.SetActive(false);
 
-            //VolumeSlider
-
+            if (PlayerPrefs.HasKey("MusicVolume"))
+            {
+                PC.GetComponent<Player_Audio_Renamed>().max_volume = PlayerPrefs.GetFloat("MusicVolume");
+                PC.GetComponent<Player_Audio_Renamed>().main_volume = PlayerPrefs.GetFloat("MusicVolume");
+                VolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+            } 
+            else
+            {
+                // Mainly running this to save to PlayerPrefs
+                VolumeChange();
+            }
            
 
         }
 
-        if(PC != null)
-            PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
+        //if(PC != null)
+            //PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
 
         //Listeners
         MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
@@ -165,10 +174,23 @@ public class PauseController : MonoBehaviour
     public void VolumeChange()
     {
         VolumeInput.text = VolumeSlider.value.ToString();
-        PC.GetComponent<Player_Audio_Renamed>().main_volume = VolumeSlider.value;
 
+        if (PC.TryGetComponent<Player_Audio_Renamed>(out Player_Audio_Renamed audioComp))
+        {
+            audioComp.max_volume = VolumeSlider.value;
+            if (audioComp.main_volume > audioComp.max_volume)
+                audioComp.main_volume = audioComp.max_volume;
+            
+            if (audioComp.heat_volume > audioComp.max_volume)
+                audioComp.heat_volume = audioComp.max_volume;
 
+            if (audioComp.ice_volume > audioComp.max_volume)
+                audioComp.ice_volume = audioComp.max_volume;
+        }       
+
+        PlayerPrefs.SetFloat("MusicVolume", audioComp.max_volume);
     }
+
     //Changes Input Field based on Slider
     public void XInputChange()
     {

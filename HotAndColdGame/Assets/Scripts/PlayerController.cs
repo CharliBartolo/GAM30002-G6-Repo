@@ -248,7 +248,7 @@ public class PlayerController : MonoBehaviour, IConditions
             //playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded);
             
             if (!_activeConditions.Contains(IConditions.ConditionTypes.ConditionCold))
-                playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded);
+                playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded, currentCoyoteTimer);
             else
                 playerSoundControl.CalculateSlide(horizVelocity, isGrounded);
             
