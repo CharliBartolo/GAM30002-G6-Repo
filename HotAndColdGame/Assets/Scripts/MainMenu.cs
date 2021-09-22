@@ -38,7 +38,12 @@ public class MainMenu : MonoBehaviour
             GM = GameObject.Find("GameMaster").GetComponent<GameMaster>();
             Debug.Log("THIS IS A MAIN MENU SCRIPT: " + this);
             Debug.Log("THIS IS A GAMEMASTER SCRIPT: " + GM);
-        }    
+        }
+
+        //Listeners
+        MenuMouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
+        MenuMouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
+        MenuVolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
     }
 
     // Start is called before the first frame update
@@ -56,14 +61,6 @@ public class MainMenu : MonoBehaviour
         MenuMouseSensitivityXInput.interactable = false;
         MenuMouseSensitivityYInput.interactable = false;
         MenuVolumeInput.interactable = false;
-
-        //Listeners
-        MenuMouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
-        MenuMouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-        MenuVolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
-
-        GameObject.Find("Controls Menus").SetActive(false);
-        GameObject.Find("Sound Menus").SetActive(false);
     }
 
     public void Play()

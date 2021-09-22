@@ -30,9 +30,6 @@ public class PauseController : MonoBehaviour
     public Button YesButton; //Yes Confirmation Button
     public Button NoButton; //No Confirmation Button
 
-    public PlayerInput playerInput;
-    public PlayerInput menuInput;
-
     public GameMaster GM;
 
     //Events
@@ -52,17 +49,23 @@ public class PauseController : MonoBehaviour
             PC = GameObject.Find("Player").GetComponent<PlayerController>();
         }
 
+        //Volume component
+        if (PC != null)
+            PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
+
         //Player Input
-        if (playerInput != null)
+        /*
+        if (!PC)
         {
-            playerInput.actions.FindActionMap("Player").FindAction("Pause").performed +=
+            
+            PC.GetComponent<PlayerInput>().actions.FindActionMap("Player").FindAction("Pause").performed +=
             pauseText =>
             {
 
                 if (!IsPaused)
                 {
                     Debug.Log("TEST PAUSE");
-                    //Quitting = false;
+                    Quitting = false;
                     IsPaused = true;
                     Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
                 }
@@ -70,20 +73,32 @@ public class PauseController : MonoBehaviour
 
             if (IsPaused)
             {
-                playerInput.actions.FindActionMap("Menu").FindAction("Pause").performed +=
+                PC.GetComponent<PlayerInput>().actions.FindActionMap("Menu").FindAction("Pause").performed +=
                 pauseText =>
                 {
                     if (IsPaused)
                     {
                         Debug.Log("TEST UNPAUSE");
-                        //Quitting = false;
+                        Quitting = false;
                         IsPaused = false;
                         Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
                     }
                 };
-            }
+            }           
         }
+        */
 
+        //Listeners
+        MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
+        MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
+        VolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
+
+        QuitButton.onClick.AddListener(delegate { Quitting = true; });
+        YesButton.onClick.AddListener(delegate { Application.Quit(); });
+        NoButton.onClick.AddListener(delegate { Quitting = false; });
+
+        PC.GetComponent<PlayerInput>().actions.FindActionMap("Player").FindAction("Pause").performed += OnPause;
+        PC.GetComponent<PlayerInput>().actions.FindActionMap("Menu").FindAction("Pause").performed += OnPause;
     }
 
     // Start is called before the first frame update
@@ -107,22 +122,7 @@ public class PauseController : MonoBehaviour
         //Can't interact with the text fields
         MouseSensitivityXInput.interactable = false;
         MouseSensitivityYInput.interactable = false;
-        VolumeInput.interactable = false;
-
-        if(PC != null)
-            PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
-
-        //Listeners
-        MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
-        MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-        VolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
-
-        QuitButton.onClick.AddListener(delegate { Quitting = true; });
-        YesButton.onClick.AddListener(delegate { Application.Quit(); });
-        NoButton.onClick.AddListener(delegate { Quitting = false; });
-
-       
-
+        VolumeInput.interactable = false;            
     }
 
     // log values
@@ -151,17 +151,25 @@ public class PauseController : MonoBehaviour
         QuitButton.gameObject.SetActive(IsPaused); // TToggles the Quit Button
         QuitPanel.gameObject.gameObject.SetActive(Quitting); //Toggles panel for confirmation
         YesButton.gameObject.gameObject.SetActive(Quitting); //Toggles button for confirmation
-        NoButton.gameObject.SetActive(Quitting); // Toggles button for confirmation
-             
-    }
+        NoButton.gameObject.SetActive(Quitting); // Toggles button for confirmation 
 
+        
+    }
 
     //Getter for IsPaused boolean
     public bool GetPause()
     {
         return IsPaused;
     }
-    
+
+    void OnPause(InputAction.CallbackContext context)
+    {
+        Debug.Log("TEST PAUSE");
+        Quitting = false;
+        IsPaused = !IsPaused;
+        //Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
+    }
+
     //Changes Input Field based on Slider
     public void XInputChange()
     {
