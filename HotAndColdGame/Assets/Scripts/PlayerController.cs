@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour, IConditions
     [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
     private bool isConditionChanging = false;
     private bool isPaused = false;
-    private bool isInitialised = false;
+    public bool isInitialised = false;
 
     [Header("References")]    
     public RayCastShootComplete raygunScript;

@@ -166,6 +166,11 @@ public class PauseController : MonoBehaviour
 
     void OnPause(InputAction.CallbackContext context)
     {
+        if (!PC.GetComponent<PlayerController>().isInitialised)
+        {
+            return;
+        }
+
         Journal_Reader journalUIComponent = GameObject.Find("UI").GetComponentInChildren<Journal_Reader>();
 
         if (journalUIComponent.text[0].gameObject.activeSelf)
