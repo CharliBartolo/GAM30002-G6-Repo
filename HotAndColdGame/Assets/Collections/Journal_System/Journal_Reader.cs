@@ -37,7 +37,7 @@ public class Journal_Reader : MonoBehaviour
         text[1].gameObject.SetActive(true);
         //image.gameObject.SetActive(true);
 
-        SetTimeout(timeoutDisplay);
+        //SetTimeout(timeoutDisplay);
 
         if (journalType == 0)
         {
@@ -52,6 +52,7 @@ public class Journal_Reader : MonoBehaviour
             text[1].font = font_Alien;
         }
     }
+    
     public void Exit_Journal()
     {
         //text.GetComponent<Text>().text = journal_text;
