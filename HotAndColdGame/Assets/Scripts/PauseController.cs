@@ -166,7 +166,8 @@ public class PauseController : MonoBehaviour
 
     void OnPause(InputAction.CallbackContext context)
     {
-        if (!PC.GetComponent<PlayerController>().isInitialised)
+        if (PC.GetComponent<PlayerInput>().currentActionMap == PC.GetComponent<PlayerInput>().actions.FindActionMap("Menu")
+            && !IsPaused)
         {
             return;
         }
@@ -184,7 +185,7 @@ public class PauseController : MonoBehaviour
             IsPaused = !IsPaused;
         }
         
-        //Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
+        Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
     }
 
     //Changes Input Field based on Slider
