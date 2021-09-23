@@ -24,7 +24,7 @@ public class Cube_Test_Player : MonoBehaviour
     {
         if(other.tag == "Journal")
         {
-            string entry = other.GetComponent<Journal>().EntryLog;
+            string entry = other.GetComponent<Journal>().EntryLog[0];
             journalReader.SendMessage("Display_Journal", entry);
         }
     }

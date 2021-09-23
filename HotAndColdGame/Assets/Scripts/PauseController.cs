@@ -168,7 +168,7 @@ public class PauseController : MonoBehaviour
     {
         Journal_Reader journalUIComponent = GameObject.Find("UI").GetComponentInChildren<Journal_Reader>();
 
-        if (journalUIComponent.text.gameObject.activeSelf)
+        if (journalUIComponent.text[0].gameObject.activeSelf)
         {
             GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Exit_Journal();
         }

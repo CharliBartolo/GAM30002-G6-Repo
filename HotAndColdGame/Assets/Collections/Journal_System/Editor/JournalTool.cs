@@ -72,6 +72,6 @@ public class JournalTool : EditorWindow
         DestroyImmediate(SpawnPosition);
         GameObject newJournal = Instantiate(spawnobj, spawnpos, Quaternion.identity);
         newJournal.name = spawnobj.name;
-        newJournal.GetComponent<Journal>().EntryLog = jounralLog;
+        newJournal.GetComponent<Journal>().EntryLog[0] = jounralLog;
     }
 }

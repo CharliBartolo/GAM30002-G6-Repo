@@ -16,7 +16,7 @@ public class GameMaster : MonoBehaviour
     [SerializeField] public Transform lastCheckPointPos;
 
     //Main Menu Changes
-    public MainMenu.ControlSettings CS = new MainMenu.ControlSettings(0, 0, 100);
+    public MainMenu.ControlSettings CS = new MainMenu.ControlSettings(0.5f, 0.5f, 100);
 
     void Awake() 
     {

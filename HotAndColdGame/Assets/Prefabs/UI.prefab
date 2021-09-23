@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 635.7811, y: 15.504007}
-  m_SizeDelta: {x: 596.111, y: 662.41}
+  m_SizeDelta: {x: 555.5, y: 662.41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &59297312
 CanvasRenderer:
@@ -66,8 +66,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 46850fd5d10c7494987b8acaa0bac8d9, type: 3}
-    m_FontSize: 40
+    m_Font: {fileID: 12800000, guid: 30457532c2be77649b6afa5da7a1522d, type: 3}
+    m_FontSize: 52
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -77,8 +77,10 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
-    m_LineSpacing: 0.7
-  m_Text: Journal text 2
+    m_LineSpacing: 0.93
+  m_Text: It is magnificent, perhaps my father will finally recognise my achievements
+    instead of the cold shoulder I have been given my entire career. Through the
+    cold, the team presses on.
 --- !u!1 &229368471
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,10 +558,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a240cd7035cbe3479d21756f07024f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 1582865984}
+  text:
+  - {fileID: 1582865984}
+  - {fileID: 59297311}
   image: {fileID: 358042636}
   Background_Human: {fileID: 702149571}
   Background_Alien: {fileID: 2005199871}
+  font_Human: {fileID: 12800000, guid: 30457532c2be77649b6afa5da7a1522d, type: 3}
+  font_Alien: {fileID: 12800000, guid: ecaa581f57e07bd42b726a6eccc0c508, type: 3}
   timeoutDisplay: 5
 --- !u!1 &1294805972
 GameObject:
@@ -827,7 +833,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -355.693, y: 21.701}
-  m_SizeDelta: {x: 542.13, y: 631.4}
+  m_SizeDelta: {x: 450, y: 631.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1582865985
 CanvasRenderer:
@@ -858,8 +864,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 46850fd5d10c7494987b8acaa0bac8d9, type: 3}
-    m_FontSize: 40
+    m_Font: {fileID: 12800000, guid: 30457532c2be77649b6afa5da7a1522d, type: 3}
+    m_FontSize: 52
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -869,8 +875,11 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
-    m_LineSpacing: 0.7
-  m_Text: Journal text 1
+    m_LineSpacing: 0.93
+  m_Text: 'Ever since I was a young boy, excited like kindling in a small fire, I
+    have wanted to make a real name for myself that I can make my family name proud.
+    The titles and achievements I have to my name would mean nothing if I can solve
+    the riddle of this place. '
 --- !u!1 &1594386068
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,7 +934,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1594386068}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
@@ -1420,7 +1429,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPaused: 0
   Quitting: 0
-  isMenuEnabled: 1
   pauseText: {fileID: 1561819255}
   PC: {fileID: 0}
   MouseSensitivityXSlider: {fileID: 7320864843101421954}
@@ -1433,8 +1441,7 @@ MonoBehaviour:
   QuitPanel: {fileID: 7320864843411526377}
   YesButton: {fileID: 7320864843555765558}
   NoButton: {fileID: 7320864843860446169}
-  playerInput: {fileID: 0}
-  menuInput: {fileID: 0}
+  GM: {fileID: 0}
 --- !u!114 &156945886
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// A class dedicated to objects that are collectable by the player via the interaction ('E') button.
+/// So far, this includes the Raygun and Journals. 
+/// Last edit: InteractJournal() - Uses first entry of Journal list for now.
+/// By: Charli - 23/9/21
+/// </summary>
 public class CollectInteractable : InteractableBase
 {
     public string itemName;
@@ -12,7 +18,6 @@ public class CollectInteractable : InteractableBase
     public int int_data;
 
     public AudioClip pickup_sound;
-
 
     public void Start() 
     {
@@ -69,7 +74,8 @@ public class CollectInteractable : InteractableBase
     {
         // wait for animation and stuff
         yield return new WaitForSeconds(delay);
-        GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal(GetComponent<Journal>().EntryLog, int_data);
+        GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal(GetComponent<Journal>()
+            .EntryLog[0], GetComponent<Journal>().EntryLog[1], int_data);
         Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
         Camera.main.GetComponent<AudioSource>().Play();
         //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
