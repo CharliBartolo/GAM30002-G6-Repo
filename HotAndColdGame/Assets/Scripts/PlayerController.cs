@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+/// <summary>
+/// This class is responsible for managing the Player's input and movement behaviour.
+/// It also acts as a 'manager' for other player-related classes such as camera movement,
+/// mouse look, audio control and temperature.
+/// Last edit: Interact() - Amended PlayerInventory list to only add non-duplicates, put in TryGetComponent to shorten lines
+/// By: Charli - 23/9/21
+/// </summary>
 public class PlayerController : MonoBehaviour, IConditions
 {
     private float deltaTime = 0.0f;
@@ -584,7 +592,8 @@ public class PlayerController : MonoBehaviour, IConditions
                     break;
                 // Use object, trigger exit interaction, and remove object from script.
                 case InteractableBase.InteractionType.Use:
-                    if (currentInteractingObject.GetComponent<CollectInteractable>() != null) 
+                    if (currentInteractingObject.TryGetComponent
+                        <CollectInteractable>(out CollectInteractable currentInteractable))                    
                     {
                         /* GetComponent<GunFXController>().weaponState = GunFXController.WeaponState.Grab;
                          GetComponent<GunFXController>().NextState();*/
@@ -592,7 +601,8 @@ public class PlayerController : MonoBehaviour, IConditions
                         float animTime = 0.61f;
                         float animTime_place = 3.5f;
 
-                        playerInventory.Add(currentInteractingObject.GetComponent<CollectInteractable>().itemName);
+                        if (!playerInventory.Contains(currentInteractable.itemName))
+                            playerInventory.Add(currentInteractable.itemName);
 
                         if (currentInteractingObject.name.Contains("Raygun"))
                         {                           
@@ -618,7 +628,6 @@ public class PlayerController : MonoBehaviour, IConditions
                                 StartCoroutine(CollectItem("Toolbox", animTime_place));
                             }
                         }
-
             }
 
                     ExitInteract(context);

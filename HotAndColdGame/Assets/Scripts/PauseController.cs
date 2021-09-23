@@ -5,13 +5,15 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// This class is responsible for Pausing the game, and any menus that go into the pause menu.
+/// These options include sensitivity, pause text, volume settings, and quitting the game.
+/// Last edit: OnPause() - Added closing journal functionality
+/// By: Charli - 23/9/21
+/// </summary>
 public class PauseController : MonoBehaviour
 {
-    /// <summary>
-    /// PlayerController requires this.
-    /// TextField Input should not be 'Interactable' (Can't type decimal into box)
-    /// </summary>
-    /// 
+
     public bool IsPaused; //Pause boolean that other scripts use
     public bool Quitting; //For quitting confirmation
     public Text pauseText; //UI element (Text) (Placeholder)
@@ -164,9 +166,19 @@ public class PauseController : MonoBehaviour
 
     void OnPause(InputAction.CallbackContext context)
     {
-        Debug.Log("TEST PAUSE");
-        Quitting = false;
-        IsPaused = !IsPaused;
+        Journal_Reader journalUIComponent = GameObject.Find("UI").GetComponentInChildren<Journal_Reader>();
+
+        if (journalUIComponent.text.gameObject.activeSelf)
+        {
+            GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Exit_Journal();
+        }
+        else
+        {
+            Debug.Log("TEST PAUSE");
+            Quitting = false;
+            IsPaused = !IsPaused;
+        }
+        
         //Time.timeScale = IsPaused ? 0 : 1; //Actual pausing NOTE: Pauses most things (mainly things that use time.deltatime)
     }
 
