@@ -93,7 +93,7 @@ public class PauseController : MonoBehaviour
         //Listeners
         MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
         MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-        //VolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
+        VolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetMusicVolume(VolumeSlider.value); });
 
         QuitButton.onClick.AddListener(delegate { Quitting = true; });
         YesButton.onClick.AddListener(delegate { Application.Quit(); });
