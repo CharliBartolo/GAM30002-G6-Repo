@@ -59,9 +59,9 @@ public class Player_Audio : MonoBehaviour
         this.transform.Translate(0, Input.GetAxis("Vertical") * 0.2f, 0);
 
         //Adjust volumes on update
-        FindObjectOfType<AudioManager>().SetVolume("Main", main_volume);
-        FindObjectOfType<AudioManager>().SetVolume("Ice", ice_volume);
-        FindObjectOfType<AudioManager>().SetVolume("Heat", heat_volume);
+        //FindObjectOfType<AudioManager>().SetVolume("Main", main_volume);
+        //FindObjectOfType<AudioManager>().SetVolume("Ice", ice_volume);
+        //FindObjectOfType<AudioManager>().SetVolume("Heat", heat_volume);
     }
 
     private void OnTriggerEnter(Collider other)
