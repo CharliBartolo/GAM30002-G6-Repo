@@ -65,7 +65,7 @@ public class AudioManager : MonoBehaviour
 
         if (PlayerPrefs.HasKey("MasterVol"))
         {
-            SetMusicVolume(PlayerPrefs.GetFloat("MasterVol"));
+            SetMasterVolume(PlayerPrefs.GetFloat("MasterVol"));
         }
         //FindObjectOfType<AudioManager>().Play("sound"); (this is what to use when calling a sound elsewhere)
     }
