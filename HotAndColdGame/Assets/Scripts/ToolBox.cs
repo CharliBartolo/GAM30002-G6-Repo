@@ -33,8 +33,8 @@ public class ToolBox : CollectInteractable
 
     public void PlayAudio(int clip)
     {
-        AudioClip toPlay = sounds[clip];
-        AudioSource.PlayClipAtPoint(toPlay, transform.position);
+        //GetComponent<AudioSource>().clip = sounds[clip];
+        GetComponent<AudioSource>().PlayOneShot(sounds[clip]);
     }
 
     public void OpenTray()
