@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Custom_Ice_END
+  m_Shader: {fileID: 4800000, guid: 9ccbfde42d223a04daac310f5bd0d9ca, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpRamp:
+        m_Texture: {fileID: 2800000, guid: 3287de45d937b34418b4eb16c1a27c8b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpTex:
+        m_Texture: {fileID: 2800000, guid: 0081f8fb9bc44a0448c0276d234cd68d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cubemap:
+        m_Texture: {fileID: 8900000, guid: 3a569da8ce657e146852065db7b2bfe6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HeightTex:
+        m_Texture: {fileID: 2800000, guid: 1d02399cba5d9134485722e11ce7ffed, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LayerTex:
+        m_Texture: {fileID: 2800000, guid: 05f20c50cfbbbdf43a9adb3c2e785b4d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampTex:
+        m_Texture: {fileID: 2800000, guid: bc33cf74971b4fc42981222e41058b7a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SurfaceAlphaMaskTex:
+        m_Texture: {fileID: 2800000, guid: c5e09ecba72120b4ea5ee5f9bb987c98, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _DistortStrength: 2.31
+    - _EdgeThickness: 1.37
+    - _FresnelTightness: 2.7
+    - _HeightScale: 0.398
+    - _InnerLightTightness: 20.3
+    - _LayerHeightBias: 0.159
+    - _RefractionStrength: 0.488
+    - _SpecularBrightness: 0.495
+    - _SpecularTightness: 23
+    m_Colors:
+    - _Color: {r: 3, g: 1.8867712, b: 0.46415073, a: 3}
+    - _FresnelColorInside: {r: 0.76722527, g: 1, b: 0, a: 1}
+    - _FresnelColorOutside: {r: 0.15058792, g: 1, b: 0, a: 1}
+    - _InnerLightColorInside: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 0}
+    - _InnerLightColorOutside: {r: 0, g: 0, b: 0, a: 0}
+    - _LayerTint: {r: 0, g: 0.43234205, b: 1, a: 1}
+    - _SurfaceAlphaColor: {r: 1, g: 0, b: 0.88767624, a: 3}
+  m_BuildTextureStacks: []
