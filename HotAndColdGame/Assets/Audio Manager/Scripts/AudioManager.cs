@@ -62,6 +62,11 @@ public class AudioManager : MonoBehaviour
         {
             SetMusicVolume(PlayerPrefs.GetFloat("MusicVol"));
         }
+
+        if (PlayerPrefs.HasKey("MasterVol"))
+        {
+            SetMusicVolume(PlayerPrefs.GetFloat("MasterVol"));
+        }
         //FindObjectOfType<AudioManager>().Play("sound"); (this is what to use when calling a sound elsewhere)
     }
 
@@ -153,6 +158,12 @@ public class AudioManager : MonoBehaviour
     {
         audioMixer.SetFloat("MusicVol", Mathf.Log(soundLevel) * 20);   
         PlayerPrefs.SetFloat("MusicVol", soundLevel);     
+    }
+
+    public void SetMasterVolume(float soundLevel)
+    {   
+        audioMixer.SetFloat("MasterVol", Mathf.Log(soundLevel) * 20);   
+        PlayerPrefs.SetFloat("MasterVol", soundLevel);
     }
     
     public virtual void SetVolume(string name, float volume)
