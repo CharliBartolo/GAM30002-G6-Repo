@@ -329,10 +329,10 @@ public class PlayerController : MonoBehaviour, IConditions
             //Debug.DrawRay(transform.position, movementVector * 100);
             //Debug.Log("Inverse Grav component is :" + inverseGravProportion);
         }
-        else if (currentCoyoteTimer > 0)
-        {
-            playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed, ForceMode.Acceleration);
-        }
+        //else if (currentCoyoteTimer > 0)
+        //{
+        //    playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed, ForceMode.Acceleration);
+        //}
         else
         {      
             if ((horizVelocity + movementVector).magnitude <= currentMovementSettings.velocityCap.x || 

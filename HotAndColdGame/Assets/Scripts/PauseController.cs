@@ -93,7 +93,7 @@ public class PauseController : MonoBehaviour
         //Listeners
         MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
         MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-        VolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetMusicVolume(VolumeSlider.value); });
+        VolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetMasterVolume(VolumeSlider.value); });
 
         QuitButton.onClick.AddListener(delegate { Quitting = true; });
         YesButton.onClick.AddListener(delegate { Application.Quit(); });
@@ -111,8 +111,13 @@ public class PauseController : MonoBehaviour
 
         MouseSensitivityXSlider.value = GM.CS.XSensitivity;
         MouseSensitivityYSlider.value = GM.CS.YSensitivity;
+
         if (PlayerPrefs.HasKey("MusicVol"))
-            VolumeSlider.value = PlayerPrefs.GetFloat("MusicVol");
+            //VolumeSlider.value = PlayerPrefs.GetFloat("MusicVol");
+            PlayerPrefs.SetFloat("MusicVol", 0f);
+        
+        if (PlayerPrefs.HasKey("MasterVol"))
+            VolumeSlider.value = PlayerPrefs.GetFloat("MasterVol");
 
         MouseSensitivityXInput.text = GM.CS.XSensitivity.ToString(); 
         MouseSensitivityYInput.text = GM.CS.YSensitivity.ToString();
