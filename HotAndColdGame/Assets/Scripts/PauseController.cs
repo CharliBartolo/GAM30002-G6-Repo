@@ -8,8 +8,8 @@ using UnityEngine.Events;
 /// <summary>
 /// This class is responsible for Pausing the game, and any menus that go into the pause menu.
 /// These options include sensitivity, pause text, volume settings, and quitting the game.
-/// Last edit: OnPause() - Added closing journal functionality
-/// By: Charli - 23/9/21
+/// Last edit: OnVolumeChanged() - Removed functionality from here, moved to AudioManager
+/// By: Charli - 25/9/21
 /// </summary>
 public class PauseController : MonoBehaviour
 {
@@ -93,7 +93,7 @@ public class PauseController : MonoBehaviour
         //Listeners
         MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
         MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-        VolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
+        //VolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
 
         QuitButton.onClick.AddListener(delegate { Quitting = true; });
         YesButton.onClick.AddListener(delegate { Application.Quit(); });
@@ -111,7 +111,8 @@ public class PauseController : MonoBehaviour
 
         MouseSensitivityXSlider.value = GM.CS.XSensitivity;
         MouseSensitivityYSlider.value = GM.CS.YSensitivity;
-        VolumeSlider.value = GM.CS.Volume;
+        if (PlayerPrefs.HasKey("MusicVol"))
+            VolumeSlider.value = PlayerPrefs.GetFloat("MusicVol");
 
         MouseSensitivityXInput.text = GM.CS.XSensitivity.ToString(); 
         MouseSensitivityYInput.text = GM.CS.YSensitivity.ToString();
@@ -205,8 +206,13 @@ public class PauseController : MonoBehaviour
 
     public void VolumeChange()
     {
-        VolumeInput.text = VolumeSlider.value.ToString();
-        GM.CS.Volume = VolumeSlider.value;
-        PC.GetComponent<Player_Audio_Renamed>().main_volume = GM.CS.Volume;
+        //VolumeInput.text = VolumeSlider.value.ToString();
+        //if (GM.audioManager.GetMixerVolume("MusicVol", out float newVol))
+        //{
+        //    VolumeInput.text = newVol.ToString();
+        //}
+        
+        //GM.CS.Volume = VolumeSlider.value;
+        //PC.GetComponent<Player_Audio_Renamed>().main_volume = GM.CS.Volume;
     }
 }
