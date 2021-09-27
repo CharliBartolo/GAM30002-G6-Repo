@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 /// This class is responsible for managing the Player's input and movement behaviour.
 /// It also acts as a 'manager' for other player-related classes such as camera movement,
 /// mouse look, audio control and temperature.
-/// Last edit: Interact() - Amended PlayerInventory list to only add non-duplicates, put in TryGetComponent to shorten lines
+/// Last edit: OnGUIDraw() - Commented out single line showing inventory
 /// By: Charli - 23/9/21
 /// </summary>
 public class PlayerController : MonoBehaviour, IConditions
@@ -828,7 +828,7 @@ public class PlayerController : MonoBehaviour, IConditions
             stringToShow += "None";
         }
         
-        GUILayout.Label(stringToShow);
+        //GUILayout.Label(stringToShow);
         GUILayout.Label(fps + " frames per second");
 
         GUILayout.EndArea();
