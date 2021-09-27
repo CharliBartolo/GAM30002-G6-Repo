@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 /// It also acts as a 'manager' for other player-related classes such as camera movement,
 /// mouse look, audio control and temperature.
 /// Last edit: OnGUIDraw() - Commented out single line showing inventory
-/// By: Charli - 23/9/21
+/// By: Charli - 27/9/21
 /// </summary>
 public class PlayerController : MonoBehaviour, IConditions
 {
