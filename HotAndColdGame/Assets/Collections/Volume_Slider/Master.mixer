@@ -40,7 +40,7 @@ AudioMixerController:
   - guid: 3f3acd9fb44f33346a093e29e07aa2b0
     name: MusicVol
   - guid: 94b5b70dd56d8d64c81a86ccc487231f
-    name: SFX_Vol
+    name: SFXVol
   m_AudioMixerGroupViews:
   - guids:
     - 0f81234299ab00a40bfbff353477c753
@@ -94,7 +94,8 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 778af5ca92c5434409a82361d3c447fa
   m_FloatValues:
-    94b5b70dd56d8d64c81a86ccc487231f: -16.8
+    94b5b70dd56d8d64c81a86ccc487231f: 0.027260697
+    3f3acd9fb44f33346a093e29e07aa2b0: 0
   m_TransitionOverrides: {}
 --- !u!243 &5216498503769096187
 AudioMixerGroupController:
@@ -102,7 +103,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SFX_Test
+  m_Name: SFX
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 965324faae34165429053caf08ea22ca
   m_Children: []
