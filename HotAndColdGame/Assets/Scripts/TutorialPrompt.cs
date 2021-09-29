@@ -9,7 +9,8 @@ using UnityEditor;
 /// <summary>
 /// This script is responsible for creating and managing tutorial prompts placed in the scene.
 /// Note: Must be placed on the Player object!!!
-/// Last edited by Charadey 25/9/2001
+/// Recent change: Added a direction condition to the triggers. Needs the player to look at a cirtain direction to activate prompts.
+/// Last edited by Charadey 30/9/2001
 /// </summary>
 public class TutorialPrompt : MonoBehaviour
 {
@@ -77,7 +78,7 @@ public class TutorialPrompt : MonoBehaviour
 
         [SerializeField]
         [Tooltip("A more specific point where you want the player to look at")]
-        private Collider _pointOfInterest;
+        private Collider _pointOfInterestTrigger;
 
         //[SerializeField]
         //[Tooltip("Vector 3 for looking into the correct direction.")]
@@ -144,10 +145,10 @@ public class TutorialPrompt : MonoBehaviour
             set => _visionWindow = value;
         }
 
-        public Collider PointOfInterest
+        public Collider PointOfInterestTrigger
         {
-            get => _pointOfInterest;
-            set => _pointOfInterest = value;
+            get => _pointOfInterestTrigger;
+            set => _pointOfInterestTrigger = value;
         } 
 
         public Vector3 ExpectedDirection
@@ -167,7 +168,7 @@ public class TutorialPrompt : MonoBehaviour
             //this._isShowingPrompt = isShowingPrompt;
             this._isAchieved = achieved;
 
-            this._pointOfInterest = poi;
+            this._pointOfInterestTrigger = poi;
 
             //Vision Addition
             this._needsVision = vision;
@@ -314,7 +315,7 @@ public class TutorialPrompt : MonoBehaviour
                 {
                     //Finds and normalizes the needed vectors.
                     var direction = Vector3.Normalize(Player.transform.TransformDirection(Vector3.forward));    //Players looking direction
-                    var expectedDirection = Vector3.Normalize(_currentPrompt.PointOfInterest.transform.position - Player.transform.position);  //Vector from startTrigger to player
+                    var expectedDirection = Vector3.Normalize(_currentPrompt.PointOfInterestTrigger.transform.position - Player.transform.position);  //Vector from startTrigger to player
                     var dotProduct = Vector3.Dot(_currentPrompt.ExpectedDirection, direction);  //Dot product of above vectors
 
                     //Debug                 
@@ -370,9 +371,9 @@ public class TutorialPrompt : MonoBehaviour
         }
 
         //DEBUG
-        if (true)
+        if (false)
         {
-            Debug.DrawRay(_currentPrompt.StartTrigger.transform.position, Player.transform.position, Color.red);
+            Debug.DrawRay(_currentPrompt.PointOfInterestTrigger.transform.position, Player.transform.position, Color.red);
             Debug.DrawRay(Player.transform.position, Player.transform.forward, Color.green);
         }
     }

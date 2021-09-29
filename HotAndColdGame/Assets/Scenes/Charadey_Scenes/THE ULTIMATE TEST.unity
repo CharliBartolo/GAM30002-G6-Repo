@@ -582,8 +582,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.36605445, y: 0.3769092, z: 0.35507828}
-  m_Center: {x: -0.31697282, y: -0.3115454, z: 0.32246107}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &992478241
 Transform:
   m_ObjectHideFlags: 0
@@ -592,8 +592,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 992478239}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.33, y: 11.82, z: -1.988}
-  m_LocalScale: {x: 7.4221873, y: 8.9814005, z: 2.4999998}
+  m_LocalPosition: {x: -3.33, y: 7.76, z: -1.17}
+  m_LocalScale: {x: 1.6916649, y: 1.0161189, z: 0.42612496}
   m_Children: []
   m_Father: {fileID: 2070136924}
   m_RootOrder: 2
@@ -932,7 +932,7 @@ MonoBehaviour:
     _isAchieved: 0
     _needsVision: 1
     _visionWindow: 0.8
-    _pointOfInterest: {fileID: 0}
+    _pointOfInterestTrigger: {fileID: 992478240}
   IsCompleted: 0
   Player: {fileID: 0}
 --- !u!1 &1086127996
@@ -944,7 +944,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1086127998}
-  - component: {fileID: 1086127997}
   m_Layer: 0
   m_Name: Tutorial Prompt Controller
   m_TagString: Untagged
@@ -952,32 +951,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1086127997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086127996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2754ef237d69c94e8577fda59c841cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _textTutorialPrompt: {fileID: 222131905}
-  _imageTutorialPrompt: {fileID: 1933357996}
-  _listTutorialPrompts:
-  - _label: TEST
-    _message: TESTING!!!!!!!!!!!!!!
-    _startTrigger: {fileID: 1582816500}
-    _endTrigger: {fileID: 1204575330}
-    _isActive: 0
-    _isAchieved: 0
-    _needsVision: 1
-    _visionWindow: 0.8
-    _pointOfInterest: {fileID: 992478240}
-  IsCompleted: 0
-  Player: {fileID: 0}
 --- !u!4 &1086127998
 Transform:
   m_ObjectHideFlags: 0
