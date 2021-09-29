@@ -203,7 +203,7 @@ public class ReticleFXController : ToolboxFXController
     public void ChangeState(ReticleState newState)
     {
         //prevState = state;
-        Debug.Log("PREVSTATE: " +  prevState);
+        //Debug.Log("PREVSTATE: " +  prevState);
         state = newState;
         UpdateReticalState();
     }

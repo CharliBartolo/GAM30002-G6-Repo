@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StickyLanding : MonoBehaviour
 {
-
     private Transform parent;
     private GameObject player = null;
 
@@ -31,19 +30,18 @@ public class StickyLanding : MonoBehaviour
 
     private void FixedUpdate()
     {
-    
 
-        if(player != null)
+        if(this.player != null)
         {
-            if (parent != null)
+            if (this.parent != null)
             {
-                player.transform.parent = parent;
+                this.player.transform.parent = parent;
             }
             else
             {
-                player.transform.parent = null;
+                this.player.transform.parent = null;
             }
-            player = null;
+            this.player = null;
         }
     }
 
@@ -65,12 +63,12 @@ public class StickyLanding : MonoBehaviour
             {
                 if (hit.collider.gameObject == this.gameObject)
                 {
-                    if(player == null)
+                    if(this.player == null)
                     {
                         Debug.Log("PLAYER ON PLATFORM");
                         parent = collisionInfo.gameObject.transform.parent;
                         collisionInfo.gameObject.transform.parent = this.transform;
-                        player = collisionInfo.gameObject;
+                        this.player = collisionInfo.gameObject;
                     }
                 }
             }
