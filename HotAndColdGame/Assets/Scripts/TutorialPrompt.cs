@@ -76,8 +76,13 @@ public class TutorialPrompt : MonoBehaviour
         private float _visionWindow;
 
         [SerializeField]
-        [Tooltip("Vector 3 for looking into the correct direction.")]
+        [Tooltip("A more specific point where you want the player to look at")]
+        private Collider _pointOfInterest;
+
+        //[SerializeField]
+        //[Tooltip("Vector 3 for looking into the correct direction.")]
         private Vector3 _expectedDirection;
+
         public string Label
         {
             get => _label;
@@ -106,6 +111,7 @@ public class TutorialPrompt : MonoBehaviour
             set => _playerAction = value;
         }
         */
+
         public bool IsActive
         {
             get => _isActive;
@@ -137,13 +143,20 @@ public class TutorialPrompt : MonoBehaviour
             get => _visionWindow;
             set => _visionWindow = value;
         }
+
+        public Collider PointOfInterest
+        {
+            get => _pointOfInterest;
+            set => _pointOfInterest = value;
+        } 
+
         public Vector3 ExpectedDirection
         {
             get => _expectedDirection;
             set => _expectedDirection = value;
         }
 
-        public Prompt(string label, string message, Collider startTrigger, Collider endTrigger, /*PlayerActions playerAction,*/ bool active, /*bool isShowingPrompt,*/ bool achieved, bool vision, float angle, Vector3 expectedDirection)
+        public Prompt(string label, string message, Collider startTrigger, Collider endTrigger, /*PlayerActions playerAction,*/ bool active, /*bool isShowingPrompt,*/ bool achieved, bool vision, float angle, Collider poi, Vector3 expectedDirection)
         {
             this._label = label;
             this._message = message;
@@ -154,13 +167,15 @@ public class TutorialPrompt : MonoBehaviour
             //this._isShowingPrompt = isShowingPrompt;
             this._isAchieved = achieved;
 
+            this._pointOfInterest = poi;
+
             //Vision Addition
             this._needsVision = vision;
 
             if (vision)
             {
                 this._visionWindow = angle;
-                this._expectedDirection = expectedDirection;
+                this._expectedDirection = expectedDirection;              
             }
             else
             {
@@ -299,7 +314,7 @@ public class TutorialPrompt : MonoBehaviour
                 {
                     //Finds and normalizes the needed vectors.
                     var direction = Vector3.Normalize(Player.transform.TransformDirection(Vector3.forward));    //Players looking direction
-                    var expectedDirection = Vector3.Normalize(_currentPrompt.StartTrigger.transform.position - Player.transform.position);  //Vector from startTrigger to player
+                    var expectedDirection = Vector3.Normalize(_currentPrompt.PointOfInterest.transform.position - Player.transform.position);  //Vector from startTrigger to player
                     var dotProduct = Vector3.Dot(_currentPrompt.ExpectedDirection, direction);  //Dot product of above vectors
 
                     //Debug                 
