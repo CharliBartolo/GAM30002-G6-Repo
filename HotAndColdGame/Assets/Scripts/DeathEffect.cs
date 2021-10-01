@@ -105,6 +105,8 @@ public class DeathEffect : FXController
 
     public void DarknessDeath(float delay)
     {
+        if(crntTemp == null)
+            FindPlayer();
         if (!isResetting)
         {
             crntTemp.GetComponent<PlayerController>().playerControlState = PlayerController.PlayerState.ControlsDisabled;
