@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// <summary>
 /// This script is responsible for creating and managing tutorial prompts placed in the scene.
 /// Note: Must be placed on the Player object!!!
-/// Recent change: Added a direction condition to the triggers. Needs the player to look at a cirtain direction to activate prompts.
+/// Recent change: Button prompt fixes and changes (Supports multiple images for button icons)
 /// Last edited by Charadey 30/9/2001
 /// </summary>
 public class TutorialPrompt : MonoBehaviour 
@@ -96,11 +96,15 @@ public class TutorialPrompt : MonoBehaviour
 
         //Button Icons Addition
         [SerializeField]
+        [Tooltip("Checked if prompts has button icons associated with it")]
+        private bool _needsButtonIcon;
+
+        [SerializeField]
         [Tooltip("List of possible button icons for the prompt")]
         private List<ButtonIcon> _buttonIcons;
 
         //Constructor
-        public Prompt(string label, string message, Collider startTrigger, Collider endTrigger, /*PlayerFPControls playerAction,*/ bool active, /*bool isShowingPrompt,*/ bool achieved, bool vision, float angle, Collider poi, Vector3 expectedDirection)
+        public Prompt(string label, string message, Collider startTrigger, Collider endTrigger, /*PlayerFPControls playerAction,*/ bool active, /*bool isShowingPrompt,*/ bool achieved, bool vision, float angle, Collider poi, Vector3 expectedDirection, bool needsButtonIcon)
         {
             this._label = label;
             this._message = message;
@@ -130,7 +134,8 @@ public class TutorialPrompt : MonoBehaviour
             }
 
             //Button Icon Additions
-            this._buttonIcons = new List<ButtonIcon>();
+            this._needsButtonIcon = needsButtonIcon;
+            this._buttonIcons = new List<ButtonIcon>();   
         }
 
         //Properties
@@ -190,7 +195,6 @@ public class TutorialPrompt : MonoBehaviour
             get => _needsVision;
             set => _needsVision = value;
         }       
-
         public float VisionWindow
         {
             get => _visionWindow;
@@ -222,7 +226,7 @@ public class TutorialPrompt : MonoBehaviour
     {
         //Fields
         [SerializeField]
-        [Tooltip("Label for the Tutorial Prompt")]
+        [Tooltip("Label for the Button Icon")]
         private string _label;
 
         [SerializeField]
@@ -234,16 +238,16 @@ public class TutorialPrompt : MonoBehaviour
         private string _prompt;
 
         [SerializeField]
-        [Tooltip("Sprite for specific control")]
-        private Sprite _sprite;
+        [Tooltip("The list of images and sprites associate with prompt")]
+        private List<ImageSprite> _imageSprites;
 
         //Constructor
-        public ButtonIcon(string label, InputType type, Sprite sprite, string prompt)
+        public ButtonIcon(string label, InputType type, string prompt)
         {
             this._label = label;
             this._input = type;
             this._prompt = prompt;
-            this._sprite = sprite;
+            this._imageSprites = new List<ImageSprite>();
         }
 
         //Properties
@@ -265,15 +269,54 @@ public class TutorialPrompt : MonoBehaviour
             set => _prompt = value;
         }
 
+        public List<ImageSprite> ImageSprites
+        {
+            get => _imageSprites;
+            set => _imageSprites = value;
+        }
+    }
+
+    [Serializable]
+    public struct ImageSprite
+    {
+        //Fields
+        [SerializeField]
+        [Tooltip("Label for the Image - Sprite group")]
+        private string _label;
+
+        [SerializeField]
+        [Tooltip("Image element fot specific sprite")]
+        private Image _image;
+
+        [SerializeField]
+        [Tooltip("Sprite for specific image element")]
+        private Sprite _sprite;
+
+        //Constructor
+        public ImageSprite(string label, Image image, Sprite sprite)
+        {
+            this._label = label;
+            this._image = image;
+            this._sprite = sprite;
+        }
+
+        //Properties
+        public string Label
+        {
+            get => _label;
+            set => _label = value;
+        }
+        public Image Image
+        {
+            get => _image;
+            set => _image = value;
+        }
         public Sprite Sprite
         {
             get => _sprite;
             set => _sprite = value;
-
         }
-       
     }
-
 
     [Header("Tutorial Prompts")]
     [SerializeField]
@@ -297,7 +340,7 @@ public class TutorialPrompt : MonoBehaviour
             _imageTutorialPrompt = value;
         }
     }
-
+    
     [SerializeField]
     private Text _textButtonIcon;
     public Text TextButtonIcon
@@ -308,7 +351,7 @@ public class TutorialPrompt : MonoBehaviour
             _textButtonIcon = value;          
         }
     }
-
+    /*
     [SerializeField]
     private Image _imageButtonIcon;
     public Image ImageButtonIcon
@@ -319,7 +362,7 @@ public class TutorialPrompt : MonoBehaviour
             _imageButtonIcon = value;
         }
     }
-
+    */
     [SerializeField]
     private List<Prompt> _listTutorialPrompts;
     public List<Prompt> ListTutorialPrompts
@@ -411,7 +454,7 @@ public class TutorialPrompt : MonoBehaviour
 
         _textTutorialPrompt.enabled = _currentPrompt.IsActive;
         _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
-        _imageButtonIcon.enabled = _currentPrompt.IsActive;
+        //_imageButtonIcon.enabled = _currentPrompt.IsActive;
         _textButtonIcon.enabled = _currentPrompt.IsActive;
     }
 
@@ -450,15 +493,20 @@ public class TutorialPrompt : MonoBehaviour
                         {
                             if (bc.Input == DetermineInput())
                             {
-                                _imageButtonIcon.sprite = bc.Sprite;
                                 _textButtonIcon.text = bc.Prompt;
+
+                                foreach (ImageSprite imgSpr in bc.ImageSprites)
+                                {
+                                    imgSpr.Image.sprite = imgSpr.Sprite;
+                                    imgSpr.Image.enabled = _currentPrompt.IsActive;
+                                }
 
                                 //Debug
                                 //Debug.Log("Current input: " + DetermineInput());
                                 //Debug.Log("Current sprite: " + bc.Sprite);
                             }
                         }
-                        _imageButtonIcon.enabled = _currentPrompt.IsActive;
+                        //_imageButtonIcon.enabled = _currentPrompt.IsActive;
                         _textButtonIcon.enabled = _currentPrompt.IsActive;
                     }
                 }
@@ -471,15 +519,20 @@ public class TutorialPrompt : MonoBehaviour
                     {
                         if (bc.Input == DetermineInput())
                         {
-                            _imageButtonIcon.sprite = bc.Sprite;
                             _textButtonIcon.text = bc.Prompt;
 
+                            foreach (ImageSprite imgSpr in bc.ImageSprites)
+                            {
+                                imgSpr.Image.sprite = imgSpr.Sprite;
+                                imgSpr.Image.enabled = _currentPrompt.IsActive;
+                            }
+
                             //Debug
-                            Debug.Log("Current input: " + DetermineInput());
-                            Debug.Log("Current sprite: " + bc.Sprite);
+                            //Debug.Log("Current input: " + DetermineInput());
+                            //Debug.Log("Current sprite: " + bc.Sprite);
                         }
                     }
-                    _imageButtonIcon.enabled = _currentPrompt.IsActive;
+                    //_imageButtonIcon.enabled = _currentPrompt.IsActive;
                     _textButtonIcon.enabled = _currentPrompt.IsActive;
                 }
                 
