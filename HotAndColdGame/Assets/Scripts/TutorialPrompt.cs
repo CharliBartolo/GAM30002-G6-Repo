@@ -472,6 +472,7 @@ public class TutorialPrompt : MonoBehaviour
                         if (bc.Input == DetermineInput())
                         {
                             _imageButtonIcon.sprite = bc.Sprite;
+                            _textButtonIcon.text = bc.Prompt;
 
                             //Debug
                             Debug.Log("Current input: " + DetermineInput());
