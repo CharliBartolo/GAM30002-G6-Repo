@@ -30,8 +30,14 @@ public class StickyLanding : MonoBehaviour
 
     private void FixedUpdate()
     {
+        UpdateParents();
 
-        if(this.player != null)
+
+    }
+
+    void UpdateParents()
+    {
+        if (this.player != null)
         {
             if (this.parent != null)
             {
@@ -45,32 +51,22 @@ public class StickyLanding : MonoBehaviour
         }
     }
 
-    void AddPlayer()
+    void CheckPlayer()
     {
 
     }
 
-    void RemovePlayer()
-    {
-
-    }
 
     void OnCollisionStay(Collision collisionInfo)
     {
-        if(collisionInfo.gameObject == GameMaster.instance.playerRef)
+        if (player == null)
         {
-            if (Physics.Raycast(collisionInfo.gameObject.transform.position, Vector3.down, out RaycastHit hit, 2))
+            if (collisionInfo.gameObject == GameMaster.instance.playerRef)
             {
-                if (hit.collider.gameObject == this.gameObject)
-                {
-                    if(this.player == null)
-                    {
-                        Debug.Log("PLAYER ON PLATFORM");
-                        parent = collisionInfo.gameObject.transform.parent;
-                        collisionInfo.gameObject.transform.parent = this.transform;
-                        this.player = collisionInfo.gameObject;
-                    }
-                }
+                Debug.Log("PLAYER ON PLATFORM");
+                parent = collisionInfo.gameObject.transform.parent;
+                collisionInfo.gameObject.transform.parent = this.transform;
+                this.player = collisionInfo.gameObject;
             }
         }
     }

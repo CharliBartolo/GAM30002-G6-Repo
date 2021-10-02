@@ -50,6 +50,9 @@ public class PlatformWithTemperature : TemperatureStateBase
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+    }
+    void Update()
+    {
 
         if (canMove && Trigger != null )
         {
