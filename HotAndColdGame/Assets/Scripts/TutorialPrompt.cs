@@ -230,14 +230,19 @@ public class TutorialPrompt : MonoBehaviour
         private InputType _input;
 
         [SerializeField]
+        [Tooltip("Text for Button Icon prompt")]
+        private string _prompt;
+
+        [SerializeField]
         [Tooltip("Sprite for specific control")]
         private Sprite _sprite;
 
         //Constructor
-        public ButtonIcon(string label, InputType type, Sprite sprite)
+        public ButtonIcon(string label, InputType type, Sprite sprite, string prompt)
         {
             this._label = label;
             this._input = type;
+            this._prompt = prompt;
             this._sprite = sprite;
         }
 
@@ -252,6 +257,12 @@ public class TutorialPrompt : MonoBehaviour
         {
             get => _input;
             set => _input = value;
+        }
+
+        public string Prompt
+        {
+            get => _prompt;
+            set => _prompt = value;
         }
 
         public Sprite Sprite
@@ -273,7 +284,6 @@ public class TutorialPrompt : MonoBehaviour
         set
         {
             _textTutorialPrompt = value;
-            _textTutorialPrompt.text = QueueTutorialPrompts.Peek().Label;
         }
     }
 
@@ -285,6 +295,28 @@ public class TutorialPrompt : MonoBehaviour
         set
         {
             _imageTutorialPrompt = value;
+        }
+    }
+
+    [SerializeField]
+    private Text _textButtonIcon;
+    public Text TextButtonIcon
+    {
+        get => _textButtonIcon;
+        set
+        {
+            _textButtonIcon = value;          
+        }
+    }
+
+    [SerializeField]
+    private Image _imageButtonIcon;
+    public Image ImageButtonIcon
+    {
+        get => _imageButtonIcon;
+        set
+        {
+            _imageButtonIcon = value;
         }
     }
 
@@ -310,12 +342,14 @@ public class TutorialPrompt : MonoBehaviour
         set => _currentPrompt = value;
     }
 
+    /*
     private InputAction _currentAction;
     public InputAction CurrentAction
     {
         get => _currentAction;
         set => _currentAction = value;
     }
+    */
 
     /*
     private Dictionary<PlayerActions, InputAction> _dictPlayerActions;
@@ -377,6 +411,8 @@ public class TutorialPrompt : MonoBehaviour
 
         _textTutorialPrompt.enabled = _currentPrompt.IsActive;
         _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
+        _imageButtonIcon.enabled = _currentPrompt.IsActive;
+        _textButtonIcon.enabled = _currentPrompt.IsActive;
     }
 
     private void FixedUpdate()
@@ -405,27 +441,46 @@ public class TutorialPrompt : MonoBehaviour
                     if (dotProduct >= _currentPrompt.VisionWindow && _currentPrompt.IsActive)
                     {
                         //Toggles Tutorial Prompt Text based on the bool IsActive
+                        _textTutorialPrompt.text = _currentPrompt.Message;
                         _textTutorialPrompt.enabled = _currentPrompt.IsActive;
+                        _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
 
                         //Button Icons Addittion
                         foreach (ButtonIcon bc in _currentPrompt.ButtonIcons)
                         {
                             if (bc.Input == DetermineInput())
                             {
-                                _imageTutorialPrompt.sprite = bc.Sprite;
+                                _imageButtonIcon.sprite = bc.Sprite;
+                                _textButtonIcon.text = bc.Prompt;
 
                                 //Debug
-                                Debug.Log("Current input: " + DetermineInput());
-                                Debug.Log("Current sprite: " + bc.Sprite);
+                                //Debug.Log("Current input: " + DetermineInput());
+                                //Debug.Log("Current sprite: " + bc.Sprite);
                             }
                         }
-                        _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
+                        _imageButtonIcon.enabled = _currentPrompt.IsActive;
+                        _textButtonIcon.enabled = _currentPrompt.IsActive;
                     }
                 }
                 else
                 {
+                    _textTutorialPrompt.text = _currentPrompt.Message;
                     _textTutorialPrompt.enabled = _currentPrompt.IsActive;
                     _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
+                    foreach (ButtonIcon bc in _currentPrompt.ButtonIcons)
+                    {
+                        if (bc.Input == DetermineInput())
+                        {
+                            _imageButtonIcon.sprite = bc.Sprite;
+                            _textButtonIcon.text = bc.Prompt;
+
+                            //Debug
+                            Debug.Log("Current input: " + DetermineInput());
+                            Debug.Log("Current sprite: " + bc.Sprite);
+                        }
+                    }
+                    _imageButtonIcon.enabled = _currentPrompt.IsActive;
+                    _textButtonIcon.enabled = _currentPrompt.IsActive;
                 }
                 
 
@@ -467,13 +522,16 @@ public class TutorialPrompt : MonoBehaviour
         }
 
         //DEBUG
+        /*
         if (true)
         {
             Debug.DrawRay(_currentPrompt.PointOfInterestTrigger.transform.position, Player.transform.position, Color.red);
             Debug.DrawRay(Player.transform.position, Player.transform.forward, Color.green);
+            Debug.Log(Player.GetComponent<PlayerInput>().currentControlScheme);
         }
+        */
 
-        Debug.Log(Player.GetComponent<PlayerInput>().currentControlScheme);
+
     }
 
     // OnTrigger code
