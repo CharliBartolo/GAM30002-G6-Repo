@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UIFXController : FXController
 {
+    public bool isTemperatureHidden = false;
     public Slider Slider;
     public Image Positive;
     public Image Negative;
@@ -37,9 +38,21 @@ public class UIFXController : FXController
     }
     void Update()
     {
+        if (Input.GetKeyDown("h"))
+        {
+            isTemperatureHidden = !isTemperatureHidden;
+        }
+
+        if (isTemperatureHidden)
+        {
+            Slider.gameObject.SetActive(false);
+            return;
+        }
+
+        Slider.gameObject.SetActive(true);
+
         if(player != null)
             UpdatePlayerTempUI();
-
     }
 
     public void UpdatePlayerTempUI()

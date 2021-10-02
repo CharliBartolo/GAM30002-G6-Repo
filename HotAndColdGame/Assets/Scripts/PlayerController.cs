@@ -837,9 +837,9 @@ public class PlayerController : MonoBehaviour, IConditions
         }
         
         //GUILayout.Label(stringToShow);
-        GUILayout.Label(fps + " frames per second");
+        //GUILayout.Label(fps + " frames per second");
 
-        GUILayout.EndArea();
+        //GUILayout.EndArea();
     }
 
     public void AddCondition(IConditions.ConditionTypes nameOfCondition)
