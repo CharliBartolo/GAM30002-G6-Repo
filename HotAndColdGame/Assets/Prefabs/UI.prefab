@@ -67,20 +67,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 30457532c2be77649b6afa5da7a1522d, type: 3}
-    m_FontSize: 52
+    m_FontSize: 42
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 1
-    m_MaxSize: 300
+    m_MaxSize: 48
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 1
+    m_VerticalOverflow: 0
     m_LineSpacing: 0.93
-  m_Text: It is magnificent, perhaps my father will finally recognise my achievements
-    instead of the cold shoulder I have been given my entire career. Through the
-    cold, the team presses on.
+  m_Text: 
 --- !u!1 &229368471
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,21 +941,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 30457532c2be77649b6afa5da7a1522d, type: 3}
-    m_FontSize: 52
+    m_FontSize: 42
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 1
-    m_MaxSize: 300
+    m_MaxSize: 48
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 1
+    m_VerticalOverflow: 0
     m_LineSpacing: 0.93
-  m_Text: 'Ever since I was a young boy, excited like kindling in a small fire, I
-    have wanted to make a real name for myself that I can make my family name proud.
-    The titles and achievements I have to my name would mean nothing if I can solve
-    the riddle of this place. '
+  m_Text: 
 --- !u!1 &1594386068
 GameObject:
   m_ObjectHideFlags: 0
@@ -1907,6 +1902,54 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7320864843690783674, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_MoveAction
+      value: 
+      objectReference: {fileID: 4354298503863860536, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+    - target: {fileID: 7320864843690783674, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_PointAction
+      value: 
+      objectReference: {fileID: -6292108960989539429, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+    - target: {fileID: 7320864843690783674, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_ActionsAsset
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+    - target: {fileID: 7320864843690783674, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_CancelAction
+      value: 
+      objectReference: {fileID: -1765115961413580491, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+    - target: {fileID: 7320864843690783674, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_SubmitAction
+      value: 
+      objectReference: {fileID: -6180242293442021865, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+    - target: {fileID: 7320864843690783674, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_LeftClickAction
+      value: 
+      objectReference: {fileID: -6578924342261872525, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+    - target: {fileID: 7320864843690783674, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_RightClickAction
+      value: 
+      objectReference: {fileID: 3094536384136746853, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+    - target: {fileID: 7320864843690783674, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_MiddleClickAction
+      value: 
+      objectReference: {fileID: -7604219664660679068, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+    - target: {fileID: 7320864843690783674, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_ScrollWheelAction
+      value: 
+      objectReference: {fileID: -5420476565114959348, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+    - target: {fileID: 7320864843690783674, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_TrackedDevicePositionAction
+      value: 
+      objectReference: {fileID: -5731286819098654768, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+    - target: {fileID: 7320864843690783674, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_TrackedDeviceOrientationAction
+      value: 
+      objectReference: {fileID: -8376138843182590419, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+    - target: {fileID: 7320864843690783677, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_FirstSelected
+      value: 
+      objectReference: {fileID: 7320864843101421964}
     - target: {fileID: 7320864844456451746, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2007,6 +2050,18 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7320864844769353907, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0.21960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844769353907, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0.21960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844769353907, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 0.21960786
+      objectReference: {fileID: 0}
     - target: {fileID: 7320864845033550431, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2022,6 +2077,18 @@ PrefabInstance:
     - target: {fileID: 7320864845104444354, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
       propertyPath: m_MinValue
       value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864845104444354, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0.21960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864845104444354, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0.21960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864845104444354, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 0.21960786
       objectReference: {fileID: 0}
     - target: {fileID: 7320864845104444354, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -2043,6 +2110,18 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 7320864845120930641, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0.21960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864845120930641, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0.21960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864845120930641, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 0.21960786
+      objectReference: {fileID: 0}
     - target: {fileID: 7320864845129790792, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2053,6 +2132,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+--- !u!114 &7320864843101421954 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7320864845120930641, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+  m_PrefabInstance: {fileID: 2074133203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7320864843101421964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7320864844647287481 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7320864843449763946, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+  m_PrefabInstance: {fileID: 2074133203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d199490a83bb2b844b9695cbf13b01ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7320864843320238688 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7320864844769353907, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
@@ -2129,28 +2230,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7320864844456451746, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
   m_PrefabInstance: {fileID: 2074133203}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7320864843101421954 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7320864845120930641, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+--- !u!1 &7320864843101421964 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7320864845120930655, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
   m_PrefabInstance: {fileID: 2074133203}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7320864844647287481 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7320864843449763946, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
-  m_PrefabInstance: {fileID: 2074133203}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d199490a83bb2b844b9695cbf13b01ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7320864844741426137 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7320864843489474826, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
