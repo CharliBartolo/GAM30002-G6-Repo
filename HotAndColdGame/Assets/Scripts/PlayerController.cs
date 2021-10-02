@@ -574,6 +574,14 @@ public class PlayerController : MonoBehaviour, IConditions
 
     public void Interact(InputAction.CallbackContext context)
     {
+        Journal_Reader journalUIComponent = GameObject.Find("UI").GetComponentInChildren<Journal_Reader>();
+
+        if (journalUIComponent.text[0].gameObject.activeSelf)
+        {
+            GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Exit_Journal();
+            return;
+        }
+
         if (Physics.Raycast(playerCamControl.playerCam.transform.position, playerCamControl.playerCam.transform.forward, out RaycastHit hit, interactRange) && 
             hit.collider.gameObject.GetComponent<InteractableBase>() != null && playerCamControl != null)
         {
