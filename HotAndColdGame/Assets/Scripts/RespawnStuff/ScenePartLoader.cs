@@ -17,9 +17,6 @@ public class ScenePartLoader : MonoBehaviour
     [SerializeField] public OnTrigger loadTrigger;
     [SerializeField] public OnTrigger unloadTrigger;
 
-    //public GameObject loadTrigger;
-    //public GameObject unloadTrigger;
-
     //Scene state
     private bool isLoaded;
     private bool shouldLoad;
@@ -147,7 +144,8 @@ public class ScenePartLoader : MonoBehaviour
         }
     }
 
-    /*private void OnTriggerEnter(Collider other)
+    /*//commented out but kept incase needed later
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -155,7 +153,7 @@ public class ScenePartLoader : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)//commented out but kept incase needed later
+    private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
