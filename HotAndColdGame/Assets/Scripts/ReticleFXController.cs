@@ -8,7 +8,7 @@ public class ReticleFXController : ToolboxFXController
     public Reticle reticle;
     [Header("Reticle Properties")]
 
-    public bool isVisible = false;
+    public bool isHidden = false;
     public float reticleSize = 0.25f;
     public float reticleOpacity = 0.5f;
 
@@ -53,6 +53,10 @@ public class ReticleFXController : ToolboxFXController
     // Update is called once per frame
     void Update()
     {
+        if (isHidden)
+            Hide();
+        else
+            Show();
         PerformFX();
     }
 
@@ -213,7 +217,7 @@ public class ReticleFXController : ToolboxFXController
         switch(state)
         {
             case ReticleState.Unequipped:
-                isVisible = false;
+                //isHidden = true;
                 Color colUnequipped = Color.white;
                 colUnequipped.a = reticleOpacity;
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colUnequipped;
@@ -223,7 +227,7 @@ public class ReticleFXController : ToolboxFXController
                  reticle.coldCursor.gameObject.SetActive(false);*/
                 break;
             case ReticleState.Pickup:
-                isVisible = true;
+                isHidden = true;
                 Color colPickup = Color.white;
                 colPickup.a = reticleOpacity;
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colPickup;
