@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 95770808}
   m_Layer: 0
   m_Name: (7) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,9 +181,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 1014335804}
   campfireTemp: 30
+  isActiveInChallenger: 1
+  activationSound: {fileID: 0}
+  passiveSound: {fileID: 0}
 --- !u!1 &156856214 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3275161496338446636, guid: 0da529e383536df488139f0deed665d7, type: 3}
@@ -207,7 +210,8 @@ MonoBehaviour:
   checkMethod: 0
   loadRange: 60
   meshOnly: 0
-  trigger: {fileID: 0}
+  loadTrigger: {fileID: 0}
+  unloadTrigger: {fileID: 0}
 --- !u!65 &156856216
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -230,7 +234,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1561819254, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1594386071, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3665375620786811913, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_AnchorMax.x
@@ -356,6 +364,66 @@ PrefabInstance:
       propertyPath: crntTemp
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7320864843064307852, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843064307852, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843064307852, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843093505947, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843093505947, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843536195403, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843536195403, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843536195403, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844494611567, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844494611567, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844635380294, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844635380294, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844960297908, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844960297908, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844960297908, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
 --- !u!114 &156945882 stripped
@@ -393,7 +461,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPaused: 0
   Quitting: 0
-  isMenuEnabled: 0
   pauseText: {fileID: 1561819255}
   PC: {fileID: 0}
   MouseSensitivityXSlider: {fileID: 0}
@@ -406,8 +473,7 @@ MonoBehaviour:
   QuitPanel: {fileID: 0}
   YesButton: {fileID: 0}
   NoButton: {fileID: 0}
-  playerInput: {fileID: 0}
-  menuInput: {fileID: 0}
+  GM: {fileID: 0}
 --- !u!114 &156945887 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 156945885, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
@@ -436,6 +502,7 @@ GameObject:
   - component: {fileID: 287810399}
   - component: {fileID: 287810398}
   - component: {fileID: 287810397}
+  - component: {fileID: 287810401}
   m_Layer: 0
   m_Name: trigger
   m_TagString: Untagged
@@ -519,6 +586,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &287810401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287810396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d621d1bb1adaa6243baaf054616b014a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Enter: 0
 --- !u!1 &482376600 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 423202057829381025, guid: b6cfe3ec6cedcf940b628880809faf3e, type: 3}
@@ -552,10 +632,11 @@ MonoBehaviour:
   player: {fileID: 260519086}
   sceneToLoad:
     m_Handle: 0
-  checkMethod: 0
+  checkMethod: 1
   loadRange: 20
   meshOnly: 0
-  trigger: {fileID: 0}
+  loadTrigger: {fileID: 949102058}
+  unloadTrigger: {fileID: 287810401}
 --- !u!1001 &513265445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -626,7 +707,7 @@ GameObject:
   - component: {fileID: 553438500}
   m_Layer: 0
   m_Name: (2) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -671,9 +752,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 1138251603}
   campfireTemp: 30
+  isActiveInChallenger: 1
+  activationSound: {fileID: 0}
+  passiveSound: {fileID: 0}
 --- !u!1001 &674376793
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1013,7 +1097,8 @@ MonoBehaviour:
   checkMethod: 1
   loadRange: 60
   meshOnly: 0
-  trigger: {fileID: 0}
+  loadTrigger: {fileID: 287810401}
+  unloadTrigger: {fileID: 949102058}
 --- !u!1001 &894186392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1107,6 +1192,115 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
+--- !u!1 &949102057
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 949102062}
+  - component: {fileID: 949102061}
+  - component: {fileID: 949102060}
+  - component: {fileID: 949102059}
+  - component: {fileID: 949102058}
+  m_Layer: 0
+  m_Name: trigger (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &949102058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949102057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d621d1bb1adaa6243baaf054616b014a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Enter: 0
+--- !u!65 &949102059
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949102057}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &949102060
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949102057}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &949102061
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949102057}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &949102062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949102057}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -239.63, y: -5.43, z: 168.49}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &973571335
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1252,7 +1446,7 @@ GameObject:
   - component: {fileID: 1055593384}
   m_Layer: 0
   m_Name: (3) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1297,9 +1491,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 1853495142}
   campfireTemp: 30
+  isActiveInChallenger: 1
+  activationSound: {fileID: 0}
+  passiveSound: {fileID: 0}
 --- !u!1 &1138251602
 GameObject:
   m_ObjectHideFlags: 0
@@ -1339,9 +1536,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1152758952}
+  - component: {fileID: 1152758953}
   m_Layer: 0
   m_Name: StartCheckpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1360,6 +1558,24 @@ Transform:
   m_Father: {fileID: 1971028634}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 241.881, z: 0}
+--- !u!114 &1152758953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1152758951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gm: {fileID: 1381504600}
+  spawnPos: {fileID: 0}
+  campfireTemp: 30
+  isActiveInChallenger: 1
+  activationSound: {fileID: 0}
+  passiveSound: {fileID: 0}
 --- !u!1 &1203779207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1477,6 +1693,49 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea97142086860f944b40480c50ca02eb, type: 3}
+--- !u!1 &1381504599 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8367264433094579066, guid: ea97142086860f944b40480c50ca02eb, type: 3}
+  m_PrefabInstance: {fileID: 1381504598}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1381504600 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8367264433094579070, guid: ea97142086860f944b40480c50ca02eb, type: 3}
+  m_PrefabInstance: {fileID: 1381504598}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381504599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e090e40686b869429d4b8a11ce96cde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1381504601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381504599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a71709712ab63a346bea62ed47d03e5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1381504602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381504599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6466907bb4cb39d409bb427a5ade7f92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawn: {fileID: 0}
+  checkPoints: []
+  num: 0
 --- !u!1 &1493906110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1490,7 +1749,7 @@ GameObject:
   - component: {fileID: 1493906112}
   m_Layer: 0
   m_Name: (6) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1535,9 +1794,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 799890395}
   campfireTemp: 30
+  isActiveInChallenger: 1
+  activationSound: {fileID: 0}
+  passiveSound: {fileID: 0}
 --- !u!1 &1561819253
 GameObject:
   m_ObjectHideFlags: 0
@@ -1773,7 +2035,7 @@ GameObject:
   - component: {fileID: 1823199232}
   m_Layer: 0
   m_Name: (5) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1818,9 +2080,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 1203779208}
   campfireTemp: 30
+  isActiveInChallenger: 1
+  activationSound: {fileID: 0}
+  passiveSound: {fileID: 0}
 --- !u!1 &1853495141
 GameObject:
   m_ObjectHideFlags: 0
@@ -1860,9 +2125,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1971028634}
+  - component: {fileID: 1971028635}
   m_Layer: 0
   m_Name: Checkpoints
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1888,6 +2154,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1971028635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971028633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gm: {fileID: 1381504600}
+  spawnPos: {fileID: 0}
+  campfireTemp: 30
+  isActiveInChallenger: 1
+  activationSound: {fileID: 0}
+  passiveSound: {fileID: 0}
 --- !u!1 &1973051623
 GameObject:
   m_ObjectHideFlags: 0
@@ -1931,7 +2215,7 @@ GameObject:
   - component: {fileID: 2113334875}
   m_Layer: 0
   m_Name: (4) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1976,6 +2260,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 1973051624}
   campfireTemp: 30
+  isActiveInChallenger: 1
+  activationSound: {fileID: 0}
+  passiveSound: {fileID: 0}
