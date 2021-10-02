@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using UnityEditor;
 
 /// <summary>
 /// This script is responsible for creating and managing tutorial prompts placed in the scene.
@@ -12,10 +11,10 @@ using UnityEditor;
 /// Recent change: Added a direction condition to the triggers. Needs the player to look at a cirtain direction to activate prompts.
 /// Last edited by Charadey 30/9/2001
 /// </summary>
-public class TutorialPrompt : MonoBehaviour
+public class TutorialPrompt : MonoBehaviour 
 {
     /*
-    public enum PlayerActions
+    public enum PlayerAction
     {
         Interact,
         Jump,
@@ -27,10 +26,19 @@ public class TutorialPrompt : MonoBehaviour
     };
     */
 
+    public enum InputType
+    { 
+        Keyboard,
+        Xbox,
+        PS,
+        NULL
+    };
+
     //Struct that defines the Tutorial Prompts
     [System.Serializable]
     public struct Prompt
     {
+        //Fields
         [SerializeField]
         [Tooltip("Label for the Tutorial Prompt")]
         private string _label;
@@ -47,11 +55,13 @@ public class TutorialPrompt : MonoBehaviour
         [SerializeField]
         [Tooltip("Trigger object to end the Tutorial Prompt")]
         private Collider _endTrigger;
+        
         /*
         [SerializeField]
         [Tooltip("The Action that the Tutorial Prompt is trying to teach")]
-        private PlayerActions _playerAction;
+        private PlayerFPControls _playerAction;
         */
+
         [SerializeField]
         [Tooltip("True if the player is completing the Tutorial Prompt")]
         private bool _isActive;
@@ -84,16 +94,58 @@ public class TutorialPrompt : MonoBehaviour
         //[Tooltip("Vector 3 for looking into the correct direction.")]
         private Vector3 _expectedDirection;
 
+        //Button Icons Addition
+        [SerializeField]
+        [Tooltip("List of possible button icons for the prompt")]
+        private List<ButtonIcon> _buttonIcons;
+
+        //Constructor
+        public Prompt(string label, string message, Collider startTrigger, Collider endTrigger, /*PlayerFPControls playerAction,*/ bool active, /*bool isShowingPrompt,*/ bool achieved, bool vision, float angle, Collider poi, Vector3 expectedDirection)
+        {
+            this._label = label;
+            this._message = message;
+            this._startTrigger = startTrigger;
+            this._endTrigger = endTrigger;
+            //this._playerAction = playerAction;
+            this._isActive = active;
+            //this._isShowingPrompt = isShowingPrompt;
+            this._isAchieved = achieved;
+
+            
+
+            //Vision Addition
+            this._needsVision = vision;
+
+            if (vision)
+            {
+                this._visionWindow = angle;
+                this._expectedDirection = expectedDirection;
+                this._pointOfInterestTrigger = poi;
+            }
+            else
+            {
+                this._visionWindow = 0f;
+                this._expectedDirection = new Vector3();
+                this._pointOfInterestTrigger = null;
+            }
+
+            //Button Icon Additions
+            this._buttonIcons = new List<ButtonIcon>();
+        }
+
+        //Properties
         public string Label
         {
             get => _label;
             set => _label = value;
         }
+
         public string Message
         {
             get => _message;
             set => _message = value;
         }
+
         public Collider StartTrigger
         {
             get => _startTrigger;
@@ -106,7 +158,7 @@ public class TutorialPrompt : MonoBehaviour
         }
 
         /*
-        public PlayerActions PlayerAction
+        public PlayerFPControls PlayerAction
         {
             get => _playerAction;
             set => _playerAction = value;
@@ -156,36 +208,61 @@ public class TutorialPrompt : MonoBehaviour
             get => _expectedDirection;
             set => _expectedDirection = value;
         }
-
-        public Prompt(string label, string message, Collider startTrigger, Collider endTrigger, /*PlayerActions playerAction,*/ bool active, /*bool isShowingPrompt,*/ bool achieved, bool vision, float angle, Collider poi, Vector3 expectedDirection)
+        
+        //ButtonIcons
+        public List<ButtonIcon> ButtonIcons
         {
-            this._label = label;
-            this._message = message;
-            this._startTrigger = startTrigger;
-            this._endTrigger = endTrigger;
-            //this._playerAction = playerAction;
-            this._isActive = active;
-            //this._isShowingPrompt = isShowingPrompt;
-            this._isAchieved = achieved;
-
-            this._pointOfInterestTrigger = poi;
-
-            //Vision Addition
-            this._needsVision = vision;
-
-            if (vision)
-            {
-                this._visionWindow = angle;
-                this._expectedDirection = expectedDirection;              
-            }
-            else
-            {
-                this._visionWindow = 0f;
-                this._expectedDirection = new Vector3();
-            }
-            
+            get => _buttonIcons;
+            set => _buttonIcons = value;
         }
     }
+
+    [System.Serializable]
+    public struct ButtonIcon
+    {
+        //Fields
+        [SerializeField]
+        [Tooltip("Label for the Tutorial Prompt")]
+        private string _label;
+
+        [SerializeField]
+        [Tooltip("The specific controls for the sprite")]
+        private InputType _input;
+
+        [SerializeField]
+        [Tooltip("Sprite for specific control")]
+        private Sprite _sprite;
+
+        //Constructor
+        public ButtonIcon(string label, InputType type, Sprite sprite)
+        {
+            this._label = label;
+            this._input = type;
+            this._sprite = sprite;
+        }
+
+        //Properties
+        public string Label
+        {
+            get => _label;
+            set => _label = value;
+        }
+
+        public InputType Input
+        {
+            get => _input;
+            set => _input = value;
+        }
+
+        public Sprite Sprite
+        {
+            get => _sprite;
+            set => _sprite = value;
+
+        }
+       
+    }
+
 
     [Header("Tutorial Prompts")]
     [SerializeField]
@@ -329,10 +406,29 @@ public class TutorialPrompt : MonoBehaviour
                     {
                         //Toggles Tutorial Prompt Text based on the bool IsActive
                         _textTutorialPrompt.enabled = _currentPrompt.IsActive;
+
+                        //Button Icons Addittion
+                        foreach (ButtonIcon bc in _currentPrompt.ButtonIcons)
+                        {
+                            if (bc.Input == DetermineInput())
+                            {
+                                _imageTutorialPrompt.sprite = bc.Sprite;
+
+                                //Debug
+                                Debug.Log("Current input: " + DetermineInput());
+                                Debug.Log("Current sprite: " + bc.Sprite);
+                            }
+                        }
                         _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
                     }
-                }             
+                }
+                else
+                {
+                    _textTutorialPrompt.enabled = _currentPrompt.IsActive;
+                    _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
+                }
                 
+
                 //When the Prompt object has outlived its usefulness it returns nothingness
                 if (_currentPrompt.IsAchieved)
                 {
@@ -371,11 +467,13 @@ public class TutorialPrompt : MonoBehaviour
         }
 
         //DEBUG
-        if (false)
+        if (true)
         {
             Debug.DrawRay(_currentPrompt.PointOfInterestTrigger.transform.position, Player.transform.position, Color.red);
             Debug.DrawRay(Player.transform.position, Player.transform.forward, Color.green);
         }
+
+        Debug.Log(Player.GetComponent<PlayerInput>().currentControlScheme);
     }
 
     // OnTrigger code
@@ -416,5 +514,28 @@ public class TutorialPrompt : MonoBehaviour
         {
             queue.Enqueue(tp);
         }          
-    }         
+    }
+
+    public InputType DetermineInput()
+    {
+        //(Player.GetComponent<PlayerInput>().currentControlScheme == "Keyboard and Mouse")
+        if (Player.GetComponent<PlayerInput>().currentControlScheme == "Keyboard And Mouse")
+        {
+            return InputType.Keyboard;
+        }
+        else
+        {
+            if (Gamepad.current is UnityEngine.InputSystem.XInput.XInputController)
+            {
+                return InputType.Xbox;
+            }
+            else if (UnityEngine.InputSystem.Gamepad.current is UnityEngine.InputSystem.DualShock.DualShockGamepad)
+            {
+                return InputType.PS;
+            }
+        }
+
+        Debug.LogWarning("UH-OH No devices connected (How does that even happen?)");
+        return InputType.NULL;
+    }
 }

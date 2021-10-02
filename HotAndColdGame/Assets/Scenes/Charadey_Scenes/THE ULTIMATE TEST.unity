@@ -810,6 +810,7 @@ GameObject:
   - component: {fileID: 1054554886}
   - component: {fileID: 1054554885}
   - component: {fileID: 1054554890}
+  - component: {fileID: 1054554891}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -933,8 +934,48 @@ MonoBehaviour:
     _needsVision: 1
     _visionWindow: 0.8
     _pointOfInterestTrigger: {fileID: 992478240}
+    _buttonIcons:
+    - _label: Keyboard
+      _input: 0
+      _sprite: {fileID: 21300000, guid: a92ea1960332bbd47a09f9c117609749, type: 3}
+    - _label: Xbox
+      _input: 1
+      _sprite: {fileID: 21300000, guid: 342a08ec246036945b9313d2e1a3b6e7, type: 3}
+    - _label: PS
+      _input: 2
+      _sprite: {fileID: 21300000, guid: b2a215eca651cec428f3da86131f9ccf, type: 3}
   IsCompleted: 0
   Player: {fileID: 0}
+--- !u!114 &1054554891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054554884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 3c582c3d1fdd4d84b9c8686578056fed, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Keyboard And Mouse
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1086127996
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,14 +1146,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 90b2facc847df654487fc7aba4278388, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
