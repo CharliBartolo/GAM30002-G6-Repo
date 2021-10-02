@@ -5,7 +5,7 @@ using UnityEngine;
 public class CheckPoint : MonoBehaviour
 {
     [SerializeField] private GameMaster gm;//reference game master script
-    [SerializeField] private Transform spawnPos;
+    [SerializeField] public Transform spawnPos;
     [SerializeField] public float campfireTemp = 30.0f;
     [SerializeField] private bool isActiveInChallenger = true;
 

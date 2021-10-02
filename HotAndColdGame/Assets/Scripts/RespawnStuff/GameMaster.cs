@@ -74,7 +74,7 @@ public class GameMaster : MonoBehaviour
     }
 
 
-    void LoadCheckpoint()
+    public void LoadCheckpoint()
     {
         LoadingCheckpoint = true;
     }
