@@ -817,6 +817,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
     void OnGUI()
     {
+        /*
         GUILayout.BeginArea(new Rect(10f, 10f, Screen.width, Screen.height));
         string stringToShow = "Player Inventory: ";
         //float msec = deltaTime * 1000f;
@@ -840,6 +841,7 @@ public class PlayerController : MonoBehaviour, IConditions
         //GUILayout.Label(fps + " frames per second");
 
         //GUILayout.EndArea();
+        */
     }
 
     public void AddCondition(IConditions.ConditionTypes nameOfCondition)
