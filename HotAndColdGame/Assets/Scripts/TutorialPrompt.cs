@@ -214,6 +214,11 @@ public class TutorialPrompt : MonoBehaviour
         }
         
         //ButtonIcons
+        public bool NeedsButtonIcons
+        {
+            get => _needsButtonIcon;
+            set => _needsButtonIcon = value;
+        }
         public List<ButtonIcon> ButtonIcons
         {
             get => _buttonIcons;
@@ -268,7 +273,6 @@ public class TutorialPrompt : MonoBehaviour
             get => _prompt;
             set => _prompt = value;
         }
-
         public List<ImageSprite> ImageSprites
         {
             get => _imageSprites;
@@ -456,6 +460,22 @@ public class TutorialPrompt : MonoBehaviour
         _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
         //_imageButtonIcon.enabled = _currentPrompt.IsActive;
         _textButtonIcon.enabled = _currentPrompt.IsActive;
+
+        foreach (Prompt tp in _listTutorialPrompts)
+        {
+            foreach (ButtonIcon bc in tp.ButtonIcons)
+            {
+                if (bc.Input == DetermineInput())
+                {
+                    _textButtonIcon.text = bc.Prompt;
+
+                    foreach (ImageSprite imgSpr in bc.ImageSprites)
+                    {
+                        imgSpr.Image.enabled = _currentPrompt.IsActive;
+                    }
+                }
+            }
+        }      
     }
 
     private void FixedUpdate()
@@ -488,25 +508,27 @@ public class TutorialPrompt : MonoBehaviour
                         _textTutorialPrompt.enabled = _currentPrompt.IsActive;
                         _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
 
-                        //Button Icons Addittion
-                        foreach (ButtonIcon bc in _currentPrompt.ButtonIcons)
+                        //Button Icon Addition
+                        if (_currentPrompt.NeedsButtonIcons)
                         {
-                            if (bc.Input == DetermineInput())
+                            foreach (ButtonIcon bc in _currentPrompt.ButtonIcons)
                             {
-                                _textButtonIcon.text = bc.Prompt;
-
                                 foreach (ImageSprite imgSpr in bc.ImageSprites)
                                 {
-                                    imgSpr.Image.sprite = imgSpr.Sprite;
-                                    imgSpr.Image.enabled = _currentPrompt.IsActive;
-                                }
+                                    if (bc.Input == DetermineInput())
+                                    {
+                                        _textButtonIcon.text = bc.Prompt;
+                                        imgSpr.Image.sprite = imgSpr.Sprite;
+                                        imgSpr.Image.enabled = _currentPrompt.IsActive;
 
-                                //Debug
-                                //Debug.Log("Current input: " + DetermineInput());
-                                //Debug.Log("Current sprite: " + bc.Sprite);
+                                        //Debug
+                                        //Debug.Log("Current input: " + DetermineInput());
+                                        //Debug.Log("Current sprite: " + bc.Sprite);
+                                    }                                   
+                                }                             
                             }
                         }
-                        //_imageButtonIcon.enabled = _currentPrompt.IsActive;
+
                         _textButtonIcon.enabled = _currentPrompt.IsActive;
                     }
                 }
@@ -515,24 +537,28 @@ public class TutorialPrompt : MonoBehaviour
                     _textTutorialPrompt.text = _currentPrompt.Message;
                     _textTutorialPrompt.enabled = _currentPrompt.IsActive;
                     _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
-                    foreach (ButtonIcon bc in _currentPrompt.ButtonIcons)
-                    {
-                        if (bc.Input == DetermineInput())
-                        {
-                            _textButtonIcon.text = bc.Prompt;
 
+                    //Button Icon Addition
+                    if (_currentPrompt.NeedsButtonIcons)
+                    {
+                        foreach (ButtonIcon bc in _currentPrompt.ButtonIcons)
+                        {
                             foreach (ImageSprite imgSpr in bc.ImageSprites)
                             {
-                                imgSpr.Image.sprite = imgSpr.Sprite;
-                                imgSpr.Image.enabled = _currentPrompt.IsActive;
-                            }
+                                if (bc.Input == DetermineInput())
+                                {
+                                    _textButtonIcon.text = bc.Prompt;
+                                    imgSpr.Image.sprite = imgSpr.Sprite;
+                                    imgSpr.Image.enabled = _currentPrompt.IsActive;
 
-                            //Debug
-                            //Debug.Log("Current input: " + DetermineInput());
-                            //Debug.Log("Current sprite: " + bc.Sprite);
+                                    //Debug
+                                    //Debug.Log("Current input: " + DetermineInput());
+                                    //Debug.Log("Current sprite: " + bc.Sprite);
+                                }
+                            }
                         }
                     }
-                    //_imageButtonIcon.enabled = _currentPrompt.IsActive;
+
                     _textButtonIcon.enabled = _currentPrompt.IsActive;
                 }
                 
@@ -543,6 +569,16 @@ public class TutorialPrompt : MonoBehaviour
                     //Turn off text and image
                     _textTutorialPrompt.enabled = _currentPrompt.IsActive;
                     _imageTutorialPrompt.enabled = _currentPrompt.IsActive;
+
+                    foreach (ButtonIcon bc in _currentPrompt.ButtonIcons)
+                    {
+                        foreach (ImageSprite imgSpr in bc.ImageSprites)
+                        {
+                            imgSpr.Image.enabled = _currentPrompt.IsActive;
+                        }
+
+                        _textButtonIcon.enabled = _currentPrompt.IsActive;
+                    }
 
                     _listTutorialPrompts.RemoveAt(0);   //Removes said Prompt object from the list                   
                     ListToQueueTransfer(_listTutorialPrompts, _queueTutorialPrompts);   //Updates the Queue
