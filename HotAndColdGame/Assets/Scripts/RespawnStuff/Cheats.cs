@@ -35,14 +35,14 @@ public class Cheats : MonoBehaviour
     {
         //Debug.Log(checkPoints[num].name);
         //next checkpoint
-        if ((Input.GetKeyDown("1")) && (num < checkPoints.Count))
+        if ((Input.GetKeyDown("2")) && (num < checkPoints.Count))
         {
             num++;
             //Debug.Log("Adding");
             CheckpointTeleport();
         }
         //previous checkpoint
-        else if ((Input.GetKeyDown("2")) && (num > 0)) 
+        else if ((Input.GetKeyDown("1")) && (num > 0)) 
         {
             num--;
             //Debug.Log("Minusing");

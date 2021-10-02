@@ -1039,7 +1039,6 @@ MonoBehaviour:
   _textTutorialPrompt: {fileID: 222131905}
   _imageTutorialPrompt: {fileID: 1933357996}
   _textButtonIcon: {fileID: 1266698152}
-  _imageButtonIcon: {fileID: 546190387}
   _listTutorialPrompts:
   - _label: TEST
     _message: TESTING!!!!!!!!!!!!!!
@@ -1050,22 +1049,28 @@ MonoBehaviour:
     _needsVision: 1
     _visionWindow: 0.8
     _pointOfInterestTrigger: {fileID: 992478240}
-    _needsButtonIcon: 0
+    _needsButtonIcon: 1
     _buttonIcons:
     - _label: Keyboard
       _input: 0
       _prompt: LOL just jump
       _imageSprites:
       - _label: Img 1
-        _image: {fileID: 0}
-        _sprite: {fileID: 0}
-      - _label: 
-        _image: {fileID: 0}
-        _sprite: {fileID: 0}
+        _image: {fileID: 546190387}
+        _sprite: {fileID: 21300000, guid: d6e73b82c1f620c47acbee2f2d391b2f, type: 3}
+      - _label: Img 2
+        _image: {fileID: 1454032894}
+        _sprite: {fileID: 21300000, guid: 342a08ec246036945b9313d2e1a3b6e7, type: 3}
     - _label: Xbox
       _input: 1
       _prompt: 'LOL '
-      _imageSprites: []
+      _imageSprites:
+      - _label: Img 1
+        _image: {fileID: 546190387}
+        _sprite: {fileID: 21300000, guid: 841f597041f9fdd459e62628c7e77f70, type: 3}
+      - _label: Img 2
+        _image: {fileID: 1454032894}
+        _sprite: {fileID: 21300000, guid: 29c664fe261633a49af2d6699d2ac6b6, type: 3}
     - _label: PS
       _input: 2
       _prompt: LOL just FLY!!!!
@@ -1172,8 +1177,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1204575329}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12, y: 8.94, z: -0.57}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -12, y: 9.74, z: -0.57}
+  m_LocalScale: {x: 1, y: 3.9614, z: 2.2625}
   m_Children: []
   m_Father: {fileID: 2070136924}
   m_RootOrder: 1
