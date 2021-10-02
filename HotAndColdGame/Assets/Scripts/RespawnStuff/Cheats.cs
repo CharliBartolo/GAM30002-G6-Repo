@@ -14,6 +14,7 @@ public class Cheats : MonoBehaviour
     [SerializeField] public CheckPoint spawn;               //reference checkpoint script
     //[SerializeField] public GameObject checkPointList;      //gameobject in scene with all checkpoints as the children
     [SerializeField] public List<Transform> checkPoints;    //list for saving checkpoint positions
+    public bool isHUDVisible = true;
     public int num = 0;
 
     // Start is called before the first frame update
@@ -35,18 +36,26 @@ public class Cheats : MonoBehaviour
     {
         //Debug.Log(checkPoints[num].name);
         //next checkpoint
-        if ((Input.GetKeyDown("1")) && (num < checkPoints.Count))
+        if ((Input.GetKeyDown("2")) && (num < checkPoints.Count))
         {
             num++;
             //Debug.Log("Adding");
             CheckpointTeleport();
         }
         //previous checkpoint
-        else if ((Input.GetKeyDown("2")) && (num > 0)) 
+        else if ((Input.GetKeyDown("1")) && (num > 0)) 
         {
             num--;
             //Debug.Log("Minusing");
             CheckpointTeleport();
+        }
+
+        if (Input.GetKeyDown("h"))
+        {
+            GameMaster.instance.playerRef.GetComponent<ReticleFXController>().isHidden = 
+                !GameMaster.instance.playerRef.GetComponent<ReticleFXController>().isHidden;
+            
+            FindObjectOfType<UIFXController>().isTemperatureHidden = !FindObjectOfType<UIFXController>().isTemperatureHidden;
         }
     }
 
@@ -87,5 +96,9 @@ public class Cheats : MonoBehaviour
     public void OnLevelLoad(Scene load, LoadSceneMode mode)
     {
         searchForCheckpoints();
+    }
+
+    public void ToggleHUD()
+    {
     }
 }
