@@ -227,7 +227,7 @@ public class ReticleFXController : ToolboxFXController
                  reticle.coldCursor.gameObject.SetActive(false);*/
                 break;
             case ReticleState.Pickup:
-                isHidden = true;
+                //isHidden = true;
                 Color colPickup = Color.white;
                 colPickup.a = reticleOpacity;
                 reticle.Cursor.GetComponent<SpriteRenderer>().color = colPickup;
