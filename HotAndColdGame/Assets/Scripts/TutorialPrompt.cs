@@ -527,9 +527,11 @@ public class TutorialPrompt : MonoBehaviour
                                     }                                   
                                 }                             
                             }
+
+                            _textButtonIcon.enabled = _currentPrompt.IsActive;
                         }
 
-                        _textButtonIcon.enabled = _currentPrompt.IsActive;
+                        
                     }
                 }
                 else
@@ -557,9 +559,9 @@ public class TutorialPrompt : MonoBehaviour
                                 }
                             }
                         }
-                    }
 
-                    _textButtonIcon.enabled = _currentPrompt.IsActive;
+                        _textButtonIcon.enabled = _currentPrompt.IsActive;
+                    }             
                 }
                 
 
