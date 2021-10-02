@@ -38,6 +38,11 @@ public class UIFXController : FXController
     }
     void Update()
     {
+        if (Input.GetKeyDown("h"))
+        {
+            isTemperatureHidden = !isTemperatureHidden;
+        }
+
         if (isTemperatureHidden)
         {
             Slider.gameObject.SetActive(false);
