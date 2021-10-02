@@ -48,7 +48,7 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                     ""id"": ""a6cf4eef-2be2-4f21-8a3d-0ed2e1ce630d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press(behavior=2)""
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Shoot"",
