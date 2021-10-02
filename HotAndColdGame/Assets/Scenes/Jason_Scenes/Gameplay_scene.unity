@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 95770808}
   m_Layer: 0
   m_Name: (7) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,9 +181,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 1014335804}
   campfireTemp: 30
+  isActiveInChallenger: 1
   activationSound: {fileID: 0}
   passiveSound: {fileID: 0}
 --- !u!1 &156856214 stripped
@@ -233,7 +234,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1561819254, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1594386071, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3665375620786811913, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_AnchorMax.x
@@ -359,6 +364,66 @@ PrefabInstance:
       propertyPath: crntTemp
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7320864843064307852, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843064307852, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843064307852, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843093505947, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843093505947, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843536195403, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843536195403, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843536195403, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844494611567, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844494611567, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844635380294, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844635380294, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844960297908, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844960297908, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864844960297908, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
 --- !u!114 &156945882 stripped
@@ -396,7 +461,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsPaused: 0
   Quitting: 0
-  isMenuEnabled: 0
   pauseText: {fileID: 1561819255}
   PC: {fileID: 0}
   MouseSensitivityXSlider: {fileID: 0}
@@ -409,8 +473,7 @@ MonoBehaviour:
   QuitPanel: {fileID: 0}
   YesButton: {fileID: 0}
   NoButton: {fileID: 0}
-  playerInput: {fileID: 0}
-  menuInput: {fileID: 0}
+  GM: {fileID: 0}
 --- !u!114 &156945887 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 156945885, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
@@ -644,7 +707,7 @@ GameObject:
   - component: {fileID: 553438500}
   m_Layer: 0
   m_Name: (2) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -689,9 +752,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 1138251603}
   campfireTemp: 30
+  isActiveInChallenger: 1
   activationSound: {fileID: 0}
   passiveSound: {fileID: 0}
 --- !u!1001 &674376793
@@ -1382,7 +1446,7 @@ GameObject:
   - component: {fileID: 1055593384}
   m_Layer: 0
   m_Name: (3) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1427,9 +1491,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 1853495142}
   campfireTemp: 30
+  isActiveInChallenger: 1
   activationSound: {fileID: 0}
   passiveSound: {fileID: 0}
 --- !u!1 &1138251602
@@ -1471,9 +1536,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1152758952}
+  - component: {fileID: 1152758953}
   m_Layer: 0
   m_Name: StartCheckpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1492,6 +1558,24 @@ Transform:
   m_Father: {fileID: 1971028634}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 241.881, z: 0}
+--- !u!114 &1152758953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1152758951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gm: {fileID: 1381504600}
+  spawnPos: {fileID: 0}
+  campfireTemp: 30
+  isActiveInChallenger: 1
+  activationSound: {fileID: 0}
+  passiveSound: {fileID: 0}
 --- !u!1 &1203779207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1609,6 +1693,49 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea97142086860f944b40480c50ca02eb, type: 3}
+--- !u!1 &1381504599 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8367264433094579066, guid: ea97142086860f944b40480c50ca02eb, type: 3}
+  m_PrefabInstance: {fileID: 1381504598}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1381504600 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8367264433094579070, guid: ea97142086860f944b40480c50ca02eb, type: 3}
+  m_PrefabInstance: {fileID: 1381504598}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381504599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e090e40686b869429d4b8a11ce96cde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1381504601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381504599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a71709712ab63a346bea62ed47d03e5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1381504602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381504599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6466907bb4cb39d409bb427a5ade7f92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawn: {fileID: 0}
+  checkPoints: []
+  num: 0
 --- !u!1 &1493906110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1622,7 +1749,7 @@ GameObject:
   - component: {fileID: 1493906112}
   m_Layer: 0
   m_Name: (6) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1667,9 +1794,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 799890395}
   campfireTemp: 30
+  isActiveInChallenger: 1
   activationSound: {fileID: 0}
   passiveSound: {fileID: 0}
 --- !u!1 &1561819253
@@ -1907,7 +2035,7 @@ GameObject:
   - component: {fileID: 1823199232}
   m_Layer: 0
   m_Name: (5) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1952,9 +2080,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 1203779208}
   campfireTemp: 30
+  isActiveInChallenger: 1
   activationSound: {fileID: 0}
   passiveSound: {fileID: 0}
 --- !u!1 &1853495141
@@ -1996,9 +2125,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1971028634}
+  - component: {fileID: 1971028635}
   m_Layer: 0
   m_Name: Checkpoints
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2024,6 +2154,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1971028635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971028633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gm: {fileID: 1381504600}
+  spawnPos: {fileID: 0}
+  campfireTemp: 30
+  isActiveInChallenger: 1
+  activationSound: {fileID: 0}
+  passiveSound: {fileID: 0}
 --- !u!1 &1973051623
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,7 +2215,7 @@ GameObject:
   - component: {fileID: 2113334875}
   m_Layer: 0
   m_Name: (4) Checkpoint
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2112,8 +2260,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5dde30eaba0e94eb76ad2c194781d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  gm: {fileID: 1381504600}
   spawnPos: {fileID: 1973051624}
   campfireTemp: 30
+  isActiveInChallenger: 1
   activationSound: {fileID: 0}
   passiveSound: {fileID: 0}
