@@ -29270,6 +29270,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 590232666, guid: a01d1fabc7e4bf64ab1476430d12ef41, type: 3}
+      propertyPath: activeOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 590232666, guid: a01d1fabc7e4bf64ab1476430d12ef41, type: 3}
       propertyPath: DeathWaterObject
       value: 
       objectReference: {fileID: 650491332}
@@ -40295,7 +40299,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6333032407357791072, guid: a01d1fabc7e4bf64ab1476430d12ef41, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 62.8
+      value: 61.9
       objectReference: {fileID: 0}
     - target: {fileID: 6333032407357791072, guid: a01d1fabc7e4bf64ab1476430d12ef41, type: 3}
       propertyPath: m_LocalPosition.z
@@ -43110,12 +43114,16 @@ PrefabInstance:
       value: -5.22917
       objectReference: {fileID: 0}
     - target: {fileID: 6333032407357791076, guid: a01d1fabc7e4bf64ab1476430d12ef41, type: 3}
+      propertyPath: enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6333032407357791076, guid: a01d1fabc7e4bf64ab1476430d12ef41, type: 3}
       propertyPath: endPos.x
       value: 116.92214
       objectReference: {fileID: 0}
     - target: {fileID: 6333032407357791076, guid: a01d1fabc7e4bf64ab1476430d12ef41, type: 3}
       propertyPath: endPos.y
-      value: -31.79411
+      value: -58.694103
       objectReference: {fileID: 0}
     - target: {fileID: 6333032407357791076, guid: a01d1fabc7e4bf64ab1476430d12ef41, type: 3}
       propertyPath: endPos.z
@@ -43143,7 +43151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6333032407357791076, guid: a01d1fabc7e4bf64ab1476430d12ef41, type: 3}
       propertyPath: triggerMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6333032407357791076, guid: a01d1fabc7e4bf64ab1476430d12ef41, type: 3}
       propertyPath: platformMode
@@ -52633,6 +52641,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1302266658}
     m_Modifications:
+    - target: {fileID: 9201464034028697390, guid: 3659a25f96b3381459a4f32537877172, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.87343
+      objectReference: {fileID: 0}
+    - target: {fileID: 9201464034028697390, guid: 3659a25f96b3381459a4f32537877172, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.87343
+      objectReference: {fileID: 0}
+    - target: {fileID: 9201464034028697390, guid: 3659a25f96b3381459a4f32537877172, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.87343
+      objectReference: {fileID: 0}
+    - target: {fileID: 9201464034028697390, guid: 3659a25f96b3381459a4f32537877172, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 9201464034028697390, guid: 3659a25f96b3381459a4f32537877172, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.22
+      objectReference: {fileID: 0}
     - target: {fileID: 9201464035689448110, guid: 3659a25f96b3381459a4f32537877172, type: 3}
       propertyPath: m_Name
       value: Bubbles (1)
@@ -52655,7 +52683,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9201464035689448111, guid: 3659a25f96b3381459a4f32537877172, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.215
+      value: -0.14
       objectReference: {fileID: 0}
     - target: {fileID: 9201464035689448111, guid: 3659a25f96b3381459a4f32537877172, type: 3}
       propertyPath: m_LocalPosition.y
@@ -52663,7 +52691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9201464035689448111, guid: 3659a25f96b3381459a4f32537877172, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.688
+      value: -0.276
       objectReference: {fileID: 0}
     - target: {fileID: 9201464035689448111, guid: 3659a25f96b3381459a4f32537877172, type: 3}
       propertyPath: m_LocalRotation.w

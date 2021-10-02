@@ -7,12 +7,21 @@ public class WaterTrigger : MonoBehaviour
     public SimpleBehaviours DeathWaterObject;
 
     private bool triggered = false;
+    public bool activeOnStart;
 
     // Start is called before the first frame update
     void Start()
     {
-        if(DeathWaterObject.gameObject.activeSelf == true)
-            DeathWaterObject.gameObject.SetActive(false);
+        if(activeOnStart)
+        {
+          
+        }
+        else
+        {
+            if (DeathWaterObject.gameObject.activeSelf == true)
+                DeathWaterObject.gameObject.SetActive(false);
+        }
+      
     }
 
     // Update is called once per frame
@@ -23,8 +32,10 @@ public class WaterTrigger : MonoBehaviour
 
     private void Trigger()
     {
-        DeathWaterObject.gameObject.SetActive(true);
-        DeathWaterObject.Trigger(true);
+        if (DeathWaterObject.gameObject.activeSelf == false)
+            DeathWaterObject.gameObject.SetActive(true);
+        // DeathWaterObject.Trigger(true);
+        DeathWaterObject.enabled = true;
         triggered = true;
         Destroy(gameObject);
     }
