@@ -2424,7 +2424,7 @@ MonoBehaviour:
   neutral_emissiive_lights: []
   emissionValue: 5
   reticle: {fileID: 2421584830609612950}
-  isVisible: 0
+  isHidden: 0
   reticleSize: 0.05
   reticleOpacity: 0.5
   range_raygun: 0
@@ -2449,6 +2449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textTutorialPrompt: {fileID: 0}
   _imageTutorialPrompt: {fileID: 0}
+  _textButtonIcon: {fileID: 0}
   _listTutorialPrompts:
   - _label: Walk1
     _message: "PC: Mouse to look, WASD to move.\r\n\nGamepad: LEFT and RIGHT thumb
@@ -2457,12 +2458,22 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Jump1
     _message: To perform a jump, press SPACEBAR or A/CROSS on the respective gamepad.
     _startTrigger: {fileID: 0}
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Crystal_Intro
     _message: 'Powered crystals will empower players and the environment.
 
@@ -2479,6 +2490,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Crystal_Negative1
     _message: NEGATIVE state crystals exaggerate horizontal motion, try moving around
       in the light.
@@ -2486,6 +2502,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Crystal_Negative2
     _message: "With this power, your movements are vastly enhanced. \n\nHowever,
       do not stay in the light for too long, you might freeze up.\r\n\nLook for campfires
@@ -2495,12 +2516,22 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Crystal_Negative3
     _message: Forge your own path ahead to the other side.
     _startTrigger: {fileID: 0}
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: GunTool01
     _message: 'Now that you have explored the nature of the crystals, it is time
       to manipulate them with alien technology. Place the TOOLGUN into the UPGRADE
@@ -2519,6 +2550,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: CrystalAgency_Negative01
     _message: "The tool is able to change the charge of the crystals, engage with
       the crystals to forge your own path ahead. \n\nReminder, try to not stay in
@@ -2527,6 +2563,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Crystal_Positive1
     _message: POSITIVE state crystals exaggerate vertical motion, try moving around
       in the light and exploring the new movement you possess.
@@ -2534,6 +2575,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Crystal_Positive2
     _message: "With this power, your movements are vastly enhanced. However, don\u2019t
       stay in the light for too long, you might burn up."
@@ -2541,6 +2587,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: GunTool02
     _message: "Now that you have experienced the power of the positive crystals,
       it is time to manipulate them like you did with the negative crystals. \nPlace
@@ -2551,6 +2602,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: CrystalAgency_PositiveNegative
     _message: "With both of the crystals\u2019 power in your possession, now might
       seem a good time to explore how you can manipulate the crystals to your advantage.
@@ -2559,14 +2615,24 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: CrystalAgency_PostDoor
     _message: You have mastered the basics. Continue on and form your path out.
     _startTrigger: {fileID: 0}
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   IsCompleted: 0
-  PlayerInputs: {fileID: 7373485747256884177}
+  Player: {fileID: 0}
 --- !u!82 &1322132706
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2677,6 +2743,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textTutorialPrompt: {fileID: 0}
   _imageTutorialPrompt: {fileID: 0}
+  _textButtonIcon: {fileID: 0}
   _listTutorialPrompts:
   - _label: Walk1
     _message: '"I should be close to the site now, this small valley here is the
@@ -2694,6 +2761,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Jump1
     _message: "\"Good thing I am well-seasoned in exploring, making these jumps will
       be no challenge.\"\n\nPC: To perform a jump, press SPACEBAR\r\nGamepad: To
@@ -2702,6 +2774,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Clamber1
     _message: "\"Some jumps may be too hard to simply jump up. Upper body with clambering
       will do the trick.\"\n\nPC: To clamber, press and hold SPACEBAR\r.\nGamepad:
@@ -2710,6 +2787,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Journal
     _message: '"A journal on the snow.... probably from the previous expidition,
       I wonder what it says."
@@ -2723,6 +2805,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Clamber2
     _message: "\"Even this great height should be no problem with clambering, I should
       give it a shot.\"\n\nPC: To clamber, press and hold SPACEBAR\r.\nGamepad: To
@@ -2731,6 +2818,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: VFX Indicator
     _message: In story mode, the path forward and certain areas of importance are
       marked with visual indicators to help guide the path. Getting close to them
@@ -2739,8 +2831,13 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   IsCompleted: 0
-  PlayerInputs: {fileID: 7373485747256884177}
+  Player: {fileID: 0}
 --- !u!114 &891186627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2755,6 +2852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textTutorialPrompt: {fileID: 0}
   _imageTutorialPrompt: {fileID: 0}
+  _textButtonIcon: {fileID: 0}
   _listTutorialPrompts:
   - _label: Crystal_Intro
     _message: '"Ah the crystals, this one does not seem to be empowered, however.
@@ -2764,6 +2862,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Crystal_Negative1
     _message: '"Excellent, a negatively empowered crystal. I will gladly take a velocity
       boost for travelling when inside of its aura."'
@@ -2771,6 +2874,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Crystal_Negative2
     _message: "\"Ah, a campfire from the previous explorer. The embers are still
       warm too, this will be a great place to rest and return to should I stumble.\r\n-
@@ -2779,6 +2887,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Crystal_Negative3
     _message: "\"These objects are far too heavy to move by myself, thank goodness
       they\u2019re in the blue light so I can move them while they\u2019re still
@@ -2787,6 +2900,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: GunTool01
     _message: "\"An alien tool of some description, infusing its technology with
       the crystals should allow me to manipulate the crystal\u2019s behaviour states
@@ -2797,6 +2915,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: CrystalAgency_Negative01
     _message: "\"How convenient, these neutral crystals are a perfect testing ground
       for me to fire the beam with a negative charge and see what happens with the
@@ -2806,6 +2929,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Crystal_Positive1
     _message: "\"These crystals are rather similar to the ones I have already encountered,
       but these ones seem to have a factor that manipulates one\u2019s gravitational
@@ -2814,6 +2942,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: Crystal_Positive2
     _message: '"This new type of crystal should help me reaching those high ledges
       and places that I normally would require a ladder or grapple to access. This
@@ -2822,6 +2955,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: GunTool02
     _message: "\"Finally, I can upgrade my toolgun once again. With the infusion
       of these heat crystals, I will be able to form my own paths to higher places.
@@ -2832,6 +2970,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: CrystalAgency_PositiveNegative
     _message: "\"Yes, I believe that door will open with this new power that the
       toolgun has been infused with. I think I recall two symbols on the door, perhaps
@@ -2840,6 +2983,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: CrystalAgency_Door
     _message: "\"Two large symbols, I saw those as smaller versions on those machines
       that upgraded my gun. Perhaps if I fire in that sequence on the machine pillar
@@ -2849,6 +2997,11 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   - _label: CrystalAgency_PostDoor
     _message: '"Finally, I have unlocked that hefty door. Time to explore the real
       mysteries of this place, discovery awaits. I wonder where the other explorers
@@ -2857,8 +3010,13 @@ MonoBehaviour:
     _endTrigger: {fileID: 0}
     _isActive: 0
     _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   IsCompleted: 0
-  PlayerInputs: {fileID: 7373485747256884177}
+  Player: {fileID: 0}
 --- !u!1 &1132983919290905658
 GameObject:
   m_ObjectHideFlags: 0
@@ -3684,6 +3842,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1401739142401039276}
   - component: {fileID: 8613446352013272577}
+  - component: {fileID: 1104810034487798006}
   m_Layer: 12
   m_Name: Arm_Mesh
   m_TagString: Untagged
@@ -3829,6 +3988,20 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.33307832, y: -0.11088467, z: 1.9158452}
     m_Extent: {x: 0.7255003, y: 1.8732812, z: 2.128791}
   m_DirtyAABB: 0
+--- !u!64 &1104810034487798006
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169534826955344720}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4384847793562474080, guid: 41d2c792c770b584ca8be5db9323840b, type: 3}
 --- !u!1 &2177908359345863571
 GameObject:
   m_ObjectHideFlags: 0

@@ -300,7 +300,7 @@ public class CrystalFXController : FXController
             {
                
                     //Debug.Log("COLLISION: " + other.gameObject.name);
-                    if (other.gameObject.GetComponent<MeshRenderer>() != null)
+                    if (other.gameObject.GetComponent<MeshRenderer>() != null || other.gameObject.GetComponent<SkinnedMeshRenderer>() != null)
                     {
                         if (other.gameObject.GetComponent<CrystalFXController>() == null)
                         {
