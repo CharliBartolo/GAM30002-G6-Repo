@@ -6712,6 +6712,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1457357678}
   - component: {fileID: 1457357677}
+  - component: {fileID: 1457357679}
   m_Layer: 0
   m_Name: ScrollingtextController
   m_TagString: Untagged
@@ -6746,6 +6747,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1457357679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457357676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66be5672ff4738f4d970b828112596a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  display: {fileID: 597715119}
+  time: 0.1
 --- !u!1 &1462050439 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7320864844676091962, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
