@@ -230,22 +230,19 @@ public class RayCastShootComplete : MonoBehaviour {
     {
         if (Physics.Raycast(ray_origin, fpsCam.transform.forward, out RaycastHit hit, weaponRange) && lightning != null)
         {
-            if(hit.collider.gameObject != gameObject)
-            {
-                ITemperature objtemp = hit.collider.GetComponentInParent<ITemperature>();
-
-                if (objtemp != null)
-                {
-                    GetComponentInParent<ReticleFXController>().objHit = hit.collider.gameObject;
-                    return objtemp;
-                }
-                else
-                {
-                    GetComponentInParent<ReticleFXController>().objHit = null;
-                    return null;
-                }
-            }
            
+            ITemperature objtemp = hit.collider.GetComponentInParent<ITemperature>();
+
+            if (objtemp != null)
+            {
+                GetComponentInParent<ReticleFXController>().objHit = hit.collider.gameObject;
+                return objtemp;
+            }
+            else
+            {
+                GetComponentInParent<ReticleFXController>().objHit = null;
+                return null;
+            }
 
         }
 
