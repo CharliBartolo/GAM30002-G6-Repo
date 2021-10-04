@@ -13,11 +13,25 @@ public class PlayerSoundControl : MonoBehaviour
     [SerializeField] private List<AudioClip> raygunSounds = new List<AudioClip>();
 
     private AudioSource playerAudio;
+    private FootstepSwapper fs;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerAudio = GetComponent<AudioSource>(); 
+        playerAudio = GetComponent<AudioSource>();
+        fs = GetComponent<FootstepSwapper>();
+    }
+
+    public void SwapFootsteps(FootstepCollection collection)
+    {
+        footstepSounds.Clear();
+        for(int i = 0; i < collection.footstepSounds.Count; i++)
+        {
+            footstepSounds.Add(collection.footstepSounds[i]);
+        }
+        //jump
+        //landing
+        //clambering
     }
 
     // Sound Functions Below
@@ -63,16 +77,20 @@ public class PlayerSoundControl : MonoBehaviour
             footstepSounds[0] = playerAudio.clip;
         }    
         */
+
+        fs.CheckSurface();
         SelectAndPlayRandomClip(footstepSounds);    
     }
 
     public void PlayLandingAudio()
     {
+        fs.CheckSurface();
         SelectAndPlayRandomClip(landingSounds);
     }
 
     public void PlayClamberingAudio()
     {
+        fs.CheckSurface();
         SelectAndPlayRandomClip(clamberingSounds);
     }
 

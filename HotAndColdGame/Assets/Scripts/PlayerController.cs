@@ -84,6 +84,8 @@ public class PlayerController : MonoBehaviour, IConditions
     public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
     public PhysicMaterial regularPhysicMaterial;
 
+    public HeadBobFinal headbobcontroller;
+
 
     private void Awake()
     {
@@ -202,10 +204,14 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             currentInteractingObject.OnInteracting();
         }
+
     }
 
     private void FixedUpdate()
     {
+
+      
+
         horizVelocity = Vector3.Scale(playerRB.velocity, new Vector3(1f, 0f, 1f));
         vertVelocity = Vector3.Scale(playerRB.velocity, new Vector3(0f, 1f, 0f));
 
@@ -240,6 +246,9 @@ public class PlayerController : MonoBehaviour, IConditions
     // Input functions
     void MovePlayer(Vector2 stickMovementVector)
     {
+
+        headbobcontroller.UpdateHeadbob(horizVelocity, isGrounded); ////////////////////////////////////////////////////////////////// HeadBob
+
         // Translate 2d analog movement to 3d vector movement            
         Vector3 movementVector = new Vector3(stickMovementVector.x, 0f, stickMovementVector.y);
 
