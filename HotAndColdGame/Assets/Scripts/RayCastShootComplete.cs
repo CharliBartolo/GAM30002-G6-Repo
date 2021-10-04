@@ -216,7 +216,7 @@ public class RayCastShootComplete : MonoBehaviour {
             // after listing all hit temp objects, run the temp change for each
             foreach (ITemperature item in hits)
             {
-                item.ChangeTemperature(tempchange);
+              
             }
         }
         else
@@ -230,18 +230,22 @@ public class RayCastShootComplete : MonoBehaviour {
     {
         if (Physics.Raycast(ray_origin, fpsCam.transform.forward, out RaycastHit hit, weaponRange) && lightning != null)
         {
-            ITemperature objtemp = hit.collider.GetComponentInParent<ITemperature>();
+            if(hit.collider.gameObject != gameObject)
+            {
+                ITemperature objtemp = hit.collider.GetComponentInParent<ITemperature>();
 
-            if (objtemp != null)
-            {
-                GetComponentInParent<ReticleFXController>().objHit = hit.collider.gameObject;
-                return objtemp;
+                if (objtemp != null)
+                {
+                    GetComponentInParent<ReticleFXController>().objHit = hit.collider.gameObject;
+                    return objtemp;
+                }
+                else
+                {
+                    GetComponentInParent<ReticleFXController>().objHit = null;
+                    return null;
+                }
             }
-            else
-            {
-                GetComponentInParent<ReticleFXController>().objHit = null;
-                return null;
-            }
+           
 
         }
 
