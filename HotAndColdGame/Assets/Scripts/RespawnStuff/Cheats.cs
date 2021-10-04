@@ -15,6 +15,7 @@ public class Cheats : MonoBehaviour
     //[SerializeField] public GameObject checkPointList;      //gameobject in scene with all checkpoints as the children
     [SerializeField] public List<Transform> checkPoints;    //list for saving checkpoint positions
     public bool isHUDVisible = true;
+    public bool isGUNVisible = true;
     public int num = 0;
 
     // Start is called before the first frame update
@@ -43,7 +44,7 @@ public class Cheats : MonoBehaviour
             CheckpointTeleport();
         }
         //previous checkpoint
-        else if ((Input.GetKeyDown("1")) && (num > 0)) 
+        else if ((Input.GetKeyDown("1")) && (num > 0))
         {
             num--;
             //Debug.Log("Minusing");
@@ -52,13 +53,30 @@ public class Cheats : MonoBehaviour
 
         if (Input.GetKeyDown("h"))
         {
-            GameMaster.instance.playerRef.GetComponent<ReticleFXController>().isHidden = 
+            GameMaster.instance.playerRef.GetComponent<ReticleFXController>().isHidden =
                 !GameMaster.instance.playerRef.GetComponent<ReticleFXController>().isHidden;
-            
+
             FindObjectOfType<UIFXController>().isTemperatureHidden = !FindObjectOfType<UIFXController>().isTemperatureHidden;
+
+          
+        }
+
+        if (Input.GetKeyDown("g"))
+        {
+            if(isGUNVisible)
+            {
+                GameMaster.instance.playerRef.GetComponent<GunFXController>().arm_obj.transform.Find("Arm_Armature").localScale = Vector3.zero;
+                //GameMaster.instance.playerRef.gameObject.transform.Find("Arm_Armature").localScale = Vector3.zero;
+                isGUNVisible = false;
+            }
+            else
+            {
+                GameMaster.instance.playerRef.GetComponent<GunFXController>().arm_obj.transform.Find("Arm_Armature").localScale = Vector3.one;
+                //GameMaster.instance.playerRef.gameObject.transform.Find("Arm_Armature").localScale = Vector3.one;
+                isGUNVisible = true;
+            }
         }
     }
-
     //purpose of function is for Andy test different partd of the level
     void CheckpointTeleport()
     {
