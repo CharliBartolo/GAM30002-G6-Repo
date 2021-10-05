@@ -67,7 +67,6 @@ public class CollectInteractable : InteractableBase
 
         if (destroyOnCollect)
             Destroy(gameObject);
-
     }
 
     IEnumerator InteractJournal(float delay)
@@ -80,8 +79,8 @@ public class CollectInteractable : InteractableBase
         Camera.main.GetComponent<AudioSource>().Play();
         //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
         // do stuff
-        if (destroyOnCollect)
-            Destroy(gameObject);
+ /*       if (destroyOnCollect)
+            Destroy(gameObject);*/
     }
 
 
@@ -89,13 +88,13 @@ public class CollectInteractable : InteractableBase
     public override void OnInteractExit()
     {
         //playerControls = null;      
-       /* if(destroyOnCollect)
-            Destroy(gameObject);*/
+       
     }
 
     //Runs every frame the interaction continues
     public override void OnInteracting()
-    {        
+    {      
+        
     }    
 
     public override InteractionType pInteractionType

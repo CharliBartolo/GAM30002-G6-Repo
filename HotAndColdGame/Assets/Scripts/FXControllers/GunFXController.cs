@@ -15,6 +15,7 @@ public class GunFXController : FXController
     // Gun variables 
     public RayCastShootComplete gun;
     public GameObject arm_obj;
+    public GameObject armL_obj;
     public GameObject gun_obj;
 
     private bool switchingMode;
@@ -50,6 +51,7 @@ public class GunFXController : FXController
     public int weaponUpgradeState = 0;
     public bool isGrabbing = false;
     public bool isPlacing = false;
+    public bool hasPlaced = false;
     public bool triggerHeld = false;
 
     [Header("Sound FX properties")]
@@ -253,6 +255,8 @@ public class GunFXController : FXController
     {
         if (!isPlacing)
         {
+
+            hasPlaced = true;
             weaponState = WeaponState.Place;
             GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
             NextState();
@@ -284,6 +288,8 @@ public class GunFXController : FXController
         WeaponInspected();
         //Debug.Log("Idle: Enter");
         arm_obj.GetComponent<Animator>().Play("Idle");
+
+
         if(gun.gunUpgradeState == RayCastShootComplete.gunUpgrade.None)
         {
             GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
@@ -320,7 +326,10 @@ public class GunFXController : FXController
         isPlacing = false;
         WeaponInspected();
         //Debug.Log("Idle: Enter");
-        arm_obj.GetComponent<Animator>().Play("Idle_Unequipped");
+        if(hasPlaced)
+            arm_obj.GetComponent<Animator>().Play("Idle_Unequipped");
+        else
+            arm_obj.GetComponent<Animator>().Play("Idle_Away");
 
         while (weaponState == WeaponState.Idle_Unequipped)
         {
@@ -421,17 +430,29 @@ public class GunFXController : FXController
         //Debug.Log("Inspect: Enter");
         bool firstHandShow;
 
-        if (GetComponent<GunFXController>().arm_obj.activeSelf == false)
+      /*  if (GetComponent<GunFXController>().arm_obj.activeSelf == false || !hasPlaced)
         {
             firstHandShow = true;
             arm_obj.GetComponent<Animator>().Play("Grab_Enter");
             GetComponent<GunFXController>().arm_obj.SetActive(true);
+            Debug.Log("GRAB 1");
         }
         else
-        {
+        {*/
             firstHandShow = false;
-            arm_obj.GetComponent<Animator>().Play("Grab_01");
-        }
+            if(!equipped)
+            {
+                arm_obj.GetComponent<Animator>().Play("Grab_01");
+                Debug.Log("GRAB 2");
+            }
+            else
+            {
+                // grab with left hand
+                arm_obj.GetComponent<Animator>().Play("Grab_Left_Enter");
+                Debug.Log("GRAB LEFT");
+            }
+                
+        //}
            
         
 
@@ -448,7 +469,7 @@ public class GunFXController : FXController
             }
             else
             {
-                if (AnimationComplete("Grab_01"))
+                if (AnimationComplete("Grab_01") || AnimationComplete("Grab_Left_Enter"))
                 {
                     weaponState = WeaponState.GrabRetract;
                 }
@@ -474,6 +495,7 @@ public class GunFXController : FXController
             if (AnimationComplete("Place_01"))
             {
                 weaponState = WeaponState.GrabRetract;
+               
             }
 
             yield return 0;
@@ -487,16 +509,40 @@ public class GunFXController : FXController
     IEnumerator GrabRetractState()
     {
         //Debug.Log("Inspect: Enter");
-        arm_obj.GetComponent<Animator>().Play("GrabRetract_01");
+ 
+            if(!equipped)
+            {
+                if (hasPlaced)
+                {
+                    arm_obj.GetComponent<Animator>().Play("GrabRetract_01");
+                }
+                else
+                {
+                    arm_obj.GetComponent<Animator>().Play("GrabRetractAway");
+                }       
+            }
+            else
+            {
+                arm_obj.GetComponent<Animator>().Play("Grab_Retract_Left");
+            }
+                      
 
         while (weaponState == WeaponState.GrabRetract)
         {
             // do state stuff
 
-            if (AnimationComplete("GrabRetract_01"))
+            if (AnimationComplete("GrabRetract_01") || AnimationComplete("GrabRetractAway"))
             {
                 weaponState = WeaponState.Idle_Unequipped;
             }
+            else
+            {
+                if (AnimationComplete("Grab_Retract_Left"))
+                {
+                    weaponState = WeaponState.Idle_Equipped;
+                }
+            }
+
 
             yield return 0;
         }

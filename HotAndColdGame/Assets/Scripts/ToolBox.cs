@@ -21,11 +21,15 @@ public class ToolBox : CollectInteractable
     //public string itemName;
     //private InteractionType interactionType = InteractionType.Use;
     private PlayerInput _playerInput;
+
+    public bool canUse;
     //public int gunUpgradeLevel = 0;
     [SerializeField] private List<AudioClip> sounds = new List<AudioClip>();
 
+
     private void Start()
     {
+        canUse = true;
         ToolDisplayObject.SetActive(true);
         ToolObject.SetActive(false);
         OpenTray();
@@ -46,6 +50,7 @@ public class ToolBox : CollectInteractable
 
     public IEnumerator RunUpgradeSequence()
     {
+       
         GetComponent<Animator>().speed = 2;
         GetComponent<Animator>().Play("Close");
         PlayAudio(0);
@@ -60,16 +65,19 @@ public class ToolBox : CollectInteractable
         //ToolDisplayObject.SetActive(false);
         PlaceCurrentWeapon((int)GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.gunUpgradeState, false);
         ToolObject.SetActive(true);
+        canUse = true;
     }
 
     //Runs when interaction begins
     public override void OnInteractEnter(PlayerInput playerInputRef, float delay = 0)
     {
-        StartCoroutine(InteractAction(delay));
+        if(canUse)
+            StartCoroutine(InteractAction(delay));
     }
 
     IEnumerator InteractAction(float delay)
     {
+        canUse = false;
         yield return new WaitForSeconds(delay);
 
         RayCastShootComplete.gunUpgrade currentGunLevel = GameObject.Find("Player").GetComponent<PlayerController>().raygunScript.gunUpgradeState;

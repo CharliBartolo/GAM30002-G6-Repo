@@ -8698,6 +8698,7 @@ MonoBehaviour:
   ref_level1: {fileID: 0}
   ref_level2: {fileID: 0}
   upgradeTime: 2
+  canUse: 0
   sounds: []
 --- !u!82 &4688459655892859015
 AudioSource:
@@ -9302,6 +9303,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.911
       objectReference: {fileID: 0}
+    - target: {fileID: 6569969616804567499, guid: 0d09648f9e0a38a4d86a7952472d9779, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6569969616804567500, guid: 0d09648f9e0a38a4d86a7952472d9779, type: 3}
       propertyPath: m_Name
       value: CollectableRaygun
@@ -9312,6 +9317,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6569969616804567501, guid: 0d09648f9e0a38a4d86a7952472d9779, type: 3}
       propertyPath: int_data
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6569969616804567501, guid: 0d09648f9e0a38a4d86a7952472d9779, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6569969617820029412, guid: 0d09648f9e0a38a4d86a7952472d9779, type: 3}
