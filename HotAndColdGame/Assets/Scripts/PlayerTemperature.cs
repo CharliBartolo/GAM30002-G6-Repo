@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerTemperature : TemperatureStateBase
 {
+    public float incomingTempMod = 1f;
 
     override protected void Start()
     {
@@ -27,6 +28,19 @@ public class PlayerTemperature : TemperatureStateBase
             currentTemp = Mathf.Clamp(currentTemp, tempValueRange[1], tempCap);
         else
             currentTemp = Mathf.Clamp(currentTemp, tempCap, tempValueRange[1]);       
+    }
+
+    public override void ChangeTemperature(float valueToAdd)
+    {
+        if (canTempChange)
+        {
+            float prevTemp = currentTemp;
+
+            currentTemp = currentTemp + valueToAdd * incomingTempMod;
+            TemperatureClamp();
+
+            TempChanged();
+        }
     }
 
 

@@ -9,6 +9,12 @@ public enum Layer
     Music
 }
 
+/// <summary>
+/// This class is responsible for managing audio settings and functions.
+/// These settings mainly include volume but allow for pitch editing and audio source controls.
+/// Last edit: SetMusicVolume() - New function, updates music mixer volume live and saves between runs.
+/// By: Charli - 25/9/21
+/// </summary>
 public class AudioManager : MonoBehaviour
 {
     //Array of sounds
@@ -52,7 +58,15 @@ public class AudioManager : MonoBehaviour
 
     public virtual void Start() //Play sounds on start (main songs and ambience)
     {
+        if (PlayerPrefs.HasKey("MusicVol"))
+        {
+            SetMusicVolume(PlayerPrefs.GetFloat("MusicVol"));
+        }
 
+        if (PlayerPrefs.HasKey("MasterVol"))
+        {
+            SetMasterVolume(PlayerPrefs.GetFloat("MasterVol"));
+        }
         //FindObjectOfType<AudioManager>().Play("sound"); (this is what to use when calling a sound elsewhere)
     }
 
@@ -77,10 +91,8 @@ public class AudioManager : MonoBehaviour
                     {
                         s.source.Play();
                     }
-                }
- 
+                } 
             }
-
     }
     
     // stop sound playing
@@ -142,6 +154,18 @@ public class AudioManager : MonoBehaviour
         sample.Add(s);
     }
 
+    public void SetMusicVolume(float soundLevel)
+    {
+        audioMixer.SetFloat("MusicVol", Mathf.Log(soundLevel) * 20);   
+        PlayerPrefs.SetFloat("MusicVol", soundLevel);     
+    }
+
+    public void SetMasterVolume(float soundLevel)
+    {   
+        audioMixer.SetFloat("MasterVol", Mathf.Log(soundLevel) * 20);   
+        PlayerPrefs.SetFloat("MasterVol", soundLevel);
+    }
+    
     public virtual void SetVolume(string name, float volume)
     { //Set the volume of a sound
             Sound s = sounds.Find(sound => sound.name == name);

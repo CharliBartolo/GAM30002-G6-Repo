@@ -96,21 +96,24 @@ public class MachineFXController : FXController
     public void PlaySound()
     {
         // have pitch match current temperature
-        if (machine.GetComponent<AudioSource>() != null)
-            machine.GetComponent<AudioSource>().pitch = (float)Math.Abs((machine.CurrentTemperature) * 0.1);
+        /*if (machine.GetComponent<AudioSource>() != null)
+            machine.GetComponent<AudioSource>().pitch = (float)(machine.CurrentTemperature * 0.1f);*/
+            //machine.GetComponent<AudioSource>().pitch = (float)Math.Abs((machine.CurrentTemperature) * 0.1);
 
-        if (Math.Abs(machine.CurrentTemperature) > 5)
+        if (Math.Abs(machine.CurrentTemperature) > 0)
         {
             if (!playingSFX)
             {
                 playingSFX = true;
-                GameMaster.instance.audioManager.Play(machine.gameObject);
+                //GameMaster.instance.audioManager.Play(machine.gameObject);
+                machine.GetComponent<AudioSource>().Play();
             }
         }
         else
         {
             playingSFX = false;
-            GameMaster.instance.audioManager.Stop(machine.gameObject);
+            machine.GetComponent<AudioSource>().Stop();
+            //GameMaster.instance.audioManager.Stop(machine.gameObject);
         }
     }
 
