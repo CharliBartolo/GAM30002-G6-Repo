@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerCameraControl : MonoBehaviour
 {
+    [Header("FOV Settings")]
     public Camera playerCam;
     public float baseFOV = 67;  // The player's starting FOV
     public float currentFOV = 67;   // The player's FOV at this point in time
@@ -15,9 +16,21 @@ public class PlayerCameraControl : MonoBehaviour
     public float velocityFloor = 8f;    // The minimum value for which FOV changes occur. Velocity below this = no change.
     public float velocityCap = 12f;     // The value at which the FOV will cap at max. Velocity higher than this = no change.
 
+    [Header("Headbob Settings")]
+    [SerializeField] private bool canUseHeadbob;
+
+    [SerializeField] private float runBobSpeed = 14f;
+    [SerializeField] private float runBobAmount = 0.05f;
+    [SerializeField] private float walkBobSpeed = 14f;
+    [SerializeField] private float walkBobAmount = 0.05f;
+    private float defaultYpos = 0;
+    private float timer;
+
     private void Awake()
     {
         playerCam = GetComponentInChildren<Camera>();
+
+        defaultYpos = playerCam.transform.localPosition.y;
     }
 
     // Start is called before the first frame update
@@ -43,5 +56,24 @@ public class PlayerCameraControl : MonoBehaviour
         }
         else
             fovTarget = baseFOV;
+    }
+
+    public void UpdateHeadbob(Vector3 horizVelocity, bool Grounded)
+    {
+        if (canUseHeadbob)
+        {
+            HandleHeadbob(horizVelocity ,Grounded);
+        }
+    }
+
+    private void HandleHeadbob(Vector3 horizVelocity, bool Grounded)
+    {
+        if(horizVelocity.magnitude > 0.1f && Grounded)
+        {
+            timer += Time.deltaTime * (walkBobSpeed);
+            playerCam.transform.localPosition = new Vector3(
+                playerCam.transform.localPosition.x,
+                defaultYpos + Mathf.Sin(timer) * (walkBobAmount));
+        }
     }
 }

@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerSoundControl : MonoBehaviour
 {
     public float timeBetweenFootsteps = 1f;
     public float maxSpeedForSlidePitch = 20f;
     private float currentTimeBetweenFootsteps = 0f;
+
+    [SerializeField] private string currentLayer;
+    [SerializeField] private FootstepSurfaceMaps[] footstepSurfaceMaps;
     private List<IConditions.ConditionTypes> activeConditions;
 
     [SerializeField] private List<AudioClip> footstepSounds = new List<AudioClip>(); 
@@ -26,6 +30,7 @@ public class PlayerSoundControl : MonoBehaviour
 
         raygunAudio = GetComponent<GunFXController>().gun_obj.GetComponent<AudioSource>();
         activeConditions = new List<IConditions.ConditionTypes>();
+
     }
 
     public void UpdateActiveConditions(List<IConditions.ConditionTypes> updatedCondList)
@@ -61,6 +66,7 @@ public class PlayerSoundControl : MonoBehaviour
 
         if (currentTimeBetweenFootsteps <= 0f)
         {  
+            CheckSurface();
             //if (activeConditions.Contains(IConditions.ConditionTypes.ConditionCold))
             //{
                 //CalculateSlide(horizVelocity, isGrounded);
@@ -159,7 +165,7 @@ public class PlayerSoundControl : MonoBehaviour
             }
             else
             {
-                n = Random.Range(1, clipsToSelectFrom.Count);
+                n = UnityEngine.Random.Range(1, clipsToSelectFrom.Count);
             }
             
             playerAudio.clip = clipsToSelectFrom[n];          
@@ -170,7 +176,7 @@ public class PlayerSoundControl : MonoBehaviour
 
     private void RandomisePitch(List<AudioClip> clipsToSelectFrom)
     {
-        playerAudio.pitch = Random.Range(0.8f, 1.2f);
+        playerAudio.pitch = UnityEngine.Random.Range(0.8f, 1.2f);
     }
     
 
@@ -179,23 +185,74 @@ public class PlayerSoundControl : MonoBehaviour
         playerAudio.PlayOneShot(playerAudio.clip);
     }
 
-    /*
-    private void ProgressStepCycle(float speed) //input speed
+    public string GetCurrentSurface()
+    {
+        string materialName = "";
+        RaycastHit hit;
+        // Does the ray intersect any objects excluding the player layer
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 5))
         {
-            if (m_CharacterController.velocity.sqrMagnitude > 0 && (Input.x != 0 || Input.y != 0))
+            if (hit.collider != null) //&& hit.collider.CompareTag("Surface"))
             {
-                StepCycle += (CharacterController.velocity.magnitude + (speed*(IsWalking ? 1f : RunstepLenghten)))*
-                             Time.fixedDeltaTime;
+                materialName = hit.collider.GetComponent<Renderer>().material.name;
+                print(materialName);
             }
-
-            if (!(StepCycle > NextStep))
-            {
-                return;
-            }
-
-            NextStep = StepCycle + StepInterval;
-
-            PlayFootStepAudio();
         }
-    */
+        return materialName;
+    }
+
+    public void CheckSurface()
+    {
+        currentLayer = GetCurrentSurface();
+
+        foreach (FootstepSurfaceMaps footstepMap in footstepSurfaceMaps)
+        {
+            foreach (string surface in footstepMap.surfaces)
+            {
+                Debug.Log(surface);
+                //if (currentLayer)
+                //if(currentSurfaceType == surface)
+                if (CustomStartsWith(currentLayer, surface))
+                {
+                    SwapFootsteps(footstepMap.footstepCollection);
+                }
+            }
+        }
+    }
+
+    public void SwapFootsteps(FootstepCollection footstepCollection)
+    {
+        footstepSounds.Clear();
+        for(int i = 0; i < footstepCollection.footstepSounds.Count; i++)
+        {
+            footstepSounds.Add(footstepCollection.footstepSounds[i]);
+        }  
+
+        //jump
+        //landing
+        //clambering
+    }
+
+    public bool CustomStartsWith(string a, string b)
+    {
+        int aLen = a.Length;
+        int bLen = b.Length;
+    
+        int ap = 0; int bp = 0;
+    
+        while (ap < aLen && bp < bLen && a [ap] == b [bp])
+        {
+            ap++;
+            bp++;
+        }
+    
+        return (bp == bLen);
+    }
+}
+
+[Serializable]
+public class FootstepSurfaceMaps
+{
+    [SerializeField] public FootstepCollection footstepCollection;
+    [SerializeField] public string[] surfaces;
 }
