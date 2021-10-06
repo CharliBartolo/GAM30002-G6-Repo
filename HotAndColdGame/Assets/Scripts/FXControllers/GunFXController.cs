@@ -448,7 +448,8 @@ public class GunFXController : FXController
             else
             {
                 // grab with left hand
-                arm_obj.GetComponent<Animator>().Play("Grab_Left_Enter");
+                //arm_obj.GetComponent<Animator>().Play("Grab_Left_Enter");
+                arm_obj.GetComponent<Animator>().CrossFade("Grab_Left_Enter", 0.1f);
                 Debug.Log("GRAB LEFT");
             }
                 
