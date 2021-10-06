@@ -85,7 +85,9 @@ public class Cheats : MonoBehaviour
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         GameMaster.instance.playerRef.transform.position = checkPoints[num].position;
         GameMaster.instance.playerRef.transform.rotation = checkPoints[num].rotation;
-        spawn.spawnPos = checkPoints[num];
+        
+        if(spawn != null && spawn.spawnPos != null)
+            spawn.spawnPos = checkPoints[num];
         //loads scene at last saved checkpoint
         
         //GameMaster.instance.LoadCheckpoint();
