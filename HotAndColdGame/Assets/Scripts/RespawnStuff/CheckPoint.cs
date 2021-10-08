@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Responsible for managing checkpoint objects. Functionality includes lighting campfires,
+/// putting campfires out, and updating Player spawn position when triggers are entered.
+/// Last edit: Adding Class Summary
+/// By: Charli - 8/10/21
+/// </summary>
 public class CheckPoint : MonoBehaviour
 {
     [SerializeField] private GameMaster gm;//reference game master script

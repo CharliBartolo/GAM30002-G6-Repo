@@ -6,6 +6,7 @@ public enum CheckMethod
 {
     Distance,
     Trigger
+    //Both
 }
 public class ScenePartLoader : MonoBehaviour
 {
@@ -14,12 +15,12 @@ public class ScenePartLoader : MonoBehaviour
     [SerializeField] public CheckMethod checkMethod;
     [SerializeField] public float loadRange;
     [SerializeField] public bool meshOnly;
-    [SerializeField] public OnTrigger loadTrigger;
-    [SerializeField] public OnTrigger unloadTrigger;
+    [SerializeField] public List<OnTrigger> loadTriggers = new List<OnTrigger>();
+    [SerializeField] public List<OnTrigger> unloadTriggers = new List<OnTrigger>();
 
     //Scene state
     private bool isLoaded;
-    private bool shouldLoad;
+    public bool shouldLoad;
     private bool isHidden;
     private Dictionary<GameObject, bool> objectActiveDict = new Dictionary<GameObject, bool>();
 
@@ -33,7 +34,7 @@ public class ScenePartLoader : MonoBehaviour
                 Scene scene = SceneManager.GetSceneAt(i);
                 if (scene.name == gameObject.name)
                 {
-                    isLoaded = true;
+                    isLoaded = true;                   
                     //added 8-9-21
                     /*GameObject[] gameObjs = FindObjectsOfType(typeof(GameObject)) as GameObject[];
                     foreach (GameObject go in gameObjs)
@@ -46,6 +47,13 @@ public class ScenePartLoader : MonoBehaviour
                 }
             }
         }
+
+        // If the scene is mesh only and isn't already loaded, load it and hide it
+        if (!isLoaded && meshOnly)
+        {
+            LoadScene();
+            UnLoadScene();
+        }
     }
 
     void Update()
@@ -57,8 +65,15 @@ public class ScenePartLoader : MonoBehaviour
         }
         else if (checkMethod == CheckMethod.Trigger)
         {
+            //Debug.Log("Trigger Check running!");
             TriggerCheck();
         }
+        /*
+        else if (checkMethod == CheckMethod.Both)
+        {
+            BothTriggerAndDistanceCheck();
+        }
+        */
     }
 
     void DistanceCheck()
@@ -74,7 +89,31 @@ public class ScenePartLoader : MonoBehaviour
         }
     }
 
-    void LoadScene()
+    void BothTriggerAndDistanceCheck()
+    {
+        TriggerCheck();
+
+        if (isLoaded)
+        {
+            // If scene is loaded, unload if very far
+            foreach (OnTrigger trigger in unloadTriggers)
+            {
+                bool unload = true;
+                if (Vector3.Distance(player.position, trigger.gameObject.transform.position) < loadRange)
+                {
+                   unload = false;
+                }
+
+                if (unload)
+                {
+                    UnLoadScene();
+                }
+            } 
+        }
+
+    }
+
+    public void LoadScene()
     {
         if (!isLoaded)
         {
@@ -88,17 +127,17 @@ public class ScenePartLoader : MonoBehaviour
         {
             foreach(GameObject gameObject in objectActiveDict.Keys)
             {
-                gameObject.SetActive(objectActiveDict[gameObject]);
-                
+                gameObject.SetActive(objectActiveDict[gameObject]);                
             }
 
             objectActiveDict.Clear();
             isHidden = false;
+            Debug.Log("Scene unhidden!");
         }
         //need to add function to turn on render
     }
 
-    void UnLoadScene()
+    public void UnLoadScene()
     {
         //original code
         if (isLoaded)
@@ -130,17 +169,30 @@ public class ScenePartLoader : MonoBehaviour
     //added 16-09-21
     private void TriggerLoad()
     {
-        if (loadTrigger.Enter)
+        //Debug.Log("TriggerLoad running");
+
+        foreach (OnTrigger loadTrigger in loadTriggers)
         {
-            shouldLoad = true;
+            if (loadTrigger.Enter)
+            {
+                shouldLoad = true;
+                Debug.Log("Level will be loaded");
+                break;
+            }
         }
     }
 
     private void TriggerUnload() 
     {
-        if (unloadTrigger.Enter)
+        //Debug.Log("TriggerUnLoad running");
+        foreach (OnTrigger unloadTrigger in unloadTriggers)
         {
-            shouldLoad = false;
+            if (unloadTrigger.Enter)
+            {
+                shouldLoad = false;
+                //Debug.Log("Level will be unloaded");
+                break;
+            }
         }
     }
 
