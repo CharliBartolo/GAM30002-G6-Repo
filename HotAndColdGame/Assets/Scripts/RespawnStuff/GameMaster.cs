@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Responsible for storing object states between scenes and managing game state.
+/// Affected objects include maintaining a Player reference for other objects, AudioManager
+/// , colour pallet, current difficulty, current checkpoint etc.
+/// Last edit: Adding this class summary
+/// By: Charli - 8/10/21
+/// </summary>
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster instance;

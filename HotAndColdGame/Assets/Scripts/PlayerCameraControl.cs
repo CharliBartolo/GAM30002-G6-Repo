@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Responsible for managing Player Camera. Functionality includes adjusting general FOV,
+/// adjusting FOV based on speed, and 'headbobbing' while moving.
+/// Last edit: Adding Class Summary
+/// By: Charli - 8/10/21
+/// </summary>
 public class PlayerCameraControl : MonoBehaviour
 {
     [Header("FOV Settings")]
