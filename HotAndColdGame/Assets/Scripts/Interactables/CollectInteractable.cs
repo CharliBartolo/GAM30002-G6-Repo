@@ -36,6 +36,10 @@ public class CollectInteractable : InteractableBase
             case "Journal":
                 StartCoroutine(InteractJournal(delay));
                 break;
+
+            case "Artifact":
+                StartCoroutine(InteractArtifact(delay));
+                break;
         }
     }
 
@@ -67,7 +71,6 @@ public class CollectInteractable : InteractableBase
 
         if (destroyOnCollect)
             Destroy(gameObject);
-
     }
 
     IEnumerator InteractJournal(float delay)
@@ -76,6 +79,21 @@ public class CollectInteractable : InteractableBase
         yield return new WaitForSeconds(delay);
         GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal(GetComponent<Journal>()
             .EntryLog[0], GetComponent<Journal>().EntryLog[1], int_data);
+        Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
+        Camera.main.GetComponent<AudioSource>().Play();
+        //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
+        // do stuff
+ /*       if (destroyOnCollect)
+            Destroy(gameObject);*/
+    }
+
+    IEnumerator InteractArtifact(float delay)
+    {
+        Debug.Log("FOUND ARTIFACT");
+        // wait for animation and stuff
+        yield return new WaitForSeconds(delay);
+      /*  GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal(GetComponent<Journal>()
+            .EntryLog[0], GetComponent<Journal>().EntryLog[1], int_data);*/
         Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
         Camera.main.GetComponent<AudioSource>().Play();
         //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
@@ -89,13 +107,13 @@ public class CollectInteractable : InteractableBase
     public override void OnInteractExit()
     {
         //playerControls = null;      
-       /* if(destroyOnCollect)
-            Destroy(gameObject);*/
+       
     }
 
     //Runs every frame the interaction continues
     public override void OnInteracting()
-    {        
+    {      
+        
     }    
 
     public override InteractionType pInteractionType

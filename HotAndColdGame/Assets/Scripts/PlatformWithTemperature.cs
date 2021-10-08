@@ -16,6 +16,7 @@ public class PlatformWithTemperature : TemperatureStateBase
     public bool canMove = true; // a public bool that allows you to toggle this script on and off in the inspector
 
     private bool movingToPosition;
+    private bool returningToOrigin;
 
     private Queue<Vector3> pos = new Queue<Vector3>();
     private Vector3 targetPos = Vector3.zero;
@@ -54,9 +55,27 @@ public class PlatformWithTemperature : TemperatureStateBase
     void Update()
     {
 
-        if (canMove && Trigger != null )
+        if (canMove && Trigger != null)
         {
             float step = speed * Time.deltaTime; // step size = speed * frame time
+
+            if(returningToOrigin)
+            {
+                if (transform.position == origin.position)
+                {
+                    returningToOrigin = false;
+                }
+
+                Debug.Log("RETURNING TO ORIGIN");
+                targetPos = origin.transform.position;
+                Trigger.SetTemperature(0);
+                pos.Clear();
+
+                SetLights(GameMaster.instance.colourPallete.Neutral);
+
+               
+            }
+
 
             // enque target positions based on state
             switch (Trigger.CurrentTempState)
@@ -68,6 +87,10 @@ public class PlatformWithTemperature : TemperatureStateBase
                         if (!pos.Contains(coldTarget.transform.position))
                             pos.Enqueue(coldTarget.transform.position);
                     }
+                    else if (transform.position != coldTarget.transform.position && targetPos != coldTarget.transform.position)
+                    {
+                        returningToOrigin = true;
+                    }
 
                     break;
 
@@ -77,6 +100,10 @@ public class PlatformWithTemperature : TemperatureStateBase
                     {
                         if (!pos.Contains(hotTarget.transform.position))
                             pos.Enqueue(hotTarget.transform.position);
+                    }
+                    else if (transform.position != hotTarget.transform.position && targetPos != hotTarget.transform.position)
+                    {
+                        returningToOrigin = true;
                     }
 
                     break;
@@ -90,23 +117,18 @@ public class PlatformWithTemperature : TemperatureStateBase
             }
 
             // dequeue next position
-            //if (targetPos == Vector3.zero || (platformObj.transform.position == targetPos && pos.Count > 0))
-            if (targetPos == Vector3.zero || ( pos.Count > 0))
+            if (pos.Count > 0)
             {
-                targetPos = pos.Dequeue();
-               
+                targetPos = pos.Dequeue();              
             }
 
             // move towards target
             if (targetPos != Vector3.zero)
                 platformObj.transform.position = Vector3.MoveTowards(platformObj.transform.position, targetPos, step);
 
-            // set lights based on state
-            if (targetPos == origin.transform.position)
-            {
-                SetLights(GameMaster.instance.colourPallete.Neutral);
-            }
-            else if (targetPos == coldTarget.transform.position)
+            // set lights
+
+           if (targetPos == coldTarget.transform.position)
             {
                 SetLights(GameMaster.instance.colourPallete.Negative);
             }
@@ -114,9 +136,12 @@ public class PlatformWithTemperature : TemperatureStateBase
             {
                 SetLights(GameMaster.instance.colourPallete.Positive);
             }
-
-            Debug.Log("TARGET POSITION: " + targetPos);
-
+            else if (targetPos == origin.transform.position)
+            {
+                Debug.Log("SETTING COLOUR NEUTRAL");
+                //SetLights(GameMaster.instance.colourPallete.Neutral);
+                SetLights(Color.clear);
+            }
         }    
     }
 

@@ -194,8 +194,12 @@ public class PlayerSoundControl : MonoBehaviour
         {
             if (hit.collider != null) //&& hit.collider.CompareTag("Surface"))
             {
-                materialName = hit.collider.GetComponent<Renderer>().material.name;
-                print(materialName);
+                if(hit.collider.GetComponent<Renderer>() != null)
+                {
+                    materialName = hit.collider.GetComponent<Renderer>().material.name;
+                    print(materialName);
+                }
+               
             }
         }
         return materialName;

@@ -583,7 +583,7 @@ public class PlayerController : MonoBehaviour, IConditions
             return;
         }
 
-        if (Physics.Raycast(playerCamControl.playerCam.transform.position, playerCamControl.playerCam.transform.forward, out RaycastHit hit, interactRange) && 
+        if (Physics.Raycast(playerCamControl.playerCam.transform.position, playerCamControl.playerCam.transform.forward, out RaycastHit hit, interactRange) &&
             hit.collider.gameObject.GetComponent<InteractableBase>() != null && playerCamControl != null)
         {
             //Debug.Log("Interactable object found, attempting interaction.");
@@ -602,31 +602,34 @@ public class PlayerController : MonoBehaviour, IConditions
                 // Use object, trigger exit interaction, and remove object from script.
                 case InteractableBase.InteractionType.Use:
                     if (currentInteractingObject.TryGetComponent
-                        <CollectInteractable>(out CollectInteractable currentInteractable))                    
+                        <CollectInteractable>(out CollectInteractable currentInteractable))
                     {
                         /* GetComponent<GunFXController>().weaponState = GunFXController.WeaponState.Grab;
                          GetComponent<GunFXController>().NextState();*/
 
-                        float animTime = 0.61f;
+                        float animTime = 0.85f;
                         float animTime_place = 3.5f;
 
                         if (!playerInventory.Contains(currentInteractable.itemName))
                             playerInventory.Add(currentInteractable.itemName);
 
                         if (currentInteractingObject.name.Contains("Raygun"))
-                        {                           
+                        {
                             GetComponent<GunFXController>().Grab();
                             currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
                             playerControlState = PlayerState.ControlsDisabled;
                             StartCoroutine(CollectItem("Raygun", animTime));
 
-                        }else if (currentInteractingObject.name.Contains("Journal"))
+                        }
+                        else if (currentInteractingObject.name.Contains("Journal"))
                         {
-                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, 0);
+                            GetComponent<GunFXController>().Grab();
+                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
                             playerControlState = PlayerState.ControlsDisabled;
-                            StartCoroutine(CollectItem("Journal", 0));
+                            StartCoroutine(CollectItem("Journal", animTime));
 
-                        } else if (currentInteractingObject.name.Contains("Toolbox"))
+                        }
+                        else if (currentInteractingObject.name.Contains("Toolbox"))
                         {
                             if (playerInventory.Contains("Raygun") && raygunScript.gunUpgradeState != RayCastShootComplete.gunUpgrade.Two)
                             {
@@ -637,7 +640,7 @@ public class PlayerController : MonoBehaviour, IConditions
                                 StartCoroutine(CollectItem("Toolbox", animTime_place));
                             }
                         }
-            }
+                    }
 
                     ExitInteract(context);
                     break;
