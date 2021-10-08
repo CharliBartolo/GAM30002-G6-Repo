@@ -14,6 +14,7 @@ public class Cheats : MonoBehaviour
     [SerializeField] public CheckPoint spawn;               //reference checkpoint script
     //[SerializeField] public GameObject checkPointList;      //gameobject in scene with all checkpoints as the children
     [SerializeField] public List<Transform> checkPoints;    //list for saving checkpoint positions
+    public bool isAdditiveLevelLoadEnabled = false;
     public bool isHUDVisible = true;
     public bool isGUNVisible = true;
     public int num = 0;
@@ -80,12 +81,62 @@ public class Cheats : MonoBehaviour
     //purpose of function is for Andy test different partd of the level
     void CheckpointTeleport()
     {
-        Debug.Log("loading scene");
+        //Debug.Log("loading scene");
         //make last checkpoint equal selected checkpoint
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         GameMaster.instance.playerRef.transform.position = checkPoints[num].position;
         GameMaster.instance.playerRef.transform.rotation = checkPoints[num].rotation;
-        spawn.spawnPos = checkPoints[num];
+        //spawn.spawnPos = checkPoints[num];
+
+        if (isAdditiveLevelLoadEnabled)
+        {
+            string sceneNameToLookFor = checkPoints[num].gameObject.scene.name;            
+            Debug.Log("Checkpoint belongs to scene name: " + sceneNameToLookFor);
+            //GameObject scenePrefabObject = GameObject.Find(sceneNameToLookFor);
+
+            for (int i=0; i < SceneManager.sceneCount; i++)
+            {
+                GameObject scenePrefabObject = GameObject.Find(SceneManager.GetSceneAt(i).name);
+
+                if (scenePrefabObject != null)
+                {
+                    Debug.Log("Scene prefab object wasn't null!");
+                    if (scenePrefabObject.TryGetComponent<ScenePartLoader>(out ScenePartLoader scenePartLoaderComp))
+                    {
+                        if (scenePrefabObject.name == sceneNameToLookFor)
+                        {
+                            scenePartLoaderComp.shouldLoad = true;
+                            scenePartLoaderComp.LoadScene();      
+                        }  
+                        else
+                        {
+                            scenePartLoaderComp.shouldLoad = false;
+                            scenePartLoaderComp.UnLoadScene();
+                        }                                    
+                    }                  
+                }               
+            }
+            
+            //Debug.Log(scenePrefabObject);
+            
+            /*    
+                // If checkpoint belongs to this scene, load scene associated with it
+                if (SceneManager.GetSceneAt(i) == checkPoints[num].gameObject.scene)
+                //SceneManager.GetSceneByName
+                {
+                    GameObject scenePrefabObject = GameObject.Find(SceneManager.GetSceneAt(i).name);
+                    if (scenePrefabObject != null)
+                    {
+                        if (scenePrefabObject.TryGetComponent<ScenePartLoader>(out ScenePartLoader scenePartLoaderComp))
+                        {
+                            scenePartLoaderComp.LoadScene();
+                        }
+                    }
+                }
+            */
+        }
+        
+        //if (checkPoints[num].gameObject.scene)
         //loads scene at last saved checkpoint
         
         //GameMaster.instance.LoadCheckpoint();
