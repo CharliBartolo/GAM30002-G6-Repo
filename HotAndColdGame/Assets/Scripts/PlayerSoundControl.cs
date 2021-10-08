@@ -194,9 +194,14 @@ public class PlayerSoundControl : MonoBehaviour
         {
             if (hit.collider != null) //&& hit.collider.CompareTag("Surface"))
             {
-                if(hit.collider.GetComponent<Renderer>() != null)
+                if(hit.collider.TryGetComponent<Renderer>(out Renderer rendererComponent))
                 {
-                    materialName = hit.collider.GetComponent<Renderer>().material.name;
+                    materialName = rendererComponent.material.name;
+                    print(materialName);
+                }
+                else if (hit.collider.TryGetComponent<Terrain>(out Terrain terrainComponent))
+                {
+                    materialName = terrainComponent.name;
                     print(materialName);
                 }
                
@@ -209,6 +214,9 @@ public class PlayerSoundControl : MonoBehaviour
     {
         currentLayer = GetCurrentSurface();
 
+        if (footstepSurfaceMaps.Length < 1)
+            return;
+
         foreach (FootstepSurfaceMaps footstepMap in footstepSurfaceMaps)
         {
             foreach (string surface in footstepMap.surfaces)
@@ -219,9 +227,12 @@ public class PlayerSoundControl : MonoBehaviour
                 if (CustomStartsWith(currentLayer, surface))
                 {
                     SwapFootsteps(footstepMap.footstepCollection);
+                    return;
                 }
             }
         }
+
+        SwapFootsteps(footstepSurfaceMaps[0].footstepCollection);
     }
 
     public void SwapFootsteps(FootstepCollection footstepCollection)
