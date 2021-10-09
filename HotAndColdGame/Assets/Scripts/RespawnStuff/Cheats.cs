@@ -38,17 +38,22 @@ public class Cheats : MonoBehaviour
     {
         //Debug.Log(checkPoints[num].name);
         //next checkpoint
-        if ((Input.GetKeyDown("2")) && (num < checkPoints.Count))
+        if (Input.GetKeyDown("2"))
         {
-            num++;
+            if (num < checkPoints.Count - 1)
+                num++;
+            else
+                Debug.Log("Already hit last checkpoint!");
             //Debug.Log("Adding");
             CheckpointTeleport();
         }
         //previous checkpoint
-        else if ((Input.GetKeyDown("1")) && (num > 0))
+        else if ((Input.GetKeyDown("1")) )
         {
-            num--;
-            //Debug.Log("Minusing");
+            if (num > 0)
+                num--;
+            else
+                Debug.Log("Already at first checkpoint!");
             CheckpointTeleport();
         }
 
@@ -81,6 +86,8 @@ public class Cheats : MonoBehaviour
     //purpose of function is for Andy test different partd of the level
     void CheckpointTeleport()
     {
+        if (checkPoints.Count < 1)
+            return;
         //Debug.Log("loading scene");
         //make last checkpoint equal selected checkpoint
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
