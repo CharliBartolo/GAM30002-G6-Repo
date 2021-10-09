@@ -77,10 +77,9 @@ public class PlayerCameraControl : MonoBehaviour
         if(horizVelocity.magnitude > 0.1f && Grounded)
         {
             timer += Time.deltaTime * (walkBobSpeed);
-            playerCam.transform.localPosition = Vector3.Lerp(new Vector3(
+            playerCam.transform.localPosition = new Vector3(
                 playerCam.transform.localPosition.x,
-                defaultYpos + Mathf.Sin(timer) * (walkBobAmount)), 
-                playerCam.transform.localPosition, 48f * Time.deltaTime);
+                defaultYpos + Mathf.Sin(timer) * (walkBobAmount));
         }
         else
         {
