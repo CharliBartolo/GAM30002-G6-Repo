@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 /// It also acts as a 'manager' for other player-related classes such as camera movement,
 /// mouse look, audio control and temperature.
 /// Last edit: OnGUIDraw() - Commented out single line showing inventory
-/// By: Charli - 27/9/21
+/// By: Charli - 9/10/21
 /// </summary>
 public class PlayerController : MonoBehaviour, IConditions
 {
@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour, IConditions
         contactPoints = new List<ContactPoint>();
         playerInventory = new List<string>();        
 
-        playerInput.actions.FindAction("Interact").performed += context => Interact(context);
+        playerInput.actions.FindAction("Interact").performed += Interact;
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
         playerInput.actions.FindAction("Jump").performed += JumpInput;
         playerInput.actions.FindAction("Shoot").performed += raygunScript.FireBeam;
@@ -610,7 +610,7 @@ public class PlayerController : MonoBehaviour, IConditions
                         float animTime = 0.85f;
                         float animTime_place = 3.5f;
 
-                        if (!playerInventory.Contains(currentInteractable.itemName))
+                        if (!playerInventory.Contains(currentInteractable.itemName) && currentInteractable.itemName != "Artifact")
                             playerInventory.Add(currentInteractable.itemName);
 
                         if (currentInteractingObject.name.Contains("Raygun"))
@@ -640,6 +640,15 @@ public class PlayerController : MonoBehaviour, IConditions
                                 StartCoroutine(CollectItem("Toolbox", animTime_place));
                             }
                         }
+                        else if (currentInteractingObject.name.Contains("Artifact"))
+                        {
+                            Debug.Log("PLAYER GRAB ARTIFACT");
+                            GetComponent<GunFXController>().Grab();
+                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
+                            playerControlState = PlayerState.ControlsDisabled;
+                            StartCoroutine(CollectItem("Artifact", animTime));
+
+                        }
                     }
 
                     ExitInteract(context);
@@ -658,24 +667,26 @@ public class PlayerController : MonoBehaviour, IConditions
     IEnumerator CollectItem(string item, float delay)
     {
         yield return new WaitForSeconds(delay);
-
+        CollectItem();
         switch (item)
         {
             case "Raygun":
                 CollectRaygun();
-                CollectItem();
+
                 break;
 
             case "Journal":
                 CollectJournal();
-                CollectItem();
                 break;
 
             case "Toolbox":
-                CollectItem();
+
+                break;
+            case "Artifact":
+                CollectArtifact();
                 break;
         }
-     
+
     }
 
     void CollectItem()
@@ -693,6 +704,11 @@ public class PlayerController : MonoBehaviour, IConditions
     void CollectJournal()
     {
         //playerControlState = PlayerState.MoveAndLook;
+    }
+
+    void CollectArtifact()
+    {
+        // do artifact collection stuff
     }
 
     private void ExitInteract(InputAction.CallbackContext context)
@@ -981,6 +997,18 @@ public class PlayerController : MonoBehaviour, IConditions
             currentCoyoteTimer = Mathf.Clamp(currentCoyoteTimer - Time.deltaTime, 0, coyoteTimer);
             //Debug.Log("Player left the ground!");
         }
+    }
+
+    private void OnDestroy() 
+    {
+        //print("PlayerController OnDestroy called!");
+        playerInput.actions.FindAction("Interact").performed -= Interact;
+        playerInput.actions.FindAction("Interact").canceled -= ExitInteract;
+        playerInput.actions.FindAction("Jump").performed -= JumpInput;
+        playerInput.actions.FindAction("Shoot").performed -= raygunScript.FireBeam;
+        playerInput.actions.FindAction("Shoot").canceled -= raygunScript.FireBeam;
+        playerInput.actions.FindAction("Swap Beam").performed -= raygunScript.SwapBeam;
+        
     }
 }
 

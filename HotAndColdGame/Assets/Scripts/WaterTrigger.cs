@@ -8,6 +8,8 @@ public class WaterTrigger : MonoBehaviour
 
     private bool triggered = false;
     public bool activeOnStart;
+    public AudioSource soundFX;
+
 
     // Start is called before the first frame update
     void Start()
@@ -34,10 +36,11 @@ public class WaterTrigger : MonoBehaviour
     {
         if (DeathWaterObject.gameObject.activeSelf == false)
             DeathWaterObject.gameObject.SetActive(true);
-        // DeathWaterObject.Trigger(true);
+        DeathWaterObject.Trigger(true);
         DeathWaterObject.enabled = true;
         triggered = true;
-        Destroy(gameObject);
+        soundFX.Play();
+        //Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
