@@ -262,6 +262,10 @@ PrefabInstance:
       propertyPath: crntTemp
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6563012779952463328, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 274835461}
     - target: {fileID: 7320864843064307852, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -281,6 +285,18 @@ PrefabInstance:
     - target: {fileID: 7320864843093505947, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843411526383, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843411526383, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843411526383, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7320864843536195403, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_AnchorMax.x
@@ -340,44 +356,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3665375622089406116, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
   m_PrefabInstance: {fileID: 156945881}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &156945884 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3665375622089406119, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
-  m_PrefabInstance: {fileID: 156945881}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &156945885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 156945884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 256b712a0424b774c80fe047dadc4b16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsPaused: 0
-  Quitting: 0
-  pauseText: {fileID: 1561819255}
-  PC: {fileID: 0}
-  MouseSensitivityXSlider: {fileID: 0}
-  MouseSensitivityYSlider: {fileID: 0}
-  MouseSensitivityXInput: {fileID: 0}
-  MouseSensitivityYInput: {fileID: 0}
-  VolumeSlider: {fileID: 0}
-  VolumeInput: {fileID: 0}
-  QuitButton: {fileID: 0}
-  QuitPanel: {fileID: 0}
-  YesButton: {fileID: 0}
-  NoButton: {fileID: 0}
-  GM: {fileID: 0}
 --- !u!114 &156945887 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 156945885, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
   m_PrefabInstance: {fileID: 156945881}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 156945884}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 256b712a0424b774c80fe047dadc4b16, type: 3}
@@ -444,7 +428,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 173894925}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -515,7 +499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a71709712ab63a346bea62ed47d03e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &274835463
+--- !u!114 &274835461
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -524,12 +508,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 274835459}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6466907bb4cb39d409bb427a5ade7f92, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ede2d89c29c97d49977de5fbb51a39e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawn: {fileID: 1971028635}
   checkPoints: []
-  num: 1
 --- !u!1 &643142354 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1132983919121844887, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
@@ -919,7 +902,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865060154}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -1357,7 +1340,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335623493}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -1418,6 +1401,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1171969204, guid: ea97142086860f944b40480c50ca02eb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8367264433094579041, guid: ea97142086860f944b40480c50ca02eb, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1762,7 +1749,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941276751}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
