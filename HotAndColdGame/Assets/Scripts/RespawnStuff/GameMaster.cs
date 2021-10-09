@@ -32,7 +32,13 @@ public class GameMaster : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(instance.gameObject);
         }
-        else 
+        else if (gameObject.scene.buildIndex == 0)
+        {
+            Destroy(instance.gameObject);
+            instance = this;
+            DontDestroyOnLoad(instance.gameObject);
+        }
+        else
         {
             Destroy(gameObject);
         }
