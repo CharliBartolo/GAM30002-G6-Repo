@@ -209,6 +209,14 @@ public class SimpleBehaviours : MonoBehaviour
                 break;
         }
     }
+    // reset
+    public void ResetState(bool activeState)
+    {
+        Debug.Log("DEATH WATER RESET");
+        transform.position = startPos;
+        triggered = false;
+        gameObject.SetActive(activeState);
+    }
     // swap direction
     public void ReturnToStart(float speed)
     {

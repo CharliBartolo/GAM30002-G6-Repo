@@ -6,6 +6,7 @@ public class DeadArea : MonoBehaviour
 {
     [SerializeField] private GameMaster gm;//to get last respawn/checkpoint
     [SerializeField] private Transform player; //To get Player's position.
+    [SerializeField] private WaterTrigger trigger; //To get Trigger.
 
     // FX prefab(s)
     [SerializeField] public GameObject splashFX; //To get Player's position.
@@ -14,6 +15,11 @@ public class DeadArea : MonoBehaviour
     public enum AreaType { Green, Darkness}
 
     public AreaType Type = AreaType.Green;
+
+
+    public bool resetOnDeath;
+
+
     private void Start()
     {
         gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
@@ -37,6 +43,10 @@ public class DeadArea : MonoBehaviour
             else if (Type == AreaType.Darkness)
             {
                 GameObject.Find("UI").GetComponentInChildren<DeathEffect>().DarknessDeath(3);
+            }
+            if (resetOnDeath)
+            {
+                GetComponent<SimpleBehaviours>().ResetState(false);
             }
         }
     }

@@ -26,7 +26,7 @@ public class PlayerSoundControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerAudio = GetComponent<AudioSource>();
+        playerAudio = Camera.main.GetComponent<AudioSource>();
 
         raygunAudio = GetComponent<GunFXController>().gun_obj.GetComponent<AudioSource>();
         activeConditions = new List<IConditions.ConditionTypes>();
