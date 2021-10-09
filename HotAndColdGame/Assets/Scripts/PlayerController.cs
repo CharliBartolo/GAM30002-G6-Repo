@@ -610,7 +610,7 @@ public class PlayerController : MonoBehaviour, IConditions
                         float animTime = 0.85f;
                         float animTime_place = 3.5f;
 
-                        if (!playerInventory.Contains(currentInteractable.itemName))
+                        if (!playerInventory.Contains(currentInteractable.itemName) && currentInteractable.itemName != "Artifact")
                             playerInventory.Add(currentInteractable.itemName);
 
                         if (currentInteractingObject.name.Contains("Raygun"))
@@ -640,6 +640,15 @@ public class PlayerController : MonoBehaviour, IConditions
                                 StartCoroutine(CollectItem("Toolbox", animTime_place));
                             }
                         }
+                        else if (currentInteractingObject.name.Contains("Artifact"))
+                        {
+                            Debug.Log("PLAYER GRAB ARTIFACT");
+                            GetComponent<GunFXController>().Grab();
+                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
+                            playerControlState = PlayerState.ControlsDisabled;
+                            StartCoroutine(CollectItem("Artifact", animTime));
+
+                        }
                     }
 
                     ExitInteract(context);
@@ -658,24 +667,26 @@ public class PlayerController : MonoBehaviour, IConditions
     IEnumerator CollectItem(string item, float delay)
     {
         yield return new WaitForSeconds(delay);
-
+        CollectItem();
         switch (item)
         {
             case "Raygun":
                 CollectRaygun();
-                CollectItem();
+
                 break;
 
             case "Journal":
                 CollectJournal();
-                CollectItem();
                 break;
 
             case "Toolbox":
-                CollectItem();
+
+                break;
+            case "Artifact":
+                CollectArtifact();
                 break;
         }
-     
+
     }
 
     void CollectItem()
@@ -693,6 +704,11 @@ public class PlayerController : MonoBehaviour, IConditions
     void CollectJournal()
     {
         //playerControlState = PlayerState.MoveAndLook;
+    }
+
+    void CollectArtifact()
+    {
+        // do artifact collection stuff
     }
 
     private void ExitInteract(InputAction.CallbackContext context)
