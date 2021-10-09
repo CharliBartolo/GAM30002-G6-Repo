@@ -138,6 +138,7 @@ public class DeathEffect : FXController
         crntTemp.SetTemperature(crntTemp.tempValueRange[1]);
         crntTemp.CurrentTempState = ITemperature.tempState.Neutral;
         GameMaster.instance.playerRef.transform.position = GameMaster.instance.lastCheckPointPos.position;
+        GameMaster.instance.playerRef.transform.rotation = GameMaster.instance.lastCheckPointPos.rotation;
         GameMaster.instance.playerRef.GetComponent<PlayerController>().
             playerMouseLook.ResetMouse(GameMaster.instance.lastCheckPointPos);
         //Fade.GetComponent<Image>().color = new Color32(0, 0, 0, 0);//red, green, blue, alpha

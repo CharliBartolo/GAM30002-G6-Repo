@@ -46,6 +46,13 @@ public class DeadArea : MonoBehaviour
             }
             if (resetOnDeath)
             {
+                if(trigger != null)
+                {
+                    if(trigger.resetOnDeath)
+                    {
+                        trigger.ResetTrigger();
+                    }
+                }
                 GetComponent<SimpleBehaviours>().ResetState(false);
             }
         }
