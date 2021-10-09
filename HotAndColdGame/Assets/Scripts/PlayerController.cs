@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 /// It also acts as a 'manager' for other player-related classes such as camera movement,
 /// mouse look, audio control and temperature.
 /// Last edit: OnGUIDraw() - Commented out single line showing inventory
-/// By: Charli - 27/9/21
+/// By: Charli - 9/10/21
 /// </summary>
 public class PlayerController : MonoBehaviour, IConditions
 {
@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour, IConditions
         contactPoints = new List<ContactPoint>();
         playerInventory = new List<string>();        
 
-        playerInput.actions.FindAction("Interact").performed += context => Interact(context);
+        playerInput.actions.FindAction("Interact").performed += Interact;
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
         playerInput.actions.FindAction("Jump").performed += JumpInput;
         playerInput.actions.FindAction("Shoot").performed += raygunScript.FireBeam;
@@ -981,6 +981,18 @@ public class PlayerController : MonoBehaviour, IConditions
             currentCoyoteTimer = Mathf.Clamp(currentCoyoteTimer - Time.deltaTime, 0, coyoteTimer);
             //Debug.Log("Player left the ground!");
         }
+    }
+
+    private void OnDestroy() 
+    {
+        //print("PlayerController OnDestroy called!");
+        playerInput.actions.FindAction("Interact").performed -= Interact;
+        playerInput.actions.FindAction("Interact").canceled -= ExitInteract;
+        playerInput.actions.FindAction("Jump").performed -= JumpInput;
+        playerInput.actions.FindAction("Shoot").performed -= raygunScript.FireBeam;
+        playerInput.actions.FindAction("Shoot").canceled -= raygunScript.FireBeam;
+        playerInput.actions.FindAction("Swap Beam").performed -= raygunScript.SwapBeam;
+        
     }
 }
 

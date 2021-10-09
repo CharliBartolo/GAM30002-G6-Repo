@@ -172,6 +172,14 @@ public class PauseController : MonoBehaviour
 
     void OnPause(InputAction.CallbackContext context)
     {
+        // This handles errors for delegates calling Players that don't exist. Not the best way to deal with it.
+        if (PC == null)
+        {
+            //PC.GetComponent<PlayerInput>().actions.FindActionMap("Player").FindAction("Pause").performed -= OnPause;
+            //PC.GetComponent<PlayerInput>().actions.FindActionMap("Menu").FindAction("Pause").performed -= OnPause;
+            return;
+        }
+
         if (PC.GetComponent<PlayerInput>().currentActionMap == PC.GetComponent<PlayerInput>().actions.FindActionMap("Menu")
             && !IsPaused)
         {
