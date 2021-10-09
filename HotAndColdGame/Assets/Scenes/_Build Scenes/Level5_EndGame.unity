@@ -23466,7 +23466,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 5216498503769096187, guid: 4b6508d136fd4f64f8a3008aac065704, type: 2}
   m_audioClip: {fileID: 8300000, guid: a258d517db0d7e6498ce8d1b8f2d619a, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.274
+  m_Volume: 1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -23475,7 +23475,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -23485,16 +23485,25 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.41667858
-      value: 0.9177971
-      inSlope: 0.030235616
-      outSlope: 0.030235616
+      time: 0.45918953
+      value: 0.9921684
+      inSlope: -0.116366506
+      outSlope: -0.116366506
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.58022475
+      outWeight: 1
     - serializedVersion: 3
-      time: 0.8298645
+      time: 0.7819213
+      value: 0.69786406
+      inSlope: -1.6409153
+      outSlope: -1.6409153
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.8784705
+    - serializedVersion: 3
+      time: 0.97872925
       value: 0
       inSlope: -3.3201969
       outSlope: -3.3201969
@@ -23510,7 +23519,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -24668,6 +24677,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1355469493}
   m_Mesh: {fileID: 4300010, guid: 3bb55b9dc42e34c47b35dea94575a162, type: 3}
+--- !u!114 &1356365191 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3665375622738269863, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+  m_PrefabInstance: {fileID: 2094182362}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 573fea862b87be94c9ab55fde85ab55a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1359747267
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35904,8 +35924,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13ce71612ca09f34e9581737508e17f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractingObject: {fileID: 0}
-  DE: {fileID: 0}
+  InteractingObject: {fileID: 1499405279}
+  DE: {fileID: 1356365191}
 --- !u!73398921 &2010422482
 VFXRenderer:
   m_ObjectHideFlags: 2
