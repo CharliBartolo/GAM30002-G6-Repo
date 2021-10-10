@@ -152,10 +152,10 @@ public class PauseController : MonoBehaviour
         
         MouseSensitivityXSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity X Slider
         MouseSensitivityYSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity Y Slider
-        MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
-        MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
+        //MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
+        //MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
         VolumeSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
-        VolumeInput.gameObject.SetActive(IsPaused); //Toggles Volume Input Field
+        //VolumeInput.gameObject.SetActive(IsPaused); //Toggles Volume Input Field
         QuitButton.gameObject.SetActive(IsPaused); // TToggles the Quit Button
         QuitPanel.gameObject.gameObject.SetActive(Quitting); //Toggles panel for confirmation
         YesButton.gameObject.gameObject.SetActive(Quitting); //Toggles button for confirmation
@@ -187,7 +187,7 @@ public class PauseController : MonoBehaviour
         }        
         else
         {
-            Debug.Log("TEST PAUSE");
+            //Debug.Log("TEST PAUSE");
             Quitting = false;
             IsPaused = !IsPaused;
         }

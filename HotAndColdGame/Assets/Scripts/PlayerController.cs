@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour, IConditions
             {
                 if(!isPaused)
                 {
-                    Debug.Log("PAUSED");
+                    //Debug.Log("PAUSED");
                     playerControlState_copy = playerControlState;
                     playerControlState = PlayerState.ControlsDisabled;
                     UnlockCursor();

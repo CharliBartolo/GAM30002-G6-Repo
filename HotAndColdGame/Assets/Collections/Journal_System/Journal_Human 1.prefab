@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d222f832f088594491b83bf70842431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entryLog: Greetings traveller..
+  _entryLogs: []
 --- !u!135 &4708282089775744861
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -141,6 +141,7 @@ MonoBehaviour:
   itemName: Journal
   destroyOnCollect: 0
   int_data: 0
+  pickup_sound: {fileID: 0}
 --- !u!54 &1416166938
 Rigidbody:
   m_ObjectHideFlags: 0

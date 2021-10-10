@@ -64,7 +64,7 @@ public class GameMaster : MonoBehaviour
 
     private bool SearchForPlayer()
     {
-        Debug.Log("GameManager is searching for a Player object...");
+        //Debug.Log("GameManager is searching for a Player object...");
         //if (GameObject.Find("Player") != null)
         if (GameObject.FindGameObjectWithTag("Player"))
         {
@@ -73,7 +73,7 @@ public class GameMaster : MonoBehaviour
             checkpointObject.transform.position = playerRef.transform.position;
             checkpointObject.transform.rotation = playerRef.transform.rotation;
             lastCheckPointPos = checkpointObject.transform;
-            Debug.Log("Player object found, reference stored!");
+            //Debug.Log("Player object found, reference stored!");
             return true;
         } 
 
@@ -100,7 +100,7 @@ public class GameMaster : MonoBehaviour
     public void LoadDifficulty()
     {
         difficultyNum = PlayerPrefs.GetInt("Difficulty");
-        Debug.Log("Difficulty loaded!");
+        //Debug.Log("Difficulty loaded!");
 
         switch (difficultyNum)
         {

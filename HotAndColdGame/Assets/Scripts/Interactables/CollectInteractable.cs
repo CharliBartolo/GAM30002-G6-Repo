@@ -77,14 +77,28 @@ public class CollectInteractable : InteractableBase
     {
         // wait for animation and stuff
         yield return new WaitForSeconds(delay);
+        int type = 0;
+
+        if (itemName == "AlienLog")
+            type = 1;
+
         GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal(GetComponent<Journal>()
-            .EntryLog[0], GetComponent<Journal>().EntryLog[1], int_data);
+            .EntryLog[0], GetComponent<Journal>().EntryLog[1], type);
         Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
         Camera.main.GetComponent<AudioSource>().Play();
-        //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
+
+        // update collection system in ui
+
+        CollectionsSystem collections = GameObject.Find("UI").GetComponent<CollectionsSystem>();
+
+        if(collections != null)
+        {
+            collections.FoundCollectable(itemName, int_data);
+        }
+
         // do stuff
- /*       if (destroyOnCollect)
-            Destroy(gameObject);*/
+        if (destroyOnCollect)
+            Destroy(gameObject);
     }
 
     IEnumerator InteractArtifact(float delay)
@@ -97,6 +111,16 @@ public class CollectInteractable : InteractableBase
         Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
         Camera.main.GetComponent<AudioSource>().Play();
         //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
+
+        // update collection system in ui
+
+        CollectionsSystem collections = GameObject.Find("UI").GetComponent<CollectionsSystem>();
+
+        if (collections != null)
+        {
+            collections.FoundCollectable(itemName, int_data);
+        }
+
         // do stuff
         if (destroyOnCollect)
             Destroy(gameObject);
