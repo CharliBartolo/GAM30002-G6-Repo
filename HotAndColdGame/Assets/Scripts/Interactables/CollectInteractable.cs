@@ -78,13 +78,16 @@ public class CollectInteractable : InteractableBase
         // wait for animation and stuff
         yield return new WaitForSeconds(delay);
         GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal(GetComponent<Journal>()
-            .EntryLog[0], GetComponent<Journal>().EntryLog[1], int_data);
+            .EntryLog[0], GetComponent<Journal>().EntryLog[1], 0);
         Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
         Camera.main.GetComponent<AudioSource>().Play();
+
+        GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(itemName, int_data);
+
         //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
         // do stuff
- /*       if (destroyOnCollect)
-            Destroy(gameObject);*/
+        if (destroyOnCollect)
+            Destroy(gameObject);
     }
 
     IEnumerator InteractArtifact(float delay)
@@ -96,7 +99,9 @@ public class CollectInteractable : InteractableBase
             .EntryLog[0], GetComponent<Journal>().EntryLog[1], int_data);*/
         Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
         Camera.main.GetComponent<AudioSource>().Play();
-        //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
+
+        GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(itemName, int_data);
+
         // do stuff
         if (destroyOnCollect)
             Destroy(gameObject);

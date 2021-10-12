@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8367264433094579069}
   - component: {fileID: 1171969204}
   - component: {fileID: 1171969203}
+  - component: {fileID: 5844264337383096165}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: GM
@@ -106,6 +107,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawn: {fileID: 0}
   checkPoints: []
+  isAdditiveLevelLoadEnabled: 0
+  isHUDVisible: 1
+  isGUNVisible: 1
   num: 0
 --- !u!114 &1171969203
 MonoBehaviour:
@@ -119,6 +123,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a71709712ab63a346bea62ed47d03e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5844264337383096165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8367264433094579066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7d7bcb4476638646a3c4e0c99e9f987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Collectables: {fileID: 0}
 --- !u!1 &8367264434170778534
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,10 @@ using UnityEngine.UI;
 public class Journal_Reader : MonoBehaviour
 {
     //public GameObject textbox;
+
+    public Transform homePage;
+    public Transform popUp;
+
     public List<Text> text;
     public Image image;
     public GameObject Background_Human;
@@ -23,33 +27,60 @@ public class Journal_Reader : MonoBehaviour
 
     private void Start()
     {
+        homePage = transform.Find("HomePage");
+        popUp = transform.Find("Popup");
+        DisplayHomePage(false);
         Exit_Journal();
     }
 
+
+    // display or hide the journal reader's home page elements
+    public void DisplayHomePage(bool option)
+    {
+        Background_Human.gameObject.SetActive(option);
+        homePage.gameObject.SetActive(option);
+    }
+
+    public void DisplayPopup()
+    {
+        popUp.gameObject.SetActive(true);
+    }
+
     public void Display_Journal(string journal_text_pg1, string journal_text_pg2, int journalType)
-    { 
-        text[0].text = journal_text_pg1;
-        //textbox.SetActive(true);
-        text[0].gameObject.SetActive(true);
-
-        text[1].text = journal_text_pg2;
-        //textbox.SetActive(true);
-        text[1].gameObject.SetActive(true);
-        //image.gameObject.SetActive(true);
-
-        //SetTimeout(timeoutDisplay);
-
-        if (journalType == 0)
+    {
+        // display homepage if jounalType is -1, else show page
+        if (journalType == -1)
         {
-            Background_Human.gameObject.SetActive(true);
-            text[0].font = font_Human;
-            text[1].font = font_Human;
+            DisplayHomePage(true);
+
         }
         else
         {
-            Background_Alien.gameObject.SetActive(true);
-            text[0].font = font_Alien;
-            text[1].font = font_Alien;
+            text[0].text = journal_text_pg1;
+            //textbox.SetActive(true);
+            text[0].gameObject.SetActive(true);
+
+            text[1].text = journal_text_pg2;
+            //textbox.SetActive(true);
+            text[1].gameObject.SetActive(true);
+            //image.gameObject.SetActive(true);
+
+            //SetTimeout(timeoutDisplay);
+       
+            DisplayHomePage(false);
+
+            if (journalType == 0)
+            {
+                Background_Human.gameObject.SetActive(true);
+                text[0].font = font_Human;
+                text[1].font = font_Human;
+            }
+            else if (journalType == 1)
+            {
+                Background_Alien.gameObject.SetActive(true);
+                text[0].font = font_Alien;
+                text[1].font = font_Alien;
+            }
         }
     }
     
@@ -62,6 +93,8 @@ public class Journal_Reader : MonoBehaviour
         image.gameObject.SetActive(false);
         Background_Human.SetActive(false);
         Background_Alien.SetActive(false);
+
+        DisplayHomePage(false);
     }
 
     public void SetTimeout(float time)
