@@ -6,10 +6,7 @@ public enum CheckMethod
 {
     Distance,
     Trigger
-<<<<<<< HEAD
     //Both
-=======
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
 }
 public class ScenePartLoader : MonoBehaviour
 {
@@ -18,21 +15,12 @@ public class ScenePartLoader : MonoBehaviour
     [SerializeField] public CheckMethod checkMethod;
     [SerializeField] public float loadRange;
     [SerializeField] public bool meshOnly;
-<<<<<<< HEAD
     [SerializeField] public List<OnTrigger> loadTriggers = new List<OnTrigger>();
     [SerializeField] public List<OnTrigger> unloadTriggers = new List<OnTrigger>();
 
     //Scene state
     private bool isLoaded;
     public bool shouldLoad;
-=======
-    [SerializeField] public OnTrigger loadTrigger;
-    [SerializeField] public OnTrigger unloadTrigger;
-
-    //Scene state
-    private bool isLoaded;
-    private bool shouldLoad;
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
     private bool isHidden;
     private Dictionary<GameObject, bool> objectActiveDict = new Dictionary<GameObject, bool>();
 
@@ -46,11 +34,7 @@ public class ScenePartLoader : MonoBehaviour
                 Scene scene = SceneManager.GetSceneAt(i);
                 if (scene.name == gameObject.name)
                 {
-<<<<<<< HEAD
                     isLoaded = true;                   
-=======
-                    isLoaded = true;
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
                     //added 8-9-21
                     /*GameObject[] gameObjs = FindObjectsOfType(typeof(GameObject)) as GameObject[];
                     foreach (GameObject go in gameObjs)
@@ -63,7 +47,6 @@ public class ScenePartLoader : MonoBehaviour
                 }
             }
         }
-<<<<<<< HEAD
 
         // If the scene is mesh only and isn't already loaded, load it and hide it
         if (!isLoaded && meshOnly)
@@ -71,8 +54,6 @@ public class ScenePartLoader : MonoBehaviour
             LoadScene();
             UnLoadScene();
         }
-=======
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
     }
 
     void Update()
@@ -84,7 +65,6 @@ public class ScenePartLoader : MonoBehaviour
         }
         else if (checkMethod == CheckMethod.Trigger)
         {
-<<<<<<< HEAD
             //Debug.Log("Trigger Check running!");
             TriggerCheck();
         }
@@ -94,10 +74,6 @@ public class ScenePartLoader : MonoBehaviour
             BothTriggerAndDistanceCheck();
         }
         */
-=======
-            TriggerCheck();
-        }
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
     }
 
     void DistanceCheck()
@@ -113,7 +89,6 @@ public class ScenePartLoader : MonoBehaviour
         }
     }
 
-<<<<<<< HEAD
     void BothTriggerAndDistanceCheck()
     {
         TriggerCheck();
@@ -139,9 +114,6 @@ public class ScenePartLoader : MonoBehaviour
     }
 
     public void LoadScene()
-=======
-    void LoadScene()
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
     {
         if (!isLoaded)
         {
@@ -155,29 +127,17 @@ public class ScenePartLoader : MonoBehaviour
         {
             foreach(GameObject gameObject in objectActiveDict.Keys)
             {
-<<<<<<< HEAD
                 gameObject.SetActive(objectActiveDict[gameObject]);                
-=======
-                gameObject.SetActive(objectActiveDict[gameObject]);
-                
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
             }
 
             objectActiveDict.Clear();
             isHidden = false;
-<<<<<<< HEAD
             Debug.Log("Scene unhidden!");
-=======
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         }
         //need to add function to turn on render
     }
 
-<<<<<<< HEAD
     public void UnLoadScene()
-=======
-    void UnLoadScene()
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
     {
         //original code
         if (isLoaded)
@@ -209,7 +169,6 @@ public class ScenePartLoader : MonoBehaviour
     //added 16-09-21
     private void TriggerLoad()
     {
-<<<<<<< HEAD
         //Debug.Log("TriggerLoad running");
 
         foreach (OnTrigger loadTrigger in loadTriggers)
@@ -220,17 +179,11 @@ public class ScenePartLoader : MonoBehaviour
                 Debug.Log("Level will be loaded");
                 break;
             }
-=======
-        if (loadTrigger.Enter)
-        {
-            shouldLoad = true;
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         }
     }
 
     private void TriggerUnload() 
     {
-<<<<<<< HEAD
         //Debug.Log("TriggerUnLoad running");
         foreach (OnTrigger unloadTrigger in unloadTriggers)
         {
@@ -240,11 +193,6 @@ public class ScenePartLoader : MonoBehaviour
                 //Debug.Log("Level will be unloaded");
                 break;
             }
-=======
-        if (unloadTrigger.Enter)
-        {
-            shouldLoad = false;
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         }
     }
 

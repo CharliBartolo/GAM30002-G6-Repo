@@ -9,11 +9,7 @@ using UnityEngine.InputSystem;
 /// It also acts as a 'manager' for other player-related classes such as camera movement,
 /// mouse look, audio control and temperature.
 /// Last edit: OnGUIDraw() - Commented out single line showing inventory
-<<<<<<< HEAD
 /// By: Charli - 9/10/21
-=======
-/// By: Charli - 27/9/21
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
 /// </summary>
 public class PlayerController : MonoBehaviour, IConditions
 {
@@ -587,11 +583,7 @@ public class PlayerController : MonoBehaviour, IConditions
             return;
         }
 
-<<<<<<< HEAD
         if (Physics.Raycast(playerCamControl.playerCam.transform.position, playerCamControl.playerCam.transform.forward, out RaycastHit hit, interactRange) &&
-=======
-        if (Physics.Raycast(playerCamControl.playerCam.transform.position, playerCamControl.playerCam.transform.forward, out RaycastHit hit, interactRange) && 
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
             hit.collider.gameObject.GetComponent<InteractableBase>() != null && playerCamControl != null)
         {
             //Debug.Log("Interactable object found, attempting interaction.");
@@ -610,11 +602,7 @@ public class PlayerController : MonoBehaviour, IConditions
                 // Use object, trigger exit interaction, and remove object from script.
                 case InteractableBase.InteractionType.Use:
                     if (currentInteractingObject.TryGetComponent
-<<<<<<< HEAD
                         <CollectInteractable>(out CollectInteractable currentInteractable))
-=======
-                        <CollectInteractable>(out CollectInteractable currentInteractable))                    
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
                     {
                         /* GetComponent<GunFXController>().weaponState = GunFXController.WeaponState.Grab;
                          GetComponent<GunFXController>().NextState();*/
@@ -622,11 +610,7 @@ public class PlayerController : MonoBehaviour, IConditions
                         float animTime = 0.85f;
                         float animTime_place = 3.5f;
 
-<<<<<<< HEAD
                         if (!playerInventory.Contains(currentInteractable.itemName) && currentInteractable.itemName != "Artifact")
-=======
-                        if (!playerInventory.Contains(currentInteractable.itemName))
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
                             playerInventory.Add(currentInteractable.itemName);
 
                         if (currentInteractingObject.name.Contains("Raygun"))
@@ -656,7 +640,6 @@ public class PlayerController : MonoBehaviour, IConditions
                                 StartCoroutine(CollectItem("Toolbox", animTime_place));
                             }
                         }
-<<<<<<< HEAD
                         else if (currentInteractingObject.name.Contains("Artifact"))
                         {
                             Debug.Log("PLAYER GRAB ARTIFACT");
@@ -667,9 +650,6 @@ public class PlayerController : MonoBehaviour, IConditions
 
                         }
                     }
-=======
-            }
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
 
                     ExitInteract(context);
                     break;
@@ -1018,7 +998,6 @@ public class PlayerController : MonoBehaviour, IConditions
             //Debug.Log("Player left the ground!");
         }
     }
-<<<<<<< HEAD
 
     private void OnDestroy() 
     {
@@ -1031,8 +1010,6 @@ public class PlayerController : MonoBehaviour, IConditions
         playerInput.actions.FindAction("Swap Beam").performed -= raygunScript.SwapBeam;
         
     }
-=======
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
 }
 
 

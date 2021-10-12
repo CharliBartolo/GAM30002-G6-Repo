@@ -2,15 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-<<<<<<< HEAD
 /// <summary>
 /// Responsible for managing Player Camera. Functionality includes adjusting general FOV,
 /// adjusting FOV based on speed, and 'headbobbing' while moving.
 /// Last edit: Adding Class Summary
 /// By: Charli - 8/10/21
 /// </summary>
-=======
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
 public class PlayerCameraControl : MonoBehaviour
 {
     [Header("FOV Settings")]
@@ -84,14 +81,11 @@ public class PlayerCameraControl : MonoBehaviour
                 playerCam.transform.localPosition.x,
                 defaultYpos + Mathf.Sin(timer) * (walkBobAmount));
         }
-<<<<<<< HEAD
         else
         {
             playerCam.transform.localPosition = Vector3.Lerp(
                 new Vector3 (playerCam.transform.localPosition.x, defaultYpos), 
                 playerCam.transform.localPosition, 48f * Time.deltaTime);
         }
-=======
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
     }
 }

@@ -12,10 +12,6 @@ public class DeadArea : MonoBehaviour
     [SerializeField] public GameObject splashFX; //To get Player's position.
     [SerializeField] public AudioClip deathSound; //To get Player's position.
 
-    // FX prefab(s)
-    [SerializeField] public GameObject splashFX; //To get Player's position.
-    [SerializeField] public AudioClip deathSound; //To get Player's position.
-
     public enum AreaType { Green, Darkness}
 
     public AreaType Type = AreaType.Green;
@@ -48,7 +44,6 @@ public class DeadArea : MonoBehaviour
             {
                 GameObject.Find("UI").GetComponentInChildren<DeathEffect>().DarknessDeath(3);
             }
-<<<<<<< HEAD
             if (resetOnDeath)
             {
                 if(trigger != null)
@@ -60,8 +55,6 @@ public class DeadArea : MonoBehaviour
                 }
                 GetComponent<SimpleBehaviours>().ResetState(false);
             }
-=======
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         }
     }
 

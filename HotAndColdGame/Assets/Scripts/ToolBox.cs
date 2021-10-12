@@ -25,10 +25,7 @@ public class ToolBox : CollectInteractable
     public bool canUse;
     //public int gunUpgradeLevel = 0;
     [SerializeField] private List<AudioClip> sounds = new List<AudioClip>();
-<<<<<<< HEAD:HotAndColdGame/Assets/Scripts/ToolBox.cs
 
-=======
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/ToolBox.cs
 
     private void Start()
     {

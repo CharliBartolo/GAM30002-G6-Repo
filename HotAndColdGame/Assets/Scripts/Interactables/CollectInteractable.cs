@@ -81,7 +81,6 @@ public class CollectInteractable : InteractableBase
             .EntryLog[0], GetComponent<Journal>().EntryLog[1], int_data);
         Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
         Camera.main.GetComponent<AudioSource>().Play();
-<<<<<<< HEAD
         //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
         // do stuff
  /*       if (destroyOnCollect)
@@ -97,8 +96,6 @@ public class CollectInteractable : InteractableBase
             .EntryLog[0], GetComponent<Journal>().EntryLog[1], int_data);*/
         Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
         Camera.main.GetComponent<AudioSource>().Play();
-=======
->>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
         // do stuff
         if (destroyOnCollect)
