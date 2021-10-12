@@ -48,7 +48,7 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                     ""id"": ""a6cf4eef-2be2-4f21-8a3d-0ed2e1ce630d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press(behavior=2)""
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""Shoot"",
@@ -357,7 +357,7 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Cancel"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""729abe7e-e5f4-469a-a4a2-930ada8dd564"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -365,7 +365,7 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Submit"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""7e2ce3d1-b7ec-4062-9f7f-50259e8be5f0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -373,7 +373,7 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Navigate"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""3304f517-fc19-41e9-8233-f36bfe1ee85b"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -412,31 +412,9 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""56394bec-0e38-48b4-8674-18aecffe5641"",
-                    ""path"": ""<Gamepad>/rightStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""down"",
                     ""id"": ""ece6615c-baed-4018-8248-93e9519a4af1"",
                     ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""1ca943a2-f028-4a76-9ef8-21778cc37f16"",
-                    ""path"": ""<Gamepad>/rightStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -456,31 +434,9 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""left"",
-                    ""id"": ""db60d845-bccc-4e3a-9581-fd641e8b7012"",
-                    ""path"": ""<Gamepad>/rightStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""right"",
                     ""id"": ""d246c7b1-98ff-49fa-9a56-ef6e74dd5a7a"",
                     ""path"": ""<Gamepad>/leftStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""486e218f-3fb1-4966-bacd-1c716006d15c"",
-                    ""path"": ""<Gamepad>/rightStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -656,10 +612,10 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2f364a97-9df7-400f-91a6-98c670212d45"",
-                    ""path"": ""*/{Submit}"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -667,10 +623,10 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5eef1029-07ae-4a8c-a7be-21e4252ad4de"",
-                    ""path"": ""*/{Cancel}"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

@@ -23,11 +23,16 @@ Material:
   m_Name: GlassDirt_Mat
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _BLENDMODE_ALPHA _BLENDMODE_PRESERVE_SPECULAR_LIGHTING _DISABLE_SSR_TRANSPARENT
-    _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+    _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
+<<<<<<< HEAD
   m_DoubleSidedGI: 1
   m_CustomRenderQueue: -1
+=======
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+>>>>>>> eb2c95b13dbf684ec59ea5699b81d654ba91cd10
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
@@ -48,9 +53,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 2800000, guid: 0439c43ffe2ffcc4da343f7aeebc1bf0, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: -0.5, y: -0.5}
     - _BentNormalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -108,7 +113,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 0439c43ffe2ffcc4da343f7aeebc1bf0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
@@ -204,7 +209,7 @@ Material:
     - _BlendMode: 0
     - _BumpScale: 1
     - _CoatMask: 0
-    - _CullMode: 0
+    - _CullMode: 2
     - _CullModeForward: 2
     - _Cutoff: 0
     - _DepthOffsetEnable: 0
@@ -231,7 +236,7 @@ Material:
     - _DistortionSrcBlend: 1
     - _DistortionVectorBias: -1
     - _DistortionVectorScale: 2
-    - _DoubleSidedEnable: 1
+    - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
     - _EmissiveColorMode: 1
@@ -239,7 +244,7 @@ Material:
     - _EmissiveIntensity: 1
     - _EmissiveIntensityUnit: 0
     - _EnableBlendModePreserveSpecularLighting: 1
-    - _EnableFogOnTransparent: 1
+    - _EnableFogOnTransparent: 0
     - _EnableGeometricSpecularAA: 0
     - _EnableSpecularOcclusion: 0
     - _EnergyConservingSpecularColor: 1
@@ -256,7 +261,7 @@ Material:
     - _HeightPoMAmplitude: 2
     - _HeightTessAmplitude: 2
     - _HeightTessCenter: 0.5
-    - _InvTilingScale: 1
+    - _InvTilingScale: 0.5
     - _Ior: 2.5
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
@@ -332,9 +337,9 @@ Material:
     - Color_DCF1FFF3: {r: 0, g: 0, b: 0, a: 0.2}
     - Vector2_5A851886: {r: 0, g: 0, b: 0, a: 0}
     - Vector2_793BAC4B: {r: 10, g: 10, b: 0, a: 0}
-    - _BaseColor: {r: 0.19811317, g: 0.19811317, b: 0.19811317, a: 0}
+    - _BaseColor: {r: 0.19811314, g: 0.19811314, b: 0.19811314, a: 0.50980395}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.19811314, g: 0.19811314, b: 0.19811314, a: 0}
+    - _Color: {r: 0.19811311, g: 0.19811311, b: 0.19811311, a: 0.50980395}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

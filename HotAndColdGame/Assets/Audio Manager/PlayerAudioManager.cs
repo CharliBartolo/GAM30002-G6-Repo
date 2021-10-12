@@ -46,8 +46,10 @@ public class PlayerAudioManager : AudioManager
         base.Spawn(obj, name);
     }
 
+    /*
     public override void SetVolume(string name, float volume)
     { //Set the volume of a sound
         base.SetVolume(name, volume);
     }
+    */
 }

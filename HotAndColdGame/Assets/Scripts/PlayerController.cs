@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+/// <summary>
+/// This class is responsible for managing the Player's input and movement behaviour.
+/// It also acts as a 'manager' for other player-related classes such as camera movement,
+/// mouse look, audio control and temperature.
+/// Last edit: OnGUIDraw() - Commented out single line showing inventory
+/// By: Charli - 9/10/21
+/// </summary>
 public class PlayerController : MonoBehaviour, IConditions
 {
     private float deltaTime = 0.0f;
@@ -34,15 +42,24 @@ public class PlayerController : MonoBehaviour, IConditions
 
     [Header("Player Control Settings")]
     public playerMovementSettings currentMovementSettings = new playerMovementSettings(20f, 15f, 10f, 0.5f, new Vector2(8f, 20f), 1f, 1.2f, 1.5f);
-    public float interactRange = 2f;    
+    public float interactRange = 2f;   
+    public float coyoteTimer = 0.5f;
+    private float currentCoyoteTimer; 
+    private float jumpBufferTimer = 0f;
+    public float maxStepHeight = 0.4f;        // The maximum a player can set upwards in units when they hit a wall that's potentially a step
+    public float stepSearchOvershoot = 0.01f; // How much to overshoot into the direction a potential step in units when testing. High values prevent player from walking up tiny steps but may cause problems.
 
     [Range(0f, 90f)]public float slopeWalkingLimit = 45f;
-    public float antiGravMod = 1f;    
+    public float antiGravMod = 1f;  
     
-    public float timeBeforeFrictionReturns = 0.2f;
-    private float currentTimeBeforeFrictionReturns = 0f;
+    //public float timeBeforeFrictionReturns = 0.2f;
+    //private float currentTimeBeforeFrictionReturns = 0f;
+
+    private ContactPoint ledgeContact;
+    private Vector3 ledgePos;
     private Vector3 horizVelocity;
     private Vector3 vertVelocity;
+    private Vector3 prevVelocity;
     private List<ContactPoint> contactPoints;
 
     [Header("Player Condition Control Settings")]
@@ -55,7 +72,7 @@ public class PlayerController : MonoBehaviour, IConditions
     public bool isGravityEnabled = true;
     public bool isGunEnabled = true;   
     [SerializeField] 
-    private bool isGrounded;
+    public bool isGrounded;
     private bool isClimbing = false;
 
     private bool isWalking = false;
@@ -67,14 +84,14 @@ public class PlayerController : MonoBehaviour, IConditions
     [SerializeField] private List<IConditions.ConditionTypes> _activeConditions;
     private bool isConditionChanging = false;
     private bool isPaused = false;
-    private bool isInitialised = false;
+    public bool isInitialised = false;
 
-    [Header("References")]
-    public Camera playerCam;
+    [Header("References")]    
     public RayCastShootComplete raygunScript;
     public PlayerInput playerInput;
     public PlayerMouseLook playerMouseLook;
     public PlayerSoundControl playerSoundControl;
+    public PlayerCameraControl playerCamControl;
     private Rigidbody playerRB;
     //public Transform groundChecker;
     private TemperatureStateBase playerTemp;
@@ -84,21 +101,20 @@ public class PlayerController : MonoBehaviour, IConditions
     public PhysicMaterial icyPhysicMaterial; //Physics mat for slippery effect
     public PhysicMaterial regularPhysicMaterial;
 
-
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody>();
         playerTemp = GetComponent<TemperatureStateBase>();
-        playerCam = GetComponentInChildren<Camera>(); 
         playerMouseLook = GetComponent<PlayerMouseLook>();   
-        playerSoundControl = GetComponent<PlayerSoundControl>();     
+        playerSoundControl = GetComponent<PlayerSoundControl>();
+        playerCamControl = GetComponent<PlayerCameraControl>();     
         _activeConditions = new List<IConditions.ConditionTypes>();
         contactPoints = new List<ContactPoint>();
         playerInventory = new List<string>();        
 
-        playerInput.actions.FindAction("Interact").performed += context => Interact(context);
+        playerInput.actions.FindAction("Interact").performed += Interact;
         playerInput.actions.FindAction("Interact").canceled += ExitInteract;
-        playerInput.actions.FindAction("Jump").performed += Jump;
+        playerInput.actions.FindAction("Jump").performed += JumpInput;
         playerInput.actions.FindAction("Shoot").performed += raygunScript.FireBeam;
         playerInput.actions.FindAction("Shoot").canceled += raygunScript.FireBeam;
         playerInput.actions.FindAction("Swap Beam").performed += raygunScript.SwapBeam;
@@ -116,13 +132,15 @@ public class PlayerController : MonoBehaviour, IConditions
         if (isGunEnabled)
         {
             playerInventory.Add("Raygun");
-            GetComponent<GunFXController>().EquipTool();
+            GetComponent<GunFXController>().EquipTool(false);
         }
 
         playerRB.angularDrag = 100f;
         regularPhysicMaterial.dynamicFriction = 0f;
         regularPhysicMaterial.staticFriction = 0f;
         regularPhysicMaterial.frictionCombine = PhysicMaterialCombine.Minimum;
+        jumpBufferTimer = 0f;
+        currentCoyoteTimer = coyoteTimer;
 
         playerMouseLook.ResetMouse(transform);
         //playerMouseLook.MouseAbsolute = new Vector2 (transform.eulerAngles.y, 0f);   
@@ -144,6 +162,8 @@ public class PlayerController : MonoBehaviour, IConditions
     private void Update()
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        playerCamControl.UpdateFOVBasedOnSpeed(playerRB.velocity.magnitude);  
+        playerCamControl.UpdateHeadbob(horizVelocity, isGrounded);   
         //Debug.Log(playerRB.velocity.magnitude);
 
         if (PC != null)
@@ -181,7 +201,7 @@ public class PlayerController : MonoBehaviour, IConditions
             case (PlayerState.MoveAndLook):
                 if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Menu"))
                     playerInput.currentActionMap = playerInput.actions.FindActionMap("Player");
-                playerMouseLook.MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>(), playerCam);
+                playerMouseLook.MouseLook(playerInput.actions.FindAction("Look").ReadValue<Vector2>(), playerCamControl.playerCam);
                 //ProgressStepCycle(1.5f);
                 break;
             case (PlayerState.MoveOnly):
@@ -208,33 +228,50 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         horizVelocity = Vector3.Scale(playerRB.velocity, new Vector3(1f, 0f, 1f));
         vertVelocity = Vector3.Scale(playerRB.velocity, new Vector3(0f, 1f, 0f));
+        Vector3 stepUpOffset = default(Vector3);
 
         ExecuteConditions();
+        playerSoundControl.UpdateActiveConditions(_activeConditions);
         RemoveConditionsIfReturningToNeutral();
+                
+        isGrounded = FindGround(out groundContactPoint, contactPoints);  
+        Jump();  
 
         switch (playerControlState)
         {
             case (PlayerState.ControlsDisabled):
                 break;
-            case (PlayerState.MoveAndLook):                
-                isGrounded = FindGround(out groundContactPoint, contactPoints);
-                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
+            case (PlayerState.MoveAndLook):
+                MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());               
                 break;
             case (PlayerState.MoveOnly):
-                isGrounded = FindGround(out groundContactPoint, contactPoints);
                 MovePlayer(playerInput.actions.FindAction("Movement").ReadValue<Vector2>());
                 //ResetMouse();
                 break;
             default:
                 break;
-        }
+        } 
 
         if (GameMaster.instance.audioManager != null)
-            playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded);
+        {
+            //playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded);
+            
+            if (!_activeConditions.Contains(IConditions.ConditionTypes.ConditionCold))
+                playerSoundControl.CalculateTimeToFootstep(horizVelocity, isGrounded, currentCoyoteTimer);
+            else
+                playerSoundControl.CalculateSlide(horizVelocity, isGrounded);
+            
+        }
+            
+        ToggleGravity(!isGrounded);
         VelocityClamp();
-        SetPlayerFriction();
+        SetPlayerFrictionAndDrag();
+        if (FindStep(out stepUpOffset) && currentCoyoteTimer > 0)
+            StepUp(stepUpOffset);
         ClamberLedge();
+        CoyoteTimeTick();
         contactPoints.Clear();
+        prevVelocity = playerRB.velocity;
     }
 
     // Input functions
@@ -263,7 +300,7 @@ public class PlayerController : MonoBehaviour, IConditions
             };
         }
         
-        if (isWalking && isGrounded)
+        if (isWalking && (coyoteTimer > 0 || isGrounded))
         {               
             //Debug.Log("Normal: " + movementVector);
             movementVector *= walkingMultiplier;
@@ -286,31 +323,56 @@ public class PlayerController : MonoBehaviour, IConditions
             movementVector = Vector3.ProjectOnPlane(movementVector, groundContactPoint.normal);
 
             // Opposite gravity force, calculated based on incline, so gravity doesn't stop you from moving up and down
-            Vector3 inverseGravProportion = -Physics.gravity * (1 + Vector3.Dot(Physics.gravity.normalized, groundContactPoint.normal.normalized));
-
+            //Vector3 inverseGravProportion = -Physics.gravity * (1 + Vector3.Dot(Physics.gravity.normalized, groundContactPoint.normal.normalized));
+            //Vector3 inverseGravProportion = -Physics.gravity;
             
-            playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed + inverseGravProportion, ForceMode.Acceleration);
-               
+            playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed + -groundContactPoint.normal, ForceMode.Acceleration);
             //Debug.DrawRay(transform.position, movementVector * 100);
             //Debug.Log("Inverse Grav component is :" + inverseGravProportion);
         }
+        //else if (currentCoyoteTimer > 0)
+        //{
+        //    playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed, ForceMode.Acceleration);
+        //}
         else
         {      
-            if ((horizVelocity + movementVector).magnitude <= currentMovementSettings.velocityCap.x)
+            if ((horizVelocity + movementVector).magnitude <= currentMovementSettings.velocityCap.x || 
+                Vector3.Dot(horizVelocity, movementVector) <= 0)
             {
                 playerRB.AddForce(movementVector * currentMovementSettings.movementSpeed * currentMovementSettings.airSpeed, ForceMode.Acceleration);
             }              
         }        
     }
 
-    void Jump(InputAction.CallbackContext context)
+    void Jump()
     {
-        if (isGrounded)
+        if ((isGrounded || currentCoyoteTimer > 0) && jumpBufferTimer > 0) 
         {
-            //Debug.Log("Jump attempted");
-            //playerRB.AddForce(Vector3.up * jumpStrength, ForceMode.VelocityChange);
+            // If moving down, cancel downward force.
+            if (playerRB.velocity.y < 0f)
+            {
+                playerRB.velocity = horizVelocity;
+                vertVelocity = Vector3.zero;
+                Debug.Log("Player's velocity is now: " + playerRB.velocity);
+                
+            }
+                
+            transform.position += Vector3.up * 0.1f;   //To remove grounded contact
+            contactPoints.Clear();
             playerRB.AddForce(Vector3.up * currentMovementSettings.jumpStrength, ForceMode.VelocityChange);
-        }
+            currentCoyoteTimer = 0; 
+            jumpBufferTimer = 0;
+            isGrounded = false;        
+        }   
+        else
+        {
+            jumpBufferTimer = (jumpBufferTimer - Time.deltaTime);
+        }  
+    }
+
+    void JumpInput(InputAction.CallbackContext context)
+    {
+        jumpBufferTimer = 0.15f;
     }
     
     private void OnCollisionStay(Collision other) 
@@ -326,8 +388,9 @@ public class PlayerController : MonoBehaviour, IConditions
     void ClamberLedge()
     {
         //Debug.Log("Collision is happening");
-        //Vector3 normal = other.GetContact(0).normal;
-        Vector3 horForward = playerCam.transform.forward;
+        //Vector3 normal = other.GetContact(0).normal;        
+        Vector3 horForward = transform.forward;
+        
         horForward.y = 0f;
         horForward.Normalize();
 
@@ -336,19 +399,24 @@ public class PlayerController : MonoBehaviour, IConditions
             // If we're hitting the wall at no more than a 45 degree angle...
             if (Vector3.Angle(horForward, -cp.normal) <= 45)
             {
+                //Debug.Log("Wall at less than 45 degrees detected");
                 bool ledgeAvailable = true;
                 
-                RaycastHit hit;
+                RaycastHit hit;                
 
                 // If falling too fast, can't climb
                 if (vertVelocity.magnitude < -10f)
                 {
                     ledgeAvailable = false;
+                    //Debug.Log("Falling too fast, ledge unavailable!");
                 }
 
-                // If the wall's too tall or too short, can't climb
-                if (Physics.Raycast(playerCam.transform.position + Vector3.up * 0.5f, -cp.normal, out hit, 1, LayerMask.GetMask("Default")))  
+                // If the wall's too tall, can't climb
+                if (Physics.Raycast(transform.position + Vector3.up * 3f, Vector3.Scale(-cp.normal, new Vector3 (1f, 0f, 1f)),
+                    out hit, 2f, LayerMask.GetMask("Default")))  
                 {
+                    //Debug.Log("Wall is too tall, ledge unavailable!");
+                    //Debug.DrawRay(transform.position + Vector3.up * 1f, -cp.normal);
                     ledgeAvailable = false;
                 }
 
@@ -356,38 +424,138 @@ public class PlayerController : MonoBehaviour, IConditions
                 {
                     // Start high and keep casting rays until we hit the wall, finding the ledge. If too low, don't clamber
                     //Debug.Log("Ledge is available!");                
-                    Vector3 currentPos = playerCam.transform.position + Vector3.up * 0.5f + Vector3.down * 0.05f;
-                    while (!Physics.Raycast(currentPos, -cp.normal, out hit, 1, LayerMask.GetMask("Default")))
+                    ledgePos = transform.position + Vector3.up * 1f + Vector3.down * 0.05f;
+                    while (!Physics.Raycast(ledgePos, -cp.normal, out hit, 1, LayerMask.GetMask("Default")))
                     {
-                        currentPos += Vector3.down * 0.05f;
-                        if (currentPos.y < playerCam.transform.position.y - 0.5f)
-                            return;
-                            //break;
+                        ledgePos += Vector3.down * 0.05f;
+                        if (ledgePos.y < transform.position.y + 0.5f)
+                            //return;
+                            break;
                     }
                     
                     if (playerInput.actions.FindAction("Jump").ReadValue<float>() > 0f && isClimbing == false)
                     {
                         // Cancel all vertical velocity, apply a big upward force once
                         isClimbing = true;
-                        playerRB.velocity = horizVelocity;
+                        //playerRB.velocity = horizVelocity;
+                        playerRB.velocity = Vector3.zero;
                         //Debug.Log("Direction force is applied in: " + (currentPos - transform.position));
-                        //Vector3 dirToLedge = transform.position - -cp.normal;
-                        Vector3 forceDir = Vector3.Max(currentPos - transform.position, Vector3.up * 1f) * 10f; //+ dirToLedge;
-                        //forceDir = Vector3.ClampMagnitude(forceDir, 1f);
-                        playerRB.AddForce(forceDir, ForceMode.VelocityChange);
+                        //Vector3 dirToLedge = ledgePos - transform.position;
+                        //Vector3 forceDir = Vector3.Max(dirToLedge, dirToLedge.normalized) * 14f; //+ dirToLedge;
+                        //playerRB.AddForce(forceDir, ForceMode.VelocityChange);
+                        ledgeContact = cp;
                         if (GameMaster.instance.audioManager != null)
                             playerSoundControl.PlayClamberingAudio();
                         Invoke("ClimbingCooldownReset", 1f);
-                    }                    
+                    }                             
                 }
             }
-        }        
+        }
+
+        // If the player is climbing, keep applying upward force. If obstacle is cleared vertically, 
+        // apply some forward force and consider them no longer climbing
+        if (isClimbing == true)  
+        {   
+            playerRB.velocity = Vector3.zero;
+
+            Vector3 playerFeetPos = new Vector3 (transform.position.x,
+                transform.position.y - (GetComponent<CapsuleCollider>().height / 2), transform.position.z);     
+            Vector3 dirToLedge = ledgePos - playerFeetPos + Vector3.up;
+
+            playerRB.AddForce(dirToLedge * 3f, ForceMode.VelocityChange);
+
+            if (playerFeetPos.y > ledgePos.y - 0.1f)
+            {
+                //Debug.Log("Forward force applied!");
+                playerRB.velocity = Vector3.zero;
+                Vector3 dirToWall = Vector3.Scale(-ledgeContact.normal, new Vector3 (1f, 0f, 1f));
+                playerRB.AddForce(dirToWall.normalized * 1.5f , ForceMode.VelocityChange);
+                CancelInvoke("ClimbingCooldownReset");
+                ClimbingCooldownReset();                
+            }                    
+        }            
     }
 
     void ClimbingCooldownReset()
     {
         isClimbing = false;
-    }    
+        ledgePos = transform.position;
+    }  
+
+    bool FindStep(out Vector3 stepUpOffset)  
+    {
+        stepUpOffset = default(Vector3);
+
+        // Can't step up if player is not moving.
+        if (horizVelocity.sqrMagnitude < 0.01f)
+        {
+            //Debug.Log("Player's not moving");
+            return false;
+        }
+
+        foreach (ContactPoint cp in contactPoints)
+        {
+            bool test = ResolveStepUp(out stepUpOffset, cp);
+            if (test)
+                return test;
+        }
+        //Debug.Log("No valid step detected");
+        return false;
+    }
+
+    bool ResolveStepUp(out Vector3 stepUpOffset, ContactPoint stepTestCP)
+    {
+        stepUpOffset = default(Vector3);
+        Collider stepCol = stepTestCP.otherCollider;
+
+        // Check if contact point normal matches that of a short wall (low Y value)
+        if (Mathf.Abs(stepTestCP.normal.y) <= 0.01f)
+        {   
+            //Debug.Log("Contact point does not match that of a wall, step failed.");
+            return false;
+        }
+
+        // Make sure contact point is not the ground
+        if (stepTestCP.point == groundContactPoint.point)
+        {
+            return false;
+        }
+            
+        
+        // Make sure contact point is low enough to be a step
+        if (!(stepTestCP.point.y - groundContactPoint.point.y < maxStepHeight))
+        {
+            //Debug.Log("Contact point is too tall, step failed.");
+            return false;
+        }
+            
+        
+        // Check to see if there's a place to step up to
+        RaycastHit hitInfo;
+        float stepHeight = groundContactPoint.point.y + maxStepHeight + 0.0001f;
+        Vector3 stepTestInvDir = new Vector3(-stepTestCP.normal.x, 0, -stepTestCP.normal.z).normalized;
+        Vector3 origin = new Vector3(stepTestCP.point.x, stepHeight, stepTestCP.point.z) + (stepTestInvDir * stepSearchOvershoot);
+        Vector3 direction = Vector3.down;        
+        if( !(stepCol.Raycast(new Ray(origin, direction), out hitInfo, maxStepHeight)) )
+        {
+            //Debug.Log("No place detected to step up to, step failed.");
+            return false;
+        }
+
+        Vector3 stepUpPoint = new Vector3 (stepTestCP.point.x, hitInfo.point.y + 0.0001f, 
+            stepTestCP.point.z) + (stepTestInvDir * stepSearchOvershoot);
+        Vector3 stepUpPointOffset = stepUpPoint - new Vector3(stepTestCP.point.x, groundContactPoint.point.y, 
+            stepTestCP.point.z);
+        stepUpOffset = stepUpPointOffset;
+        //Debug.Log("Step up successful!");
+        return true;
+    }
+
+    void StepUp(Vector3 stepUpOffset)
+    {
+        transform.position += stepUpOffset;
+        playerRB.velocity = prevVelocity;
+    }
     
     void SetShootingEnabled(bool setToEnable)
     {
@@ -407,11 +575,19 @@ public class PlayerController : MonoBehaviour, IConditions
 
     public void Interact(InputAction.CallbackContext context)
     {
-        if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out RaycastHit hit, interactRange) && 
-            hit.collider.gameObject.GetComponent<InteractableBase>() != null)
+        Journal_Reader journalUIComponent = GameObject.Find("UI").GetComponentInChildren<Journal_Reader>();
+
+        if (journalUIComponent.text[0].gameObject.activeSelf)
+        {
+            GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Exit_Journal();
+            return;
+        }
+
+        if (Physics.Raycast(playerCamControl.playerCam.transform.position, playerCamControl.playerCam.transform.forward, out RaycastHit hit, interactRange) &&
+            hit.collider.gameObject.GetComponent<InteractableBase>() != null && playerCamControl != null)
         {
             //Debug.Log("Interactable object found, attempting interaction.");
-            Debug.DrawLine(playerCam.transform.position, hit.point);
+            Debug.DrawLine(playerCamControl.playerCam.transform.position, hit.point);
             currentInteractingObject = hit.collider.gameObject.GetComponent<InteractableBase>();
 
             //currentInteractingObject.OnInteractEnter(playerInput);
@@ -425,30 +601,35 @@ public class PlayerController : MonoBehaviour, IConditions
                     break;
                 // Use object, trigger exit interaction, and remove object from script.
                 case InteractableBase.InteractionType.Use:
-                    if (currentInteractingObject.GetComponent<CollectInteractable>() != null) 
+                    if (currentInteractingObject.TryGetComponent
+                        <CollectInteractable>(out CollectInteractable currentInteractable))
                     {
                         /* GetComponent<GunFXController>().weaponState = GunFXController.WeaponState.Grab;
                          GetComponent<GunFXController>().NextState();*/
 
-                        float animTime = 0.61f;
+                        float animTime = 0.85f;
                         float animTime_place = 3.5f;
 
-                        playerInventory.Add(currentInteractingObject.GetComponent<CollectInteractable>().itemName);
+                        if (!playerInventory.Contains(currentInteractable.itemName) && currentInteractable.itemName != "Artifact")
+                            playerInventory.Add(currentInteractable.itemName);
 
                         if (currentInteractingObject.name.Contains("Raygun"))
-                        {                           
+                        {
                             GetComponent<GunFXController>().Grab();
                             currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
                             playerControlState = PlayerState.ControlsDisabled;
                             StartCoroutine(CollectItem("Raygun", animTime));
 
-                        }else if (currentInteractingObject.name.Contains("Journal"))
+                        }
+                        else if (currentInteractingObject.name.Contains("Journal"))
                         {
-                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, 0);
+                            GetComponent<GunFXController>().Grab();
+                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
                             playerControlState = PlayerState.ControlsDisabled;
-                            StartCoroutine(CollectItem("Journal", 0));
+                            StartCoroutine(CollectItem("Journal", animTime));
 
-                        } else if (currentInteractingObject.name.Contains("Toolbox"))
+                        }
+                        else if (currentInteractingObject.name.Contains("Toolbox"))
                         {
                             if (playerInventory.Contains("Raygun") && raygunScript.gunUpgradeState != RayCastShootComplete.gunUpgrade.Two)
                             {
@@ -459,8 +640,16 @@ public class PlayerController : MonoBehaviour, IConditions
                                 StartCoroutine(CollectItem("Toolbox", animTime_place));
                             }
                         }
+                        else if (currentInteractingObject.name.Contains("Artifact"))
+                        {
+                            Debug.Log("PLAYER GRAB ARTIFACT");
+                            GetComponent<GunFXController>().Grab();
+                            currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
+                            playerControlState = PlayerState.ControlsDisabled;
+                            StartCoroutine(CollectItem("Artifact", animTime));
 
-            }
+                        }
+                    }
 
                     ExitInteract(context);
                     break;
@@ -478,24 +667,26 @@ public class PlayerController : MonoBehaviour, IConditions
     IEnumerator CollectItem(string item, float delay)
     {
         yield return new WaitForSeconds(delay);
-
+        CollectItem();
         switch (item)
         {
             case "Raygun":
                 CollectRaygun();
-                CollectItem();
+
                 break;
 
             case "Journal":
                 CollectJournal();
-                CollectItem();
                 break;
 
             case "Toolbox":
-                CollectItem();
+
+                break;
+            case "Artifact":
+                CollectArtifact();
                 break;
         }
-     
+
     }
 
     void CollectItem()
@@ -513,6 +704,11 @@ public class PlayerController : MonoBehaviour, IConditions
     void CollectJournal()
     {
         //playerControlState = PlayerState.MoveAndLook;
+    }
+
+    void CollectArtifact()
+    {
+        // do artifact collection stuff
     }
 
     private void ExitInteract(InputAction.CallbackContext context)
@@ -541,7 +737,7 @@ public class PlayerController : MonoBehaviour, IConditions
             if (cp.normal.y > slopeWalkingLimit / 90f && (found == false || cp.normal.y > groundCP.normal.y))
             {
                 groundCP = cp;
-                found = true;
+                found = true;                
             }
         }
 
@@ -587,18 +783,17 @@ public class PlayerController : MonoBehaviour, IConditions
         playerRB.velocity = horizVelocity + vertVelocity;
     }
 
-    // TODO: Use forces instead of friction for player control
-    void SetPlayerFriction()
+    // Uses forces fur the purposes of player control
+    void SetPlayerFrictionAndDrag()
     {        
+        Vector3 movementDirection = new Vector3 (playerInput.actions.FindAction("Movement").ReadValue<Vector2>().x, 0f, playerInput.actions.FindAction("Movement").ReadValue<Vector2>().y);        
+        float moveDirDotProd = Vector3.Dot(transform.TransformVector(movementDirection.normalized), horizVelocity.normalized);
+
+        // Use DOT product as sliding scale of force I.e. Between 0 and 1, apply less force, between -1 and 0, apply most force
+        // Basically, closer DOT is to 1, the closer the player is to moving in the same direction as their current velocity.
         if (isGrounded)
         {
-            Vector3 movementDirection = new Vector3 (playerInput.actions.FindAction("Movement").ReadValue<Vector2>().x, 0f, playerInput.actions.FindAction("Movement").ReadValue<Vector2>().y);       
-            
-            float moveDirDotProd = Vector3.Dot(transform.TransformVector(movementDirection.normalized), horizVelocity.normalized);
-
-            // Use DOT product as sliding scale of force I.e. Between 0 and 1, apply less force, between -1 and 0, apply most force
-            // Basically, closer DOT is to 1, the closer the player is to moving in the same direction as their current velocity.
-            if (moveDirDotProd >= 0f && moveDirDotProd < 0.9f)
+            if (moveDirDotProd >= 0f && moveDirDotProd < 1f)
             {
                 playerRB.velocity = Vector3.Lerp(transform.TransformDirection(movementDirection.normalized) * horizVelocity.magnitude, horizVelocity, 
                     Time.deltaTime * 50 / currentMovementSettings.stoppingForce) + vertVelocity;
@@ -606,11 +801,26 @@ public class PlayerController : MonoBehaviour, IConditions
             else if (moveDirDotProd < 0f)
             {
                 playerRB.velocity = Vector3.Lerp(Vector3.zero, horizVelocity, Time.deltaTime * 50 / currentMovementSettings.reverseForce) + vertVelocity;
+            }      
+        }
+        else
+        {
+            if (movementDirection.magnitude < 0.05f)
+            {
+                return;
             }
+
+            if (moveDirDotProd >= 0f && moveDirDotProd < 1f)
+            {
+                playerRB.velocity = Vector3.Lerp(transform.TransformDirection(movementDirection.normalized) * horizVelocity.magnitude, horizVelocity, 
+                    Time.deltaTime * 50 / currentMovementSettings.stoppingForce * 5) + vertVelocity;
+            }
+            else if (moveDirDotProd < 0f)
+            {
+                playerRB.velocity = Vector3.Lerp(Vector3.zero, horizVelocity, Time.deltaTime * 50 / currentMovementSettings.reverseForce * 5) + vertVelocity;
+            }      
         }
 
-        /*        
-        */
     }
  
     private void LockCursor()
@@ -627,6 +837,7 @@ public class PlayerController : MonoBehaviour, IConditions
 
     void OnGUI()
     {
+        /*
         GUILayout.BeginArea(new Rect(10f, 10f, Screen.width, Screen.height));
         string stringToShow = "Player Inventory: ";
         //float msec = deltaTime * 1000f;
@@ -646,10 +857,11 @@ public class PlayerController : MonoBehaviour, IConditions
             stringToShow += "None";
         }
         
-        GUILayout.Label(stringToShow);
-        GUILayout.Label(fps + " frames per second");
+        //GUILayout.Label(stringToShow);
+        //GUILayout.Label(fps + " frames per second");
 
-        GUILayout.EndArea();
+        //GUILayout.EndArea();
+        */
     }
 
     public void AddCondition(IConditions.ConditionTypes nameOfCondition)
@@ -694,14 +906,14 @@ public class PlayerController : MonoBehaviour, IConditions
 
     public void ExecuteConditions()
     {
-        // If player is hot and NOT cold
+        // If player is hot
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
         {
             UpwardForce();
             //ResetSlip();
         }
 
-        // If player is cold and NOT hot
+        // If player is cold
         if (ActiveConditions.Contains(IConditions.ConditionTypes.ConditionCold))
         {
             /*
@@ -747,10 +959,10 @@ public class PlayerController : MonoBehaviour, IConditions
 
     public void UpwardForce()
     {
-        if (GetComponent<Rigidbody>() != null)
+        if (!isGrounded)
         {
-            GetComponent<Rigidbody>().AddForce(-Physics.gravity * antiGravMod * Time.deltaTime * 25f, ForceMode.Acceleration);
-        }
+            playerRB.AddForce(-Physics.gravity * antiGravMod * Time.deltaTime * 25f, ForceMode.Acceleration);
+        }        
     }
 
     public void IcySlip()
@@ -767,6 +979,36 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             GetComponent<Collider>().material = regularPhysicMaterial;
         }
+    }
+
+    private void ToggleGravity(bool gravValueToSet)
+    {
+        playerRB.useGravity = gravValueToSet;
+    }
+
+    private void CoyoteTimeTick()
+    {
+        if (isGrounded)
+        {
+            currentCoyoteTimer = coyoteTimer;            
+        }
+        else
+        {
+            currentCoyoteTimer = Mathf.Clamp(currentCoyoteTimer - Time.deltaTime, 0, coyoteTimer);
+            //Debug.Log("Player left the ground!");
+        }
+    }
+
+    private void OnDestroy() 
+    {
+        //print("PlayerController OnDestroy called!");
+        playerInput.actions.FindAction("Interact").performed -= Interact;
+        playerInput.actions.FindAction("Interact").canceled -= ExitInteract;
+        playerInput.actions.FindAction("Jump").performed -= JumpInput;
+        playerInput.actions.FindAction("Shoot").performed -= raygunScript.FireBeam;
+        playerInput.actions.FindAction("Shoot").canceled -= raygunScript.FireBeam;
+        playerInput.actions.FindAction("Swap Beam").performed -= raygunScript.SwapBeam;
+        
     }
 }
 

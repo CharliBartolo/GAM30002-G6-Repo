@@ -158,13 +158,21 @@ public class LightTexture : MonoBehaviour
                 Debug.Log("Index out of range, reducing index: " + index);
                 RemoveHiddenMaterial(index - 1);
             }*/
-        if (index < currentMats.Length)
-            currentMaterials.RemoveAt(index);
+       
 
-        currentMats = currentMats.Except(new Material[] { currentMats[index] }).ToArray();
+        if (index < currentMats.Length)
+        {
+            currentMats = currentMats.Except(new Material[] { currentMats[index] }).ToArray();
+            //currentMaterials.RemoveAt(index);
+            currentMaterials = currentMats.ToList();
+            rendererComponent.sharedMaterials = currentMats.ToArray();
+        }
+           
+
+      
 
         //gameObject.GetComponent<Renderer>().sharedMaterials = _new;
-        rendererComponent.sharedMaterials = currentMats.ToArray();
+      
     }
 
     // set material properties
