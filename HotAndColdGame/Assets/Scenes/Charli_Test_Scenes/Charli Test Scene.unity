@@ -123,6 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 --- !u!1 &161700928
 GameObject:
@@ -221,6 +222,8 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &439976659
 =======
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
 --- !u!1001 &156945881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -336,6 +339,7 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
     - target: {fileID: 3665375622426646039, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -32
@@ -345,6 +349,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7320864843064307852, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+=======
+    - target: {fileID: 7320864843064307852, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320864843064307852, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -493,11 +504,15 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   - {fileID: 2100000, guid: 82287fd1aed94b7429cea597cfa6691d, type: 2}
 =======
   - {fileID: 2100000, guid: d4ce371f8dd48624b92a2dc85a2fbafa, type: 2}
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  - {fileID: 2100000, guid: d4ce371f8dd48624b92a2dc85a2fbafa, type: 2}
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -551,6 +566,8 @@ Transform:
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &439976659
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
+=======
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -661,7 +678,124 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 22
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &502003367
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 439976664}
+  - component: {fileID: 439976663}
+  - component: {fileID: 439976662}
+  - component: {fileID: 439976661}
+  - component: {fileID: 439976660}
+  m_Layer: 0
+  m_Name: Cube (13)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!54 &439976660
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439976659}
+  serializedVersion: 2
+  m_Mass: 500
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &439976661
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439976659}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &439976662
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439976659}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 82287fd1aed94b7429cea597cfa6691d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &439976663
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439976659}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &439976664
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439976659}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -250.77, y: -8.23, z: 154.81}
+  m_LocalScale: {x: 3.3148, y: 0.39203998, z: 2.0094001}
+  m_Children: []
+  m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
+  m_RootOrder: 22
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 13
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &502003367
 GameObject:
@@ -671,6 +805,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   - component: {fileID: 502003372}
   - component: {fileID: 502003371}
   - component: {fileID: 502003370}
@@ -679,6 +814,14 @@ GameObject:
   - component: {fileID: 502003373}
   m_Layer: 0
   m_Name: DynamicSoundCube
+=======
+  - component: {fileID: 553438499}
+  - component: {fileID: 553438501}
+  - component: {fileID: 553438500}
+  - component: {fileID: 553438502}
+  m_Layer: 0
+  m_Name: StoryCheckpoint
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -690,6 +833,7 @@ Rigidbody:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_GameObject: {fileID: 502003367}
   serializedVersion: 2
   m_Mass: 10
@@ -822,6 +966,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_GameObject: {fileID: 553438498}
   m_LocalRotation: {x: -0, y: 0.742522, z: -0, w: 0.6698217}
   m_LocalPosition: {x: -243.22, y: -6.1, z: 163.42}
@@ -995,11 +1141,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5246516475683299340, guid: 7b5d978e8a0e82440bc3b3495279ad0a, type: 3}
       propertyPath: m_RootOrder
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
       value: 0
 =======
       value: 3
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+      value: 3
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
       objectReference: {fileID: 0}
     - target: {fileID: 5246516475683299340, guid: 7b5d978e8a0e82440bc3b3495279ad0a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1069,6 +1219,13 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 1
       objectReference: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
+=======
+    - target: {fileID: 8212456541155697970, guid: 7b5d978e8a0e82440bc3b3495279ad0a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
     - target: {fileID: 8212456541155697970, guid: 7b5d978e8a0e82440bc3b3495279ad0a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -1193,11 +1350,15 @@ Transform:
   m_LocalScale: {x: 3.2160609, y: 3.2160609, z: 3.2160609}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 15
 =======
   m_RootOrder: 18
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 18
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &725796611
 GameObject:
@@ -1229,6 +1390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_Version: 11
   m_ObsoleteShadowResolutionTier: 1
   m_ObsoleteUseShadowQualitySettings: 0
@@ -1339,6 +1501,8 @@ MonoBehaviour:
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
   m_AreaLightEmissiveMeshLayer: -1
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
 --- !u!108 &725796613
 Light:
   m_ObjectHideFlags: 0
@@ -1413,11 +1577,15 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 9
 =======
   m_RootOrder: 12
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 12
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &744409551
 PrefabInstance:
@@ -1456,11 +1624,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5246516475683299340, guid: 7b5d978e8a0e82440bc3b3495279ad0a, type: 3}
       propertyPath: m_RootOrder
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
       value: 17
 =======
       value: 20
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+      value: 20
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
       objectReference: {fileID: 0}
     - target: {fileID: 5246516475683299340, guid: 7b5d978e8a0e82440bc3b3495279ad0a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1529,8 +1701,21 @@ PrefabInstance:
     - target: {fileID: 8212456540740299431, guid: 7b5d978e8a0e82440bc3b3495279ad0a, type: 3}
       propertyPath: m_Intensity
       value: 1
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
       objectReference: {fileID: 0}
     - target: {fileID: 8212456541155697970, guid: 7b5d978e8a0e82440bc3b3495279ad0a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212456541155697970, guid: 7b5d978e8a0e82440bc3b3495279ad0a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212456541155697970, guid: 7b5d978e8a0e82440bc3b3495279ad0a, type: 3}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
+=======
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 0}
@@ -1539,6 +1724,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8212456541155697970, guid: 7b5d978e8a0e82440bc3b3495279ad0a, type: 3}
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 0}
@@ -1582,6 +1768,7 @@ Rigidbody:
   m_CollisionDetection: 0
 --- !u!65 &856563233
 BoxCollider:
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1595,11 +1782,67 @@ BoxCollider:
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &856563234
 MeshRenderer:
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856563231}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 82287fd1aed94b7429cea597cfa6691d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &856563235
+MeshFilter:
+=======
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &856563234
+MeshRenderer:
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856563231}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
+=======
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1641,6 +1884,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856563231}
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &856563236
 Transform:
@@ -1654,6 +1898,7 @@ Transform:
   m_LocalScale: {x: 3.3148, y: 0.2, z: 2.0094001}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1673,6 +1918,10 @@ MonoBehaviour:
   m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
 --- !u!1001 &894186392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1712,6 +1961,14 @@ PrefabInstance:
       propertyPath: PC
       value: 
       objectReference: {fileID: 156945887}
+    - target: {fileID: 1132983919121844880, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
+      propertyPath: isGrounded
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1132983919121844880, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
+      propertyPath: isGunEnabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1132983919121844881, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1767,6 +2024,10 @@ PrefabInstance:
     - target: {fileID: 2421584830609612950, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2610262902883506657, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
+      propertyPath: gunUpgradeState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3644925361042327158, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
       propertyPath: m_Materials.Array.size
@@ -1919,11 +2180,15 @@ Transform:
   m_LocalScale: {x: 1.8322, y: 1.8322, z: 1.8322}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 11
 =======
   m_RootOrder: 14
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 14
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &954726541
 MonoBehaviour:
@@ -1970,8 +2235,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441482e8936e35048a1dffac814e3ef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Profile: {fileID: 11400000, guid: 582adbd84082fdb4faf7cd4beb1ccd14, type: 2}
-  m_StaticLightingSkyUniqueID: 0
 --- !u!4 &975599417
 Transform:
   m_ObjectHideFlags: 1
@@ -1984,11 +2247,15 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 8
 =======
   m_RootOrder: 11
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 11
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &975636005
 GameObject:
@@ -2083,11 +2350,15 @@ Transform:
   m_LocalScale: {x: 7.1117, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 4
 =======
   m_RootOrder: 7
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 7
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &995236120
 GameObject:
@@ -2182,11 +2453,15 @@ Transform:
   m_LocalScale: {x: 1, y: 10, z: 58.63875}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 5
 =======
   m_RootOrder: 8
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 8
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1010912323
 GameObject:
@@ -2210,7 +2485,9 @@ GameObject:
   m_IsActive: 1
 --- !u!54 &1010912324
 Rigidbody:
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
+=======
 =======
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2304,11 +2581,117 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1043246059
 GameObject:
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010912323}
+  serializedVersion: 2
+  m_Mass: 500
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &1010912325
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010912323}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1010912326
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010912323}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
+  - {fileID: 2100000, guid: 82287fd1aed94b7429cea597cfa6691d, type: 2}
+=======
+  - {fileID: 2100000, guid: d4ce371f8dd48624b92a2dc85a2fbafa, type: 2}
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1010912327
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010912323}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1010912328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010912323}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
+  m_LocalPosition: {x: -250.77, y: -8.23, z: 161.14}
+  m_LocalScale: {x: 3.3148, y: 0.6, z: 2.0094001}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 23
+=======
+  m_LocalPosition: {x: -231, y: -5.3264675, z: 160}
+  m_LocalScale: {x: 1, y: 10, z: 58.63875}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1043246059
+GameObject:
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_GameObject: {fileID: 1010912323}
   serializedVersion: 2
   m_Mass: 500
@@ -2508,6 +2891,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1055593383}
@@ -2693,6 +3078,7 @@ Transform:
   m_Father: {fileID: 553438499}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 --- !u!1 &1404396206
 GameObject:
@@ -2794,6 +3180,11 @@ Transform:
 --- !u!1001 &1381504598
 PrefabInstance:
   m_ObjectHideFlags: 0
+=======
+--- !u!1001 &1381504598
+PrefabInstance:
+  m_ObjectHideFlags: 0
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
@@ -2849,7 +3240,10 @@ PrefabInstance:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea97142086860f944b40480c50ca02eb, type: 3}
 --- !u!1 &1404396206
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2942,9 +3336,12 @@ Transform:
   m_LocalScale: {x: 16.346401, y: 1, z: 22.7363}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 13
 =======
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1458880131
@@ -3041,7 +3438,10 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 16
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1563280792
 GameObject:
@@ -3153,11 +3553,15 @@ Transform:
   m_LocalScale: {x: 1.1377072, y: 1.1377072, z: 1.1377072}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 16
 =======
   m_RootOrder: 19
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 19
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1739474988
 GameObject:
@@ -3206,11 +3610,15 @@ Transform:
   m_LocalScale: {x: 24.84436, y: 20.10875, z: 101.45718}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 2
 =======
   m_RootOrder: 5
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 5
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1739474991
 BoxCollider:
@@ -3318,11 +3726,15 @@ Transform:
   m_LocalScale: {x: 60.350002, y: 1, z: 22.7363}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 3
 =======
   m_RootOrder: 6
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 6
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1853495141
 GameObject:
@@ -3447,11 +3859,15 @@ Transform:
   m_LocalScale: {x: 1, y: 60, z: 26.781673}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 14
 =======
   m_RootOrder: 17
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 17
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1971028633
 GameObject:
@@ -3484,11 +3900,15 @@ Transform:
   - {fileID: 1055593383}
   - {fileID: 2113334874}
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 1
 =======
   m_RootOrder: 4
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 4
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1973051623
 GameObject:
@@ -3613,11 +4033,15 @@ Transform:
   m_LocalScale: {x: 1, y: 60, z: 6}
   m_Children: []
   m_Father: {fileID: 0}
+<<<<<<< HEAD:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
 <<<<<<< Updated upstream:HotAndColdGame/Assets/Scenes/Charli_Test_Scenes/Charli Test Scene.unity
   m_RootOrder: 12
 =======
   m_RootOrder: 15
 >>>>>>> Stashed changes:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
+=======
+  m_RootOrder: 15
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6:HotAndColdGame/Assets/Scenes/Charli Test Scene.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2113334873
 GameObject:

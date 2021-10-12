@@ -51,7 +51,10 @@ public class GunFXController : FXController
     public int weaponUpgradeState = 0;
     public bool isGrabbing = false;
     public bool isPlacing = false;
+<<<<<<< HEAD
     public bool hasPlaced = false;
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
     public bool triggerHeld = false;
 
     [Header("Sound FX properties")]
@@ -288,8 +291,11 @@ public class GunFXController : FXController
         WeaponInspected();
         //Debug.Log("Idle: Enter");
         arm_obj.GetComponent<Animator>().Play("Idle");
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         if(gun.gunUpgradeState == RayCastShootComplete.gunUpgrade.None)
         {
             GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);

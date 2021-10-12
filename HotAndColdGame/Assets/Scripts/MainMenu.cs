@@ -32,7 +32,17 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
+<<<<<<< HEAD
     
+=======
+        //Game Master
+        if (!GM)
+        {
+            GM = GameObject.Find("GameMaster").GetComponent<GameMaster>();
+            Debug.Log("THIS IS A MAIN MENU SCRIPT: " + this);
+            Debug.Log("THIS IS A GAMEMASTER SCRIPT: " + GM);
+        }
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
 
         //Listeners
         MenuMouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
@@ -43,6 +53,7 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+<<<<<<< HEAD
         //Game Master
         if (!GM)
         {
@@ -51,6 +62,8 @@ public class MainMenu : MonoBehaviour
             Debug.Log("THIS IS A GAMEMASTER SCRIPT: " + GM);
         }
         
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         MenuMouseSensitivityXSlider.value = GM.CS.XSensitivity;
         MenuMouseSensitivityYSlider.value = GM.CS.YSensitivity;
         MenuVolumeSlider.value = GM.CS.Volume;

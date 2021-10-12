@@ -16,7 +16,10 @@ public class PlatformWithTemperature : TemperatureStateBase
     public bool canMove = true; // a public bool that allows you to toggle this script on and off in the inspector
 
     private bool movingToPosition;
+<<<<<<< HEAD
     private bool returningToOrigin;
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
 
     private Queue<Vector3> pos = new Queue<Vector3>();
     private Vector3 targetPos = Vector3.zero;
@@ -55,10 +58,11 @@ public class PlatformWithTemperature : TemperatureStateBase
     void Update()
     {
 
-        if (canMove && Trigger != null)
+        if (canMove && Trigger != null )
         {
             float step = speed * Time.deltaTime; // step size = speed * frame time
 
+<<<<<<< HEAD
             if(returningToOrigin)
             {
                 if (transform.position == origin.position)
@@ -77,12 +81,15 @@ public class PlatformWithTemperature : TemperatureStateBase
             }
 
 
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
             // enque target positions based on state
             switch (Trigger.CurrentTempState)
             {
                 case ITemperature.tempState.Cold:
 
                     if (transform.position == origin.position)
+<<<<<<< HEAD
                     {
                         if (!pos.Contains(coldTarget.transform.position))
                             pos.Enqueue(coldTarget.transform.position);
@@ -90,6 +97,11 @@ public class PlatformWithTemperature : TemperatureStateBase
                     else if (transform.position != coldTarget.transform.position && targetPos != coldTarget.transform.position)
                     {
                         returningToOrigin = true;
+=======
+                    {
+                        if (!pos.Contains(coldTarget.transform.position))
+                            pos.Enqueue(coldTarget.transform.position);
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
                     }
 
                     break;
@@ -97,6 +109,7 @@ public class PlatformWithTemperature : TemperatureStateBase
                 case ITemperature.tempState.Hot:
 
                     if (transform.position == origin.position)
+<<<<<<< HEAD
                     {
                         if (!pos.Contains(hotTarget.transform.position))
                             pos.Enqueue(hotTarget.transform.position);
@@ -104,6 +117,11 @@ public class PlatformWithTemperature : TemperatureStateBase
                     else if (transform.position != hotTarget.transform.position && targetPos != hotTarget.transform.position)
                     {
                         returningToOrigin = true;
+=======
+                    {
+                        if (!pos.Contains(hotTarget.transform.position))
+                            pos.Enqueue(hotTarget.transform.position);
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
                     }
 
                     break;
@@ -117,18 +135,35 @@ public class PlatformWithTemperature : TemperatureStateBase
             }
 
             // dequeue next position
+<<<<<<< HEAD
             if (pos.Count > 0)
             {
                 targetPos = pos.Dequeue();              
+=======
+            //if (targetPos == Vector3.zero || (platformObj.transform.position == targetPos && pos.Count > 0))
+            if (targetPos == Vector3.zero || ( pos.Count > 0))
+            {
+                targetPos = pos.Dequeue();
+               
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
             }
 
             // move towards target
             if (targetPos != Vector3.zero)
                 platformObj.transform.position = Vector3.MoveTowards(platformObj.transform.position, targetPos, step);
 
+<<<<<<< HEAD
             // set lights
 
            if (targetPos == coldTarget.transform.position)
+=======
+            // set lights based on state
+            if (targetPos == origin.transform.position)
+            {
+                SetLights(GameMaster.instance.colourPallete.Neutral);
+            }
+            else if (targetPos == coldTarget.transform.position)
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
             {
                 SetLights(GameMaster.instance.colourPallete.Negative);
             }
@@ -136,12 +171,18 @@ public class PlatformWithTemperature : TemperatureStateBase
             {
                 SetLights(GameMaster.instance.colourPallete.Positive);
             }
+<<<<<<< HEAD
             else if (targetPos == origin.transform.position)
             {
                 Debug.Log("SETTING COLOUR NEUTRAL");
                 //SetLights(GameMaster.instance.colourPallete.Neutral);
                 SetLights(Color.clear);
             }
+=======
+
+            Debug.Log("TARGET POSITION: " + targetPos);
+
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         }    
     }
 

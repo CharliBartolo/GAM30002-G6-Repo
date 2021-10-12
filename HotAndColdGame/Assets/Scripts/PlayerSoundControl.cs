@@ -26,7 +26,11 @@ public class PlayerSoundControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+<<<<<<< HEAD
         playerAudio = Camera.main.transform.Find("AudioPosition").GetComponent<AudioSource>();
+=======
+        playerAudio = GetComponent<AudioSource>();
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
 
         raygunAudio = GetComponent<GunFXController>().gun_obj.GetComponent<AudioSource>();
         activeConditions = new List<IConditions.ConditionTypes>();
@@ -194,6 +198,7 @@ public class PlayerSoundControl : MonoBehaviour
         {
             if (hit.collider != null) //&& hit.collider.CompareTag("Surface"))
             {
+<<<<<<< HEAD
                 if(hit.collider.TryGetComponent<Renderer>(out Renderer rendererComponent))
                 {
                     materialName = rendererComponent.material.name;
@@ -205,6 +210,10 @@ public class PlayerSoundControl : MonoBehaviour
                     print(materialName);
                 }
                
+=======
+                materialName = hit.collider.GetComponent<Renderer>().material.name;
+                print(materialName);
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
             }
         }
         return materialName;
@@ -214,9 +223,12 @@ public class PlayerSoundControl : MonoBehaviour
     {
         currentLayer = GetCurrentSurface();
 
+<<<<<<< HEAD
         if (footstepSurfaceMaps.Length < 1)
             return;
 
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         foreach (FootstepSurfaceMaps footstepMap in footstepSurfaceMaps)
         {
             foreach (string surface in footstepMap.surfaces)
@@ -227,6 +239,7 @@ public class PlayerSoundControl : MonoBehaviour
                 if (CustomStartsWith(currentLayer, surface))
                 {
                     SwapFootsteps(footstepMap.footstepCollection);
+<<<<<<< HEAD
                     return;
                 }
             }
@@ -248,6 +261,26 @@ public class PlayerSoundControl : MonoBehaviour
         //clambering
     }
 
+=======
+                }
+            }
+        }
+    }
+
+    public void SwapFootsteps(FootstepCollection footstepCollection)
+    {
+        footstepSounds.Clear();
+        for(int i = 0; i < footstepCollection.footstepSounds.Count; i++)
+        {
+            footstepSounds.Add(footstepCollection.footstepSounds[i]);
+        }  
+
+        //jump
+        //landing
+        //clambering
+    }
+
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
     public bool CustomStartsWith(string a, string b)
     {
         int aLen = a.Length;

@@ -102,6 +102,7 @@ public class PauseController : MonoBehaviour
         PC.GetComponent<PlayerInput>().actions.FindActionMap("Player").FindAction("Pause").performed += OnPause;
         PC.GetComponent<PlayerInput>().actions.FindActionMap("Menu").FindAction("Pause").performed += OnPause;
     }
+<<<<<<< HEAD
 
     // Start is called before the first frame update
     void Start()
@@ -123,6 +124,29 @@ public class PauseController : MonoBehaviour
         MouseSensitivityYInput.text = GM.CS.YSensitivity.ToString();
         VolumeInput.text = GM.CS.Volume.ToString();
 
+=======
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        Quitting = false;
+        IsPaused = false;
+
+        MouseSensitivityXSlider.value = GM.CS.XSensitivity;
+        MouseSensitivityYSlider.value = GM.CS.YSensitivity;
+
+        if (PlayerPrefs.HasKey("MusicVol"))
+            //VolumeSlider.value = PlayerPrefs.GetFloat("MusicVol");
+            PlayerPrefs.SetFloat("MusicVol", 0f);
+        
+        if (PlayerPrefs.HasKey("MasterVol"))
+            VolumeSlider.value = PlayerPrefs.GetFloat("MasterVol");
+
+        MouseSensitivityXInput.text = GM.CS.XSensitivity.ToString(); 
+        MouseSensitivityYInput.text = GM.CS.YSensitivity.ToString();
+        VolumeInput.text = GM.CS.Volume.ToString();
+
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         PC.playerMouseLook.mouseSensitivity.x = GM.CS.XSensitivity;
         PC.playerMouseLook.mouseSensitivity.y = GM.CS.YSensitivity;
         PC.GetComponent<Player_Audio_Renamed>().main_volume = GM.CS.Volume;
@@ -172,6 +196,7 @@ public class PauseController : MonoBehaviour
 
     void OnPause(InputAction.CallbackContext context)
     {
+<<<<<<< HEAD
         // This handles errors for delegates calling Players that don't exist. Not the best way to deal with it.
         if (PC == null)
         {
@@ -180,6 +205,8 @@ public class PauseController : MonoBehaviour
             return;
         }
 
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         if (PC.GetComponent<PlayerInput>().currentActionMap == PC.GetComponent<PlayerInput>().actions.FindActionMap("Menu")
             && !IsPaused)
         {

@@ -14,7 +14,10 @@ public class Cheats : MonoBehaviour
     [SerializeField] public CheckPoint spawn;               //reference checkpoint script
     //[SerializeField] public GameObject checkPointList;      //gameobject in scene with all checkpoints as the children
     [SerializeField] public List<Transform> checkPoints;    //list for saving checkpoint positions
+<<<<<<< HEAD
     public bool isAdditiveLevelLoadEnabled = false;
+=======
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
     public bool isHUDVisible = true;
     public bool isGUNVisible = true;
     public int num = 0;
@@ -38,22 +41,35 @@ public class Cheats : MonoBehaviour
     {
         //Debug.Log(checkPoints[num].name);
         //next checkpoint
+<<<<<<< HEAD
         if (Input.GetKeyDown("2"))
         {
             if (num < checkPoints.Count - 1)
                 num++;
             else
                 Debug.Log("Already hit last checkpoint!");
+=======
+        if ((Input.GetKeyDown("2")) && (num < checkPoints.Count))
+        {
+            num++;
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
             //Debug.Log("Adding");
             CheckpointTeleport();
         }
         //previous checkpoint
+<<<<<<< HEAD
         else if ((Input.GetKeyDown("1")) )
         {
             if (num > 0)
                 num--;
             else
                 Debug.Log("Already at first checkpoint!");
+=======
+        else if ((Input.GetKeyDown("1")) && (num > 0))
+        {
+            num--;
+            //Debug.Log("Minusing");
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
             CheckpointTeleport();
         }
 
@@ -86,13 +102,18 @@ public class Cheats : MonoBehaviour
     //purpose of function is for Andy test different partd of the level
     void CheckpointTeleport()
     {
+<<<<<<< HEAD
         if (checkPoints.Count < 1)
             return;
         //Debug.Log("loading scene");
+=======
+        Debug.Log("loading scene");
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         //make last checkpoint equal selected checkpoint
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         GameMaster.instance.playerRef.transform.position = checkPoints[num].position;
         GameMaster.instance.playerRef.transform.rotation = checkPoints[num].rotation;
+<<<<<<< HEAD
         
         if(spawn != null && spawn.spawnPos != null)
             spawn.spawnPos = checkPoints[num];
@@ -151,6 +172,10 @@ public class Cheats : MonoBehaviour
 
 
 
+=======
+        spawn.spawnPos = checkPoints[num];
+        //loads scene at last saved checkpoint
+>>>>>>> 7b688233387786860c4dc5b974fab5d75dd2dbe6
         
         //GameMaster.instance.LoadCheckpoint();
         //GameMaster.instance.playerRef.transform.position = checkPoints[num].position;
