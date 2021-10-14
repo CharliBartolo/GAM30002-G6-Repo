@@ -24,7 +24,9 @@ public class RayCastShootComplete : MonoBehaviour {
     public Material hotMaterial;
     public Material coldMaterial;
     public bool cold = true;
-    //public Color col = Color.blue;
+    
+    // raycast spread
+    public float spread = 0.4f;
 
     public bool CanShoot { get; set;}
     public bool CanSwap {get; set;}
@@ -42,6 +44,7 @@ public class RayCastShootComplete : MonoBehaviour {
         laserLine.SetPosition(0, gunEnd.position);
         //lightning.startColor = colour;
         //lightning.endColor = colour;
+
     }
 
     public void UpdateGunState()
@@ -62,6 +65,7 @@ public class RayCastShootComplete : MonoBehaviour {
             else
             {
                 // Do weird animation stuff to indicate gun can't swap
+                ModeSwitched = true;
                 Debug.Log("Can't swap, gun is not sufficiently upgraded!");
             }            
         } 
@@ -114,30 +118,10 @@ public class RayCastShootComplete : MonoBehaviour {
 
     void LateUpdate () 
 	{
-        
-           
-        // Change Temperature States
-        /*        
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            cold = true;
-            print(cold);
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            cold = false;
-            print(cold);
-        }
-        */
 
         if (TriggerHeld && CanShoot && !GetComponentInParent<GunFXController>().inspectingWeapon && GetComponentInParent<GunFXController>().equipped && !GameObject.Find("UI").GetComponent<PauseController>().IsPaused)
 		{
-            if (audioManager != null)
-            {
-                //audioManager.Play("LazerStart");
-                audioManager.Play("Lazer");
-            }
-
+            
             laserLine.enabled = true;
             lightning.enabled = true;
 
@@ -163,109 +147,105 @@ public class RayCastShootComplete : MonoBehaviour {
                 tempchange = 60f * Time.deltaTime;
             }
 
-            //laserLine.startColor = col;
-            //laserLine.endColor = col;
+            // get camera centre position
+            Vector3 camCentre = fpsCam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
 
-            Vector3 rayOrigin = fpsCam.ViewportToWorldPoint (new Vector3(0.5f, 0.5f, 0.0f));
-            RaycastHit hit;
-			laserLine.SetPosition (0, gunEnd.position);
-			//lightning.SetPosition (0, gunEnd.position);
+            // set laser line position
+            laserLine.SetPosition (0, gunEnd.position);
+            laserLine.SetPosition(1, camCentre + fpsCam.transform.forward * 1);
 
-            /// DEMO CODE FOR MAKING THE BEAM MORE GENEROUS 
-            /*
-            RaycastHit[] hits = Physics.SphereCastAll(rayOrigin, 0.5f, fpsCam.transform.forward, weaponRange);
-            if (hits.Length > 0)
+            // set lightning position
+            if (lightning.enabled)
             {
-                Collider priorityCollider = null;
-                RaycastHit priorityHit = new RaycastHit();
-
-                foreach (RaycastHit sphereHit in hits)
-                {
-                    // If player is hit, skip.
-                    if (sphereHit.collider.tag == "Player")
-                        break;
-
-                    // if priority objects found, attach to closest one to beam centre?                                 
-                    priorityCollider = sphereHit.collider;
-                    priorityHit = sphereHit;
-
-                    Debug.Log("Object "+ sphereHit.collider.name + " was hit by the spherecast at point " + sphereHit.point);
-                }
-                
-                if (priorityCollider != null)
-                {
-                    // Target this object with the beam
-                    Vector3 beamEndPos = priorityCollider.ClosestPoint(priorityHit.point);
-                    Debug.DrawLine(transform.position, beamEndPos);
-                }
+                lightning.SetPosition(1, camCentre + (fpsCam.transform.forward * 2));
             }
-            */
-            /// DEMO CODE END
 
-			if (Physics.Raycast (rayOrigin, fpsCam.transform.forward, out hit, weaponRange) && lightning != null)  
-			{
-                laserLine.SetPosition (1, hit.point);
-                
-                if(lightning.enabled)
-                {
-                    lightning.SetPosition(1, hit.point);
-                    lightning.SetPosition(1, rayOrigin + (fpsCam.transform.forward * 2));
-                }
+            // create array list for hits
+            ArrayList hits = new ArrayList();
 
-                //ITemperature objtemp = hit.collider.GetComponent<ITemperature>();
-                ITemperature objtemp = hit.collider.GetComponentInParent<ITemperature>();
+            // raycasts
+            Vector3 rayOrigin = camCentre;
+            Vector3 rayLeft = camCentre + (-fpsCam.transform.right * spread);
+            Vector3 rayRight = camCentre + (fpsCam.transform.right * spread);
+            Vector3 rayUp = camCentre + (fpsCam.transform.up * spread);
+            Vector3 rayDown = camCentre + (-fpsCam.transform.up * spread);
 
-				if (objtemp != null)
-				{
-					objtemp.ChangeTemperature(tempchange);
-                    
+            // raycast centre
+            ITemperature objtemp1 = RaycastHitTempObject(rayOrigin);
+            // ray horizontal left;
+            ITemperature objtemp2 = RaycastHitTempObject(rayLeft);
+            // ray horizontal right;
+            ITemperature objtemp3 = RaycastHitTempObject(rayRight);
+            // ray vertical up;
+            ITemperature objtemp4 = RaycastHitTempObject(rayUp);
+            // ray vertical down;
+            ITemperature objtemp5 = RaycastHitTempObject(rayDown);
 
-                }
-
-				if (hit.rigidbody != null)
-				{
-					//hit.rigidbody.AddForce (-hit.normal * 20);
-                }
-
-                
-                //Instantiate(spherecollider, hit.point, Quaternion.identity);
-                //spherecollider.GetComponent<ShootEnd>().temperature = tempchange;
-                if (cold == true)
-                {
-                    //particleAtEnd_ice.SetActive(true);
-                    //particleAtEnd_fire.SetActive(false);
-                    particleAtEnd_ice.transform.position = hit.point;
-
-                }
-                if (cold == false)
-                {
-                    //particleAtEnd_fire.SetActive(true);
-                    //particleAtEnd_ice.SetActive(false);
-                    particleAtEnd_fire.transform.position = hit.point;
-                }
-
-                GetComponentInParent<ReticleFXController>().objHit = hit.collider.gameObject;
+            
+            // add temp objects to hit list, ignoring already added objkects
+            if (objtemp1 != null)
+            {
+                if (!hits.Contains(objtemp1))
+                    hits.Add(objtemp1);
             }
-			else
-			{
-                laserLine.SetPosition (1, rayOrigin + (fpsCam.transform.forward * weaponRange));
-                //lightning.SetPosition (1, rayOrigin + (fpsCam.transform.forward * 2));
 
-                GetComponentInParent<ReticleFXController>().objHit = null;
-
+            if (objtemp2 != null)
+            {
+                if (!hits.Contains(objtemp2))
+                    hits.Add(objtemp2);
             }
-		}
+
+            if (objtemp3 != null)
+            {
+                if (!hits.Contains(objtemp3))
+                    hits.Add(objtemp3);
+            }
+
+            if (objtemp4 != null)
+            {
+                if (!hits.Contains(objtemp4))
+                    hits.Add(objtemp4);
+            }
+
+            if (objtemp5 != null)
+            {
+                if (!hits.Contains(objtemp5))
+                    hits.Add(objtemp5);
+            }
+
+            // after listing all hit temp objects, run the temp change for each
+            foreach (ITemperature item in hits)
+            {
+                item.ChangeTemperature(tempchange);
+            }
+        }
         else
         {
             laserLine.enabled = false;
             lightning.enabled = false;
-            //particleAtEnd_ice.SetActive(false);
-            //particleAtEnd_fire.SetActive(false);
-            if (audioManager != null)
-            {
-                //audioManager.Play("LazerEnd");
-                audioManager.Stop("Lazer");
-            }
         }        
 	}
+
+    public ITemperature RaycastHitTempObject(Vector3 ray_origin)
+    {
+        if (Physics.Raycast(ray_origin, fpsCam.transform.forward, out RaycastHit hit, weaponRange) && lightning != null)
+        {
+           
+            ITemperature objtemp = hit.collider.GetComponentInParent<ITemperature>();
+
+            if (objtemp != null)
+            {
+                GetComponentInParent<ReticleFXController>().objHit = hit.collider.gameObject;
+                return objtemp;
+            }
+            else
+            {
+                GetComponentInParent<ReticleFXController>().objHit = null;
+                return null;
+            }
+
+        }
+
+        return null;
+    }
 }

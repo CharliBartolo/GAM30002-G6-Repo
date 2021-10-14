@@ -22,13 +22,15 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: EffectsField
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT
+    _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap:
     MotionVector: User
+    RenderType: Transparent
   disabledShaderPasses:
   - MOTIONVECTORS
   - RayTracingPrepass
@@ -92,10 +94,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_55b3e615daf840cda71b34d4361990f4: 5
-    - Vector1_6ffc590bce9649a8b3ce094d405388cd: 14.5
-    - Vector1_750f81ff396d4316a202a3cc5d30882d: 0.0288
-    - Vector1_8bbc335c390d4b068c1f0381f619c278: 0.054
-    - Vector1_b1cbf558237e4603b2b2120979b3e438: 0.34
+    - Vector1_6ffc590bce9649a8b3ce094d405388cd: 10.1
+    - Vector1_750f81ff396d4316a202a3cc5d30882d: 0.0397
+    - Vector1_8bbc335c390d4b068c1f0381f619c278: 0.12
+    - Vector1_b1cbf558237e4603b2b2120979b3e438: 0.318
     - _AddPrecomputedVelocity: 0
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 1
@@ -111,14 +113,14 @@ Material:
     - _DetailNormalMapScale: 1
     - _DoubleSidedEnable: 1
     - _DoubleSidedNormalMode: 0
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
-    - _Mode: 0
+    - _Mode: 3
     - _OcclusionStrength: 1
     - _OpaqueCullMode: 2
     - _Parallax: 0.02
@@ -155,10 +157,10 @@ Material:
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
     - Color_68501eac058a46f7bbd5964ed7ae09df: {r: 2.283187, g: 11.591564, b: 13.523491, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.40392157}
     - _DoubleSidedConstants: {r: -1, g: -1, b: -1, a: 0}
     - _Emission: {r: 57.23336, g: 57.962265, b: 41.284443, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

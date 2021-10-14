@@ -15,6 +15,7 @@ public class GunFXController : FXController
     // Gun variables 
     public RayCastShootComplete gun;
     public GameObject arm_obj;
+    public GameObject armL_obj;
     public GameObject gun_obj;
 
     private bool switchingMode;
@@ -50,6 +51,15 @@ public class GunFXController : FXController
     public int weaponUpgradeState = 0;
     public bool isGrabbing = false;
     public bool isPlacing = false;
+    public bool hasPlaced = false;
+    public bool triggerHeld = false;
+
+    [Header("Sound FX properties")]
+    public float raygunPitch_Positive = 2f;
+    public float raygunPitch_Negative = 2.75f;
+    public float raygunPitch_Neutral = 1f;
+
+    public AudioClip discoverRaygun;
 
     // Start is called before the first frame update
     public override void Start()
@@ -76,10 +86,13 @@ public class GunFXController : FXController
         {
             if (gun_obj.activeSelf == false)
                 gun_obj.SetActive(true);
-            gun_obj.SetActive(true);
-            weaponState = WeaponState.Inspect;
+
+            weaponState = WeaponState.Idle_Equipped;
             NextState();
-            inspectingWeapon = true;
+            //gun_obj.SetActive(true);
+            //weaponState = WeaponState.Inspect;
+            //NextState();
+            //inspectingWeapon = true;
         }
         else
         {
@@ -87,9 +100,13 @@ public class GunFXController : FXController
             NextState();
             if (gun_obj.activeSelf == true)
                 gun_obj.SetActive(false);
-                arm_obj.SetActive(false);
         }
 
+        if(gun_obj != null && gun.gunUpgradeState == RayCastShootComplete.gunUpgrade.Two)
+        {
+            SetWeaponMods((int)gun.gunUpgradeState);
+            equipped = true;
+        }
         //UpdateCasedCrystals();
 
         //SetWeaponMods(weaponUpgradeState);
@@ -99,6 +116,8 @@ public class GunFXController : FXController
         Renderer case2 = CrystalCase2.GetComponent<Renderer>();
         case1.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
         case2.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);*/
+
+
     }
 
     // Update is called once per frame
@@ -178,8 +197,10 @@ public class GunFXController : FXController
         // call set colour of barrel crystals
         //SetBarrelCrystals();
         // call set colour of back crystal
-        //SetBackCrystal();
-        if (TubeCrystals != null)
+        if(BackCrystals != null)
+            SetBackCrystal();
+
+        if (TubeCrystals != null && gun.gunUpgradeState != RayCastShootComplete.gunUpgrade.None)
             SetTubeCrystals();
         // call set emissive lights
         //SetEmissiveLights();
@@ -199,15 +220,26 @@ public class GunFXController : FXController
 
     }
 
-    public void EquipTool()
+    public void EquipTool(bool inspect = true)
     {
         isGrabbing = false;
         gun_obj.SetActive(true);
         arm_obj.SetActive(true);
         equipped = true;
-        inspectingWeapon = true;
-        weaponState = WeaponState.Inspect;
-        NextState();
+       
+        if(inspect)
+        {
+            inspectingWeapon = true;
+            weaponState = WeaponState.Inspect;
+            NextState();
+        }
+        else
+        {
+            inspectingWeapon = false;
+            weaponState = WeaponState.Idle_Equipped;
+            NextState();
+        }
+      
     }
     public void Grab()
     {
@@ -223,7 +255,10 @@ public class GunFXController : FXController
     {
         if (!isPlacing)
         {
+
+            hasPlaced = true;
             weaponState = WeaponState.Place;
+            GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
             NextState();
             isPlacing = true;
         }
@@ -244,23 +279,6 @@ public class GunFXController : FXController
         Renderer case2 = CrystalCase2.GetComponent<Renderer>();
         case1.sharedMaterial.color = Crystal_Cold;
         case2.sharedMaterial.color = Crystal_Hot;
-        /*foreach (var item in renderers2)
-        {
-            item.sharedMaterial = GameObject.Find("ColourPallet").GetComponent<ColourPallet>().Crystal;
-       *//* }*//*
-        case1.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
-        case2.sharedMaterial = new Material(GameMaster.instance.colourPallete.materials.Crystal);
-
-        if (GetComponent<PlayerController>().raygunScript.cold)
-        {
-            case1.sharedMaterial.color = Crystal_Cold;
-            case2.sharedMaterial.color = Crystal_Hot;
-        }
-        else
-        {
-            case2.sharedMaterial.color = Crystal_Cold;
-            case1.sharedMaterial.color = Crystal_Hot;
-        }*/
     }
 
     // weapon & arm states
@@ -270,14 +288,29 @@ public class GunFXController : FXController
         WeaponInspected();
         //Debug.Log("Idle: Enter");
         arm_obj.GetComponent<Animator>().Play("Idle");
-        if (gun.cold)
+
+
+        if(gun.gunUpgradeState == RayCastShootComplete.gunUpgrade.None)
+        {
+            GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
+        }
+        else if (gun.gunUpgradeState == RayCastShootComplete.gunUpgrade.One)
         {
             GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Negative);
         }
         else
         {
-            GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Positive);
+            if (gun.cold)
+            {
+                GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Negative);
+            }
+            else
+            {
+                GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Positive);
+            }
         }
+
+       
 
         while (weaponState == WeaponState.Idle_Equipped)
         {
@@ -293,7 +326,10 @@ public class GunFXController : FXController
         isPlacing = false;
         WeaponInspected();
         //Debug.Log("Idle: Enter");
-        arm_obj.GetComponent<Animator>().Play("Idle_Unequipped");
+        if(hasPlaced)
+            arm_obj.GetComponent<Animator>().Play("Idle_Unequipped");
+        else
+            arm_obj.GetComponent<Animator>().Play("Idle_Away");
 
         while (weaponState == WeaponState.Idle_Unequipped)
         {
@@ -308,15 +344,42 @@ public class GunFXController : FXController
     {
         //Debug.Log("TriggerPressed: Enter");
         arm_obj.GetComponent<Animator>().Play("TriggerPress");
+        gun_obj.GetComponent<AudioSource>().pitch = raygunPitch_Neutral;
+        GetComponent<PlayerSoundControl>().PlayRaygunAudio(0, true);
+        
+        if(gun.gunUpgradeState > 0)
+        {
+            if (gun.cold)
+                gun_obj.GetComponent<AudioSource>().pitch = raygunPitch_Negative;
+            else
+                gun_obj.GetComponent<AudioSource>().pitch = raygunPitch_Positive;
+
+            GetComponent<PlayerSoundControl>().PlayRaygunAudio(2, false);
+        }
+        else
+        {
+            GetComponent<PlayerSoundControl>().PlayRaygunAudio(4, true);
+        }
+       
+        
+       
 
         while (weaponState == WeaponState.TriggerPressed)
         {
+           
+            if (!triggerHeld)
+            {
+                triggerHeld = true;
+                //GetComponent<PlayerSoundControl>().PlayRaygunAudio(2, false);
+            }
+
             // do state stuff
             //RotateAmmo();
             //CrystalCase.transform.DOLocalRotate(new Vector3(0, 0, CrystalCase.transform.rotation.z + 180), delay, RotateMode.Fast);
             yield return 0;
         }
         //Debug.Log("TriggerPressed: Exit");
+        //triggerHeld = false;
         NextState();
     }
 
@@ -324,6 +387,8 @@ public class GunFXController : FXController
     {
         //Debug.Log("TriggerReleased: Enter");
         arm_obj.GetComponent<Animator>().Play("TriggerRelease");
+        gun_obj.GetComponent<AudioSource>().pitch = raygunPitch_Neutral;
+        GetComponent<PlayerSoundControl>().PlayRaygunAudio(1, true);
 
         while (weaponState == WeaponState.TriggerReleased)
         {
@@ -340,6 +405,7 @@ public class GunFXController : FXController
     IEnumerator InspectState()
     {
         //Debug.Log("Inspect: Enter");
+        inspectingWeapon = true;
         arm_obj.GetComponent<Animator>().Play("InspectTool");
 
         while (weaponState == WeaponState.Inspect)
@@ -364,17 +430,30 @@ public class GunFXController : FXController
         //Debug.Log("Inspect: Enter");
         bool firstHandShow;
 
-        if (GetComponent<GunFXController>().arm_obj.activeSelf == false)
+      /*  if (GetComponent<GunFXController>().arm_obj.activeSelf == false || !hasPlaced)
         {
             firstHandShow = true;
             arm_obj.GetComponent<Animator>().Play("Grab_Enter");
             GetComponent<GunFXController>().arm_obj.SetActive(true);
+            Debug.Log("GRAB 1");
         }
         else
-        {
+        {*/
             firstHandShow = false;
-            arm_obj.GetComponent<Animator>().Play("Grab_01");
-        }
+            if(!equipped)
+            {
+                arm_obj.GetComponent<Animator>().Play("Grab_01");
+                Debug.Log("GRAB 2");
+            }
+            else
+            {
+                // grab with left hand
+                //arm_obj.GetComponent<Animator>().Play("Grab_Left_Enter");
+                arm_obj.GetComponent<Animator>().CrossFade("Grab_Left_Enter", 0.1f);
+                //Debug.Log("GRAB LEFT");
+            }
+                
+        //}
            
         
 
@@ -383,6 +462,7 @@ public class GunFXController : FXController
             // do state stuff
             if(firstHandShow)
             {
+               
                 if (AnimationComplete("Grab_Enter"))
                 {
                     weaponState = WeaponState.GrabRetract;
@@ -390,7 +470,7 @@ public class GunFXController : FXController
             }
             else
             {
-                if (AnimationComplete("Grab_01"))
+                if (AnimationComplete("Grab_01") || AnimationComplete("Grab_Left_Enter"))
                 {
                     weaponState = WeaponState.GrabRetract;
                 }
@@ -416,6 +496,7 @@ public class GunFXController : FXController
             if (AnimationComplete("Place_01"))
             {
                 weaponState = WeaponState.GrabRetract;
+               
             }
 
             yield return 0;
@@ -429,16 +510,40 @@ public class GunFXController : FXController
     IEnumerator GrabRetractState()
     {
         //Debug.Log("Inspect: Enter");
-        arm_obj.GetComponent<Animator>().Play("GrabRetract_01");
+ 
+            if(!equipped)
+            {
+                if (hasPlaced)
+                {
+                    arm_obj.GetComponent<Animator>().Play("GrabRetract_01");
+                }
+                else
+                {
+                    arm_obj.GetComponent<Animator>().Play("GrabRetractAway");
+                }       
+            }
+            else
+            {
+                arm_obj.GetComponent<Animator>().Play("Grab_Retract_Left");
+            }
+                      
 
         while (weaponState == WeaponState.GrabRetract)
         {
             // do state stuff
 
-            if (AnimationComplete("GrabRetract_01"))
+            if (AnimationComplete("GrabRetract_01") || AnimationComplete("GrabRetractAway"))
             {
                 weaponState = WeaponState.Idle_Unequipped;
             }
+            else
+            {
+                if (AnimationComplete("Grab_Retract_Left"))
+                {
+                    weaponState = WeaponState.Idle_Equipped;
+                }
+            }
+
 
             yield return 0;
         }
@@ -450,7 +555,11 @@ public class GunFXController : FXController
     {
         //Debug.Log("SwitchMode: Enter");
         arm_obj.GetComponent<Animator>().Play("SwitchMode");
-        //StartCoroutine(RotateCrystalCase(0.5f));
+
+        gun_obj.GetComponent<AudioSource>().pitch = raygunPitch_Neutral;
+        GetComponent<PlayerSoundControl>().PlayRaygunAudio(3, true);
+        GetComponent<PlayerSoundControl>().PlayRaygunAudio(5, true);
+
         GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
 
         if (inspectingWeapon)
@@ -691,20 +800,36 @@ public class GunFXController : FXController
     // check for gun mode switch
     public void CheckForModeSwitch()
     {
-        // get gun switch bool 
-        if(gun.ModeSwitched && !switchingMode)
+        if(gun.gunUpgradeState == RayCastShootComplete.gunUpgrade.Two)
         {
-            switchingMode = true;
-            // disable shooting
-            DisableShooting();
+            // get gun switch bool 
+            if (gun.ModeSwitched && !switchingMode)
+            {
+                switchingMode = true;
+                // disable shooting
+                DisableShooting();
 
+            }
+
+            // while switching mode 
+            if (switchingMode)
+            {
+                if (weaponState != WeaponState.SwitchMode)
+                    weaponState = WeaponState.SwitchMode;
+            }
         }
-
-        // while switching mode 
-        if(switchingMode)
+        else
         {
-            if (weaponState != WeaponState.SwitchMode)
-                weaponState = WeaponState.SwitchMode;
+            if (gun.ModeSwitched && !switchingMode)
+            {
+                if (equipped && !inspectingWeapon)
+                {
+                    if (gun_obj.GetComponent<AudioSource>().isPlaying)
+                        gun_obj.GetComponent<AudioSource>().Stop();
+
+                    weaponState = WeaponState.Inspect;
+                }
+            }
         }
     }
 

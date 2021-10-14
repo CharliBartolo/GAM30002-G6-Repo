@@ -2,12 +2,14 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.Utility;
 
+namespace UnityStandardAssets.Characters.FirstPerson
+{
     public class HeadBob : MonoBehaviour
     {
         public Camera Camera;
         public CurveControlledBob motionBob = new CurveControlledBob();
         public LerpControlledBob jumpAndLandingBob = new LerpControlledBob();
-        public Rigidbody playerRigidbody;
+        public RigidbodyFirstPersonController rigidbodyFirstPersonController;
         public float StrideInterval;
         [Range(0f, 1f)] public float RunningStrideLengthen;
 
@@ -24,14 +26,13 @@ using UnityStandardAssets.Utility;
         }
 
 
-        public void UpdateHeadBob(Vector3 horizVelocity, bool Grounded)
+        private void Update()
         {
-        //  m_CameraRefocus.GetFocusPoint();
-        Debug.Log("Headbob");
+          //  m_CameraRefocus.GetFocusPoint();
             Vector3 newCameraPosition;
-            if (horizVelocity.magnitude > 0.1f && Grounded)
+            if (rigidbodyFirstPersonController.Velocity.magnitude > 0 && rigidbodyFirstPersonController.Grounded)
             {
-                Camera.transform.localPosition = motionBob.DoHeadBob(horizVelocity.magnitude);
+                Camera.transform.localPosition = motionBob.DoHeadBob(rigidbodyFirstPersonController.Velocity.magnitude*(rigidbodyFirstPersonController.Running ? RunningStrideLengthen : 1f));
                 newCameraPosition = Camera.transform.localPosition;
                 newCameraPosition.y = Camera.transform.localPosition.y - jumpAndLandingBob.Offset();
             }
@@ -42,12 +43,13 @@ using UnityStandardAssets.Utility;
             }
             Camera.transform.localPosition = newCameraPosition;
 
-            if (!m_PreviouslyGrounded && Grounded)
+            if (!m_PreviouslyGrounded && rigidbodyFirstPersonController.Grounded)
             {
                 StartCoroutine(jumpAndLandingBob.DoBobCycle());
             }
 
-            m_PreviouslyGrounded = Grounded;
+            m_PreviouslyGrounded = rigidbodyFirstPersonController.Grounded;
           //  m_CameraRefocus.SetFocusPoint();
         }
     }
+}

@@ -300,25 +300,25 @@ public class CrystalFXController : FXController
             {
                
                     //Debug.Log("COLLISION: " + other.gameObject.name);
-                    if (other.gameObject.GetComponent<MeshRenderer>() != null)
+                    if (other.gameObject.GetComponent<MeshRenderer>() != null || other.gameObject.GetComponent<SkinnedMeshRenderer>() != null)
                     {
                         if (other.gameObject.GetComponent<CrystalFXController>() == null)
                         {
                             if (other.gameObject.transform.parent?.GetComponent<CrystalFXController>() == null)
                             {
                                 //add texture component
-                                AddExtraLightTextureComponent(other);
+                                //AddExtraLightTextureComponent(other);
 
                                 //AddLightTextureComponent(other);
                                 // if not have lighttexture, add it
-                                /*if (other.gameObject.GetComponent<LightTexture>() == null)
+                                if (other.gameObject.GetComponent<LightTexture>() == null)
                                 {
                                     AddLightTextureComponent(other);
                                 }
                                 else
                                 {
                                     AddExtraLightTextureComponent(other);
-                                }*/
+                                }
                             }
                         }
                     }
