@@ -186,8 +186,9 @@ public class MachineFXController : FXController
                         Renderer[] r = item.GetComponentsInChildren<Renderer>();
                         foreach (var obj in r)
                         {
-                            obj.GetComponentInChildren<Renderer>().sharedMaterial.color = Crystal_Neutral;
-                            obj.GetComponentInChildren<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Neutral * emissionValue);
+                            //obj.GetComponentInChildren<Renderer>().sharedMaterial.color = Color.black;
+                            //obj.GetComponentInChildren<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Crystal_Neutral * emissionValue);
+                            obj.GetComponentInChildren<Renderer>().sharedMaterial.SetColor("_EmissiveColor", Color.black);
                             //item.GetComponent<Renderer>().sharedMaterial.SetFloat("_EmissiveExposureWeight ", 0f);
                         }
                     }
