@@ -100,7 +100,7 @@ public class GameMaster : MonoBehaviour
     public void LoadDifficulty()
     {
         difficultyNum = PlayerPrefs.GetInt("Difficulty");
-        Debug.Log("Difficulty loaded!");
+        //Debug.Log("Difficulty loaded!");
 
         switch (difficultyNum)
         {

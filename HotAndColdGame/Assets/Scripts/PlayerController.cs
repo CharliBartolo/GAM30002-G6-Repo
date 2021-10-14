@@ -353,7 +353,7 @@ public class PlayerController : MonoBehaviour, IConditions
             {
                 playerRB.velocity = horizVelocity;
                 vertVelocity = Vector3.zero;
-                Debug.Log("Player's velocity is now: " + playerRB.velocity);
+                //Debug.Log("Player's velocity is now: " + playerRB.velocity);
                 
             }
                 

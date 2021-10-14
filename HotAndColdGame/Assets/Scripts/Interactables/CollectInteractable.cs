@@ -82,7 +82,7 @@ public class CollectInteractable : InteractableBase
         Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
         Camera.main.GetComponent<AudioSource>().Play();
 
-        GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(itemName, int_data);
+        GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(this);
 
         //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
         // do stuff
@@ -100,7 +100,7 @@ public class CollectInteractable : InteractableBase
         Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
         Camera.main.GetComponent<AudioSource>().Play();
 
-        GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(itemName, int_data);
+        GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(this);
 
         // do stuff
         if (destroyOnCollect)

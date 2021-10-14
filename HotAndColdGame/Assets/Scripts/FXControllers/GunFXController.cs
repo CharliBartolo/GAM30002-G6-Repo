@@ -480,7 +480,7 @@ public class GunFXController : FXController
             yield return 0;
         }
         //Debug.Log("Inspect: Exit");
-        Debug.Log("Weapon state:" + weaponState);
+        //Debug.Log("Weapon state:" + weaponState);
         NextState();
     }
 

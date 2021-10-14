@@ -138,7 +138,7 @@ public class PlatformWithTemperature : TemperatureStateBase
             }
             else if (targetPos == origin.transform.position)
             {
-                Debug.Log("SETTING COLOUR NEUTRAL");
+                //Debug.Log("SETTING COLOUR NEUTRAL");
                 //SetLights(GameMaster.instance.colourPallete.Neutral);
                 SetLights(Color.clear);
             }
