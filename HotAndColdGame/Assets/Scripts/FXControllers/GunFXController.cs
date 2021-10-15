@@ -239,7 +239,10 @@ public class GunFXController : FXController
             weaponState = WeaponState.Idle_Equipped;
             NextState();
         }
-      
+
+        // If you're inspecting weapon, save gun state since that indicates a state change usually.
+        if (GameMaster.instance != null && inspect)
+            GameMaster.instance.SaveGunState();
     }
     public void Grab()
     {
