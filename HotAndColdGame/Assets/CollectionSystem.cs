@@ -9,14 +9,14 @@ using System.Linq;
 public struct LevelData
 {
     public string levelName;
-    public Dictionary<CollectInteractable, bool> Journals;
+    public SortedDictionary<int, JournalPage> Journals;
     public Dictionary<CollectInteractable, bool> Artifacts;
 
 
-    public LevelData(string levelName, List<CollectInteractable> Journals, List<CollectInteractable> Artifacts)
+    public LevelData(string levelName, List<JournalPage> Journals, List<CollectInteractable> Artifacts)
     {
         this.levelName = levelName;
-        this.Journals = new Dictionary<CollectInteractable, bool>();
+        this.Journals = new SortedDictionary<int, JournalPage>();
         this.Artifacts = new Dictionary<CollectInteractable, bool>();
 
 
@@ -26,12 +26,11 @@ public struct LevelData
 
 
     // adds collectables to their lists
-    void AddCollectables(List<CollectInteractable> journals, List<CollectInteractable> artifacts)
+    void AddCollectables(List<JournalPage> journals, List<CollectInteractable> artifacts)
     {
-        foreach (var item in journals)
+        foreach (var page in journals)
         {
-            CollectInteractable journalCopy = item;
-            this.Journals.Add(item, false);
+            this.Journals.Add(page.id, page);
         }
 
         foreach (var item in artifacts)
@@ -41,13 +40,28 @@ public struct LevelData
     }
 
     // return number of Journals found
-    public int JournalsFound => NumberFound(Journals);
+    public int JournalsFound => CountJournalsFound(Journals);
 
     // return number of Artifacts found
-    public int ArtifactsFound => NumberFound(Artifacts);
+    public int ArtifactsFound => CountArtifactsFound(Artifacts);
+
+    // find number of journals found
+    public int CountJournalsFound(SortedDictionary<int, JournalPage> collection)
+    {
+        int result = 0;
+
+
+        foreach (var item in collection.Values)
+        {
+            if (item.found == true)
+                result++;
+        }
+
+        return result;
+    }
 
     // find number of found items, indicated by a 'true' status, in a collection
-    public int NumberFound(Dictionary<CollectInteractable, bool> collection)
+    public int CountArtifactsFound(Dictionary<CollectInteractable, bool> collection)
     {
         int result = 0;
 
@@ -64,22 +78,25 @@ public struct LevelData
 
 public class CollectionSystem : MonoBehaviour
 {
-    
-
     // add parent gameobject containing colectable items here
     [SerializeField] public GameObject Collectables;
     // collections UI object
     private Transform ui_collection;
 
     // static variables
-    // list of LevelData
+    // static list of LevelData
     public static Dictionary<string, LevelData> levelList;
+    // list access variable
+    public  Dictionary<string, LevelData> LevelList;
 
-    public Dictionary<string, LevelData> LevelList;
+    public static List<JournalPage> AllJournals;
+    public List<JournalPage> allJournals;
     // started flag
     protected static bool started;
     // levels count
     protected static int levelsCount = 0;
+    // journal id 
+    static int journalId = 0;
 
     private void Awake()
     {
@@ -96,7 +113,7 @@ public class CollectionSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        LevelList = levelList;
+       
     }
 
     public void Initialise()
@@ -104,9 +121,13 @@ public class CollectionSystem : MonoBehaviour
         // initialise level list if not started
         if (!started)
         {
+            AllJournals = new List<JournalPage>();
             levelList = new Dictionary<string, LevelData>();
             started = true;
-            Debug.Log("LIST INITIALISED!");
+
+            LevelList = levelList;
+            allJournals = AllJournals;
+            //Debug.Log("LIST INITIALISED!");
         }
 
         // Find "Collectables" gameObject in scene and assign it 
@@ -117,16 +138,11 @@ public class CollectionSystem : MonoBehaviour
 
         if (ui_collection != null && Collectables != null)
         {
-            //Debug.Log("Collectables found in scnene, adding level to master");
-
             // update lists and UI
-            //PopulateLists();
             AddLevelToMaster();
-            PopulateUI();
             UpdateUI();
 
-            // increment level count
-
+            //Debug.Log("ALL JOURNALS LENGTH: " + AllJournals.Count);
         }
         else
         {
@@ -146,42 +162,52 @@ public class CollectionSystem : MonoBehaviour
     public void AddLevelToMaster()
     {
         string levelName = SceneManager.GetActiveScene().name;
+        int logNumber = 1;
+
+
         if (!levelList.ContainsKey(levelName))
         {
-            List<CollectInteractable> Journals = new List<CollectInteractable>();
+            List<JournalPage> Journals = new List<JournalPage>();
             List<CollectInteractable> Artifacts = new List<CollectInteractable>();
 
             CollectInteractable[] collectables = Collectables.GetComponentsInChildren<CollectInteractable>();
 
+          
             // add collectables to their lists
-            foreach (var item in Collectables.GetComponentsInChildren<CollectInteractable>())
+            for (int i = 0; i < Collectables.GetComponentsInChildren<CollectInteractable>().Length; i++)
             {
-                if (item.gameObject.activeSelf == true)
+                if (collectables[i].gameObject.activeSelf == true)
                 {
-                    if (item.itemName == "Journal")
+                    //collectables[i].int_data = i;
+
+                    if (collectables[i].itemName == "Journal")
                     {
-                        Journals.Add(item);
+                        collectables[i].int_data = journalId;
+                        JournalPage page = new JournalPage(collectables[i].GetComponent<Journal>().EntryLog[0], collectables[i].GetComponent<Journal>().EntryLog[1], journalId);
+
+                        Journals.Add(page);
+                        AllJournals.Insert(journalId, page);
+                        
+                        journalId++;
+                      
                     }
-                    else if (item.itemName == "Artifact")
+                    else if (collectables[i].itemName == "Artifact")
                     {
-                        Artifacts.Add(item);
+
+                        Artifacts.Add(collectables[i]);
                     }
                 }
+
             }
 
-            // add int data as index to each list item (so that artifacts start from zero also)
-            // journals int data
+            // append data to text entries
             for (int i = 0; i < Journals.Count; i++)
             {
-                Journals[i].int_data = i;
-            }
-            // artifacts int data
-            for (int i = 0; i < Artifacts.Count; i++)
-            {
-                Artifacts[i].int_data = i;
+                string pg1_Numbered = levelName + " - " + "Log " + logNumber.ToString() + " of " + Journals.Count + '\n' + Journals[i].text[0];
+                Journals[i].text[0] = pg1_Numbered;
+                logNumber++;
             }
 
-            // create level data
 
             LevelData data = new LevelData(levelName, Journals, Artifacts);
 
@@ -193,13 +219,57 @@ public class CollectionSystem : MonoBehaviour
 
     }
 
+    public JournalPage RetrieveFromAllJournals(int id)
+    {
+        return AllJournals[id];
+    }
+
+    public List<JournalPage> RetrieveFoundPages()
+    {
+        return AllJournals.Where(x => x.found == true).ToList();
+    }
+
+    // retrieve a specific journal page
+    public JournalPage RetrieveJournalPage(string levelName, int id)
+    {
+        JournalPage page = null;
+
+        page = levelList[levelName].Journals[id];
+
+        return page;
+
+    }
+
+    // retrieve next found journal page from AllJournals list
+    public JournalPage RetrieveNextFoundPage()
+    {
+        JournalPage page = null;
+
+        page = AllJournals.SkipWhile(x => x.found != true).Skip(0).FirstOrDefault();
+
+        return page;
+
+    }
+
+
+    // retrieve previous found journal page from AllJournals list
+    public JournalPage RetrievePreviousFoundPage()
+    {
+        JournalPage page = null;
+
+        page = AllJournals.TakeWhile(x => x.found != true).DefaultIfEmpty(AllJournals[AllJournals.Count - 1]).LastOrDefault();
+
+        return page;
+
+    }
+
     // set found to true for item leveldata when item found
     public void FoundCollectable(CollectInteractable item)
     {
         if (item.itemName == "Journal")
         {
-
-            levelList[SceneManager.GetActiveScene().name].Journals[item] = true;
+            AllJournals[item.int_data].found = true;
+            //levelList[SceneManager.GetActiveScene().name].Journals[item.int_data].found = true;
         }
         else if (item.itemName == "Artifact")
         {
@@ -222,34 +292,50 @@ public class CollectionSystem : MonoBehaviour
         return null;
     }
 
-    // populate UI
-    public void PopulateUI()
-    {
-
-        // get level name (using scene name for now)
-        //ui_collection.Find("LevelName").GetComponent<Text>().text = SceneManager.GetActiveScene().name;
-
-        //ui_collection.Find("LevelName").GetComponent<Text>().text = levelList[SceneManager.GetActiveScene().name].levelName;
-
-
-
-        // update level names
-        Text[] levelNames = ui_collection.Find("Level Names").GetComponentsInChildren<Text>();
-
-        for (int i = 0; i < levelList.Count; i++)
-        {
-            levelNames[i].text = levelList.ElementAt(i).Value.levelName;
-
-        }
-    }
 
     // update UI
     public void UpdateUI()
     {
-        // update journal count
-        ui_collection.Find("Collections_Journal").transform.Find("Count").GetComponent<Text>().text = levelList[SceneManager.GetActiveScene().name].JournalsFound.ToString() + " / " + levelList[SceneManager.GetActiveScene().name].Journals.Count.ToString();
+       
+        Text[] levelNames = ui_collection.Find("Level_Names").GetComponentsInChildren<Text>();
+        Text[] journalCounts = ui_collection.Find("Journals_Count").GetComponentsInChildren<Text>();
+        Text[] artifactsCounts = ui_collection.Find("Artifacts_Count").GetComponentsInChildren<Text>();
 
-        // update artifact count
-        ui_collection.Find("Collections_Artifacts").transform.Find("Count").GetComponent<Text>().text = levelList[SceneManager.GetActiveScene().name].ArtifactsFound.ToString() + " / " + levelList[SceneManager.GetActiveScene().name].Artifacts.Count.ToString();
+        for (int i = 0; i < levelList.Count; i++)
+        {
+            // update level names
+            levelNames[i].text = levelList.ElementAt(i).Value.levelName;
+
+            // update journal count
+            journalCounts[i].text = levelList.ElementAt(i).Value.JournalsFound.ToString() + " / " + levelList.ElementAt(i).Value.Journals.Count.ToString();
+
+            // update artifact count
+            artifactsCounts[i].text = levelList.ElementAt(i).Value.ArtifactsFound.ToString() + " / " + levelList.ElementAt(i).Value.Artifacts.Count.ToString();
+
+        }
+        /* // update journal count
+         ui_collection.Find("Journals_Count").transform.Find("Count").GetComponent<Text>().text = levelList[SceneManager.GetActiveScene().name].JournalsFound.ToString() + " / " + levelList[SceneManager.GetActiveScene().name].Journals.Count.ToString();
+
+         // update artifact count
+         ui_collection.Find("Artifacts_Count").transform.Find("Count").GetComponent<Text>().text = levelList[SceneManager.GetActiveScene().name].ArtifactsFound.ToString() + " / " + levelList[SceneManager.GetActiveScene().name].Artifacts.Count.ToString();*/
+    }
+
+
+    public List<bool> Results()
+    {
+        List<bool> results = new List<bool>();
+        for (int i = 0; i < 6; i++)
+        {
+            results.Add(false);
+        }  
+        
+
+        for (int i = 0; i < levelList.Count; i++)
+        {
+            results[i] = levelList.ElementAt(i).Value.JournalsFound == levelList.ElementAt(i).Value.Journals.Count;
+            Debug.Log("RESULTS:" + results);
+        }
+
+        return results.ToList();
     }
 }

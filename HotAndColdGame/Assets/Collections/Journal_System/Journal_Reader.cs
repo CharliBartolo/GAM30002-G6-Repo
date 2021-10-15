@@ -39,6 +39,8 @@ public class Journal_Reader : MonoBehaviour
     public bool isJournalActive = false;
     public static int currentPage = 0;
 
+    private List<JournalPage> pagesToRead;
+
     private void Start()
     {
         // initialise pages list
@@ -46,9 +48,7 @@ public class Journal_Reader : MonoBehaviour
         // initialise pages to null
 
 
-        // find player input controller
-        if (GameMaster.instance != null && GameMaster.instance.playerRef != null)
-            playerInput = GameMaster.instance.playerRef.GetComponent<PlayerInput>();
+       
 
         homePage = transform.Find("HomePage");
         popUp = transform.Find("Popup");
@@ -64,7 +64,16 @@ public class Journal_Reader : MonoBehaviour
         if(isJournalActive)
         {
             if (playerInput != null)
+            {
                 ReadInput();
+            }
+            else
+            {
+                // find player input controller
+                if (GameMaster.instance != null && GameMaster.instance.playerRef != null)
+                    playerInput = GameMaster.instance.playerRef.GetComponent<PlayerInput>();
+            }
+                
         }
     }
 
@@ -82,26 +91,44 @@ public class Journal_Reader : MonoBehaviour
 
     public void NavigateJournal(int dir)
     {
-        if (GameMaster.instance.GetComponent<CollectionSystem>().LevelList[SceneManager.GetActiveScene().name].JournalsFound > 0)
+        //Debug.Log("LEVEL NAME :" + GameMaster.instance.GetComponent<CollectionSystem>().LevelList[SceneManager.GetActiveScene().name].levelName + "  Journals: " + GameMaster.instance.GetComponent<CollectionSystem>().LevelList[SceneManager.GetActiveScene().name].Journals.Count);
+        
+        if(pagesToRead.Count > 0)
         {
-            if(dir > 0)
+            if (dir > 0)
             {
-                if(currentPage <= GameMaster.instance.GetComponent<CollectionSystem>().LevelList[SceneManager.GetActiveScene().name].Journals.Count)
+                if (currentPage < pagesToRead.Count)
                 {
                     DisplayHomePage(false);
                     currentPage++;
+                    JournalPage page = pagesToRead[currentPage-1];
 
-                    Journal journal = GameMaster.instance.GetComponent<CollectionSystem>().LevelList[SceneManager.GetActiveScene().name].Journals.Keys.ElementAt(currentPage-1).GetComponent<Journal>();
 
-                    Display_Journal(journal.EntryLog[0], journal.EntryLog[1], 0);
+                    if (page != null)
+                        Display_Journal(page.text[0], page.text[1], 0);
                 }
+
             }
             else if (dir < 0)
             {
-                if(homePage.gameObject.activeSelf == false)
+                if (currentPage > 1)
                 {
-                    DisplayHomePage(true);
-                    currentPage = 0;
+                    //DisplayHomePage(false);
+                    currentPage--;
+
+
+                    JournalPage page = pagesToRead[currentPage - 1];
+
+                    if (page != null)
+                        Display_Journal(page.text[0], page.text[1], 0);
+                }
+                else
+                {
+                    if (homePage.gameObject.activeSelf == false)
+                    {
+                        DisplayHomePage(true);
+                        currentPage = 0;
+                    }
                 }
             }
         }
@@ -130,17 +157,14 @@ public class Journal_Reader : MonoBehaviour
         popUp.gameObject.SetActive(true);
     }
 
-    public void AddNewPage()
-    {
-
-    }
-
     public void Display_Journal(string journal_text_pg1, string journal_text_pg2, int journalType)
     {
         if(!isJournalActive)
         {
             isJournalActive = true;
             Background_Human.gameObject.SetActive(true);
+            pagesToRead = GameMaster.instance.GetComponent<CollectionSystem>().RetrieveFoundPages();
+            Debug.Log("PAGES TO READ: " + pagesToRead.Count);
         }
        
         // display homepage if jounalType is -1, else show page
@@ -183,6 +207,7 @@ public class Journal_Reader : MonoBehaviour
     {
         //text.GetComponent<Text>().text = journal_text;
         //textbox.SetActive(false);
+        currentPage = 0;
         text[0].gameObject.SetActive(false);
         text[1].gameObject.SetActive(false);
         image.gameObject.SetActive(false);
@@ -202,18 +227,21 @@ public class Journal_Reader : MonoBehaviour
         Invoke(nameof(Exit_Journal), time);
     }
 
-   
 }
 
 // struct for journal page data
-public struct JournalPage
+public class JournalPage
 {
     public List<string> text;
+    public int id;
+    public bool found;
 
-    public JournalPage(string page1Text, string page2Text)
+    public JournalPage(string page1Text, string page2Text, int id, bool found = false)
     {
-        text = new List<string>();
-        text.Add(page1Text);
-        text.Add(page2Text);
+        this.text = new List<string>();
+        this.text.Add(page1Text);
+        this.text.Add(page2Text);
+        this.id = id;
+        this.found = found;
     }
 }
