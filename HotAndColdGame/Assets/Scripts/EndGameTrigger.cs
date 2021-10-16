@@ -7,8 +7,8 @@ using UnityEngine.UI;
 /// <summary>
 /// This script now sends the current build index number to the GameMaster 
 /// to check if the current scene is the previous scene
-/// Last edit: Added GameMaster to script so that build index number is stored
-/// By: Jason 16/10/21
+/// Last edit: Changed LoadNextScene to public method
+/// By: Charadey 16/10/2021
 /// </summary>
 
 
