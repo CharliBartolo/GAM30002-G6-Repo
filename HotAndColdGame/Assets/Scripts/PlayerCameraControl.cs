@@ -32,6 +32,57 @@ public class PlayerCameraControl : MonoBehaviour
     private float defaultYpos = 0;
     private float timer;
 
+    [Header("Endgame Camera Pan Settings")]
+    //Looking at the target object
+    [SerializeField]
+    [Tooltip("If true, the must look in a certain direction to activate the Tutorial Prompt. (Mainly for debug)")]
+    private bool needsVision;
+
+    [SerializeField]
+    [Tooltip("The minimum angle from the expected direction. -1 is behind, 0 is perpendicular and 1 is same direction")]
+    [Range(-1, 1)]
+    private float visionWindow;
+
+    [SerializeField]
+    [Tooltip("The target object that will trigger camera pan")]
+    private GameObject targetObject;
+
+    [SerializeField]
+    [Tooltip("The area where the player can trigger the camera pan")]
+    private Collider endgameTrigger;
+
+    //Booleans
+    [SerializeField]
+    [Tooltip("Boolean that tells if camera is ready to pan")]
+    private bool isReadyForPan;
+
+    [SerializeField]
+    [Tooltip("Boolean that tells if the game has reached its final sequence")]
+    private bool isGameEnd;
+
+    //Coroutines
+    private Coroutine preRotationCoroutine;
+    private Coroutine endGameRotationCoroutine;
+
+    //Pre Rotation
+    [Header("Pre Rotation Settings")]
+    [SerializeField]
+    [Tooltip("How long the camera will take to pan")]
+    private float preRotationSpeed;
+
+    //EndGame Rotation
+    [Header("End Game Rotation Settings")]
+
+    [SerializeField]
+    [Tooltip("How far the camera will rotate upwards for end game pan")]
+    private float endGamePanRotation;
+
+    [SerializeField]
+    [Tooltip("How long the camera will take to pan for end game pan")]
+    private float endGameRotationSpeed;
+
+
+
     private void Awake()
     {
         playerCam = GetComponentInChildren<Camera>();
@@ -44,6 +95,65 @@ public class PlayerCameraControl : MonoBehaviour
     {
         baseFOV = playerCam.fieldOfView;
         currentFOV = baseFOV;
+
+    }
+
+    private void FixedUpdate()
+    {
+        if (this.isReadyForPan)
+        {
+            this.gameObject.GetComponent<PlayerController>().playerControlState = PlayerController.PlayerState.ControlsDisabled;
+            if (needsVision)
+            {
+                var direction = Vector3.Normalize(this.playerCam.transform.TransformDirection(Vector3.forward));    //Players looking direction
+                var expectedDirection = Vector3.Normalize(this.targetObject.transform.position - this.playerCam.transform.position);  //Vector from startTrigger to player
+                var dotProduct = Vector3.Dot(expectedDirection, direction);   //Dot product of above vectors
+
+                if (dotProduct >= -this.visionWindow)
+                {
+
+                    if (!isGameEnd)
+                    {
+                        PreRotate();
+                    }
+                    else
+                    {
+                        EndGameRotate();
+                    }
+
+                }
+            }
+            else
+            {
+                if (!isGameEnd)
+                {
+                    PreRotate();
+                }
+                else 
+                {
+                    EndGameRotate();
+                }
+            }
+        }
+
+        //DEBUG
+        if (Debug.isDebugBuild)
+        {
+            if(targetObject != null)
+            {
+                Debug.DrawRay(this.targetObject.transform.position, this.playerCam.transform.position, Color.red);
+                Debug.DrawRay(this.playerCam.transform.position, playerCam.transform.forward, Color.green);
+                //Debug.Log(Player.GetComponent<PlayerInput>().currentControlScheme);
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other == this.endgameTrigger)
+        {
+            this.isReadyForPan = true;
+        }
     }
 
     public void UpdateFOVBasedOnSpeed(float playerSpeed)
@@ -86,6 +196,66 @@ public class PlayerCameraControl : MonoBehaviour
             playerCam.transform.localPosition = Vector3.Lerp(
                 new Vector3 (playerCam.transform.localPosition.x, defaultYpos), 
                 playerCam.transform.localPosition, 48f * Time.deltaTime);
+        }
+    }
+
+    public void PreRotate()
+    {
+        if (this.preRotationCoroutine == null)
+        {
+            this.preRotationCoroutine = StartCoroutine(PreRotationPan());        
+        } 
+    }
+
+    public void EndGameRotate()
+    {
+        if (this.endGameRotationCoroutine == null)
+        {
+            this.endGameRotationCoroutine = StartCoroutine(EndgameCameraPan());
+        }
+    }
+
+    //EndGame Camera Pan Addition
+    IEnumerator PreRotationPan()
+    {
+        Quaternion lookRotation = Quaternion.LookRotation(this.targetObject.transform.position - this.transform.position);
+        float t = 0.0f;
+
+        while (t < 1.0f)
+        {
+            if (this.transform.rotation == Quaternion.Slerp(this.transform.rotation, lookRotation, 1))
+            {
+                t += 1.0f; 
+            }
+
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookRotation, t);
+            t += Time.deltaTime * preRotationSpeed;
+
+            yield return null;
+        }
+
+        this.isGameEnd = true;
+    }
+
+    IEnumerator EndgameCameraPan()
+    {
+        Vector3 targetVector = this.targetObject.transform.position + new Vector3(0, this.endGamePanRotation, 0);
+        Debug.Log(targetObject.transform.position);
+        Debug.Log(targetVector);
+        Quaternion lookRotation = Quaternion.LookRotation(targetVector - this.transform.position);
+        float t = 0.0f;
+
+        while (t < 1.0f)
+        {
+            if (this.transform.rotation == Quaternion.Slerp(this.transform.rotation, lookRotation, 1))
+            {
+                t += 1.0f;
+            }
+
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookRotation, t);
+            t += Time.deltaTime * endGameRotationSpeed;
+
+            yield return null;
         }
     }
 }
