@@ -199,7 +199,7 @@ public class GameMaster : MonoBehaviour
                         playerTempComp.tempValueRange[0] = -50;
                         playerTempComp.tempValueRange[2] = 50;
                         playerTempComp.startingCountdownBeforeReturnToNeutral = 0.1f;
-                        //playerTempComp.incomingTempMod = 1f;
+                        playerTempComp.incomingTempMod = 1f;
                         playerIncomingTempMod = playerTempComp.incomingTempMod;
                     }
                     else
@@ -218,7 +218,7 @@ public class GameMaster : MonoBehaviour
                             playerTempComp.tempValueRange[0] = -100;
                             playerTempComp.tempValueRange[2] = 100;
                             playerTempComp.startingCountdownBeforeReturnToNeutral = 2;
-                            //playerTempComp.incomingTempMod = 0.4f;
+                            playerTempComp.incomingTempMod = 0.3f;
                             playerIncomingTempMod = playerTempComp.incomingTempMod;
                         }
                     }
