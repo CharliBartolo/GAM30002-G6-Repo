@@ -39,7 +39,7 @@ public class EndGameTrigger : MonoBehaviour
         }
     }
 
-    IEnumerator LoadNextScene(float delay)
+    public IEnumerator LoadNextScene(float delay)
     {
         GameMaster.instance.playerRef.GetComponent<PlayerController>().playerControlState = PlayerController.PlayerState.ControlsDisabled;
         StartCoroutine(DarknessFadeIn(delay));

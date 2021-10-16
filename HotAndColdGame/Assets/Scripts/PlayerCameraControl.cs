@@ -81,6 +81,10 @@ public class PlayerCameraControl : MonoBehaviour
     [Tooltip("How long the camera will take to pan for end game pan")]
     private float endGameRotationSpeed;
 
+    [SerializeField]
+    [Tooltip("The delay for the fade into black")]
+    private float endGameFadeDelay;
+
 
 
     private void Awake()
@@ -254,5 +258,7 @@ public class PlayerCameraControl : MonoBehaviour
 
             yield return null;
         }
+
+        StartCoroutine(gameObject.GetComponent<EndGameTrigger>().LoadNextScene(endGameFadeDelay));
     }
 }
