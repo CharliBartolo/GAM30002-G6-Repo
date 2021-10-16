@@ -61,11 +61,8 @@ public class GameMaster : MonoBehaviour
 
     public void OnLevelLoad(Scene load, LoadSceneMode mode)
     {
-        if (playerRef == null)
-        {
-            if (SearchForPlayer())
-                LoadDifficulty();
-        }
+        if (SearchForPlayer())
+            LoadDifficulty();        
 
         LoadGunState();
         SearchForTriggers();
@@ -73,11 +70,11 @@ public class GameMaster : MonoBehaviour
         Debug.Log("crnt: " + crntScene);
         Debug.Log("prev: " + prevScene);
         //checks if previous scene is the next scene in the build index
-        if (crntScene < prevScene)
+        if (crntScene < prevScene && end != null)
         {           
             lastCheckPointPos = end.transform;
         }
-        else 
+        else if (start != null)
         {
             lastCheckPointPos = start.transform;
         }
