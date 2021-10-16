@@ -18,6 +18,10 @@ public class GameMaster : MonoBehaviour
     public GameObject playerRef;    
     public enum RaygunSavedState {NoSavedState, NoGun, GunNoUpgrade, GunOneUpgrade, GunTwoUpgrade};
     public RaygunSavedState savedGunState;
+    public GameObject start;
+    public GameObject end;
+    public int crntScene;
+    public int prevScene;
 
     public int difficultyNum;   // 0 is standard, 1 is hard
 
@@ -64,6 +68,19 @@ public class GameMaster : MonoBehaviour
         }
 
         LoadGunState();
+        SearchForTriggers();
+        crntScene = SceneManager.GetActiveScene().buildIndex;
+        Debug.Log("crnt: " + crntScene);
+        Debug.Log("prev: " + prevScene);
+        //checks if previous scene is the next scene in the build index
+        if (crntScene < prevScene)
+        {           
+            lastCheckPointPos = end.transform;
+        }
+        else 
+        {
+            lastCheckPointPos = start.transform;
+        }
     }
 
     private bool SearchForPlayer()
@@ -201,6 +218,22 @@ public class GameMaster : MonoBehaviour
                 LoadDifficulty();
                 break;
         }
+    }
+
+    private bool SearchForTriggers()
+    {
+        Debug.Log("GameManager is searching for triggers");
+        //if (GameObject.Find("Player") != null)
+        if (GameObject.FindGameObjectWithTag("Start") && GameObject.FindGameObjectWithTag("End"))
+        {
+            start = GameObject.FindGameObjectWithTag("Start");
+            end = GameObject.FindGameObjectWithTag("End");
+            Debug.Log("triggers found, reference stored!");
+            return true;
+        }
+
+        Debug.Log("triggers not found by GameManager!");
+        return false;
     }
 }
 
