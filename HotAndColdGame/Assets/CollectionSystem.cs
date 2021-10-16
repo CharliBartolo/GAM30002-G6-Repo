@@ -191,7 +191,7 @@ public class CollectionSystem : MonoBehaviour
                         journalId++;
                       
                     }
-                    else if (collectables[i].itemName == "Artifact")
+                    else if (collectables[i].itemName == "Artifact" || collectables[i].itemName == "Raygun")
                     {
 
                         Artifacts.Add(collectables[i]);
@@ -271,7 +271,7 @@ public class CollectionSystem : MonoBehaviour
             AllJournals[item.int_data].found = true;
             //levelList[SceneManager.GetActiveScene().name].Journals[item.int_data].found = true;
         }
-        else if (item.itemName == "Artifact")
+        else if (item.itemName == "Artifact" || item.itemName == "Raygun")
         {
             levelList[SceneManager.GetActiveScene().name].Artifacts[item] = true;
         }
@@ -332,7 +332,7 @@ public class CollectionSystem : MonoBehaviour
 
         for (int i = 0; i < levelList.Count; i++)
         {
-            results[i] = levelList.ElementAt(i).Value.JournalsFound == levelList.ElementAt(i).Value.Journals.Count;
+            results[i] = (levelList.ElementAt(i).Value.JournalsFound == levelList.ElementAt(i).Value.Journals.Count) && (levelList.ElementAt(i).Value.ArtifactsFound == levelList.ElementAt(i).Value.Artifacts.Count);
             Debug.Log("RESULTS:" + results);
         }
 

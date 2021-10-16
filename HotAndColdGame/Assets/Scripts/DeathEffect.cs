@@ -26,12 +26,11 @@ public class DeathEffect : FXController
         Fade.canvasRenderer.SetAlpha(0.0f); 
         //gm = GameMaster.instance;
         //player = gm.playerRef;
-       /* if(GameMaster.instance.playerRef != null)
+        if(GameMaster.instance.playerRef != null)
         {
             if (GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>() != null)
                 crntTemp = GameMaster.instance.playerRef.GetComponent<TemperatureStateBase>();
-        }*/
-       
+        }       
     }
 
     private void Update() 

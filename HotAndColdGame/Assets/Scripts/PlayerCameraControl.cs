@@ -143,9 +143,12 @@ public class PlayerCameraControl : MonoBehaviour
         //DEBUG
         if (Debug.isDebugBuild)
         {
-            Debug.DrawRay(this.targetObject.transform.position, this.playerCam.transform.position, Color.red);
-            Debug.DrawRay(this.playerCam.transform.position, playerCam.transform.forward, Color.green);
-            //Debug.Log(Player.GetComponent<PlayerInput>().currentControlScheme);
+            if(targetObject != null)
+            {
+                Debug.DrawRay(this.targetObject.transform.position, this.playerCam.transform.position, Color.red);
+                Debug.DrawRay(this.playerCam.transform.position, playerCam.transform.forward, Color.green);
+                //Debug.Log(Player.GetComponent<PlayerInput>().currentControlScheme);
+            }
         }
     }
 
