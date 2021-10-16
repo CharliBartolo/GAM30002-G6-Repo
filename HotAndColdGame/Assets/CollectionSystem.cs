@@ -332,7 +332,7 @@ public class CollectionSystem : MonoBehaviour
 
         for (int i = 0; i < levelList.Count; i++)
         {
-            results[i] = levelList.ElementAt(i).Value.JournalsFound == levelList.ElementAt(i).Value.Journals.Count;
+            results[i] = (levelList.ElementAt(i).Value.JournalsFound == levelList.ElementAt(i).Value.Journals.Count) && (levelList.ElementAt(i).Value.ArtifactsFound == levelList.ElementAt(i).Value.Artifacts.Count);
             Debug.Log("RESULTS:" + results);
         }
 
