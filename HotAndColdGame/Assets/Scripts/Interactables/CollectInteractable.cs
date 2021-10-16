@@ -69,6 +69,8 @@ public class CollectInteractable : InteractableBase
                 break;
         }
 
+        GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(this);
+
         if (destroyOnCollect)
             Destroy(gameObject);
     }
