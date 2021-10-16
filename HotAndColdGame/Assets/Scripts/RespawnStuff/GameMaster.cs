@@ -189,6 +189,7 @@ public class GameMaster : MonoBehaviour
                         playerTempComp.tempValueRange[0] = -50;
                         playerTempComp.tempValueRange[2] = 50;
                         playerTempComp.startingCountdownBeforeReturnToNeutral = 0.1f;
+                        playerTempComp.incomingTempMod = 1f;
                     }
                     else
                     Debug.Log("Player temperature component not found!");
@@ -206,6 +207,7 @@ public class GameMaster : MonoBehaviour
                             playerTempComp.tempValueRange[0] = -100;
                             playerTempComp.tempValueRange[2] = 100;
                             playerTempComp.startingCountdownBeforeReturnToNeutral = 2;
+                            playerTempComp.incomingTempMod = 0.4f;
                         }
                     }
                 break;
