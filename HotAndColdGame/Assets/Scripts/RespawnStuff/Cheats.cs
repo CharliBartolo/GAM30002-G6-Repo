@@ -38,7 +38,7 @@ public class Cheats : MonoBehaviour
     {
         //Debug.Log(checkPoints[num].name);
         //next checkpoint
-        if (Input.GetKeyDown("2"))
+        if (Input.GetKeyDown(KeyCode.Equals))
         {
             if (num < checkPoints.Count - 1)
                 num++;
@@ -48,7 +48,7 @@ public class Cheats : MonoBehaviour
             CheckpointTeleport();
         }
         //previous checkpoint
-        else if ((Input.GetKeyDown("1")) )
+        else if ((Input.GetKeyDown(KeyCode.Minus)) )
         {
             if (num > 0)
                 num--;
