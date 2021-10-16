@@ -127,6 +127,12 @@ public class PlayerController : MonoBehaviour, IConditions
 
     private void Start()
     {
+        if (GameMaster.instance.lastCheckPointPos.position != null) 
+        {
+            transform.position = GameMaster.instance.lastCheckPointPos.position;
+            transform.rotation = GameMaster.instance.lastCheckPointPos.rotation;
+        }
+        
         SetShootingEnabled(isGunEnabled);        
 
         if (isGunEnabled)
