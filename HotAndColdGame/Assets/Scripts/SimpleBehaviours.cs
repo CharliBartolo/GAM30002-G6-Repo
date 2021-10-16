@@ -6,6 +6,7 @@ using UnityEngine;
 public class SimpleBehaviours : MonoBehaviour
 {
     public bool enabled = true;
+    public bool moveFasterOnChallenger = false;
     private bool loop = true;
     private bool triggeredEnabled = false;
     private bool triggered = false;
@@ -29,7 +30,11 @@ public class SimpleBehaviours : MonoBehaviour
     [Range(0, 10f)]
     public float moveSpeed = 2;
     [Range(0, 10f)]
+    public float moveSpeedChallenger = 2;
+    [Range(0, 10f)]
     public float fallSpeed = 2;
+    [Range(0, 10f)]
+    public float fallSpeedChallenger = 2;
 
     [Header("Wait Time")]
     // wait time
@@ -137,7 +142,13 @@ public class SimpleBehaviours : MonoBehaviour
                     triggeredEnabled = true;
                 }
                 if (triggeredEnabled)
-                    MovePlatform(moveSpeed);
+                {
+                    if (GameMaster.instance.difficultyNum == 1)
+                        MovePlatform(moveSpeedChallenger);
+                    else
+                        MovePlatform(moveSpeed);
+                }
+                    
                 break;
             case TriggerMode.HOLD:
                 if (triggered)
