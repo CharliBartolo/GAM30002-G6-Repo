@@ -62,7 +62,7 @@ public class GameMaster : MonoBehaviour
 
     private void Update() 
     {
-        if (playerIncomingTempMod != playerRef.GetComponent<PlayerTemperature>().incomingTempMod)
+        if (playerRef != null && playerIncomingTempMod != playerRef.GetComponent<PlayerTemperature>().incomingTempMod)
         {
             playerRef.GetComponent<PlayerTemperature>().incomingTempMod = playerIncomingTempMod;
         }

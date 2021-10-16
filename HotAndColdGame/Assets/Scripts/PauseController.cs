@@ -46,14 +46,24 @@ public class PauseController : MonoBehaviour
         }
 
         //Player Controller
-        if (!PC)
+        if (!PC && GameObject.Find("Player") != null)
         {
             PC = GameObject.Find("Player").GetComponent<PlayerController>();
         }
 
         //Volume component
         if (PC != null)
+        {
             PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
+            MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
+            MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
+            VolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetMasterVolume(VolumeSlider.value); });
+
+            QuitButton.onClick.AddListener(delegate { Quitting = true; });
+            YesButton.onClick.AddListener(delegate { Application.Quit(); });
+            NoButton.onClick.AddListener(delegate { Quitting = false; });
+        }
+          
 
         //Player Input
         /*
@@ -91,16 +101,14 @@ public class PauseController : MonoBehaviour
         */
 
         //Listeners
-        MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
-        MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-        VolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetMasterVolume(VolumeSlider.value); });
-
-        QuitButton.onClick.AddListener(delegate { Quitting = true; });
-        YesButton.onClick.AddListener(delegate { Application.Quit(); });
-        NoButton.onClick.AddListener(delegate { Quitting = false; });
-
-        PC.GetComponent<PlayerInput>().actions.FindActionMap("Player").FindAction("Pause").performed += OnPause;
-        PC.GetComponent<PlayerInput>().actions.FindActionMap("Menu").FindAction("Pause").performed += OnPause;
+      
+        
+        if (PC != null)
+        {
+            PC.GetComponent<PlayerInput>().actions.FindActionMap("Player").FindAction("Pause").performed += OnPause;
+            PC.GetComponent<PlayerInput>().actions.FindActionMap("Menu").FindAction("Pause").performed += OnPause;
+        }
+       
     }
 
     // Start is called before the first frame update

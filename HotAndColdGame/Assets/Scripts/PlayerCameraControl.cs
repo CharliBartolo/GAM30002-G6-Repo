@@ -4,9 +4,9 @@ using UnityEngine;
 
 /// <summary>
 /// Responsible for managing Player Camera. Functionality includes adjusting general FOV,
-/// adjusting FOV based on speed, and 'headbobbing' while moving.
-/// Last edit: Adding Class Summary
-/// By: Charli - 8/10/21
+/// adjusting FOV based on speed, and 'headbobbing' while moving. Allows for an endgame camera pan.
+/// Last edit: Endgame camera pan and transition.
+/// By: Charadey 16/10/2021
 /// </summary>
 public class PlayerCameraControl : MonoBehaviour
 {
@@ -80,6 +80,10 @@ public class PlayerCameraControl : MonoBehaviour
     [SerializeField]
     [Tooltip("How long the camera will take to pan for end game pan")]
     private float endGameRotationSpeed;
+
+    [SerializeField]
+    [Tooltip("The delay for the fade into black")]
+    private float endGameFadeDelay;
 
 
 
@@ -257,5 +261,7 @@ public class PlayerCameraControl : MonoBehaviour
 
             yield return null;
         }
+
+        StartCoroutine(gameObject.GetComponent<EndGameTrigger>().LoadNextScene(endGameFadeDelay));
     }
 }
