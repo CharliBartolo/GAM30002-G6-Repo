@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8367264433094579069}
   - component: {fileID: 1171969204}
   - component: {fileID: 1171969203}
+  - component: {fileID: 5844264337383096165}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: GM
@@ -51,6 +52,7 @@ MonoBehaviour:
   audioManager: {fileID: 8367264434170778536}
   colourPallete: {fileID: 8367264433094579071}
   playerRef: {fileID: 0}
+  savedGunState: 0
   difficultyNum: 0
   LoadingCheckpoint: 0
   lastCheckPointPos: {fileID: 0}
@@ -77,7 +79,7 @@ MonoBehaviour:
     EmissiveLights: {fileID: 2100000, guid: 02d64e42cfc6b2144bcc23ce5799e94e, type: 2}
     HiddenTexture: {fileID: 2100000, guid: 6edfd67cb66f4e645b951c00d64cceb1, type: 2}
     LightningStrike: {fileID: 12080208, guid: a84cb58ef7faa67488076810242453b9, type: 3}
-    CrystalCharger: {fileID: 0}
+    CrystalCharger: {fileID: 2100000, guid: e68ff5d8fa60266408ae328829ccd279, type: 2}
 --- !u!114 &8367264433094579069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +108,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawn: {fileID: 0}
   checkPoints: []
+  isAdditiveLevelLoadEnabled: 0
+  isHUDVisible: 1
+  isGUNVisible: 1
   num: 0
 --- !u!114 &1171969203
 MonoBehaviour:
@@ -119,6 +124,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a71709712ab63a346bea62ed47d03e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5844264337383096165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8367264433094579066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7d7bcb4476638646a3c4e0c99e9f987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Collectables: {fileID: 0}
 --- !u!1 &8367264434170778534
 GameObject:
   m_ObjectHideFlags: 0

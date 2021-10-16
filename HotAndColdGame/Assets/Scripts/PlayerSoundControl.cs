@@ -26,7 +26,7 @@ public class PlayerSoundControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerAudio = Camera.main.GetComponent<AudioSource>();
+        playerAudio = Camera.main.transform.Find("AudioPosition").GetComponent<AudioSource>();
 
         raygunAudio = GetComponent<GunFXController>().gun_obj.GetComponent<AudioSource>();
         activeConditions = new List<IConditions.ConditionTypes>();
@@ -197,12 +197,12 @@ public class PlayerSoundControl : MonoBehaviour
                 if(hit.collider.TryGetComponent<Renderer>(out Renderer rendererComponent))
                 {
                     materialName = rendererComponent.material.name;
-                    print(materialName);
+                    //print(materialName);
                 }
                 else if (hit.collider.TryGetComponent<Terrain>(out Terrain terrainComponent))
                 {
                     materialName = terrainComponent.name;
-                    print(materialName);
+                    //print(materialName);
                 }
                
             }
@@ -221,7 +221,7 @@ public class PlayerSoundControl : MonoBehaviour
         {
             foreach (string surface in footstepMap.surfaces)
             {
-                Debug.Log(surface);
+                //Debug.Log(surface);
                 //if (currentLayer)
                 //if(currentSurfaceType == surface)
                 if (CustomStartsWith(currentLayer, surface))

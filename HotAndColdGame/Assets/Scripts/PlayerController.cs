@@ -353,7 +353,7 @@ public class PlayerController : MonoBehaviour, IConditions
             {
                 playerRB.velocity = horizVelocity;
                 vertVelocity = Vector3.zero;
-                Debug.Log("Player's velocity is now: " + playerRB.velocity);
+                //Debug.Log("Player's velocity is now: " + playerRB.velocity);
                 
             }
                 
@@ -577,12 +577,7 @@ public class PlayerController : MonoBehaviour, IConditions
     {
         Journal_Reader journalUIComponent = GameObject.Find("UI").GetComponentInChildren<Journal_Reader>();
 
-        if (journalUIComponent.text[0].gameObject.activeSelf)
-        {
-            GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Exit_Journal();
-            return;
-        }
-
+      
         if (Physics.Raycast(playerCamControl.playerCam.transform.position, playerCamControl.playerCam.transform.forward, out RaycastHit hit, interactRange) &&
             hit.collider.gameObject.GetComponent<InteractableBase>() != null && playerCamControl != null)
         {
@@ -660,6 +655,15 @@ public class PlayerController : MonoBehaviour, IConditions
         }
         else
         {
+            if (journalUIComponent.text[0].gameObject.activeSelf || journalUIComponent.homePage.gameObject.activeSelf)
+            {
+                GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Exit_Journal();
+                return;
+            }
+            else
+            {
+                GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal("this", "that", -1);
+            }
             //Debug.Log("Interaction failed, as no object was found capable of being interacted with.");
         }
     }

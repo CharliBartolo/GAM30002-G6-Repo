@@ -109,7 +109,7 @@ public class ReticleFXController : ToolboxFXController
             // check for temp state based object
             if (objHit.GetComponentInParent<CrystalBehaviour>() != null)
             {
-                Debug.Log("HIT CRYSTAL OBJECT: " + objHit);
+                //Debug.Log("HIT CRYSTAL OBJECT: " + objHit);
                 if (!hitCrystal)
                     hitCrystal = true;
 
@@ -117,7 +117,7 @@ public class ReticleFXController : ToolboxFXController
             // check for collectable object
             else if (objHit.GetComponent<CollectInteractable>() != null)
             {
-                Debug.Log("HIT COLLECTABLE OBJECT: " + objHit);
+                //Debug.Log("HIT COLLECTABLE OBJECT: " + objHit);
 
                 // check if within interact range
                 if (Vector3.Distance(objHit.transform.position, cam.transform.position) < range_interact)

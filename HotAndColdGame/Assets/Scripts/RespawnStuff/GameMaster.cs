@@ -7,15 +7,18 @@ using UnityEngine.SceneManagement;
 /// Responsible for storing object states between scenes and managing game state.
 /// Affected objects include maintaining a Player reference for other objects, AudioManager
 /// , colour pallet, current difficulty, current checkpoint etc.
-/// Last edit: Adding this class summary
-/// By: Charli - 8/10/21
+/// Last edit: Added OnLevelLoad delegate, expanded to manage backtracking
+/// By: Charli - 15/10/21
 /// </summary>
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster instance;
     public AudioManager audioManager;
     public ColourPalette colourPallete;
-    public GameObject playerRef;
+    public GameObject playerRef;    
+    public enum RaygunSavedState {NoSavedState, NoGun, GunNoUpgrade, GunOneUpgrade, GunTwoUpgrade};
+    public RaygunSavedState savedGunState;
+
     public int difficultyNum;   // 0 is standard, 1 is hard
 
     public bool LoadingCheckpoint;
@@ -48,18 +51,19 @@ public class GameMaster : MonoBehaviour
 
     private void Start() 
     {
-        
-        LoadDifficulty();
+        OnLevelLoad(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        SceneManager.sceneLoaded += OnLevelLoad;        
     }
-    
 
-    private void Update() 
+    public void OnLevelLoad(Scene load, LoadSceneMode mode)
     {
         if (playerRef == null)
         {
             if (SearchForPlayer())
                 LoadDifficulty();
         }
+
+        LoadGunState();
     }
 
     private bool SearchForPlayer()
@@ -81,6 +85,63 @@ public class GameMaster : MonoBehaviour
         return false;            
     }
 
+    public void LoadGunState()
+    {
+        if ((int)savedGunState < 0 || (int)savedGunState > 4)
+            savedGunState = (RaygunSavedState)0;
+
+        //Debug.Log("Loading Gun State from previous level");
+        // If a gun state hasn't been saved, do nothing.
+        if (savedGunState == RaygunSavedState.NoSavedState)
+            return;
+        
+        if (playerRef.TryGetComponent<PlayerController>(out PlayerController playerCntrlComp) &&
+            playerRef.TryGetComponent<GunFXController>(out GunFXController gunFXComp))
+            {
+                //If there was no gun when state was saved, unequip it and set upgrade state to zero.
+                if ((int)savedGunState == 1)
+                {            
+                    {
+                        playerCntrlComp.isGunEnabled = false;
+                        if (playerCntrlComp.playerInventory.Contains("Raygun"))
+                            playerCntrlComp.playerInventory.Remove("Raygun");
+                        gunFXComp.UnEquipTool();
+                        playerCntrlComp.raygunScript.SetGunUpgradeState(0);
+                    }
+                    return;
+                }
+                // ...but if gun was saved, set it to equipped and set upgrade state accordingly.
+                else if ((int)savedGunState > 1)
+                {   
+                    playerCntrlComp.isGunEnabled = true; 
+                    if (!playerCntrlComp.playerInventory.Contains("Raygun"))
+                        playerCntrlComp.playerInventory.Add("Raygun");                      
+                    gunFXComp.EquipTool(false);                    
+                    playerCntrlComp.raygunScript.SetGunUpgradeState((int)savedGunState - 2);                    
+                }
+            }        
+        }
+    
+
+    public void SaveGunState()
+    {
+        print("Saved Gun State!");
+        if (playerRef.TryGetComponent<GunFXController>(out GunFXController gunFXComp))
+        {
+            if (gunFXComp.equipped)
+            {
+                if (playerRef.TryGetComponent<PlayerController>(out PlayerController playerCntrlComp))
+                {
+                    savedGunState = (RaygunSavedState)playerCntrlComp.raygunScript.gunUpgradeState + 2;                 
+                }
+            }
+            else
+            {
+                savedGunState = RaygunSavedState.NoGun;
+            }
+        } 
+    }    
+
     public void LoadNextScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);        
@@ -100,7 +161,7 @@ public class GameMaster : MonoBehaviour
     public void LoadDifficulty()
     {
         difficultyNum = PlayerPrefs.GetInt("Difficulty");
-        Debug.Log("Difficulty loaded!");
+        //Debug.Log("Difficulty loaded!");
 
         switch (difficultyNum)
         {
@@ -142,3 +203,4 @@ public class GameMaster : MonoBehaviour
         }
     }
 }
+

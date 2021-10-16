@@ -267,7 +267,7 @@ public class DoorHatch : StateTriggered
                     if (r != null)
                     {
                         //r.sharedMaterial = new Material(emissiveMaterial);
-                        r.sharedMaterial.SetColor("_EmissiveColor", Crystal_Neutral);
+                        r.sharedMaterial.SetColor("_EmissiveColor", Color.black);
                     }
                 }
                 //item.SetActive(false);
@@ -285,7 +285,7 @@ public class DoorHatch : StateTriggered
                     if (r != null)
                     {
                         //r.sharedMaterial = new Material(emissiveMaterial);
-                        r.sharedMaterial.SetColor("_EmissiveColor", Crystal_Neutral);
+                        r.sharedMaterial.SetColor("_EmissiveColor", Color.black);
                     }
                 }
                 //item.SetActive(false);

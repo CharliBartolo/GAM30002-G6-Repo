@@ -51,6 +51,9 @@ public class RayCastShootComplete : MonoBehaviour {
     {
         CanShoot = (gunUpgradeState == gunUpgrade.One || gunUpgradeState == gunUpgrade.Two);
         CanSwap = (gunUpgradeState == gunUpgrade.Two);
+
+        if (GameMaster.instance != null)
+            GameMaster.instance.SaveGunState();
     }
 
     public void SwapBeam(InputAction.CallbackContext context)

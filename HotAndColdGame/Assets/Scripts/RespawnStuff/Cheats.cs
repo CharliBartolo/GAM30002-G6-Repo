@@ -82,6 +82,12 @@ public class Cheats : MonoBehaviour
                 isGUNVisible = true;
             }
         }
+
+        if (Input.GetKeyDown("u"))
+        {
+            GameMaster.instance.savedGunState += 1;
+            GameMaster.instance.LoadGunState();
+        }
     }
     //purpose of function is for Andy test different partd of the level
     void CheckpointTeleport()
