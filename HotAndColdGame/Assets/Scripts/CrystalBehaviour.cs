@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
+/// <summary>
+/// Responsible for managing cRYSTAL bEHAVIOUR. Functionality includes adjusting temperature,
+/// adding effects to objects in AOE.
+/// Last edit: Updated ResetIce and SpreadLowGrav functions.
+/// By: Matt 18/10/2021
+/// </summary>
+
 public class CrystalBehaviour : TemperatureStateBase
 {
     //public HDAdditionalLightData bluelight;
@@ -209,11 +216,17 @@ public class CrystalBehaviour : TemperatureStateBase
         {
             if (temperatureObject.GetComponent<IConditions>() != null)
             {
-                temperatureObject.GetComponent<IConditions>().AddCondition(IConditions.ConditionTypes.ConditionHot);
+                if(!temperatureObject.GetComponent<IConditions>().ActiveConditions.Contains(IConditions.ConditionTypes.ConditionHot))
+                {
+                    temperatureObject.GetComponent<IConditions>().AddCondition(IConditions.ConditionTypes.ConditionHot);
+                    Debug.Log("SETTING LOW GRAV 1");
+                }
+                    
             }
             else if (temperatureObject.GetComponent<Rigidbody>() != null)
             {
                 temperatureObject.GetComponent<Rigidbody>().AddForce(-Physics.gravity * 25f * Time.deltaTime, ForceMode.Acceleration);
+                //Debug.Log("SETTING LOW GRAV 2");
             }            
         }
     }
@@ -247,11 +260,12 @@ public class CrystalBehaviour : TemperatureStateBase
     {
         foreach (GameObject temperatureObject in objectsInTempArea.Keys)
         {
-            if (temperatureObject.GetComponent<Collider>() != null && temperatureObject.GetComponent<IConditions>() == null)
+            if (temperatureObject.GetComponent<Collider>() != null && temperatureObject.GetComponent<IConditions>() == null && temperatureObject.GetComponent<Collider>().sharedMaterial != null)
             {
-                temperatureObject.GetComponent<Collider>().material = null;                            
+                temperatureObject.GetComponent<Collider>().sharedMaterial = null;
+                //Debug.Log("RESETTING ICE");
             }                    
-        } 
+        }
     }
 }
 
