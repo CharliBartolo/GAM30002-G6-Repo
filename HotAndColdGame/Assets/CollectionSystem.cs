@@ -279,7 +279,7 @@ public class CollectionSystem : MonoBehaviour
         UpdateUI();
 
         //activate popup
-        ui_collection.GetComponentInParent<Journal_Reader>().DisplayPopup();
+        //ui_collection.GetComponentInParent<Journal_Reader>().DisplayPopup();
     }
 
     // find the Collections / Journal Reader

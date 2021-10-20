@@ -14,8 +14,6 @@ using System.Linq;
 /// </summary>
 public class Journal_Reader : MonoBehaviour
 {
-  
-
     // pages list
     public List<JournalPage> levelPages;
 
@@ -41,6 +39,11 @@ public class Journal_Reader : MonoBehaviour
 
     private List<JournalPage> pagesToRead;
 
+
+    public bool newPageAdded;
+    public AudioClip scribeSound;
+
+
     private void Start()
     {
         // initialise pages list
@@ -51,7 +54,7 @@ public class Journal_Reader : MonoBehaviour
        
 
         homePage = transform.Find("HomePage");
-        popUp = transform.Find("Popup");
+        popUp = transform.parent.Find("Popup");
         DisplayHomePage(false);
         Exit_Journal();
 
@@ -219,6 +222,13 @@ public class Journal_Reader : MonoBehaviour
         if (isJournalActive)
         {
             isJournalActive = false;
+            if(newPageAdded)
+            {
+                DisplayPopup();
+                newPageAdded = false;
+                Camera.main.GetComponent<AudioSource>().PlayOneShot(scribeSound);
+            }
+           
         }
     }
 
