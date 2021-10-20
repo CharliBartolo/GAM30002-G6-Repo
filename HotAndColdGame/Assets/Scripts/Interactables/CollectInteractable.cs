@@ -80,7 +80,7 @@ public class CollectInteractable : InteractableBase
         // wait for animation and stuff
         yield return new WaitForSeconds(delay);
         GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(this);
-        //GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal(GameMaster.instance.GetComponent<CollectionSystem>().RetrieveFromAllJournals(GetComponent<CollectInteractable>().int_data).text[0], GameMaster.instance.GetComponent<CollectionSystem>().RetrieveFromAllJournals(GetComponent<CollectInteractable>().int_data).text[1], 0);
+        GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal(GameMaster.instance.GetComponent<CollectionSystem>().RetrieveFromAllJournals(GetComponent<CollectInteractable>().int_data).text[0], GameMaster.instance.GetComponent<CollectionSystem>().RetrieveFromAllJournals(GetComponent<CollectInteractable>().int_data).text[1], 0);
 
         Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
         Camera.main.GetComponent<AudioSource>().Play();
