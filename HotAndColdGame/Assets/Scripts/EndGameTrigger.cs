@@ -75,7 +75,7 @@ public class EndGameTrigger : MonoBehaviour
 
     public IEnumerator DarknessFadeIn(float duration, float delay = 0)
     {
-        darknessOverlay.GetComponent<Image>().sprite = screenEffects.Overlay_Crystal_Death;
+        darknessOverlay.GetComponent<Image>().sprite = null;
         darknessOverlay.GetComponent<Image>().color = screenEffects.Darkness;
 
         yield return new WaitForSeconds(delay);
@@ -86,7 +86,7 @@ public class EndGameTrigger : MonoBehaviour
 
     public IEnumerator DarknessFadeOut(float duration, float delay = 0)
     {
-        darknessOverlay.GetComponent<Image>().sprite = screenEffects.Overlay_Crystal_Death;
+        darknessOverlay.GetComponent<Image>().sprite = null;
         darknessOverlay.GetComponent<Image>().color = screenEffects.Darkness;
 
         yield return new WaitForSeconds(delay);
