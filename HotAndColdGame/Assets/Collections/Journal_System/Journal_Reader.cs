@@ -82,15 +82,26 @@ public class Journal_Reader : MonoBehaviour
 
     void ReadInput()
     {
+        Debug.Log("INPUT: " + playerInput.actions.FindActionMap("Menu").FindAction("Navigate").ReadValue<Vector2>().x);
+        
         // get  input for journal navigation
-        if (input.x != playerInput.actions.FindAction("Movement").ReadValue<Vector2>().x)
+        if (input.x != playerInput.actions.FindActionMap("Menu").FindAction("Navigate").ReadValue<Vector2>().x)
         {
-            input.x = playerInput.actions.FindAction("Movement").ReadValue<Vector2>().x;
+            input.x = playerInput.actions.FindActionMap("Menu").FindAction("Navigate").ReadValue<Vector2>().x;
             Debug.Log("Journal input x: " + input.x);
             NavigateJournal((int)input.x);
             Debug.Log("Current page: " + currentPage);
-        }
+        }/*
+        // get  input for journal navigation
+        if (input.x != playerInput.actions.FindAction("Navigate").ReadValue<Vector2>().x)
+        {
+            input.x = playerInput.actions.FindAction("Navigate").ReadValue<Vector2>().x;
+            Debug.Log("Journal input x: " + input.x);
+            NavigateJournal((int)input.x);
+            Debug.Log("Current page: " + currentPage);
+        }*/
     }
+
 
     public void NavigateJournal(int dir)
     {

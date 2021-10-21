@@ -119,6 +119,9 @@ public class PlayerController : MonoBehaviour, IConditions
         playerInput.actions.FindAction("Shoot").canceled += raygunScript.FireBeam;
         playerInput.actions.FindAction("Swap Beam").performed += raygunScript.SwapBeam;
 
+        playerInput.actions.FindActionMap("Player").FindAction("OpenJournal").performed += OpenJournal;
+        playerInput.actions.FindActionMap("Menu").FindAction("CloseJournal").performed += CloseJournal;
+
         playerInput.ActivateInput();
         currentMovementSettings = baseMovementSettings;
 
@@ -576,7 +579,24 @@ public class PlayerController : MonoBehaviour, IConditions
             playerInput.actions.FindAction("Shoot").Disable();
             playerInput.actions.FindAction("Swap Beam").Disable();
             //raygunScript.gameObject.SetActive(false);
+            //raygunScript.gameObject.SetActive(false);
         }
+    }
+
+    public void OpenJournal(InputAction.CallbackContext context)
+    {
+        Debug.Log("JOURNAL OPENED");
+        GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal("this", "that", -1);
+        playerControlState = PlayerState.ControlsDisabled;
+
+
+    }
+
+    public void CloseJournal(InputAction.CallbackContext context)
+    {
+        Debug.Log("JOURNAL CLOSED");
+        GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Exit_Journal();
+        playerControlState = PlayerState.MoveAndLook;
     }
 
     public void Interact(InputAction.CallbackContext context)
@@ -668,7 +688,8 @@ public class PlayerController : MonoBehaviour, IConditions
             }
             else
             {
-                GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal("this", "that", -1);
+                //GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal("this", "that", -1);
+                Debug.Log("DISPLAY JOURNAL - OLD STYLE");
             }
             //Debug.Log("Interaction failed, as no object was found capable of being interacted with.");
         }
