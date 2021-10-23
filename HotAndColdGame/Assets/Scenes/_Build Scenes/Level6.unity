@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2.9369183, g: 3.490108, b: 2.0277202, a: 1}
+  m_IndirectSpecularColor: {r: 2.9362345, g: 3.4937496, b: 2.0272937, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -54883,24 +54883,44 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8456973324207213757, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
+      propertyPath: usePrePan
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8456973324207213757, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
+      propertyPath: panTrigger
+      value: 
+      objectReference: {fileID: 825748470}
+    - target: {fileID: 8456973324207213757, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
       propertyPath: targetObject
       value: 
       objectReference: {fileID: 287049886}
+    - target: {fileID: 8456973324207213757, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
+      propertyPath: useUpwardPan
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8456973324207213757, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
       propertyPath: endgameTrigger
       value: 
       objectReference: {fileID: 825748470}
     - target: {fileID: 8456973324207213757, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
       propertyPath: endGameFadeDelay
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8456973324207213757, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
       propertyPath: preRotationSpeed
       value: 0.008
       objectReference: {fileID: 0}
     - target: {fileID: 8456973324207213757, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
+      propertyPath: upwardPanRotation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8456973324207213757, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
       propertyPath: endGamePanRotation
       value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8456973324207213757, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
+      propertyPath: useEndGameFadeDelay
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8456973324207213757, guid: dae40e4938f4f224cb0b4848cc1d4c08, type: 3}
       propertyPath: endGameRotationSpeed
@@ -75878,6 +75898,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractingObject: {fileID: 1499405279}
+  CanPickup: 0
+  PickUpItem: {fileID: 0}
   DE: {fileID: 1356365191}
 --- !u!73398921 &2010422482
 VFXRenderer:
