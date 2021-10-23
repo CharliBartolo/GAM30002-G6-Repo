@@ -134,8 +134,8 @@ public class RayCastShootComplete : MonoBehaviour {
                 Color colour = GameMaster.instance.colourPallete.Negative;
                 laserLine.GetComponent<Renderer>().sharedMaterial.SetColor("_Color", colour);
                 laserLine.material = coldMaterial;
-                lightning.startColor = colour;
-                lightning.endColor = colour;
+                //lightning.startColor = colour;
+                //lightning.endColor = colour;
                 tempchange = -60f * Time.deltaTime;
             }
 
@@ -145,8 +145,8 @@ public class RayCastShootComplete : MonoBehaviour {
                 Color colour = GameMaster.instance.colourPallete.Positive;
                 laserLine.GetComponent<Renderer>().sharedMaterial.SetColor("_Color", colour);
                 laserLine.material = hotMaterial;
-                lightning.startColor = colour;
-                lightning.endColor = colour;
+                //lightning.startColor = colour;
+                //lightning.endColor = colour;
                 tempchange = 60f * Time.deltaTime;
             }
 
