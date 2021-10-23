@@ -287,6 +287,9 @@ public class GunFXController : FXController
     // weapon & arm states
     IEnumerator Idle_EquippedState()
     {
+        if(switchingMode)
+            FinishSwitchingMode();
+
         isPlacing = false;
         WeaponInspected();
         //Debug.Log("Idle: Enter");
@@ -589,7 +592,7 @@ public class GunFXController : FXController
        /* float endRotation = caseRot.z + 180f;
         CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, endRotation);
         startRotation = endRotation;*/
-        FinishSwitchingMode();
+        //FinishSwitchingMode();
         //Debug.Log("SwitchMode: Exit");
         NextState();
     }
@@ -850,6 +853,7 @@ public class GunFXController : FXController
             yield return null;
         }
         //Debug.Log("SET STRAIGHT");
+        
         yield return null;
         if(gun.cold)
             CrystalCase.transform.eulerAngles = new Vector3(CrystalCase.transform.eulerAngles.x, CrystalCase.transform.eulerAngles.y, 0);

@@ -42,6 +42,7 @@ public class Journal_Reader : MonoBehaviour
 
     public bool newPageAdded;
     public AudioClip scribeSound;
+    public AudioClip pageTurnSound;
 
 
     private void Start()
@@ -129,7 +130,7 @@ public class Journal_Reader : MonoBehaviour
                 {
                     //DisplayHomePage(false);
                     currentPage--;
-
+                    
 
                     JournalPage page = pagesToRead[currentPage - 1];
 
@@ -199,7 +200,9 @@ public class Journal_Reader : MonoBehaviour
             //image.gameObject.SetActive(true);
 
             //SetTimeout(timeoutDisplay);
-       
+
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(pageTurnSound);
+
             DisplayHomePage(false);
 
             if (journalType == 0)
