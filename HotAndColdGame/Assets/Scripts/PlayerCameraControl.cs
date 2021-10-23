@@ -32,8 +32,8 @@ public class PlayerCameraControl : MonoBehaviour
     private float defaultYpos = 0;
     private float timer;
 
-    [Header("Endgame Camera Pan Settings")]
-    //Looking at the target object
+    [Header("Camera Pan Settings")]
+    
     [SerializeField]
     [Tooltip("If true, the must look in a certain direction to activate the Tutorial Prompt. (Mainly for debug)")]
     private bool needsVision;
@@ -49,20 +49,42 @@ public class PlayerCameraControl : MonoBehaviour
 
     [SerializeField]
     [Tooltip("The area where the player can trigger the camera pan")]
-    private Collider endgameTrigger;
+    private Collider panTrigger;
 
     //Booleans
-    [SerializeField]
+    //[SerializeField]
     [Tooltip("Boolean that tells if camera is ready to pan")]
     private bool isReadyForPan;
 
+    //[SerializeField]
+    [Tooltip("Boolean that tells if the game has reached the upward pan sequence")]
+    private bool isUpwardPan;
+
+    //[SerializeField]
+    [Tooltip("Boolean that tells if the game has reached the return pan sequence")]
+    private bool isReturnPan;
+
     [SerializeField]
-    [Tooltip("Boolean that tells if the game has reached its final sequence")]
-    private bool isGameEnd;
+    [Tooltip("If checked, pans toward an objects direction")]
+    private bool usePrePan;
+
+    [SerializeField]
+    [Tooltip("If checked, pans upwards")]
+    private bool useUpwardPan;
+
+    [SerializeField]
+    [Tooltip("If checked, pans backwards towards orignal direction")]
+    private bool useReturnPan;
+
+    [SerializeField]
+    [Tooltip("If checked, allows the player to move again after the panning sequences")]
+    private bool ReturnControl;
 
     //Coroutines
+    private bool isPanning;
     private Coroutine preRotationCoroutine;
-    private Coroutine endGameRotationCoroutine;
+    private Coroutine upwardRotationCoroutine;
+    private Coroutine returnRotationCoroutine;
 
     //Pre Rotation
     [Header("Pre Rotation Settings")]
@@ -71,22 +93,33 @@ public class PlayerCameraControl : MonoBehaviour
     private float preRotationSpeed;
 
     //EndGame Rotation
-    [Header("End Game Rotation Settings")]
+    [Header("Upward Rotation Settings")]
 
     [SerializeField]
     [Tooltip("How far the camera will rotate upwards for end game pan")]
-    private float endGamePanRotation;
+    private float upwardPanRotation;
 
     [SerializeField]
     [Tooltip("How long the camera will take to pan for end game pan")]
-    private float endGameRotationSpeed;
+    private float upwardRotationSpeed;
+
+    [SerializeField]
+    [Tooltip("If checked, uses the fade delay and transitions into endgame")]
+    private bool useEndGameFadeDelay;
 
     [SerializeField]
     [Tooltip("The delay for the fade into black")]
     private float endGameFadeDelay;
 
+    //Return Rotation
+    [Header("Return Rotation Settings")]
+    //[SerializeField]
+    [Tooltip("The original direction of the player")]
+    private Quaternion returnOriginalRotation;
 
-
+    [SerializeField]
+    [Tooltip("How long the camera will take to pan")]
+    private float returnRotationSpeed;
     private void Awake()
     {
         playerCam = GetComponentInChildren<Camera>();
@@ -107,6 +140,7 @@ public class PlayerCameraControl : MonoBehaviour
         if (this.isReadyForPan)
         {
             this.gameObject.GetComponent<PlayerController>().playerControlState = PlayerController.PlayerState.ControlsDisabled;
+
             if (needsVision)
             {
                 var direction = Vector3.Normalize(this.playerCam.transform.TransformDirection(Vector3.forward));    //Players looking direction
@@ -116,27 +150,47 @@ public class PlayerCameraControl : MonoBehaviour
                 if (dotProduct >= -this.visionWindow)
                 {
 
-                    if (!isGameEnd)
+                    if (!isUpwardPan)
                     {
                         PreRotate();
                     }
                     else
                     {
-                        EndGameRotate();
+                        UpwardRotate();
+
+                        if (isReturnPan)
+                        {
+                            ReturnRotate();
+                        }
                     }
 
                 }
             }
             else
             {
-                if (!isGameEnd)
+                if (!isPanning)
                 {
-                    PreRotate();
-                }
-                else 
-                {
-                    EndGameRotate();
-                }
+                    if (usePrePan && preRotationCoroutine == null)
+                    {
+                        PreRotate();
+                    }
+                    else if (useUpwardPan && upwardRotationCoroutine == null)
+                    {
+                        UpwardRotate();
+                    }
+                    else if (useReturnPan && returnRotationCoroutine == null)
+                    {
+                        ReturnRotate();
+                    }
+                    else
+                    {
+                        if (ReturnControl)
+                        {
+                            this.gameObject.GetComponent<PlayerController>().playerControlState = PlayerController.PlayerState.MoveAndLook;
+                        }
+                        isReadyForPan = false;
+                    }
+                }               
             }
         }
 
@@ -154,8 +208,9 @@ public class PlayerCameraControl : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other == this.endgameTrigger)
+        if (other == this.panTrigger)
         {
+            this.returnOriginalRotation = this.transform.rotation;
             this.isReadyForPan = true;
         }
     }
@@ -202,20 +257,29 @@ public class PlayerCameraControl : MonoBehaviour
                 playerCam.transform.localPosition, 48f * Time.deltaTime);
         }
     }
-
     public void PreRotate()
     {
         if (this.preRotationCoroutine == null)
         {
-            this.preRotationCoroutine = StartCoroutine(PreRotationPan());        
-        } 
+            isPanning = true;
+            this.preRotationCoroutine = StartCoroutine(PreRotationPan());
+        }       
+    }
+    public void UpwardRotate()
+    {
+        if (this.upwardRotationCoroutine == null)
+        {
+            isPanning = true;
+            this.upwardRotationCoroutine = StartCoroutine(UpwardRotationPan());
+        }
     }
 
-    public void EndGameRotate()
+    public void ReturnRotate()
     {
-        if (this.endGameRotationCoroutine == null)
+        if (this.returnRotationCoroutine == null)
         {
-            this.endGameRotationCoroutine = StartCoroutine(EndgameCameraPan());
+            isPanning = true;
+            this.returnRotationCoroutine = StartCoroutine(ReturnRotationPan());
         }
     }
 
@@ -238,12 +302,14 @@ public class PlayerCameraControl : MonoBehaviour
             yield return null;
         }
 
-        this.isGameEnd = true;
+        this.isUpwardPan = true;
+        isPanning = false;
+        
     }
 
-    IEnumerator EndgameCameraPan()
+    IEnumerator UpwardRotationPan()
     {
-        Vector3 targetVector = this.targetObject.transform.position + new Vector3(0, this.endGamePanRotation, 0);
+        Vector3 targetVector = this.targetObject.transform.position + new Vector3(0, this.upwardPanRotation, 0);
         Debug.Log(targetObject.transform.position);
         Debug.Log(targetVector);
         Quaternion lookRotation = Quaternion.LookRotation(targetVector - this.transform.position);
@@ -257,11 +323,41 @@ public class PlayerCameraControl : MonoBehaviour
             }
 
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookRotation, t);
-            t += Time.deltaTime * endGameRotationSpeed;
+            t += Time.deltaTime * upwardRotationSpeed;
 
             yield return null;
         }
 
-        StartCoroutine(gameObject.GetComponent<EndGameTrigger>().LoadNextScene(endGameFadeDelay));
+        if (useEndGameFadeDelay)
+        {
+            StartCoroutine(gameObject.GetComponent<EndGameTrigger>().LoadNextScene(endGameFadeDelay));
+        }
+        else
+        {
+            isReturnPan = true;
+        }
+
+        isPanning = false;
+    }
+
+    IEnumerator ReturnRotationPan()
+    {
+        //Quaternion lookRotation = Quaternion.LookRotation(this.targetObject.transform.position - this.transform.position);
+        float t = 0.0f;
+
+        while (t < 1.0f)
+        {
+            if (this.transform.rotation == Quaternion.Slerp(this.transform.rotation, this.returnOriginalRotation, 1))
+            {
+                t += 1.0f;
+            }
+
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, this.returnOriginalRotation, t);
+            t += Time.deltaTime * preRotationSpeed;
+
+            yield return null;
+        }
+
+        isPanning = false;
     }
 }
