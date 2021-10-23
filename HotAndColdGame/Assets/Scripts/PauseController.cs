@@ -127,8 +127,8 @@ public class PauseController : MonoBehaviour
         if (PlayerPrefs.HasKey("MasterVol"))
             VolumeSlider.value = PlayerPrefs.GetFloat("MasterVol");
 
-        MouseSensitivityXInput.text = GM.CS.XSensitivity.ToString(); 
-        MouseSensitivityYInput.text = GM.CS.YSensitivity.ToString();
+        //MouseSensitivityXInput.text = GM.CS.XSensitivity.ToString(); 
+        //MouseSensitivityYInput.text = GM.CS.YSensitivity.ToString();
         VolumeInput.text = GM.CS.Volume.ToString();
 
         PC.playerMouseLook.mouseSensitivity.x = GM.CS.XSensitivity;
@@ -136,8 +136,8 @@ public class PauseController : MonoBehaviour
         PC.GetComponent<Player_Audio_Renamed>().main_volume = GM.CS.Volume;
 
         //Can't interact with the text fields
-        MouseSensitivityXInput.interactable = false;
-        MouseSensitivityYInput.interactable = false;
+        //MouseSensitivityXInput.interactable = false;
+        //MouseSensitivityYInput.interactable = false;
         VolumeInput.interactable = false;            
     }
 
@@ -160,10 +160,10 @@ public class PauseController : MonoBehaviour
         
         MouseSensitivityXSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity X Slider
         MouseSensitivityYSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity Y Slider
-        MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
-        MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
+        //MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
+        //MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
         VolumeSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
-        VolumeInput.gameObject.SetActive(IsPaused); //Toggles Volume Input Field
+        //VolumeInput.gameObject.SetActive(IsPaused); //Toggles Volume Input Field
         QuitButton.gameObject.SetActive(IsPaused); // TToggles the Quit Button
         QuitPanel.gameObject.gameObject.SetActive(Quitting); //Toggles panel for confirmation
         YesButton.gameObject.gameObject.SetActive(Quitting); //Toggles button for confirmation
@@ -206,14 +206,14 @@ public class PauseController : MonoBehaviour
     //Changes Input Field based on Slider
     public void XInputChange()
     {
-        MouseSensitivityXInput.text = MouseSensitivityXSlider.value.ToString();
+        //MouseSensitivityXInput.text = MouseSensitivityXSlider.value.ToString();
         GM.CS.XSensitivity = MouseSensitivityXSlider.value;
         PC.playerMouseLook.mouseSensitivity.x = GM.CS.XSensitivity;
     }
 
     public void YInputChange()
     {
-        MouseSensitivityYInput.text = MouseSensitivityYSlider.value.ToString();
+        //MouseSensitivityYInput.text = MouseSensitivityYSlider.value.ToString();
         GM.CS.YSensitivity = MouseSensitivityYSlider.value;
         PC.playerMouseLook.mouseSensitivity.y = GM.CS.YSensitivity;
     }
