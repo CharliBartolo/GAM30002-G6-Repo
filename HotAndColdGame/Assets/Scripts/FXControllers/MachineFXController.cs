@@ -131,10 +131,10 @@ public class MachineFXController : FXController
         Lightning.startWidth = LineWidth;
         Lightning.endWidth = LineWidth;
 
-        Color col = Lightning.startColor;
+        /*Color col = Lightning.startColor;
         col.a = Opacity;
         Lightning.startColor = col;
-        Lightning.endColor = col;
+        Lightning.endColor = col;*/
     }
     public void SetLineColour(Color colour)
     {
@@ -152,7 +152,7 @@ public class MachineFXController : FXController
 
                 if (Lightning.enabled == false)
                 {
-                    SetLineColour(GameMaster.instance.colourPallete.Negative);
+                    //SetLineColour(GameMaster.instance.colourPallete.Negative);
                     Lightning.enabled = true;
                 }
 
@@ -175,7 +175,7 @@ public class MachineFXController : FXController
 
                 if(Lightning.enabled)
                 {
-                    SetLineColour(GameMaster.instance.colourPallete.Neutral);
+                    //SetLineColour(GameMaster.instance.colourPallete.Neutral);
                     Lightning.enabled = false;
                 }
 
@@ -199,7 +199,7 @@ public class MachineFXController : FXController
 
                 if (Lightning.enabled == false)
                 {
-                    SetLineColour(GameMaster.instance.colourPallete.Positive);
+                    //SetLineColour(GameMaster.instance.colourPallete.Positive);
                     Lightning.enabled = true;
                 }
 
