@@ -11,6 +11,7 @@ public class WaterTrigger : MonoBehaviour
     public bool activeOnStart;
     public AudioSource soundFX;
     public bool resetOnDeath;
+    
 
 
     // Start is called before the first frame update
@@ -36,13 +37,16 @@ public class WaterTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void Trigger()
     {
         if (DeathWaterObject.gameObject.activeSelf == false)
+        {
             DeathWaterObject.gameObject.SetActive(true);
+        }
+            
         DeathWaterObject.Trigger(true);
         DeathWaterObject.enabled = true;
         triggered = true;

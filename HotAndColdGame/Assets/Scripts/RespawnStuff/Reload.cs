@@ -53,7 +53,8 @@ public class Reload : MonoBehaviour
                 spawn.spawnPos = checkPoints[i];
                 //Debug.Log(checkPoints[i]);
                 //when line below is run then the UI closes but wasd doesn't move player but cursor works
-                pauseUI.PC.IsPaused = !pauseUI.PC.IsPaused;
+                pauseUI.PC.IsPaused = false;
+                Time.timeScale = pauseUI.PC.IsPaused ? 0 : 1;
                 //Debug.Log("UI closed");
             }
         }

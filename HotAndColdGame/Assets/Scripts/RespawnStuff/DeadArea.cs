@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This script is respondible to killing the player and resets the triggers that activate the object that this script is added onto.
+/// Last edit: Added TriggerRest() so that when player death caused by hot/cold or player enters the object the script is added onto can now reset trigger  
+/// By: Jason 23/10/21
+/// </summary>
+
 public class DeadArea : MonoBehaviour
 {
     [SerializeField] private GameMaster gm;//to get last respawn/checkpoint
@@ -25,6 +31,15 @@ public class DeadArea : MonoBehaviour
         gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
         player = GameObject.Find("Player").transform;
     }
+
+    private void Update()
+    {
+        if (player.GetComponent<PlayerTemperature>().CurrentTemperature == 100f || player.GetComponent<PlayerTemperature>().CurrentTemperature == -100f) 
+        {
+            TriggerReset();
+        }
+    }
+
     //Sets new checkpoint
     void OnTriggerEnter(Collider other)
     {
@@ -46,17 +61,24 @@ public class DeadArea : MonoBehaviour
             }
             if (resetOnDeath)
             {
-                if(trigger != null)
-                {
-                    if(trigger.resetOnDeath)
-                    {
-                        trigger.ResetTrigger();
-                    }
-                }
-                
-                if(GetComponent<SimpleBehaviours>() != null)
-                    GetComponent<SimpleBehaviours>().ResetState(false);
+                TriggerReset();
             }
+        }
+    }
+
+    public void TriggerReset() 
+    {
+        if (trigger != null)
+        {
+            if (trigger.resetOnDeath)
+            {
+                trigger.ResetTrigger();
+            }
+        }
+
+        if (GetComponent<SimpleBehaviours>() != null)
+        {
+            GetComponent<SimpleBehaviours>().ResetState(false);
         }
     }
 
