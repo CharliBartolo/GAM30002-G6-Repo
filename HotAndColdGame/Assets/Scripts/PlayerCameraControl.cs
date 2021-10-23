@@ -5,8 +5,8 @@ using UnityEngine;
 /// <summary>
 /// Responsible for managing Player Camera. Functionality includes adjusting general FOV,
 /// adjusting FOV based on speed, and 'headbobbing' while moving. Allows for an endgame camera pan.
-/// Last edit: Endgame camera pan and transition.
-/// By: Charadey 16/10/2021
+/// Last edit: Camera panning can now be applied to other scenes and allows for more flexibility.
+/// By: Charadey 23/10/2021
 /// </summary>
 public class PlayerCameraControl : MonoBehaviour
 {
@@ -113,13 +113,15 @@ public class PlayerCameraControl : MonoBehaviour
 
     //Return Rotation
     [Header("Return Rotation Settings")]
+    [SerializeField]
+    [Tooltip("How long the camera will take to pan")]
+    private float returnRotationSpeed;
+
     //[SerializeField]
     [Tooltip("The original direction of the player")]
     private Quaternion returnOriginalRotation;
 
-    [SerializeField]
-    [Tooltip("How long the camera will take to pan")]
-    private float returnRotationSpeed;
+    
     private void Awake()
     {
         playerCam = GetComponentInChildren<Camera>();
