@@ -10,6 +10,7 @@ public class ColourPalette : MonoBehaviour
     public Color Positive;
     public Color Negative;
     public Color Neutral;
+    public Color LightningColour;
 
     [Range(0,10)]
     public float colourIntensity;

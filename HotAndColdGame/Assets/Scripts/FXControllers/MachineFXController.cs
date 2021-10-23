@@ -56,6 +56,10 @@ public class MachineFXController : FXController
         Lightning.enabled = true;
         Lightning.GetComponent<DigitalRuby.LightningBolt.LightningBoltScript>().StartObject = transform.Find("Current").gameObject;
         Lightning.GetComponent<DigitalRuby.LightningBolt.LightningBoltScript>().EndObject = LightningHit.gameObject;
+
+        Color col = GameMaster.instance.colourPallete.LightningColour;
+        col.a = Opacity;
+        SetLineColour(col);
     }
 
     // Update is called once per frame
@@ -131,7 +135,7 @@ public class MachineFXController : FXController
         Lightning.startWidth = LineWidth;
         Lightning.endWidth = LineWidth;
 
-        /*Color col = Lightning.startColor;
+      /*  Color col = GameMaster.instance.colourPallete.LightningColour;
         col.a = Opacity;
         Lightning.startColor = col;
         Lightning.endColor = col;*/
