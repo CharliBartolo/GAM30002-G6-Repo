@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 393420845}
   - component: {fileID: 393420844}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ReticleObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 456645231}
   - component: {fileID: 456645233}
   - component: {fileID: 456645232}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CrystalSymbol2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 1160827802}
   - component: {fileID: 1160827804}
   - component: {fileID: 1160827803}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CrystalSymbol2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 1306595134}
   - component: {fileID: 1306595136}
   - component: {fileID: 1306595135}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CrystalSymbol1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 1385333726}
   - component: {fileID: 1385333728}
   - component: {fileID: 1385333727}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CrystalSymbol1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +417,7 @@ GameObject:
   - component: {fileID: 1454385002}
   - component: {fileID: 1454385004}
   - component: {fileID: 1454385003}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CrystalSymbol1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,7 +498,7 @@ GameObject:
   - component: {fileID: 1749327794}
   - component: {fileID: 1749327796}
   - component: {fileID: 1749327795}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CrystalSymbol2 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -579,7 +579,7 @@ GameObject:
   - component: {fileID: 1782129106}
   - component: {fileID: 1782129108}
   - component: {fileID: 1782129107}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CrystalSymbol1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -660,7 +660,7 @@ GameObject:
   - component: {fileID: 2079436155}
   - component: {fileID: 2079436157}
   - component: {fileID: 2079436156}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CrystalSymbol2 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -821,7 +821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3104365144740861976}
   - component: {fileID: 5888564750334479826}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: iceCursor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2030,6 +2030,16 @@ MonoBehaviour:
   runBobAmount: 0.05
   walkBobSpeed: 14
   walkBobAmount: 0.05
+  needsVision: 0
+  visionWindow: 0
+  targetObject: {fileID: 0}
+  endgameTrigger: {fileID: 0}
+  isReadyForPan: 0
+  isGameEnd: 0
+  preRotationSpeed: 0
+  endGamePanRotation: 0
+  endGameRotationSpeed: 0
+  endGameFadeDelay: 0
 --- !u!114 &1132983919121844882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2175,6 +2185,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d0aa5a7e-8a8f-4164-8766-9effad880068
     m_ActionName: Menu/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d5d93e3e-d665-4c8d-a4c0-a7e3c723b66f
+    m_ActionName: Player/OpenJournal[/Keyboard/tab,/XInputControllerWindows/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 50e4ce12-985c-4516-a2e4-a904c77ccabd
+    m_ActionName: Menu/CloseJournal[/XInputControllerWindows/leftShoulder,/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard And Mouse
   m_DefaultActionMap: Player
@@ -14517,7 +14535,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6170742497536757887}
   - component: {fileID: 4612162480580601486}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: hotCursor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14720,7 +14738,7 @@ GameObject:
   - component: {fileID: 2610262902883506657}
   - component: {fileID: 1487399388510262509}
   - component: {fileID: 7373485748265397458}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}

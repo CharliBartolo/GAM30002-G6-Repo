@@ -219,7 +219,8 @@ public class RayCastShootComplete : MonoBehaviour {
             // after listing all hit temp objects, run the temp change for each
             foreach (ITemperature item in hits)
             {
-                item.ChangeTemperature(tempchange);
+                if(item != this.GetComponentInParent<ITemperature>())
+                    item.ChangeTemperature(tempchange);
             }
         }
         else
