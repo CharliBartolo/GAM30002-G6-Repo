@@ -21,6 +21,7 @@ public class GameMaster : MonoBehaviour
     public RaygunSavedState savedGunState;
     public GameObject start;
     public GameObject end;
+    public SortedDictionary<int, JournalPage> currentJournals = new SortedDictionary<int, JournalPage>();
     public int crntScene;
     public int prevScene;
 
@@ -41,8 +42,8 @@ public class GameMaster : MonoBehaviour
             DontDestroyOnLoad(instance.gameObject);
         }
         else if (gameObject.scene.buildIndex == 0)
-        {
-            Destroy(instance.gameObject);
+        {            
+            Destroy(instance.gameObject);            
             instance = this;
             DontDestroyOnLoad(instance.gameObject);
         }
@@ -66,6 +67,8 @@ public class GameMaster : MonoBehaviour
         {
             playerRef.GetComponent<PlayerTemperature>().incomingTempMod = playerIncomingTempMod;
         }
+
+        //currentJournals = CollectionSystem.levelList[SceneManager.GetActiveScene().name].Journals;    
     }
     
 
@@ -74,7 +77,11 @@ public class GameMaster : MonoBehaviour
         if (SearchForPlayer())
             LoadDifficulty();        
 
-        LoadGunState();
+        if (playerRef != null)
+        {
+            LoadGunState();
+        }
+        
         SearchForTriggers();
         crntScene = SceneManager.GetActiveScene().buildIndex;
         Debug.Log("crnt: " + crntScene);
@@ -88,6 +95,7 @@ public class GameMaster : MonoBehaviour
         {
             lastCheckPointPos = start.transform;
         }
+        //CheckAlreadyFoundCollectibles();
     }
 
     private bool SearchForPlayer()
@@ -231,6 +239,43 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    private void CheckAlreadyFoundCollectibles()
+    {
+
+        if (TryGetComponent<CollectionSystem>(out CollectionSystem collectionSystemComp))
+        {
+            CollectInteractable[] collectables = collectionSystemComp.Collectables.GetComponentsInChildren<CollectInteractable>();
+            //collectables = FindObjectsOfType<CollectInteractable>();
+            print(collectables[0]);
+            string currentLevelName = SceneManager.GetActiveScene().name;
+
+            // If this level has already been visited in this play session...            
+            if (collectionSystemComp.LevelList.ContainsKey(currentLevelName))
+            {   
+                foreach (JournalPage journal in collectionSystemComp.LevelList[currentLevelName].Journals.Values)             
+                //for (int i=0; i < collectionSystemComp.LevelList[currentLevelName].Journals.Count; i++)          
+                {     
+                    if (journal.found)
+                    {
+                        for (int j=0; j < collectables.Length; j++)
+                        {
+                            //...and they map to existing journals still active in the level...
+                            if (collectables[j].int_data == journal.id)
+                            {
+                                collectables[j].gameObject.SetActive(false);
+                            }
+                        }
+                    }
+                    
+                }
+                
+            }
+            
+        }
+
+
+    }
+
     private bool SearchForTriggers()
     {
         Debug.Log("GameManager is searching for triggers");
@@ -245,6 +290,12 @@ public class GameMaster : MonoBehaviour
 
         Debug.Log("triggers not found by GameManager!");
         return false;
+    }
+
+    private void OnDestroy() 
+    {
+        print("GameMaster OnDestroy called!");
+        SceneManager.sceneLoaded -= OnLevelLoad;
     }
 }
 
