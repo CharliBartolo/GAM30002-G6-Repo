@@ -113,15 +113,13 @@ public class CrystalFXController : FXController
         if (MainCrystal.spreadEffects)
         {
             ColourAreaSphere();
-            ColourFriends();
+            //ColourFriends();
             ColourCrystal();
         }
 
     }
 
-
-
-    public void ColourFriends()
+/*    public void ColourFriends()
     {
         if (friends.Length > 0)
         {
@@ -134,30 +132,40 @@ public class CrystalFXController : FXController
             }
         }
 
-    }
+    }*/
 
     public void ColourAreaSphere()
     {
         if (temp == -1)
         {
-            vfx.SetVector4("ParticleColour", Crystal_Cold / 8);
-            vfx.SetVector4("TrailColour", Crystal_Cold / 8);
-            //vfx.SetVector4("TrailColour", new Vector4(Crystal_Cold.r, Crystal_Cold.g, Crystal_Cold.b, 0.1f));
-            AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Cold * 64);
+            if(AreaSphere.GetComponent<Renderer>().sharedMaterial.GetColor("_Emission") != Crystal_Cold * 64)
+            {
+                vfx.SetVector4("ParticleColour", Crystal_Cold / 8);
+                vfx.SetVector4("TrailColour", Crystal_Cold / 8);
+                //vfx.SetVector4("TrailColour", new Vector4(Crystal_Cold.r, Crystal_Cold.g, Crystal_Cold.b, 0.1f));
+                AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Cold * 64);
+            }
+           
         }
         else if (temp == 1)
         {
-            vfx.SetVector4("ParticleColour", Crystal_Hot / 8);
-            vfx.SetVector4("TrailColour", Crystal_Hot / 8);
-            //vfx.SetVector4("TrailColour", new Vector4(Crystal_Hot.r, Crystal_Hot.g, Crystal_Hot.b, 0.1f));
-            AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Hot * 64);
+            if (AreaSphere.GetComponent<Renderer>().sharedMaterial.GetColor("_Emission") != Crystal_Hot * 64)
+            {
+                vfx.SetVector4("ParticleColour", Crystal_Hot / 8);
+                vfx.SetVector4("TrailColour", Crystal_Hot / 8);
+                //vfx.SetVector4("TrailColour", new Vector4(Crystal_Hot.r, Crystal_Hot.g, Crystal_Hot.b, 0.1f));
+                AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Hot * 64);
+            }
         }
         else if (temp == 0)
         {
-            vfx.SetVector4("ParticleColour", Crystal_Neutral / 8);
-            vfx.SetVector4("TrailColour", Crystal_Neutral / 8);
-            //vfx.SetVector4("TrailColour", new Vector4(Crystal_Neutral.r, Crystal_Neutral.g, Crystal_Neutral.b, 0.1f));
-            AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Neutral * 64);
+            if (AreaSphere.GetComponent<Renderer>().sharedMaterial.GetColor("_Emission") != Crystal_Neutral * 64)
+            {
+                vfx.SetVector4("ParticleColour", Crystal_Neutral / 8);
+                vfx.SetVector4("TrailColour", Crystal_Neutral / 8);
+                //vfx.SetVector4("TrailColour", new Vector4(Crystal_Neutral.r, Crystal_Neutral.g, Crystal_Neutral.b, 0.1f));
+                AreaSphere.GetComponent<Renderer>().sharedMaterial.SetColor("_Emission", Crystal_Neutral * 64);
+            }
         }
     }
 
@@ -168,7 +176,8 @@ public class CrystalFXController : FXController
         {
             foreach (var item in CrystalMesh)
             {
-                item.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
+                if(item.sharedMaterial.GetColor("_SurfaceAlphaColor") != Crystal_Cold)
+                    item.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Cold);
             }
 
         }
@@ -176,14 +185,16 @@ public class CrystalFXController : FXController
         {
             foreach (var item in CrystalMesh)
             {
-                item.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
+                if (item.sharedMaterial.GetColor("_SurfaceAlphaColor") != Crystal_Hot)
+                    item.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Hot);
             }
         }
         else
         {
             foreach (var item in CrystalMesh)
             {
-                item.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral / colourIntensity);
+                if (item.sharedMaterial.GetColor("_SurfaceAlphaColor") != Crystal_Neutral / colourIntensity)
+                    item.sharedMaterial.SetColor("_SurfaceAlphaColor", Crystal_Neutral / colourIntensity);
             }
         }
     }
