@@ -58,6 +58,8 @@ public class CollectInteractable : InteractableBase
                 GameObject.Find("Player").GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Neutral);
                 Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
                 Camera.main.GetComponent<AudioSource>().Play();
+                GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(this);
+                GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().DisplayPopup();
                 break;
 
             case RayCastShootComplete.gunUpgrade.One:
@@ -68,8 +70,6 @@ public class CollectInteractable : InteractableBase
                 //GameObject.Find("Player").GetComponent<ReticleFXController>().ChangeState(ReticleFXController.ReticleState.Positive);
                 break;
         }
-
-        GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(this);
 
         if (destroyOnCollect)
             Destroy(gameObject);

@@ -625,9 +625,7 @@ public class PlayerController : MonoBehaviour, IConditions
                     if (currentInteractingObject.TryGetComponent
                         <CollectInteractable>(out CollectInteractable currentInteractable))
                     {
-                        /* GetComponent<GunFXController>().weaponState = GunFXController.WeaponState.Grab;
-                         GetComponent<GunFXController>().NextState();*/
-
+                        //Debug.Log("FOUND COLLECTABLE");
                         float animTime = 0.85f;
                         float animTime_place = 3.5f;
 
@@ -661,7 +659,7 @@ public class PlayerController : MonoBehaviour, IConditions
                                 StartCoroutine(CollectItem("Toolbox", animTime_place));
                             }
                         }
-                        else if (currentInteractingObject.name.Contains("Artifact"))
+                        else if (currentInteractingObject.name.Contains("Artifact") || currentInteractingObject.GetComponent<CollectInteractable>().itemName == "Artifact")
                         {
                             Debug.Log("PLAYER GRAB ARTIFACT");
                             GetComponent<GunFXController>().Grab();
@@ -686,12 +684,6 @@ public class PlayerController : MonoBehaviour, IConditions
                 GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Exit_Journal();
                 return;
             }
-            else
-            {
-                //GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().Display_Journal("this", "that", -1);
-                Debug.Log("DISPLAY JOURNAL - OLD STYLE");
-            }
-            //Debug.Log("Interaction failed, as no object was found capable of being interacted with.");
         }
     }
 
