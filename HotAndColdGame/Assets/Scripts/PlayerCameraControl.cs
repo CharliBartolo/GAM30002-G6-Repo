@@ -5,8 +5,8 @@ using UnityEngine;
 /// <summary>
 /// Responsible for managing Player Camera. Functionality includes adjusting general FOV,
 /// adjusting FOV based on speed, and 'headbobbing' while moving. Allows for an endgame camera pan.
-/// Last edit: Camera panning can now be applied to other scenes and allows for more flexibility.
-/// By: Charadey 23/10/2021
+/// Last edit: Added UI letterboxing for cutscenses.
+/// By: Matt 27/10/2021
 /// </summary>
 public class PlayerCameraControl : MonoBehaviour
 {
@@ -121,6 +121,7 @@ public class PlayerCameraControl : MonoBehaviour
     [Tooltip("The original direction of the player")]
     private Quaternion returnOriginalRotation;
 
+    private bool inCutscene;
     
     private void Awake()
     {
@@ -141,6 +142,7 @@ public class PlayerCameraControl : MonoBehaviour
     {
         if (this.isReadyForPan)
         {
+
             this.gameObject.GetComponent<PlayerController>().playerControlState = PlayerController.PlayerState.ControlsDisabled;
 
             if (needsVision)
@@ -214,6 +216,8 @@ public class PlayerCameraControl : MonoBehaviour
         {
             this.returnOriginalRotation = this.transform.rotation;
             this.isReadyForPan = true;
+
+            // fade cutscene letterbox in
         }
     }
 
@@ -288,6 +292,12 @@ public class PlayerCameraControl : MonoBehaviour
     //EndGame Camera Pan Addition
     IEnumerator PreRotationPan()
     {
+        if (!inCutscene)
+        {
+            inCutscene = true;
+            // fade cutscene letterbox out
+            GameObject.Find("UI").GetComponentInChildren<Letterbox>().FadeIn(0.5f);
+        }
         Quaternion lookRotation = Quaternion.LookRotation(this.targetObject.transform.position - this.transform.position);
         float t = 0.0f;
 
@@ -311,6 +321,12 @@ public class PlayerCameraControl : MonoBehaviour
 
     IEnumerator UpwardRotationPan()
     {
+        if (!inCutscene)
+        {
+            inCutscene = true;
+            // fade cutscene letterbox out
+            GameObject.Find("UI").GetComponentInChildren<Letterbox>().FadeIn(0.5f);
+        }
         Vector3 targetVector = this.targetObject.transform.position + new Vector3(0, this.upwardPanRotation, 0);
         Debug.Log(targetObject.transform.position);
         Debug.Log(targetVector);
@@ -359,7 +375,12 @@ public class PlayerCameraControl : MonoBehaviour
 
             yield return null;
         }
-
+        
         isPanning = false;
+        inCutscene = false;
+
+        // fade cutscene letterbox out
+        GameObject.Find("UI").GetComponentInChildren<Letterbox>().FadeOut(0.5f);
+
     }
 }
