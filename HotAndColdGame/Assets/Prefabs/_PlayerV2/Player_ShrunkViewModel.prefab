@@ -2033,13 +2033,17 @@ MonoBehaviour:
   needsVision: 0
   visionWindow: 0
   targetObject: {fileID: 0}
-  endgameTrigger: {fileID: 0}
-  isReadyForPan: 0
-  isGameEnd: 0
+  panTrigger: {fileID: 0}
+  usePrePan: 0
+  useUpwardPan: 0
+  useReturnPan: 0
+  ReturnControl: 0
   preRotationSpeed: 0
-  endGamePanRotation: 0
-  endGameRotationSpeed: 0
+  upwardPanRotation: 0
+  upwardRotationSpeed: 0
+  useEndGameFadeDelay: 0
   endGameFadeDelay: 0
+  returnRotationSpeed: 0
 --- !u!114 &1132983919121844882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10910,7 +10914,7 @@ AudioSource:
   m_GameObject: {fileID: 4616366975910539786}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 4b6508d136fd4f64f8a3008aac065704, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.118
