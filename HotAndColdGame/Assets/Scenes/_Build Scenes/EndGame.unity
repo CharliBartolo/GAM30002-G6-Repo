@@ -234,7 +234,7 @@ RectTransform:
   m_Children:
   - {fileID: 9586799}
   m_Father: {fileID: 1880863845}
-  m_RootOrder: 17
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1226,7 +1226,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1880863845}
-  m_RootOrder: 12
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1350,7 +1350,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1880863845}
-  m_RootOrder: 14
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3247,6 +3247,15 @@ MonoBehaviour:
       loop: 1
       spawn_on_object: 0
       source: {fileID: 0}
+    - name: OST_MainDrums
+      clip: {fileID: 8300000, guid: 09302a94b4c48cd45a63176f279ad065, type: 3}
+      layer: 0
+      volume: 1
+      pitch: 1
+      space: 0
+      loop: 1
+      spawn_on_object: 0
+      source: {fileID: 0}
   - name: UI
     sounds:
     - name: UI_ButtonHover
@@ -4832,7 +4841,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1880863845}
-  m_RootOrder: 11
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5516,7 +5525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1594386071, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1632028951, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_Sprite
@@ -5524,7 +5533,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: afaf2c7d60f911042b5296f848ce48d0, type: 3}
     - target: {fileID: 2071900177621610433, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3665375620786811913, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_Pivot.x
@@ -5701,6 +5710,10 @@ PrefabInstance:
     - target: {fileID: 3665375622738269863, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: crntTemp
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6743652284432922691, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7320864843064307852, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5882,7 +5895,7 @@ RectTransform:
   m_LocalScale: {x: 0.4249352, y: 0.4249352, z: 0.4249352}
   m_Children: []
   m_Father: {fileID: 1880863845}
-  m_RootOrder: 15
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6390,7 +6403,7 @@ Transform:
   m_Children:
   - {fileID: 28806863}
   m_Father: {fileID: 1880863845}
-  m_RootOrder: 18
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1111447973
 MonoBehaviour:
@@ -7205,7 +7218,7 @@ RectTransform:
   m_Children:
   - {fileID: 1960104138}
   m_Father: {fileID: 1880863845}
-  m_RootOrder: 19
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7464,7 +7477,7 @@ Transform:
   m_LocalScale: {x: 2.357612, y: 1.0896708, z: 3.3154323}
   m_Children: []
   m_Father: {fileID: 1880863845}
-  m_RootOrder: 16
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!199 &1435763656
 ParticleSystemRenderer:
@@ -13331,7 +13344,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1880863845}
-  m_RootOrder: 10
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -13816,7 +13829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0a8789c9dbf8cc4c829c9421b2513a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clip: OST_MainMenu
+  Clip: OST_MainDrums
   _randomiseStartTime: 0
   _randomisePitch: 0
   pitch_range: 0
@@ -13961,6 +13974,7 @@ MonoBehaviour:
   Positive: {r: 1, g: 0.6289237, b: 0.15471691, a: 1}
   Negative: {r: 0, g: 0.9696622, b: 1, a: 1}
   Neutral: {r: 1, g: 0.35283017, b: 0.87733364, a: 1}
+  LightningColour: {r: 0, g: 0, b: 0, a: 0}
   colourIntensity: 3
   materials:
     Crystal: {fileID: 2100000, guid: cb4f7f7ed3712f341afde03e05099dfc, type: 2}
@@ -13985,6 +13999,7 @@ MonoBehaviour:
   audioManager: {fileID: 647679430}
   colourPallete: {fileID: 1969793146}
   playerRef: {fileID: 0}
+  playerIncomingTempMod: 1
   savedGunState: 0
   start: {fileID: 0}
   end: {fileID: 0}
@@ -14735,7 +14750,7 @@ Transform:
   m_LocalScale: {x: 1.0896709, y: 1.0896708, z: 1.0896708}
   m_Children: []
   m_Father: {fileID: 1880863845}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!199 &2131599805
 ParticleSystemRenderer:
