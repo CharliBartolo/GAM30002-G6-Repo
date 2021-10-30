@@ -253,39 +253,39 @@ public class GameMaster : MonoBehaviour
             // If this level has already been visited in this play session...            
             if (collectionSystemComp.levelList.ContainsKey(currentLevelIndex))
             {   
-                //foreach (JournalPage journal in collectionSystemComp.levelList[currentLevelIndex].Journals.Values)     
-                foreach (JournalPage journalEntry in collectionSystemComp.allJournalsWithSceneIndex[currentLevelIndex])        
+                foreach (JournalPage journalEntry in collectionSystemComp.levelList[currentLevelIndex].Journals.Values)     
+                //foreach (JournalPage journalEntry in collectionSystemComp.allJournalsWithSceneIndex[currentLevelIndex])        
                 //for (int i=0; i < collectionSystemComp.LevelList[currentLevelName].Journals.Count; i++)          
                 {     
                     if (journalEntry.found)
                     {
                         foreach (CollectInteractable journalCollectInteractable in collectables)
                         {
-                            print("Collection System Journal ID = " + journalEntry.id + ", Journal in Level ID = " + journalCollectInteractable.int_data);
-                            if (journalCollectInteractable.int_data == journalEntry.id)
+                            //print("Collection System Journal ID = " + journalEntry.id + ", Journal in Level ID = " + journalCollectInteractable.int_data);
+                            if (journalCollectInteractable.int_data == journalEntry.id && journalCollectInteractable.itemName == "Journal")
                             {
                                 journalCollectInteractable.gameObject.SetActive(false);
-                                print("A journal has been hidden");
+                                //print("A journal has been hidden");
                             }
                         }                      
                     }
                 }
-                /*
-                foreach (CollectInteractable savedArtifact in collectionSystemComp.levelList[crntScene].Artifacts.Keys)   
+                
+                foreach (CollectInteractable savedArtifact in collectionSystemComp.levelList[currentLevelIndex].Artifacts.Keys)   
                 {
-                    if (collectionSystemComp.levelList[crntScene].Artifacts[savedArtifact] == true)
+                    print(collectionSystemComp.levelList[currentLevelIndex].Artifacts[savedArtifact]);
+                    if (collectionSystemComp.levelList[currentLevelIndex].Artifacts[savedArtifact] == true && savedArtifact.itemName != "Journal")
                     {
                         foreach (CollectInteractable artifactInLevel in collectables)
                         {
-                            print("Saved artifact name = " + savedArtifact.itemName + ", Artifact in Level Name = " + artifactInLevel.itemName);
-                            if (savedArtifact.itemName == artifactInLevel.itemName && artifactInLevel.destroyOnCollect == true)
+                            print("Saved artifact ID = " + savedArtifact.int_data + ", Artifact in Level ID = " + artifactInLevel.int_data);
+                            if (savedArtifact.int_data == artifactInLevel.int_data && artifactInLevel.destroyOnCollect == true)
                             {
                                 artifactInLevel.gameObject.SetActive(false);
                             }
                         }
                     }
-                } 
-                */            
+                }                                           
             }
             
         }

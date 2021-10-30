@@ -44,6 +44,8 @@ public class Journal_Reader : MonoBehaviour
     public AudioClip scribeSound;
     public AudioClip pageTurnSound;
 
+    //artifact icon sprite array
+    public Sprite[] artifactIcons;
 
     private void Start()
     {
@@ -167,9 +169,39 @@ public class Journal_Reader : MonoBehaviour
         homePage.gameObject.SetActive(option);
     }
 
-    public void DisplayPopup()
+    public void DisplayPopup(string type)
     {
         popUp.gameObject.SetActive(true);
+        popUp.transform.GetChild(0).gameObject.SetActive(false);
+        popUp.transform.GetChild(1).gameObject.SetActive(true);
+        switch (type)
+        {
+            case "Journal":
+                popUp.transform.GetChild(1).gameObject.SetActive(false);
+                popUp.transform.GetChild(0).gameObject.SetActive(true);
+                break;
+
+            case "Raygun":
+                popUp.transform.GetChild(1).GetComponent<Image>().sprite = artifactIcons[0];
+                break;
+
+            case "Globe":
+                popUp.transform.GetChild(1).GetComponent<Image>().sprite = artifactIcons[4];
+                break;
+
+            case "Specimen":
+                popUp.transform.GetChild(1).GetComponent<Image>().sprite = artifactIcons[2];
+                break;
+
+            case "Skull":
+                popUp.transform.GetChild(1).GetComponent<Image>().sprite = artifactIcons[1];
+                break;
+
+            case "Helmet":
+                popUp.transform.GetChild(1).GetComponent<Image>().sprite = artifactIcons[3];
+                break;
+        }
+       
     }
 
     public void Display_Journal(string journal_text_pg1, string journal_text_pg2, int journalType)
@@ -238,7 +270,7 @@ public class Journal_Reader : MonoBehaviour
             isJournalActive = false;
             if(newPageAdded)
             {
-                DisplayPopup();
+                DisplayPopup("Journal");
                 newPageAdded = false;
                 Camera.main.GetComponent<AudioSource>().PlayOneShot(scribeSound);
             }
