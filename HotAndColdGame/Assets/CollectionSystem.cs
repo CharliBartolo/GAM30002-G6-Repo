@@ -38,6 +38,7 @@ public class CollectionSystem : MonoBehaviour
     protected int levelsCount = 0;
     // journal id 
     int journalId = 0;
+    int artifactId = 0;
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -101,6 +102,7 @@ public class CollectionSystem : MonoBehaviour
         int levelIndex = SceneManager.GetActiveScene().buildIndex;
         int logNumber = 1;
         journalId = 0;
+        artifactId = 0;
 
         CollectInteractable[] collectables = Collectables.GetComponentsInChildren<CollectInteractable>();
         //CollectInteractable[] collectables = FindObjectsOfType<CollectInteractable>();
@@ -132,11 +134,12 @@ public class CollectionSystem : MonoBehaviour
                     }
                     else if (collectables[i].itemName == "Artifact" || collectables[i].itemName == "Raygun")
                     {
+                        collectables[i].int_data = artifactId;
                         Artifacts.Add(collectables[i]);
+                        artifactId++;
                     }
                 }
             }
-
 
             // append data to text entries
             for (int i = 0; i < Journals.Count; i++)
@@ -162,24 +165,16 @@ public class CollectionSystem : MonoBehaviour
             {
                 if (collectables[i].gameObject.activeSelf == true)
                 {
-                    //collectables[i].int_data = i;
-
                     if (collectables[i].itemName == "Journal")
                     {
                         collectables[i].int_data = journalId;                        
-
-                        //levelList[levelName].Journals.Add(page);
-                        //llJournals.Insert(journalId, page);
-                        
-                        journalId++;
-                      
-                    }
-                    /*                    
+                        journalId++;                      
+                    }                                        
                     else if (collectables[i].itemName == "Artifact" || collectables[i].itemName == "Raygun")
                     {
-                        Artifacts.Add(collectables[i]);
-                    }
-                    */
+                        collectables[i].int_data = artifactId;
+                        artifactId++;
+                    }                    
                 }
             }
             GameMaster.instance.CheckAlreadyFoundCollectibles();
@@ -336,6 +331,7 @@ public class CollectionSystem : MonoBehaviour
         public string levelName;
         public int levelIndex;
         public SortedDictionary<int, JournalPage> Journals;
+        //public Dictionary<int, bool> Artifacts;
         public Dictionary<CollectInteractable, bool> Artifacts;
 
 
@@ -344,8 +340,8 @@ public class CollectionSystem : MonoBehaviour
             this.levelName = levelName;
             this.levelIndex = levelIndex;
             this.Journals = new SortedDictionary<int, JournalPage>();
+            //this.Artifacts = new Dictionary<int, bool>();
             this.Artifacts = new Dictionary<CollectInteractable, bool>();
-
 
             // create collections and assign false collected valued
             AddCollectables(Journals, Artifacts);
@@ -363,6 +359,7 @@ public class CollectionSystem : MonoBehaviour
             foreach (CollectInteractable item in artifacts)
             {
                 this.Artifacts.Add(item, false);
+                //this.Artifacts.Add(item.int_data, false);
             }
         }
 
@@ -389,6 +386,7 @@ public class CollectionSystem : MonoBehaviour
 
         // find number of found items, indicated by a 'true' status, in a collection
         public int CountArtifactsFound(Dictionary<CollectInteractable, bool> collection)
+        //public int CountArtifactsFound(Dictionary<int, bool> collection)
         {
             int result = 0;
 
