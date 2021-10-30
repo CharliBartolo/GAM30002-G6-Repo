@@ -22,6 +22,7 @@ public class LevelSkip : MonoBehaviour
         //loads previous scene
         else if (Input.GetKeyDown(KeyCode.PageDown)) 
         {
+            GameMaster.instance.TravelledBackward = true;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         }
     }

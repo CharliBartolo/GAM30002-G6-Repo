@@ -107,19 +107,21 @@ public class GameMaster : MonoBehaviour
         {
             playerRef = GameObject.FindGameObjectWithTag("Player");
             GameObject checkpointObject = new GameObject ("SpawnedCheckpoint");
-            if(TravelledBackward)
+            if(TravelledBackward && GameObject.Find("ExitEntrance") != null)
             {
                 GameObject spawnRef = GameObject.Find("ExitEntrance");
                 checkpointObject.transform.position = spawnRef.transform.position;
                 checkpointObject.transform.rotation = spawnRef.transform.rotation;
-                TravelledBackward = false;
+                
             }
             else
             {
+               
                 checkpointObject.transform.position = playerRef.transform.position;
                 checkpointObject.transform.rotation = playerRef.transform.rotation;
             }
-           
+
+            TravelledBackward = false;
             lastCheckPointPos = checkpointObject.transform;
             Debug.Log("Player object found, reference stored!");
             return true;
