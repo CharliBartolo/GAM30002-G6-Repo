@@ -659,13 +659,13 @@ public class PlayerController : MonoBehaviour, IConditions
                                 StartCoroutine(CollectItem("Toolbox", animTime_place));
                             }
                         }
-                        else if (currentInteractingObject.name.Contains("Artifact") || currentInteractingObject.GetComponent<CollectInteractable>().itemName == "Artifact")
+                        else if (currentInteractingObject.name.Contains("Artifact") || currentInteractingObject.GetComponent<CollectInteractable>().itemName.Contains("Artifact"))
                         {
                             Debug.Log("PLAYER GRAB ARTIFACT");
                             GetComponent<GunFXController>().Grab();
                             currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
                             playerControlState = PlayerState.ControlsDisabled;
-                            StartCoroutine(CollectItem("Artifact", animTime));
+                            StartCoroutine(CollectItem(currentInteractingObject.GetComponent<CollectInteractable>().itemName, animTime));
 
                         }
                     }

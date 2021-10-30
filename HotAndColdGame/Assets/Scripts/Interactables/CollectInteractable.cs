@@ -37,11 +37,13 @@ public class CollectInteractable : InteractableBase
                 StartCoroutine(InteractJournal(delay));
                 break;
 
-            case "Artifact":
-                StartCoroutine(InteractArtifact(delay));
-                break;
+          
         }
+
+        if(itemName.Contains("Artifact"))
+                StartCoroutine(InteractArtifact(delay));
     }
+
 
     IEnumerator InteractRaygun(float delay)
     {
@@ -59,7 +61,7 @@ public class CollectInteractable : InteractableBase
                 Camera.main.GetComponent<AudioSource>().clip = pickup_sound;
                 Camera.main.GetComponent<AudioSource>().Play();
                 GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(this);
-                GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().DisplayPopup();
+                GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().DisplayPopup("Raygun");
                 break;
 
             case RayCastShootComplete.gunUpgrade.One:
@@ -105,11 +107,19 @@ public class CollectInteractable : InteractableBase
         Camera.main.GetComponent<AudioSource>().Play();
 
         GameMaster.instance.GetComponent<CollectionSystem>().FoundCollectable(this);
-        GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().DisplayPopup();
+        
+        if(itemName.Contains("Globe"))
+            GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().DisplayPopup("Globe");
+        else if (itemName.Contains("Specimen"))
+            GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().DisplayPopup("Specimen");
+        else if (itemName.Contains("Skull"))
+            GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().DisplayPopup("Skull");
+        else if (itemName.Contains("Helmet"))
+            GameObject.Find("UI").GetComponentInChildren<Journal_Reader>().DisplayPopup("Helmet");
 
         // do stuff
         if (destroyOnCollect)
-            Destroy(gameObject);
+        Destroy(gameObject);
     }
 
 
