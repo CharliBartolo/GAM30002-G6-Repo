@@ -53,10 +53,10 @@ public class DoorHatch : StateTriggered
     // Update is called once per frame
     void Update()
     {
-        if(Trigger != null && AnimationComplete())
+        if(Triggers != null && Triggers.Count > 0 && AnimationComplete())
             ListenForTrigger();
 
-        if(Trigger == null)
+       /* if(Triggers == null)
         {
             if (state == DoorState.Open1)
             {
@@ -70,7 +70,7 @@ public class DoorHatch : StateTriggered
                     stateChanged = false;
                 }
             }
-        }
+        }*/
     }
 
     public void PlaySound(int state)
@@ -98,89 +98,77 @@ public class DoorHatch : StateTriggered
     {
         isAnimationComplete = AnimationComplete();
 
-        switch (Trigger.CurrentTempState)
+        foreach (var item in Triggers)
         {
-            case ITemperature.tempState.Cold:
-                stateChanged = true;
-                
-                if (state == DoorState.Locked)
-                {
-                    
-                    if (isAnimationComplete)
+            switch (item.CurrentTempState)
+            {
+                case ITemperature.tempState.Cold:
+                    stateChanged = true;
+
+                    if (state == DoorState.Locked)
                     {
-                        //Anim.Play("Open1");
-                        state = DoorState.Open1;
-                        //ActivateLight(-1);
-                        DeactivateLight(-1);
-                        stateChanged = false;
-                        //Debug.Log("STATE CHANGED");
+
+                        if (isAnimationComplete)
+                        {
+                            //Anim.Play("Open1");
+                            state = DoorState.Open1;
+                            //ActivateLight(-1);
+                            DeactivateLight(-1);
+                            stateChanged = false;
+                            //Debug.Log("STATE CHANGED");
+                        }
                     }
-                }
-                else if (state == DoorState.Open2)
-                {
-                    if (isAnimationComplete)
+                    else if (state == DoorState.Open2)
                     {
-                        state = DoorState.Locked;
-                        Anim.Play("Close2");
-                        PlaySound(1);
-                        ActivateLight(-1);
-                        ActivateLight(1);
-                        //DeactivateLight(1);
-                        stateChanged = false;
-                    }
-                    break;
-                }
-                /*else if (state == DoorState.Open1)
-                {
-                    if (isAnimationComplete)
-                    {
-                        //Anim.Play("Close1");
-                        state = DoorState.Locked;
-                        ActivateLight(-1);
-                        ActivateLight(1);
-                        //DeactivateLight(-1);
-                        //DeactivateLight(1);
-                        stateChanged = false;
+                        if (isAnimationComplete)
+                        {
+                            state = DoorState.Locked;
+                            Anim.Play("Close2");
+                            PlaySound(1);
+                            ActivateLight(-1);
+                            ActivateLight(1);
+                            //DeactivateLight(1);
+                            stateChanged = false;
+                        }
+                        break;
                     }
 
                     break;
-                }*/
 
-                break;
+                case ITemperature.tempState.Hot:
 
-            case ITemperature.tempState.Hot:
+                    stateChanged = true;
 
-                stateChanged = true;
-
-                if (state == DoorState.Open1)
-                {
-                    if (isAnimationComplete)
+                    if (state == DoorState.Open1)
                     {
-                        state = DoorState.Open2;
-                        Anim.Play("Open2");
-                        PlaySound(0);
-                        //ActivateLight(-1);
-                        DeactivateLight(1);
-                        //DeactivateLight(-1);
-                        stateChanged = false;
+                        if (isAnimationComplete)
+                        {
+                            state = DoorState.Open2;
+                            Anim.Play("Open2");
+                            PlaySound(0);
+                            //ActivateLight(-1);
+                            DeactivateLight(1);
+                            //DeactivateLight(-1);
+                            stateChanged = false;
+                        }
                     }
-                }
-                else if (state == DoorState.Open2)
-                {
-                    if (isAnimationComplete)
+                    else if (state == DoorState.Open2)
                     {
-                        state = DoorState.Locked;
-                        Anim.Play("Close2");
-                        PlaySound(1);
-                        ActivateLight(-1);
-                        ActivateLight(1);
-                        //DeactivateLight(1);
-                        stateChanged = false;
+                        if (isAnimationComplete)
+                        {
+                            state = DoorState.Locked;
+                            Anim.Play("Close2");
+                            PlaySound(1);
+                            ActivateLight(-1);
+                            ActivateLight(1);
+                            //DeactivateLight(1);
+                            stateChanged = false;
+                        }
+                        break;
                     }
+
                     break;
-                }
-
-                break;
+            }
         }
     }
 

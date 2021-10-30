@@ -19,14 +19,17 @@ public class ColdTrigger : StateTriggered
         // step size = speed * frame time
         float step = Speed * Time.deltaTime;
         //Checks trigger's state and acts accordingly
-        switch (Trigger.CurrentTempState)
+        foreach (var item in Triggers)
         {
-            case ITemperature.tempState.Cold:
-                // moves position a step closer to the target position
-                Obj.transform.position = Vector3.MoveTowards(Obj.transform.position, coldTarget.transform.position, step);
-                break;
-            default:
-                break;
+            switch (item.CurrentTempState)
+            {
+                case ITemperature.tempState.Cold:
+                    // moves position a step closer to the target position
+                    Obj.transform.position = Vector3.MoveTowards(Obj.transform.position, coldTarget.transform.position, step);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

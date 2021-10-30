@@ -82,8 +82,8 @@ public class MachineFXController : FXController
     void SetAsTrigger()
     {
         // set as state trigger
-        if(triggeredObj.GetComponentInChildren<StateTriggered>() != null)
-            triggeredObj.GetComponentInChildren<StateTriggered>().Trigger = this.gameObject.GetComponent<TemperatureStateBase>();
+        if (triggeredObj.GetComponentInChildren<StateTriggered>() != null && !triggeredObj.GetComponentInChildren<StateTriggered>().Triggers.Contains(this.gameObject.GetComponent<TemperatureStateBase>()))
+            triggeredObj.GetComponentInChildren<StateTriggered>().Triggers.Add(this.gameObject.GetComponent<TemperatureStateBase>());
 
         // set as platform trigger
         if (triggeredObj.GetComponentInChildren<PlatformWithTemperature>() != null)

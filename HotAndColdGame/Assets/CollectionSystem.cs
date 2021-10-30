@@ -118,15 +118,18 @@ public class CollectionSystem : MonoBehaviour
             // add collectables to their lists
             for (int i = 0; i < collectables.Length; i++)
             {
-                if (collectables[i].gameObject.activeSelf == true)
-                {
+               
                     //collectables[i].int_data = i;
 
                     if (collectables[i].itemName == "Journal")
                     {
                         collectables[i].int_data = journalId;
                         JournalPage page = new JournalPage(collectables[i].GetComponent<Journal>().EntryLog[0], collectables[i].GetComponent<Journal>().EntryLog[1], journalId);
-                        Journals.Add(page);
+                        
+                        if (collectables[i].gameObject.activeSelf == true)
+                        {
+                            Journals.Add(page);
+                        }
                         //allJournalsWithSceneIndex.Add
                         //allJournals.Insert(journalId, page);
                         
@@ -136,10 +139,15 @@ public class CollectionSystem : MonoBehaviour
                     else if (collectables[i].itemName.Contains("Artifact") || collectables[i].itemName.Contains("Raygun"))
                     {
                         collectables[i].int_data2 = artifactId;
-                        Artifacts.Add(collectables[i]);
+                        
+                        if (collectables[i].gameObject.activeSelf == true)
+                            {
+                                Artifacts.Add(collectables[i]);
+                            }
+                  
                         artifactId++;
                     }
-                }
+                
             }
 
             // append data to text entries

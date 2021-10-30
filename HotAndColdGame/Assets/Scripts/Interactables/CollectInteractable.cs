@@ -75,7 +75,8 @@ public class CollectInteractable : InteractableBase
         }
 
         if (destroyOnCollect)
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+                //Destroy(gameObject);
     }
 
     IEnumerator InteractJournal(float delay)
@@ -121,7 +122,8 @@ public class CollectInteractable : InteractableBase
 
         // do stuff
         if (destroyOnCollect)
-        Destroy(gameObject);
+            gameObject.SetActive(false);
+                //Destroy(gameObject);
     }
 
 

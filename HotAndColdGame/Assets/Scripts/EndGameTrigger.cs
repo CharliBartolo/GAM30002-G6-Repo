@@ -60,6 +60,7 @@ public class EndGameTrigger : MonoBehaviour
         }
         else 
         {
+            gm.TravelledBackward = true;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
             gm.prevScene = SceneManager.GetActiveScene().buildIndex;
         }
@@ -75,10 +76,19 @@ public class EndGameTrigger : MonoBehaviour
 
     public IEnumerator DarknessFadeIn(float duration, float delay = 0)
     {
-        darknessOverlay.GetComponent<Image>().sprite = null;
-        darknessOverlay.GetComponent<Image>().color = screenEffects.Darkness;
+        if(travellingBackwards)
+        {
+            darknessOverlay.GetComponent<Image>().sprite = null;
+            darknessOverlay.GetComponent<Image>().color = Color.black;
+        }
+        else
+        {
+            darknessOverlay.GetComponent<Image>().sprite = null;
+            darknessOverlay.GetComponent<Image>().color = screenEffects.Darkness;
+        }
+       
 
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay/2);
 
         darknessOverlay.CrossFadeAlpha(1, duration, false);
         

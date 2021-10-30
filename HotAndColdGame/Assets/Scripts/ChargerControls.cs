@@ -23,26 +23,29 @@ public class ChargerControls : StateTriggered
     // Update is called once per frame
     void Update()
     {
-        if (Trigger != null)
+        if (Triggers != null)
             ListenForTrigger();
     }
 
     public override void ListenForTrigger()
     {
-        switch (Trigger.CurrentTempState)
+        foreach (var item in Triggers)
         {
-            case ITemperature.tempState.Cold:
-                stateChanged = true;
+            switch (item.CurrentTempState)
+            {
+                case ITemperature.tempState.Cold:
+                    stateChanged = true;
 
 
-                break;
+                    break;
 
 
-            case ITemperature.tempState.Hot:
-                stateChanged = true;
-              
+                case ITemperature.tempState.Hot:
+                    stateChanged = true;
 
-                break;
+
+                    break;
+            }
         }
     }
 }

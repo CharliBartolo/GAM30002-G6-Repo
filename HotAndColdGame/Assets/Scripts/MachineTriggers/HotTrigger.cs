@@ -25,25 +25,29 @@ public class HotTrigger : StateTriggered
         // step size = speed * frame time
         float step = Speed * Time.deltaTime;
         //Checks trigger's state and acts accordingly
-        switch (Trigger.CurrentTempState)
+
+        foreach (var item in Triggers)
         {
-            case ITemperature.tempState.Cold:
-                //turns of block being blocked
-                isBlocked = false;
+            switch (item.CurrentTempState)
+            {
+                case ITemperature.tempState.Cold:
+                    //turns of block being blocked
+                    isBlocked = false;
+                    break;
+                case ITemperature.tempState.Hot:
+                    //check if blocked
+                    if (isBlocked)
+                    {
+                        //moves between 2 points
+                        Obj.transform.position = Vector3.Lerp(collisonPos.transform.position, origin.transform.position, Mathf.PingPong(Time.time * step, 1.0f));
+                    }
+                    else
+                    {
+                        //moves position a step closer to the target position
+                        Obj.transform.position = Vector3.MoveTowards(Obj.transform.position, hotTarget.transform.position, step);
+                    }
                 break;
-            case ITemperature.tempState.Hot:
-                //check if blocked
-                if (isBlocked)
-                {
-                    //moves between 2 points
-                    Obj.transform.position = Vector3.Lerp(collisonPos.transform.position, origin.transform.position, Mathf.PingPong(Time.time * step, 1.0f));
-                }
-                else
-                {
-                    //moves position a step closer to the target position
-                    Obj.transform.position = Vector3.MoveTowards(Obj.transform.position, hotTarget.transform.position, step);
-                }
-                break;
+            }
         }
     }
 }

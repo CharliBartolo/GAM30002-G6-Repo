@@ -28,6 +28,7 @@ public class GameMaster : MonoBehaviour
     public int difficultyNum;   // 0 is standard, 1 is hard
 
     public bool LoadingCheckpoint;
+    public bool TravelledBackward;
 
     [SerializeField] public Transform lastCheckPointPos;
 
@@ -106,8 +107,19 @@ public class GameMaster : MonoBehaviour
         {
             playerRef = GameObject.FindGameObjectWithTag("Player");
             GameObject checkpointObject = new GameObject ("SpawnedCheckpoint");
-            checkpointObject.transform.position = playerRef.transform.position;
-            checkpointObject.transform.rotation = playerRef.transform.rotation;
+            if(TravelledBackward)
+            {
+                GameObject spawnRef = GameObject.Find("ExitEntrance");
+                checkpointObject.transform.position = spawnRef.transform.position;
+                checkpointObject.transform.rotation = spawnRef.transform.rotation;
+                TravelledBackward = false;
+            }
+            else
+            {
+                checkpointObject.transform.position = playerRef.transform.position;
+                checkpointObject.transform.rotation = playerRef.transform.rotation;
+            }
+           
             lastCheckPointPos = checkpointObject.transform;
             Debug.Log("Player object found, reference stored!");
             return true;
@@ -261,29 +273,37 @@ public class GameMaster : MonoBehaviour
                     {
                         foreach (CollectInteractable journalCollectInteractable in collectables)
                         {
-                            //print("Collection System Journal ID = " + journalEntry.id + ", Journal in Level ID = " + journalCollectInteractable.int_data);
-                            if (journalCollectInteractable.int_data == journalEntry.id && journalCollectInteractable.itemName == "Journal")
+                            if(journalCollectInteractable.itemName.Contains("Journal"))
                             {
-                                journalCollectInteractable.gameObject.SetActive(false);
-                                //print("A journal has been hidden");
+                                //print("Collection System Journal ID = " + journalEntry.id + ", Journal in Level ID = " + journalCollectInteractable.int_data);
+                                if (journalCollectInteractable.int_data == journalEntry.id)
+                                {
+                                    journalCollectInteractable.gameObject.SetActive(false);
+                                    //print("A journal has been hidden");
+                                }
                             }
                         }                      
                     }
                 }
 
 
-
                 foreach (int savedArtifact in collectionSystemComp.levelList[currentLevelIndex].Artifacts.Keys)
                 {
                     print(collectionSystemComp.levelList[currentLevelIndex].Artifacts[savedArtifact]);
+
                     if (collectionSystemComp.levelList[currentLevelIndex].Artifacts[savedArtifact] == true)
                     {
                         foreach (CollectInteractable artifactInLevel in collectables)
                         {
-                            print("Saved artifact ID = " + savedArtifact + ", Artifact in Level ID = " + artifactInLevel.int_data);
-                            if (savedArtifact == artifactInLevel.int_data2 && artifactInLevel.destroyOnCollect == true)
+                            if(artifactInLevel.itemName.Contains("Artifact") || artifactInLevel.itemName.Contains("Raygun"))
                             {
-                                artifactInLevel.gameObject.SetActive(false);
+                                //artifactInLevel.gameObject.SetActive(true);
+
+                                print("Saved artifact ID = " + savedArtifact + ", Artifact in Level ID = " + artifactInLevel.int_data2);
+                                if (savedArtifact == artifactInLevel.int_data2 && artifactInLevel.destroyOnCollect == true)
+                                {
+                                    artifactInLevel.gameObject.SetActive(false);
+                                }
                             }
                         }
                     }

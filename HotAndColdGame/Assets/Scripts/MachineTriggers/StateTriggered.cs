@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StateTriggered : MonoBehaviour
 {
-    [SerializeField] public TemperatureStateBase Trigger = null;
+    [SerializeField] public List<TemperatureStateBase> Triggers = null;
 
     // Start is called before the first frame update
     public virtual void Start() {}//Lightning = GameMaster.instance.colourPallete.materials.LightningStrike; }
@@ -15,20 +15,24 @@ public class StateTriggered : MonoBehaviour
     // listens for changes in state
     public virtual void ListenForTrigger()
     {
-        switch (Trigger.CurrentTempState)
+        foreach (var item in Triggers)
         {
-            case ITemperature.tempState.Cold:
-                // Cold behaviour
-                break;
+            switch (item.CurrentTempState)
+            {
+                case ITemperature.tempState.Cold:
+                    // Cold behaviour
+                    break;
 
-            case ITemperature.tempState.Hot:
-                // Hot behaviour
-                break;
+                case ITemperature.tempState.Hot:
+                    // Hot behaviour
+                    break;
 
-            case ITemperature.tempState.Neutral:
-                // Neutral behaviour
-                break;
+                case ITemperature.tempState.Neutral:
+                    // Neutral behaviour
+                    break;
+            }
         }
+       
     }
 }
 
