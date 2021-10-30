@@ -270,7 +270,7 @@ public class GameMaster : MonoBehaviour
                         }                      
                     }
                 }
-                
+                /*
                 foreach (CollectInteractable savedArtifact in collectionSystemComp.levelList[currentLevelIndex].Artifacts.Keys)   
                 {
                     print(collectionSystemComp.levelList[currentLevelIndex].Artifacts[savedArtifact]);
@@ -285,7 +285,8 @@ public class GameMaster : MonoBehaviour
                             }
                         }
                     }
-                }                                           
+                }  
+                */                                         
             }
             
         }
