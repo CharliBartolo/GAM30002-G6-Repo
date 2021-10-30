@@ -169,12 +169,14 @@ public class CollectionSystem : MonoBehaviour
                     {
                         collectables[i].int_data = journalId;                        
                         journalId++;                      
-                    }                                        
+                    }  
+                    /*                                      
                     else if (collectables[i].itemName == "Artifact" || collectables[i].itemName == "Raygun")
                     {
                         collectables[i].int_data = artifactId;
                         artifactId++;
-                    }                    
+                    }
+                    */                    
                 }
             }
             GameMaster.instance.CheckAlreadyFoundCollectibles();
