@@ -4,9 +4,9 @@ using UnityEngine;
 
 /// <summary>
 /// Responsible for managing Player Camera. Functionality includes adjusting general FOV,
-/// adjusting FOV based on speed, and 'headbobbing' while moving. Allows for an endgame camera pan.
-/// Last edit: Added UI letterboxing for cutscenses.
-/// By: Matt 27/10/2021
+/// adjusting FOV based on speed, and 'headbobbing' while moving. Allows for an endgame camera pan and camera shake.
+/// Last edit: Added Camera Shake for entering water rising trigger.
+/// By: Charadey 30/11/2021
 /// </summary>
 public class PlayerCameraControl : MonoBehaviour
 {
@@ -64,6 +64,10 @@ public class PlayerCameraControl : MonoBehaviour
     [Tooltip("Boolean that tells if the game has reached the return pan sequence")]
     private bool isReturnPan;
 
+    //[SerializeField]
+    [Tooltip("Boolean that tells if the game has reached the camera shake sequence")]
+    private bool isCameraShake;
+
     [SerializeField]
     [Tooltip("If checked, pans toward an objects direction")]
     private bool usePrePan;
@@ -85,6 +89,7 @@ public class PlayerCameraControl : MonoBehaviour
     private Coroutine preRotationCoroutine;
     private Coroutine upwardRotationCoroutine;
     private Coroutine returnRotationCoroutine;
+    private Coroutine cameraShakeCoroutine;
 
     //Pre Rotation
     [Header("Pre Rotation Settings")]
@@ -121,13 +126,35 @@ public class PlayerCameraControl : MonoBehaviour
     [Tooltip("The original direction of the player")]
     private Quaternion returnOriginalRotation;
 
+    //Camera Shake
+    [Header("Camera Shake Settings")]
+    [SerializeField]
+    [Tooltip("Turns on Camera Shake")]
+    private bool UseCameraShake;
+
+    [SerializeField]
+    [Tooltip("How long the camera will shake")]
+    private float shakeDuration;
+
+    [SerializeField]
+    [Tooltip("How strong the camera will shake")]
+    private float shakeMagnitude;
+
+    [Tooltip("Original position of camera")]
+    private Vector3 originalPos;
+
     private bool inCutscene;
-    
+   
     private void Awake()
     {
         playerCam = GetComponentInChildren<Camera>();
 
         defaultYpos = playerCam.transform.localPosition.y;
+
+        isReadyForPan = false;
+        isPanning = false;
+        isReturnPan = false;
+        isCameraShake = false;
     }
 
     // Start is called before the first frame update
@@ -135,7 +162,6 @@ public class PlayerCameraControl : MonoBehaviour
     {
         baseFOV = playerCam.fieldOfView;
         currentFOV = baseFOV;
-
     }
 
     private void FixedUpdate()
@@ -197,7 +223,7 @@ public class PlayerCameraControl : MonoBehaviour
                 }               
             }
         }
-
+       
         //DEBUG
         if (Debug.isDebugBuild)
         {
@@ -217,6 +243,11 @@ public class PlayerCameraControl : MonoBehaviour
             this.returnOriginalRotation = this.transform.rotation;
             this.isReadyForPan = true;
 
+            if (UseCameraShake)
+            {
+                Shake();
+                isCameraShake = true;
+            } 
             // fade cutscene letterbox in
         }
     }
@@ -243,7 +274,7 @@ public class PlayerCameraControl : MonoBehaviour
     {
         if (canUseHeadbob)
         {
-            HandleHeadbob(horizVelocity ,Grounded);
+            HandleHeadbob(horizVelocity, Grounded);
         }
     }
 
@@ -263,6 +294,7 @@ public class PlayerCameraControl : MonoBehaviour
                 playerCam.transform.localPosition, 48f * Time.deltaTime);
         }
     }
+
     public void PreRotate()
     {
         if (this.preRotationCoroutine == null)
@@ -271,6 +303,7 @@ public class PlayerCameraControl : MonoBehaviour
             this.preRotationCoroutine = StartCoroutine(PreRotationPan());
         }       
     }
+
     public void UpwardRotate()
     {
         if (this.upwardRotationCoroutine == null)
@@ -286,6 +319,14 @@ public class PlayerCameraControl : MonoBehaviour
         {
             isPanning = true;
             this.returnRotationCoroutine = StartCoroutine(ReturnRotationPan());
+        }
+    }
+
+    public void Shake()
+    {
+        if (this.cameraShakeCoroutine == null)
+        {
+            this.cameraShakeCoroutine = StartCoroutine(CameraShake(shakeDuration, shakeMagnitude));
         }
     }
 
@@ -316,8 +357,8 @@ public class PlayerCameraControl : MonoBehaviour
 
         this.isUpwardPan = true;
         isPanning = false;
-        
     }
+        
 
     IEnumerator UpwardRotationPan()
     {
@@ -378,9 +419,58 @@ public class PlayerCameraControl : MonoBehaviour
         
         isPanning = false;
         inCutscene = false;
+        /*
+        if (UseCameraShake)
+        {
+            t = 0.0f;
+            this.playerCam.transform.localPosition = originalPos;
+            float x = this.playerCam.transform.localPosition.x;
+            float y = this.playerCam.transform.localPosition.y;
 
+            while (t < 1.0f)
+            {
+                Debug.Log("current: " + this.playerCam.transform.localPosition);
+                Debug.Log("original: " + this.originalPos);
+
+                if (this.playerCam.transform.localPosition == this.originalPos)
+                {
+                    t = 1.0f;
+                }
+
+                this.playerCam.transform.localPosition = new Vector3(Mathf.MoveTowards(x, originalPos.x, t), Mathf.MoveTowards(y, originalPos.y, t), originalPos.z);
+                t += Time.deltaTime * preRotationSpeed;
+
+                yield return null;
+            }  
+        }
+        */
         // fade cutscene letterbox out
         GameObject.Find("UI").GetComponentInChildren<Letterbox>().FadeOut(0.5f);
 
+    }
+
+    //Camera Shake addition
+    IEnumerator CameraShake(float duration, float magnitude)
+    {
+        this.originalPos = this.playerCam.transform.localPosition;
+        float shakeFadeTime = magnitude / duration;
+        float t = 0.0f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+
+            magnitude = Mathf.MoveTowards(magnitude, 0, shakeFadeTime * Time.deltaTime);
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+
+            this.playerCam.transform.localPosition = new Vector3(x, y, originalPos.z);
+
+            yield return null;
+        }
+
+        this.playerCam.transform.localPosition = this.originalPos;
+
+        this.isCameraShake = false;
     }
 }
