@@ -7,14 +7,15 @@ using System;
 
 /// <summary>
 /// This class is responsible for respawning player at last checkpoint
-/// Last edit: UI now automatically closes after retry button is pressed but player cannot move from the respawn position
-/// By: Jason - 11/10/2021
+/// Last edit: UI now automatically closes and selected triggers are reset after retry button is pressed  
+/// By: Jason - 29/10/2021
 /// </summary>
 
 public class Reload : MonoBehaviour
 {
-    [SerializeField] public CheckPoint spawn;               //reference checkpoint script
+    //[SerializeField] public CheckPoint spawn;               //reference checkpoint script
     [SerializeField] public List<Transform> checkPoints;    //list for saving checkpoint positions
+    [SerializeField] public List<DeadArea> Trigger;    //list for saving checkpoint positions
     private GameMaster gm;                                  //reference game master script
     //public static event Action<bool> PowerButtonClicked = delegate { };
     private PlayerController pauseUI;
@@ -37,6 +38,11 @@ public class Reload : MonoBehaviour
     {
         //Debug.Log("Reloading");
         CheckpointTeleport();
+        for (int i = 0; i < Trigger.Count; ++i)
+        {
+            Trigger[i].TriggerReset();
+            //Debug.Log("Working");
+        }
     }
 
     //purpose of function is respawn player at last checkpoint
@@ -50,7 +56,7 @@ public class Reload : MonoBehaviour
             {
                 GameMaster.instance.playerRef.transform.position = checkPoints[i].position;
                 GameMaster.instance.playerRef.transform.rotation = checkPoints[i].rotation;
-                spawn.spawnPos = checkPoints[i];
+                gm.lastCheckPointPos = checkPoints[i];
                 //Debug.Log(checkPoints[i]);
                 //when line below is run then the UI closes but wasd doesn't move player but cursor works
                 pauseUI.PC.IsPaused = false;
