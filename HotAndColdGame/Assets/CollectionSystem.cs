@@ -134,9 +134,9 @@ public class CollectionSystem : MonoBehaviour
                     }
                     else if (collectables[i].itemName.Contains("Artifact") || collectables[i].itemName.Contains("Raygun"))
                     {
-                        collectables[i].int_data = artifactId;
+                        //collectables[i].int_data = artifactId;
                         Artifacts.Add(collectables[i]);
-                        artifactId++;
+                        //artifactId++;
                     }
                 }
             }
