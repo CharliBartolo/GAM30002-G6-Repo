@@ -5,77 +5,15 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
-// struct for holding level collectables data
-public struct LevelData
-{
-    public string levelName;
-    public SortedDictionary<int, JournalPage> Journals;
-    public Dictionary<CollectInteractable, bool> Artifacts;
 
-
-    public LevelData(string levelName, List<JournalPage> Journals, List<CollectInteractable> Artifacts)
-    {
-        this.levelName = levelName;
-        this.Journals = new SortedDictionary<int, JournalPage>();
-        this.Artifacts = new Dictionary<CollectInteractable, bool>();
-
-
-        // create collections and assign false collected valued
-        AddCollectables(Journals, Artifacts);
-    }
-
-
-    // adds collectables to their lists
-    void AddCollectables(List<JournalPage> journals, List<CollectInteractable> artifacts)
-    {
-        foreach (var page in journals)
-        {
-            this.Journals.Add(page.id, page);
-        }
-
-        foreach (var item in artifacts)
-        {
-            this.Artifacts.Add(item, false);
-        }
-    }
-
-    // return number of Journals found
-    public int JournalsFound => CountJournalsFound(Journals);
-
-    // return number of Artifacts found
-    public int ArtifactsFound => CountArtifactsFound(Artifacts);
-
-    // find number of journals found
-    public int CountJournalsFound(SortedDictionary<int, JournalPage> collection)
-    {
-        int result = 0;
-
-
-        foreach (var item in collection.Values)
-        {
-            if (item.found == true)
-                result++;
-        }
-
-        return result;
-    }
-
-    // find number of found items, indicated by a 'true' status, in a collection
-    public int CountArtifactsFound(Dictionary<CollectInteractable, bool> collection)
-    {
-        int result = 0;
-
-        foreach (var item in collection.Values)
-        {
-            if (item == true)
-                result++;
-        }
-
-        return result;
-    }
-
-}
-
+/// <summary>
+/// Responsible for managing collectibles, such as journals, the raygun etc.
+/// Manages their found status, whether they should or shouldn't appear on level load,
+/// accessing any associated data (such as journal entries).
+/// Last edit: Expanded journals to be indexed by scene number, allowed collectibles
+///            to be correctly indexed when revisiting previous level.
+/// By: Charli - 30/10/21
+/// </summary>
 public class CollectionSystem : MonoBehaviour
 {
     // add parent gameobject containing colectable items here
@@ -85,24 +23,21 @@ public class CollectionSystem : MonoBehaviour
 
     // static variables
     // static list of LevelData
-    public static Dictionary<string, LevelData> levelList;
+    //public static Dictionary<string, LevelData> levelList;
     // list access variable
-    public  Dictionary<string, LevelData> LevelList;
+    public Dictionary<int, LevelData> levelList;
 
-    public static List<JournalPage> AllJournals;
-    public List<JournalPage> allJournals;
+    //public static List<JournalPage> AllJournals;
+    // allJournals as indexed by scene index
+    //public Dictionary<int, JournalPageCollection> allJournalsWithSceneIndex;
+    public Dictionary<int, List<JournalPage>> allJournalsWithSceneIndex;
+    //private int journalSceneIndex = 0;
     // started flag
-    protected static bool started;
+    protected bool started;
     // levels count
-    protected static int levelsCount = 0;
+    protected int levelsCount = 0;
     // journal id 
-    static int journalId = 0;
-
-    private void Awake()
-    {
-        //Debug.Log("Awake");
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
+    int journalId = 0;
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -113,7 +48,8 @@ public class CollectionSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+       SceneManager.sceneLoaded += OnSceneLoaded;
+       Initialise();
     }
 
     public void Initialise()
@@ -121,12 +57,14 @@ public class CollectionSystem : MonoBehaviour
         // initialise level list if not started
         if (!started)
         {
-            AllJournals = new List<JournalPage>();
-            levelList = new Dictionary<string, LevelData>();
+            //allJournalsWithSceneIndex = new Dictionary<int, JournalPageCollection>();
+            allJournalsWithSceneIndex = new Dictionary<int, List<JournalPage>>();
+            //journalSceneIndex = 0;
+            levelList = new Dictionary<int, LevelData>();
             started = true;
 
-            LevelList = levelList;
-            allJournals = AllJournals;
+            //LevelList = levelList;
+            //allJournals = AllJournals;
             //Debug.Log("LIST INITIALISED!");
         }
 
@@ -148,8 +86,6 @@ public class CollectionSystem : MonoBehaviour
         {
             Debug.Log("No collectables in scnene");
         }
-
-
     }
 
     // Update is called once per frame
@@ -162,19 +98,22 @@ public class CollectionSystem : MonoBehaviour
     public void AddLevelToMaster()
     {
         string levelName = SceneManager.GetActiveScene().name;
+        int levelIndex = SceneManager.GetActiveScene().buildIndex;
         int logNumber = 1;
+        journalId = 0;
 
+        CollectInteractable[] collectables = Collectables.GetComponentsInChildren<CollectInteractable>();
+        //CollectInteractable[] collectables = FindObjectsOfType<CollectInteractable>();
 
-        if (!levelList.ContainsKey(levelName))
+        //if (!levelList.ContainsKey(levelName))
+        if (!levelList.ContainsKey(levelIndex))
         {
+            print("Level List does not contain this level's data! Adding...");
             List<JournalPage> Journals = new List<JournalPage>();
             List<CollectInteractable> Artifacts = new List<CollectInteractable>();
-
-            CollectInteractable[] collectables = Collectables.GetComponentsInChildren<CollectInteractable>();
-
           
             // add collectables to their lists
-            for (int i = 0; i < Collectables.GetComponentsInChildren<CollectInteractable>().Length; i++)
+            for (int i = 0; i < collectables.Length; i++)
             {
                 if (collectables[i].gameObject.activeSelf == true)
                 {
@@ -184,21 +123,20 @@ public class CollectionSystem : MonoBehaviour
                     {
                         collectables[i].int_data = journalId;
                         JournalPage page = new JournalPage(collectables[i].GetComponent<Journal>().EntryLog[0], collectables[i].GetComponent<Journal>().EntryLog[1], journalId);
-
                         Journals.Add(page);
-                        AllJournals.Insert(journalId, page);
+                        //allJournalsWithSceneIndex.Add
+                        //allJournals.Insert(journalId, page);
                         
                         journalId++;
                       
                     }
                     else if (collectables[i].itemName == "Artifact" || collectables[i].itemName == "Raygun")
                     {
-
                         Artifacts.Add(collectables[i]);
                     }
                 }
-
             }
+
 
             // append data to text entries
             for (int i = 0; i < Journals.Count; i++)
@@ -208,33 +146,76 @@ public class CollectionSystem : MonoBehaviour
                 logNumber++;
             }
 
+            LevelData levelData = new LevelData(levelName, levelIndex, Journals, Artifacts);
+            allJournalsWithSceneIndex.Add(levelIndex, Journals);
 
-            LevelData data = new LevelData(levelName, Journals, Artifacts);
 
             // add level to list
-            levelList.Add(data.levelName, data);
+            levelList.Add(levelData.levelIndex, levelData);
 
             Debug.Log("LEVEL DATA ADDED");
+        }
+        else
+        {
+            // Remap IDs to logs in level
+            for (int i = 0; i < collectables.Length; i++)
+            {
+                if (collectables[i].gameObject.activeSelf == true)
+                {
+                    //collectables[i].int_data = i;
+
+                    if (collectables[i].itemName == "Journal")
+                    {
+                        collectables[i].int_data = journalId;                        
+
+                        //levelList[levelName].Journals.Add(page);
+                        //llJournals.Insert(journalId, page);
+                        
+                        journalId++;
+                      
+                    }
+                    /*                    
+                    else if (collectables[i].itemName == "Artifact" || collectables[i].itemName == "Raygun")
+                    {
+                        Artifacts.Add(collectables[i]);
+                    }
+                    */
+                }
+            }
+            GameMaster.instance.CheckAlreadyFoundCollectibles();
         }
 
     }
 
+    
     public JournalPage RetrieveFromAllJournals(int id)
     {
-        return AllJournals[id];
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        return allJournalsWithSceneIndex[currentSceneIndex][id];
+        //return allJournals[id];
     }
-
+    
     public List<JournalPage> RetrieveFoundPages()
     {
-        return AllJournals.Where(x => x.found == true).ToList();
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        List<JournalPage> allFoundJournals = new List<JournalPage>();
+        //return allJournals.Where(x => x.found == true).ToList();
+        foreach (List<JournalPage> setOfJournals in allJournalsWithSceneIndex.Values)
+        {
+            allFoundJournals.AddRange(setOfJournals.Where(x => x.found == true));
+        }   
+        
+        return allFoundJournals;
+        //return allJournalsWithSceneIndex[currentSceneIndex].Where(x => x.found == true).ToList();
     }
 
     // retrieve a specific journal page
-    public JournalPage RetrieveJournalPage(string levelName, int id)
+    //public JournalPage RetrieveJournalPage(string levelName, int id)
+    public JournalPage RetrieveJournalPage(int levelIndex, int id)
     {
         JournalPage page = null;
 
-        page = levelList[levelName].Journals[id];
+        page = levelList[levelIndex].Journals[id];
 
         return page;
 
@@ -244,11 +225,15 @@ public class CollectionSystem : MonoBehaviour
     public JournalPage RetrieveNextFoundPage()
     {
         JournalPage page = null;
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        page = AllJournals.SkipWhile(x => x.found != true).Skip(0).FirstOrDefault();
+        foreach (List<JournalPage> setOfJournals in allJournalsWithSceneIndex.Values)
+        {
+            //page = allJournalsWithSceneIndex[currentSceneIndex].SkipWhile(x => x.found != true).Skip(0).FirstOrDefault();
+            page = setOfJournals.SkipWhile(x => x.found != true).Skip(0).FirstOrDefault();
+        }       
 
         return page;
-
     }
 
 
@@ -257,23 +242,29 @@ public class CollectionSystem : MonoBehaviour
     {
         JournalPage page = null;
 
-        page = AllJournals.TakeWhile(x => x.found != true).DefaultIfEmpty(AllJournals[AllJournals.Count - 1]).LastOrDefault();
+        foreach (List<JournalPage> setOfJournals in allJournalsWithSceneIndex.Values)
+        {
+            page = setOfJournals.TakeWhile(x => x.found != true).DefaultIfEmpty(setOfJournals[setOfJournals.Count - 1]).LastOrDefault();
+            //page = allJournals.TakeWhile(x => x.found != true).DefaultIfEmpty(allJournals[allJournals.Count - 1]).LastOrDefault();
+        }              
 
         return page;
-
     }
 
     // set found to true for item leveldata when item found
     public void FoundCollectable(CollectInteractable item)
     {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
         if (item.itemName == "Journal")
         {
-            AllJournals[item.int_data].found = true;
+            //allJournalsWithSceneIndex[item.int_data].found = true;
+            allJournalsWithSceneIndex[currentSceneIndex][item.int_data].found = true;
             //levelList[SceneManager.GetActiveScene().name].Journals[item.int_data].found = true;
         }
         else if (item.itemName == "Artifact" || item.itemName == "Raygun")
         {
-            levelList[SceneManager.GetActiveScene().name].Artifacts[item] = true;
+            levelList[SceneManager.GetActiveScene().buildIndex].Artifacts[item] = true;
         }
 
         UpdateUI();
@@ -338,4 +329,82 @@ public class CollectionSystem : MonoBehaviour
 
         return results.ToList();
     }
+
+    // struct for holding level collectables data
+    public struct LevelData
+    {
+        public string levelName;
+        public int levelIndex;
+        public SortedDictionary<int, JournalPage> Journals;
+        public Dictionary<CollectInteractable, bool> Artifacts;
+
+
+        public LevelData(string levelName, int levelIndex, List<JournalPage> Journals, List<CollectInteractable> Artifacts)
+        {
+            this.levelName = levelName;
+            this.levelIndex = levelIndex;
+            this.Journals = new SortedDictionary<int, JournalPage>();
+            this.Artifacts = new Dictionary<CollectInteractable, bool>();
+
+
+            // create collections and assign false collected valued
+            AddCollectables(Journals, Artifacts);
+        }
+
+
+        // adds collectables to their lists
+        void AddCollectables(List<JournalPage> journals, List<CollectInteractable> artifacts)
+        {
+            foreach (JournalPage page in journals)
+            {
+                this.Journals.Add(page.id, page);
+            }
+
+            foreach (CollectInteractable item in artifacts)
+            {
+                this.Artifacts.Add(item, false);
+            }
+        }
+
+        // return number of Journals found
+        public int JournalsFound => CountJournalsFound(Journals);
+
+        // return number of Artifacts found
+        public int ArtifactsFound => CountArtifactsFound(Artifacts);
+
+        // find number of journals found
+        public int CountJournalsFound(SortedDictionary<int, JournalPage> collection)
+        {
+            int result = 0;
+
+
+            foreach (var item in collection.Values)
+            {
+                if (item.found == true)
+                    result++;
+            }
+
+            return result;
+        }
+
+        // find number of found items, indicated by a 'true' status, in a collection
+        public int CountArtifactsFound(Dictionary<CollectInteractable, bool> collection)
+        {
+            int result = 0;
+
+            foreach (var item in collection.Values)
+            {
+                if (item == true)
+                    result++;
+            }
+
+            return result;
+        }
+    }
 }
+
+public class JournalPageCollection
+{
+    public List<JournalPage> journalPages = new List<JournalPage>();
+}
+

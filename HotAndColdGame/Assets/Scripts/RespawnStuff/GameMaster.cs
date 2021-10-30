@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 /// Responsible for storing object states between scenes and managing game state.
 /// Affected objects include maintaining a Player reference for other objects, AudioManager
 /// , colour pallet, current difficulty, current checkpoint etc.
-/// Last edit: Added OnLevelLoad delegate, expanded to manage backtracking
-/// By: Charli - 15/10/21
+/// Last edit: Added function to hide previously collected collectibles.
+/// By: Charli - 30/10/21
 /// </summary>
 public class GameMaster : MonoBehaviour
 {
@@ -239,36 +239,53 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    private void CheckAlreadyFoundCollectibles()
+    public void CheckAlreadyFoundCollectibles()
     {
 
         if (TryGetComponent<CollectionSystem>(out CollectionSystem collectionSystemComp))
         {
             CollectInteractable[] collectables = collectionSystemComp.Collectables.GetComponentsInChildren<CollectInteractable>();
             //collectables = FindObjectsOfType<CollectInteractable>();
-            print(collectables[0]);
+            //print(collectables[0]);
             string currentLevelName = SceneManager.GetActiveScene().name;
+            int currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
 
             // If this level has already been visited in this play session...            
-            if (collectionSystemComp.LevelList.ContainsKey(currentLevelName))
+            if (collectionSystemComp.levelList.ContainsKey(currentLevelIndex))
             {   
-                foreach (JournalPage journal in collectionSystemComp.LevelList[currentLevelName].Journals.Values)             
+                //foreach (JournalPage journal in collectionSystemComp.levelList[currentLevelIndex].Journals.Values)     
+                foreach (JournalPage journalEntry in collectionSystemComp.allJournalsWithSceneIndex[currentLevelIndex])        
                 //for (int i=0; i < collectionSystemComp.LevelList[currentLevelName].Journals.Count; i++)          
                 {     
-                    if (journal.found)
+                    if (journalEntry.found)
                     {
-                        for (int j=0; j < collectables.Length; j++)
+                        foreach (CollectInteractable journalCollectInteractable in collectables)
                         {
-                            //...and they map to existing journals still active in the level...
-                            if (collectables[j].int_data == journal.id)
+                            print("Collection System Journal ID = " + journalEntry.id + ", Journal in Level ID = " + journalCollectInteractable.int_data);
+                            if (journalCollectInteractable.int_data == journalEntry.id)
                             {
-                                collectables[j].gameObject.SetActive(false);
+                                journalCollectInteractable.gameObject.SetActive(false);
+                                print("A journal has been hidden");
+                            }
+                        }                      
+                    }
+                }
+                /*
+                foreach (CollectInteractable savedArtifact in collectionSystemComp.levelList[crntScene].Artifacts.Keys)   
+                {
+                    if (collectionSystemComp.levelList[crntScene].Artifacts[savedArtifact] == true)
+                    {
+                        foreach (CollectInteractable artifactInLevel in collectables)
+                        {
+                            print("Saved artifact name = " + savedArtifact.itemName + ", Artifact in Level Name = " + artifactInLevel.itemName);
+                            if (savedArtifact.itemName == artifactInLevel.itemName && artifactInLevel.destroyOnCollect == true)
+                            {
+                                artifactInLevel.gameObject.SetActive(false);
                             }
                         }
                     }
-                    
-                }
-                
+                } 
+                */            
             }
             
         }
