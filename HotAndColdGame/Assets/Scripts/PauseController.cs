@@ -40,7 +40,7 @@ public class PauseController : MonoBehaviour
     private void Awake()
     {
         //Game Master
-        if (!GM)
+        if (!GM && GameObject.Find("GameMaster") != null)
         {
             GM = GameObject.Find("GameMaster").GetComponent<GameMaster>();
         }

@@ -33,7 +33,7 @@ public class CollectionSystem : MonoBehaviour
     public Dictionary<int, List<JournalPage>> allJournalsWithSceneIndex;
     //private int journalSceneIndex = 0;
     // started flag
-    protected bool started;
+    public bool started;
     // levels count
     protected int levelsCount = 0;
     // journal id 
@@ -43,14 +43,28 @@ public class CollectionSystem : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         //Debug.Log("OnSceneLoaded");
-        Initialise();
+        if(GameMaster.instance != null )
+        {
+            if(scene.buildIndex == 1)
+            {
+                started = false;
+            }
+            Initialise();
+
+        }
+           
     }
 
+    private void Awake()
+    {
+        if (levelList != null && levelList.Count > 0)
+            levelList.Clear();
+    }
     // Start is called before the first frame update
     void Start()
     {
        SceneManager.sceneLoaded += OnSceneLoaded;
-       Initialise();
+       //Initialise();
     }
 
     public void Initialise()
@@ -98,6 +112,7 @@ public class CollectionSystem : MonoBehaviour
     // add level to master list
     public void AddLevelToMaster()
     {
+        Debug.Log("LEVELS COUNT: " + levelList.Keys.Count);
         string levelName = SceneManager.GetActiveScene().name;
         int levelIndex = SceneManager.GetActiveScene().buildIndex;
         int logNumber = 1;
@@ -188,6 +203,7 @@ public class CollectionSystem : MonoBehaviour
 
                 }
             }
+
             GameMaster.instance.CheckAlreadyFoundCollectibles();
         }
 

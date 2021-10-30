@@ -29,6 +29,7 @@ public class GameMaster : MonoBehaviour
 
     public bool LoadingCheckpoint;
     public bool TravelledBackward;
+    public bool Started;
 
     [SerializeField] public Transform lastCheckPointPos;
 
@@ -41,25 +42,28 @@ public class GameMaster : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(instance.gameObject);
+            SearchForPlayer();
         }
         else if (gameObject.scene.buildIndex == 0)
-        {            
+        {
             Destroy(instance.gameObject);            
             instance = this;
             DontDestroyOnLoad(instance.gameObject);
+            SearchForPlayer();
         }
         else
         {
             Destroy(gameObject);
         }
 
-        SearchForPlayer();
+       
     }
 
     private void Start() 
     {
         OnLevelLoad(SceneManager.GetActiveScene(), LoadSceneMode.Single);
-        SceneManager.sceneLoaded += OnLevelLoad;        
+        SceneManager.sceneLoaded += OnLevelLoad;
+         
     }
 
     private void Update() 
@@ -76,11 +80,12 @@ public class GameMaster : MonoBehaviour
     public void OnLevelLoad(Scene load, LoadSceneMode mode)
     {
         if (SearchForPlayer())
-            LoadDifficulty();        
+            LoadDifficulty();
 
         if (playerRef != null)
         {
             LoadGunState();
+            lastCheckPointPos = playerRef.transform;
         }
         
         SearchForTriggers();
@@ -88,14 +93,15 @@ public class GameMaster : MonoBehaviour
         Debug.Log("crnt: " + crntScene);
         Debug.Log("prev: " + prevScene);
         //checks if previous scene is the next scene in the build index
-        if (crntScene < prevScene && end != null)
-        {           
-            lastCheckPointPos = end.transform;
-        }
-        else if (start != null)
-        {
-            lastCheckPointPos = start.transform;
-        }
+        /* if (crntScene < prevScene && end != null)
+         {
+             lastCheckPointPos = end.transform;
+         }
+         else if (start != null)
+         {
+             lastCheckPointPos = start.transform;
+         }*/
+       
         //CheckAlreadyFoundCollectibles();
     }
 
@@ -258,7 +264,7 @@ public class GameMaster : MonoBehaviour
 
         if (TryGetComponent<CollectionSystem>(out CollectionSystem collectionSystemComp))
         {
-            CollectInteractable[] collectables = collectionSystemComp.Collectables.GetComponentsInChildren<CollectInteractable>();
+            CollectInteractable[] collectables = GameObject.Find("Collectables").GetComponentsInChildren<CollectInteractable>();
             //collectables = FindObjectsOfType<CollectInteractable>();
             //print(collectables[0]);
             string currentLevelName = SceneManager.GetActiveScene().name;
