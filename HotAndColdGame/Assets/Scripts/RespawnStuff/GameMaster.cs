@@ -85,7 +85,8 @@ public class GameMaster : MonoBehaviour
         if (playerRef != null)
         {
             LoadGunState();
-            lastCheckPointPos = playerRef.transform;
+            
+            //lastCheckPointPos = playerRef.transform;
         }
         
         SearchForTriggers();
