@@ -270,28 +270,26 @@ public class GameMaster : MonoBehaviour
                         }                      
                     }
                 }
-                /*
-                foreach (CollectInteractable savedArtifact in collectionSystemComp.levelList[currentLevelIndex].Artifacts.Keys)   
+
+
+
+                foreach (int savedArtifact in collectionSystemComp.levelList[currentLevelIndex].Artifacts.Keys)
                 {
                     print(collectionSystemComp.levelList[currentLevelIndex].Artifacts[savedArtifact]);
-                    if (collectionSystemComp.levelList[currentLevelIndex].Artifacts[savedArtifact] == true && savedArtifact.itemName != "Journal")
+                    if (collectionSystemComp.levelList[currentLevelIndex].Artifacts[savedArtifact] == true)
                     {
                         foreach (CollectInteractable artifactInLevel in collectables)
                         {
-                            print("Saved artifact ID = " + savedArtifact.int_data + ", Artifact in Level ID = " + artifactInLevel.int_data);
-                            if (savedArtifact.int_data == artifactInLevel.int_data && artifactInLevel.destroyOnCollect == true)
+                            print("Saved artifact ID = " + savedArtifact + ", Artifact in Level ID = " + artifactInLevel.int_data);
+                            if (savedArtifact == artifactInLevel.int_data2 && artifactInLevel.destroyOnCollect == true)
                             {
                                 artifactInLevel.gameObject.SetActive(false);
                             }
                         }
                     }
-                }  
-                */                                         
+                }
             }
-            
         }
-
-
     }
 
     private bool SearchForTriggers()

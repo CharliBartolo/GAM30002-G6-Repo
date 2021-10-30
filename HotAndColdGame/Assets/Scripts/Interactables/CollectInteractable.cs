@@ -16,6 +16,7 @@ public class CollectInteractable : InteractableBase
     private PlayerInput playerInput;
     public bool destroyOnCollect = true;
     public int int_data;
+    public int int_data2;
 
     public AudioClip pickup_sound;
 
@@ -90,10 +91,11 @@ public class CollectInteractable : InteractableBase
         Camera.main.GetComponent<AudioSource>().Play();
 
         //GameObject.Find("UI").GetComponentInChildren<PauseController>().IsPaused = true;
-       
+
         // do stuff
         if (destroyOnCollect)
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            //Destroy(gameObject);
     }
 
     IEnumerator InteractArtifact(float delay)
