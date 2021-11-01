@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour
 
     public Slider MenuVolumeSlider; //Slider option for Volume
     public InputField MenuVolumeInput; //Input Field for Volume
-
+    public Button QuitButton;
     public struct ControlSettings
     {       
         public float XSensitivity;
@@ -38,6 +38,7 @@ public class MainMenu : MonoBehaviour
         MenuMouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
         MenuMouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
         MenuVolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
+        QuitButton.onClick.AddListener(delegate { Application.Quit(); });
     }
 
     // Start is called before the first frame update
