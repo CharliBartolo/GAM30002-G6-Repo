@@ -171,8 +171,7 @@ public class PlayerController : MonoBehaviour, IConditions
     private void Update()
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-        playerCamControl.UpdateFOVBasedOnSpeed(playerRB.velocity.magnitude);  
-        playerCamControl.UpdateHeadbob(horizVelocity, isGrounded);   
+ 
         //Debug.Log(playerRB.velocity.magnitude);
 
         if (PC != null)
@@ -199,6 +198,11 @@ public class PlayerController : MonoBehaviour, IConditions
                 }
                 //playerControlState = PlayerState.MoveAndLook;
             }
+        }
+
+        if(!isPaused){
+        playerCamControl.UpdateFOVBasedOnSpeed(playerRB.velocity.magnitude);
+        playerCamControl.UpdateHeadbob(horizVelocity, isGrounded);  
         }
 
         switch (playerControlState)

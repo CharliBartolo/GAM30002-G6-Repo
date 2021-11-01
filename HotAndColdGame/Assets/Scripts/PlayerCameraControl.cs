@@ -221,6 +221,12 @@ public class PlayerCameraControl : MonoBehaviour
         }
     }
 
+    public void UpdateFOVonPaused()
+    {
+        currentFOV = baseFOV;
+        playerCam.fieldOfView = currentFOV;
+    }
+
     public void UpdateFOVBasedOnSpeed(float playerSpeed)
     {
         UpdateTargetFOV(playerSpeed);
