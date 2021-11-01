@@ -64,7 +64,7 @@ public class CollectionSystem : MonoBehaviour
     void Start()
     {
        SceneManager.sceneLoaded += OnSceneLoaded;
-       //Initialise();
+       Initialise();
     }
 
     public void Initialise()
