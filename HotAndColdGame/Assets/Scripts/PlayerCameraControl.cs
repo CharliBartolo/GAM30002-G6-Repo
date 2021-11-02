@@ -121,6 +121,8 @@ public class PlayerCameraControl : MonoBehaviour
     [Tooltip("The original direction of the player")]
     private Quaternion returnOriginalRotation;
 
+    public JumpCurve jumpCurve;
+
     private bool inCutscene;
     
     private void Awake()

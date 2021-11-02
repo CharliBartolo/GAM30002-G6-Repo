@@ -75,6 +75,8 @@ public class PlayerController : MonoBehaviour, IConditions
     public bool isGrounded;
     private bool isClimbing = false;
 
+
+    public bool hasJumped = false;
     private bool isWalking = false;
     public float walkingMultiplier = 0.5f;
     private ContactPoint groundContactPoint;
@@ -246,8 +248,16 @@ public class PlayerController : MonoBehaviour, IConditions
         ExecuteConditions();
         playerSoundControl.UpdateActiveConditions(_activeConditions);
         RemoveConditionsIfReturningToNeutral();
-                
+        bool wasPrevGrounded = isGrounded;
+
         isGrounded = FindGround(out groundContactPoint, contactPoints);  
+        if(!wasPrevGrounded & isGrounded & hasJumped)
+        {
+            Debug.Log("just landed");
+            //landing
+            playerCamControl.jumpCurve.StartCoroutine("Land");
+            hasJumped = false;
+        }
         Jump();  
 
         switch (playerControlState)
@@ -372,6 +382,8 @@ public class PlayerController : MonoBehaviour, IConditions
                 
             transform.position += Vector3.up * 0.1f;   //To remove grounded contact
             contactPoints.Clear();
+            hasJumped = true;
+            playerCamControl.jumpCurve.StartCoroutine("Jump");
             playerRB.AddForce(Vector3.up * currentMovementSettings.jumpStrength, ForceMode.VelocityChange);
             currentCoyoteTimer = 0; 
             jumpBufferTimer = 0;
