@@ -6,14 +6,16 @@ using UnityEngine.VFX;
 /// <summary>
 /// This class is responsible for controlling the bevahiour of interactable SFX objects in the game.
 /// If the player touches the SFX, it will dissappear and reappear when the player dies unless told otherwise.
-/// Latest Change: Tweaked so that when picking up a jounal, the SFX will only respawn if the journal has also been picked up.
-/// By: Charadey 23/10/2021
+/// Latest Change: Tweaked so that when picking up a jounal, the SFX state will now be preserved through levels.
+/// By: Charadey 03/11/2021
 /// </summary>
 public class SFXInteractable: MonoBehaviour
 {
     [SerializeField]  
     public GameObject InteractingObject;
     private bool IsInteracted;
+    [SerializeField]
+    private bool IsPickedUp;
     public bool CanPickup;
     public GameObject PickUpItem;
     public DeathEffect DE;
@@ -30,10 +32,13 @@ public class SFXInteractable: MonoBehaviour
         {
             PickUpItem = null;
         }
+
+        //Debug.Log(PickUpItem);
+       
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(DE != null)
         {
@@ -41,10 +46,14 @@ public class SFXInteractable: MonoBehaviour
             {
                 if (CanPickup)
                 {
-                    if (PickUpItem != null)
+                    if (!IsPickedUp) 
                     {
-                        gameObject.GetComponent<VisualEffect>().enabled = true;
+                        if (PickUpItem.activeSelf)
+                        {
+                            gameObject.GetComponent<VisualEffect>().enabled = true;
+                        }                        
                     }
+                    
                 }
                 else
                 {
@@ -55,6 +64,12 @@ public class SFXInteractable: MonoBehaviour
                 }
                 
                 
+            }
+
+            if (!PickUpItem.activeSelf)
+            {
+                IsPickedUp = true;
+                gameObject.GetComponent<VisualEffect>().enabled = false;
             }
         }
     }
