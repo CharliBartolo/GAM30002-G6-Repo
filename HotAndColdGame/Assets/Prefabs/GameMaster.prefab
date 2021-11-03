@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1171969204}
   - component: {fileID: 1171969203}
   - component: {fileID: 5844264337383096165}
+  - component: {fileID: 8789441344914316432}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: GM
@@ -52,9 +53,16 @@ MonoBehaviour:
   audioManager: {fileID: 8367264434170778536}
   colourPallete: {fileID: 8367264433094579071}
   playerRef: {fileID: 0}
+  playerIncomingTempMod: 1
   savedGunState: 0
+  start: {fileID: 0}
+  end: {fileID: 0}
+  crntScene: 0
+  prevScene: 0
   difficultyNum: 0
   LoadingCheckpoint: 0
+  TravelledBackward: 0
+  Started: 0
   lastCheckPointPos: {fileID: 0}
 --- !u!114 &8367264433094579071
 MonoBehaviour:
@@ -71,6 +79,7 @@ MonoBehaviour:
   Positive: {r: 1, g: 0.6289237, b: 0.15471691, a: 1}
   Negative: {r: 0, g: 0.9696622, b: 1, a: 1}
   Neutral: {r: 1, g: 0.35283017, b: 0.87733364, a: 1}
+  LightningColour: {r: 0, g: 0, b: 0, a: 0}
   colourIntensity: 3
   materials:
     Crystal: {fileID: 2100000, guid: cb4f7f7ed3712f341afde03e05099dfc, type: 2}
@@ -137,6 +146,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Collectables: {fileID: 0}
+  started: 0
+--- !u!114 &8789441344914316432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8367264433094579066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ede2d89c29c97d49977de5fbb51a39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkPoints: []
+  Trigger: []
 --- !u!1 &8367264434170778534
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ public class Reload : MonoBehaviour
     //[SerializeField] public CheckPoint spawn;               //reference checkpoint script
     [SerializeField] public List<Transform> checkPoints;    //list for saving checkpoint positions
     [SerializeField] public List<DeadArea> Trigger;    //list for saving checkpoint positions
-    private GameMaster gm;                                  //reference game master script
+    //private GameMaster gm;                                  //reference game master script
     //public static event Action<bool> PowerButtonClicked = delegate { };
     private PlayerController pauseUI;
     //private Button UI;
@@ -26,11 +26,18 @@ public class Reload : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnLevelLoad;
         checkPoints = new List<Transform>();
+        SearchForPlayer();
         searchForCheckpoints();
         //get game master last position
-        gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
+        //gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
         //Debug.Log("GM Found");
-        pauseUI = GameObject.Find("Player").GetComponent<PlayerController>();
+        //pauseUI = GameMaster.instance.playerRef.GetComponent<PlayerController>();//GameObject.Find("Player").GetComponent<PlayerController>();
+    }
+
+    private void SearchForPlayer()
+    {
+        if (GameMaster.instance.playerRef)
+            pauseUI = GameMaster.instance.playerRef.GetComponent<PlayerController>();
     }
 
     //for button press 
@@ -52,13 +59,15 @@ public class Reload : MonoBehaviour
         for (int i = 0; i < checkPoints.Count; ++i) 
         {
             //checks if list has position of last checkpoint position
-            if (checkPoints[i] == gm.lastCheckPointPos) 
+            //if (checkPoints[i] == gm.lastCheckPointPos) 
+            if (checkPoints[i] == GameMaster.instance.lastCheckPointPos)
             {
                 GameMaster.instance.playerRef.transform.position = checkPoints[i].position;
                 GameMaster.instance.playerRef.transform.rotation = checkPoints[i].rotation;
-                gm.lastCheckPointPos = checkPoints[i];
+                GameMaster.instance.lastCheckPointPos = checkPoints[i];
                 //Debug.Log(checkPoints[i]);
                 //when line below is run then the UI closes but wasd doesn't move player but cursor works
+                //GameMaster.instance.playerRef.GetComponent<PlayerController>()
                 pauseUI.PC.IsPaused = false;
                 Time.timeScale = pauseUI.PC.IsPaused ? 0 : 1;
                 //Debug.Log("UI closed");
@@ -83,6 +92,7 @@ public class Reload : MonoBehaviour
     //when scene load find checkpoints in scene
     public void OnLevelLoad(Scene load, LoadSceneMode mode)
     {
+        SearchForPlayer();
         searchForCheckpoints();
     }
 }
