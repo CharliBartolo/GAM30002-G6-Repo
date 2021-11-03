@@ -9,8 +9,8 @@ using System.Linq;
 /// <summary>
 /// A class dedicated to viewing lecel collection items, status and reading journal entries from Journal.cs
 /// by displaying them on the screen for the player.
-/// Last edit: Expanded class have pages, popup displayed to on new entry, and input control for journal navigation.
-/// By: Matt - 13/10/21
+/// Last edit: Allow player to toggle between readable font and current text font.
+/// By: Jason - 3/11/21
 /// </summary>
 public class Journal_Reader : MonoBehaviour
 {
@@ -27,8 +27,11 @@ public class Journal_Reader : MonoBehaviour
     public GameObject Background_Alien;
     public Font font_Human;
     public Font font_Alien;
+    public Font readingFont;
+    private Font temp;
 
     public float timeoutDisplay = 2f;
+    private bool toggle = false;
 
     // input variables
     private PlayerInput playerInput;
@@ -94,7 +97,27 @@ public class Journal_Reader : MonoBehaviour
             Debug.Log("Journal input x: " + input.x);
             NavigateJournal((int)input.x);
             Debug.Log("Current page: " + currentPage);
-        }/*
+        }
+        // toggle between current font and readable font
+        if (Input.GetKeyDown(KeyCode.T)) 
+        {
+            toggle = !toggle;
+
+            if (toggle)
+            {
+                temp = text[0].font;
+                temp = text[1].font;
+                text[0].font = readingFont;
+                text[1].font = readingFont;
+            }
+            else 
+            {
+                text[0].font = temp;
+                text[1].font = temp;
+            }
+        }
+
+        /*
         // get  input for journal navigation
         if (input.x != playerInput.actions.FindAction("Navigate").ReadValue<Vector2>().x)
         {
