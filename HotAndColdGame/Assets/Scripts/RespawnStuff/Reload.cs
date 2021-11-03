@@ -95,4 +95,9 @@ public class Reload : MonoBehaviour
         SearchForPlayer();
         searchForCheckpoints();
     }
+
+    private void OnDestroy() 
+    {
+        SceneManager.sceneLoaded -= OnLevelLoad;
+    }
 }

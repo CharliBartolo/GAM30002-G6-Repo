@@ -646,6 +646,7 @@ MonoBehaviour:
   Background_Alien: {fileID: 2005199871}
   font_Human: {fileID: 12800000, guid: 30457532c2be77649b6afa5da7a1522d, type: 3}
   font_Alien: {fileID: 12800000, guid: ecaa581f57e07bd42b726a6eccc0c508, type: 3}
+  readingFont: {fileID: 0}
   timeoutDisplay: 5
   isJournalActive: 0
   newPageAdded: 0
@@ -4520,6 +4521,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2071900177621610433}
     m_Modifications:
+    - target: {fileID: 6563012779036024627, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7320864843259457895, guid: c3a8ded1806e17144ba88cdc6c0b144e, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
