@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2.9387634, g: 3.494018, b: 2.0290976, a: 1}
+  m_IndirectSpecularColor: {r: 2.9366333, g: 3.4929104, b: 2.028761, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -74578,6 +74578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractingObject: {fileID: 1499405279}
+  IsPickedUp: 0
   CanPickup: 0
   PickUpItem: {fileID: 0}
   DE: {fileID: 1356365191}
@@ -75486,6 +75487,10 @@ PrefabInstance:
       propertyPath: playerInput
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1047577249, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
+      propertyPath: readingFont
+      value: 
+      objectReference: {fileID: 12800000, guid: 629a341e555c7214d922d179b00c6c57, type: 3}
     - target: {fileID: 1582865983, guid: 90901af0bf743404a8395d88fc7afa7a, type: 3}
       propertyPath: m_SizeDelta.x
       value: 450
