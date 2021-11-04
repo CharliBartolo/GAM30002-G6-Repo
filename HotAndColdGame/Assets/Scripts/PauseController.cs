@@ -41,7 +41,7 @@ public class PauseController : MonoBehaviour
     public Button YesButton; //Yes Confirmation Button
     public Button NoButton; //No Confirmation Button
 
-    public GameMaster GM;
+    //public GameMaster.instance GameMaster.instance;
 
     //Events
     private UnityEvent _eventVolumeSlider = new UnityEvent();
@@ -49,36 +49,13 @@ public class PauseController : MonoBehaviour
     private void Awake()
     {
         //Game Master
-        if (!GM) //&& GameObject.Find("GameMaster") != null)
-        {
-            GM = GameMaster.instance;
-            //GM = GameObject.Find("GameMaster").GetComponent<GameMaster>();
-        }
+        //if (!GameMaster.instance) //&& GameObject.Find("GameMaster.instance") != null)
+        //{
+        //    GameMaster.instance = GameMaster.instance.instance;
+            //GameMaster.instance = GameObject.Find("GameMaster.instance").GetComponent<GameMaster.instance>();
+        //}
 
-        //Player Controller
-        if (!PC)// && GameObject.Find("Player") != null)
-        {
-            PC = GM.playerRef.GetComponent<PlayerController>();
-            PCC = PC.playerCamControl;
-            //PC = GameObject.Find("Player").GetComponent<PlayerController>();
-        }
-
-        //Volume component
-        if (PC != null)
-        {
-            PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
-            MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
-            MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-            MasterVolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetMasterVolume(MasterVolumeSlider.value); });
-            MusicVolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetMusicVolume(MusicVolumeSlider.value); });
-            SFXVolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetSFXVolume(SFXVolumeSlider.value); });
-            FOVSlider.onValueChanged.AddListener(delegate { FOVChange(); });
-
-            QuitButton.onClick.AddListener(delegate { Quitting = true; });
-            YesButton.onClick.AddListener(delegate { Application.Quit(); });
-            NoButton.onClick.AddListener(delegate { Quitting = false; });
-        }
-          
+        //Player Controller       
 
         //Player Input
         /*
@@ -115,25 +92,44 @@ public class PauseController : MonoBehaviour
         }
         */
 
-        //Listeners
-      
-        
-        if (PC != null)
-        {
-            PC.GetComponent<PlayerInput>().actions.FindActionMap("Player").FindAction("Pause").performed += OnPause;
-            PC.GetComponent<PlayerInput>().actions.FindActionMap("Menu").FindAction("Pause").performed += OnPause;
-        }
-       
+        //Listeners       
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        PC = GameMaster.instance.playerRef.GetComponent<PlayerController>();
+        PCC = GameMaster.instance.playerRef.GetComponent<PlayerCameraControl>();
+            //PC = GameObject.Find("Player").GetComponent<PlayerController>();
+        
+
+        //Volume component
+        if (PC != null)
+        {
+            PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
+            MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
+            MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
+            MasterVolumeSlider.onValueChanged.AddListener(delegate { GameMaster.instance.audioManager.SetMasterVolume(MasterVolumeSlider.value); });
+            MusicVolumeSlider.onValueChanged.AddListener(delegate { GameMaster.instance.audioManager.SetMusicVolume(MusicVolumeSlider.value); });
+            SFXVolumeSlider.onValueChanged.AddListener(delegate { GameMaster.instance.audioManager.SetSFXVolume(SFXVolumeSlider.value); });
+            FOVSlider.onValueChanged.AddListener(delegate { FOVChange(); });
+
+            QuitButton.onClick.AddListener(delegate { Quitting = true; });
+            YesButton.onClick.AddListener(delegate { Application.Quit(); });
+            NoButton.onClick.AddListener(delegate { Quitting = false; });
+        }
+
+        if (PC != null)
+        {
+            PC.GetComponent<PlayerInput>().actions.FindActionMap("Player").FindAction("Pause").performed += OnPause;
+            PC.GetComponent<PlayerInput>().actions.FindActionMap("Menu").FindAction("Pause").performed += OnPause;
+        }
+
         Quitting = false;
         IsPaused = false;
 
-        MouseSensitivityXSlider.value = GM.CS.XSensitivity;
-        MouseSensitivityYSlider.value = GM.CS.YSensitivity;
+        MouseSensitivityXSlider.value = GameMaster.instance.CS.XSensitivity;
+        MouseSensitivityYSlider.value = GameMaster.instance.CS.YSensitivity;
 
         if (PlayerPrefs.HasKey("MusicVol"))
             MusicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVol");
@@ -144,13 +140,13 @@ public class PauseController : MonoBehaviour
         if (PlayerPrefs.HasKey("SFXVol"))
             SFXVolumeSlider.value = PlayerPrefs.GetFloat("SFXVol");
 
-        //MouseSensitivityXInput.text = GM.CS.XSensitivity.ToString(); 
-        //MouseSensitivityYInput.text = GM.CS.YSensitivity.ToString();
-        VolumeInput.text = GM.CS.Volume.ToString();
+        //MouseSensitivityXInput.text = GameMaster.instance.CS.XSensitivity.ToString(); 
+        //MouseSensitivityYInput.text = GameMaster.instance.CS.YSensitivity.ToString();
+        VolumeInput.text = GameMaster.instance.CS.Volume.ToString();
 
-        PC.playerMouseLook.mouseSensitivity.x = GM.CS.XSensitivity;
-        PC.playerMouseLook.mouseSensitivity.y = GM.CS.YSensitivity;
-        PC.GetComponent<Player_Audio_Renamed>().main_volume = GM.CS.Volume;
+        PC.playerMouseLook.mouseSensitivity.x = GameMaster.instance.CS.XSensitivity;
+        PC.playerMouseLook.mouseSensitivity.y = GameMaster.instance.CS.YSensitivity;
+        PC.GetComponent<Player_Audio_Renamed>().main_volume = GameMaster.instance.CS.Volume;
 
         //Can't interact with the text fields
         //MouseSensitivityXInput.interactable = false;
@@ -227,15 +223,15 @@ public class PauseController : MonoBehaviour
     public void XInputChange()
     {
         //MouseSensitivityXInput.text = MouseSensitivityXSlider.value.ToString();
-        GM.CS.XSensitivity = MouseSensitivityXSlider.value;
-        PC.playerMouseLook.mouseSensitivity.x = GM.CS.XSensitivity;
+        GameMaster.instance.CS.XSensitivity = MouseSensitivityXSlider.value;
+        PC.playerMouseLook.mouseSensitivity.x = GameMaster.instance.CS.XSensitivity;
     }
 
     public void YInputChange()
     {
         //MouseSensitivityYInput.text = MouseSensitivityYSlider.value.ToString();
-        GM.CS.YSensitivity = MouseSensitivityYSlider.value;
-        PC.playerMouseLook.mouseSensitivity.y = GM.CS.YSensitivity;
+        GameMaster.instance.CS.YSensitivity = MouseSensitivityYSlider.value;
+        PC.playerMouseLook.mouseSensitivity.y = GameMaster.instance.CS.YSensitivity;
     }
 
     public void FOVChange(){
@@ -247,12 +243,14 @@ public class PauseController : MonoBehaviour
     public void VolumeChange()
     {
         //VolumeInput.text = VolumeSlider.value.ToString();
-        //if (GM.audioManager.GetMixerVolume("MusicVol", out float newVol))
+        //if (GameMaster.instance.audioManager.GetMixerVolume("MusicVol", out float newVol))
         //{
         //    VolumeInput.text = newVol.ToString();
         //}
         
-        //GM.CS.Volume = VolumeSlider.value;
-        //PC.GetComponent<Player_Audio_Renamed>().main_volume = GM.CS.Volume;
+        //GameMaster.instance.CS.Volume = VolumeSlider.value;
+        //PC.GetComponent<Player_Audio_Renamed>().main_volume = GameMaster.instance.CS.Volume;
     }
+
+    
 }
