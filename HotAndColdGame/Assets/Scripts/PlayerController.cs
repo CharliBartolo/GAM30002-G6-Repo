@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour, IConditions
     [SerializeField] 
     public bool isGrounded;
     private bool isClimbing = false;
+    public bool hasJumped = false;
 
     private bool isWalking = false;
     public float walkingMultiplier = 0.5f;
@@ -209,6 +210,12 @@ public class PlayerController : MonoBehaviour, IConditions
             }
         }
 
+        if (!isPaused)
+        {
+            playerCamControl.UpdateFOVBasedOnSpeed(playerRB.velocity.magnitude);
+            playerCamControl.UpdateHeadbob(horizVelocity, isGrounded);  
+        }
+
         switch (playerControlState)
         {
             case (PlayerState.ControlsDisabled):
@@ -251,7 +258,16 @@ public class PlayerController : MonoBehaviour, IConditions
         playerSoundControl.UpdateActiveConditions(_activeConditions);
         RemoveConditionsIfReturningToNeutral();
                 
+        bool wasPrevGrounded = isGrounded;
+
         isGrounded = FindGround(out groundContactPoint, contactPoints);  
+        if (!wasPrevGrounded & isGrounded & hasJumped)
+        {
+            Debug.Log("just landed");
+            //landing
+            playerCamControl.jumpCurve.StartCoroutine("Land");
+            hasJumped = false;
+        } 
         Jump();  
 
         switch (playerControlState)
@@ -376,6 +392,9 @@ public class PlayerController : MonoBehaviour, IConditions
                 
             transform.position += Vector3.up * 0.1f;   //To remove grounded contact
             contactPoints.Clear();
+            hasJumped = true;
+            playerCamControl.jumpCurve.StartCoroutine("Jump");
+            
             playerRB.AddForce(Vector3.up * currentMovementSettings.jumpStrength, ForceMode.VelocityChange);
             currentCoyoteTimer = 0; 
             jumpBufferTimer = 0;
@@ -667,6 +686,7 @@ public class PlayerController : MonoBehaviour, IConditions
                                 StartCoroutine(CollectItem("Toolbox", animTime_place));
                             }
                         }
+                        // else if (currentInteractingObject.name.Contains("Artifact") || currentInteractingObject.GetComponent<CollectInteractable>().itemName == "Artifact")
                         else if (currentInteractingObject.name.Contains("Artifact") || currentInteractingObject.GetComponent<CollectInteractable>().itemName.Contains("Artifact"))
                         {
                             Debug.Log("PLAYER GRAB ARTIFACT");
@@ -674,7 +694,7 @@ public class PlayerController : MonoBehaviour, IConditions
                             currentInteractingObject.GetComponent<CollectInteractable>().OnInteractEnter(playerInput, animTime);
                             playerControlState = PlayerState.ControlsDisabled;
                             StartCoroutine(CollectItem(currentInteractingObject.GetComponent<CollectInteractable>().itemName, animTime));
-
+                            // StartCoroutine(CollectItem("Artifact", animTime));
                         }
                     }
 
@@ -1042,55 +1062,3 @@ public class PlayerController : MonoBehaviour, IConditions
         
     }
 }
-
-
-/* Legacy Functions
-    void GroundedCheck()
-    {
-        //isGrounded = Physics.CheckSphere(groundChecker.position, 0.01f, -1, QueryTriggerInteraction.Ignore);
-        //isGrounded = Physics.SphereCast(groundChecker.position, GetComponent<CapsuleCollider>().radius, Vector3.down, out RaycastHit hit, 1f);
-        bool potentialGroundFound = Physics.SphereCast(transform.position, GetComponent<CapsuleCollider>().radius - 0.01f, 
-            Vector3.down, out RaycastHit hit, (GetComponent<CapsuleCollider>().height / 2 + 0.01f));
-
-        Debug.Log(Vector3.Dot(hit.normal, Vector3.up));
-        if (Vector3.Dot(hit.normal, Vector3.up) > 0.6f)
-        {
-            groundedHit = hit;
-            isGrounded = true;
-        }
-        else
-        {
-            groundedHit = emptyRaycast;
-            isGrounded = false;
-        }
-            
-        if (isGrounded)
-            groundedHit = hit;
-        else
-            groundedHit = emptyRaycast;
-        
-        //Debug.DrawRay(groundChecker.position, Vector3.down * GetComponent<CapsuleCollider>().height);
-    } 
-
-    void SetPlayerFriction
-    // Player should have no friction when either airborne or providing movement input.
-        // Should probably enable friction if trying to move opposite current direction?
-        if (!isGrounded || playerInput.actions.FindAction("Movement").ReadValue<Vector2>().magnitude > 0)
-        {
-            //Debug.Log("Friction disabled");
-            regularPhysicMaterial.staticFriction = 0f;
-            regularPhysicMaterial.dynamicFriction = 0f;
-            currentTimeBeforeFrictionReturns = timeBeforeFrictionReturns;
-        }
-        else
-        {
-            currentTimeBeforeFrictionReturns -= Time.deltaTime;
-
-            if (currentTimeBeforeFrictionReturns <= 0f)
-            {
-                //Debug.Log("Friction enabled");
-                regularPhysicMaterial.staticFriction = playerFriction[0];
-                regularPhysicMaterial.dynamicFriction = playerFriction[1];
-            }
-        }   
-*/
