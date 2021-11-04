@@ -10,6 +10,8 @@ using UnityEngine.Events;
 /// These options include sensitivity, pause text, volume settings, and quitting the game.
 /// Last edit: OnVolumeChanged() - Removed functionality from here, moved to AudioManager
 /// By: Charli - 25/9/21
+/// Last edit: FOV slider - added with slider update and function
+/// By: Rayner 1/11/2021
 /// </summary>
 public class PauseController : MonoBehaviour
 {
@@ -18,14 +20,21 @@ public class PauseController : MonoBehaviour
     public bool Quitting; //For quitting confirmation
     public Text pauseText; //UI element (Text) (Placeholder)
     public PlayerController PC; //Player Controller - Accesses the mouse sensitivity
+    public PlayerCameraControl PCC;
 
     public Slider MouseSensitivityXSlider; //Slider option for Mouse Sensitivity X
     public Slider MouseSensitivityYSlider; //Slider option for Mouse Sensitivity Y
     public InputField MouseSensitivityXInput; //Input Field for Mouse Sensitivity X
     public InputField MouseSensitivityYInput; //Input Field for Mouse Sensitivity Y
 
-    public Slider VolumeSlider; //Slider option for Volume
+    public Slider MasterVolumeSlider; //Slider option for Volume
+    public Slider MusicVolumeSlider; //Slider option for Volume
+    public Slider SFXVolumeSlider; //Slider option for Volume
+
+    public Slider FOVSlider; //Slider option for Field of view
+
     public InputField VolumeInput; //Input Field for Volume
+
 
     public Button QuitButton; //Button for quitiing game
     public GameObject QuitPanel; //Panel for Confirmation buttons
@@ -57,7 +66,10 @@ public class PauseController : MonoBehaviour
             PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
             MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
             MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-            VolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetMasterVolume(VolumeSlider.value); });
+            MasterVolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetMasterVolume(MasterVolumeSlider.value); });
+            MusicVolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetMusicVolume(MusicVolumeSlider.value); });
+            SFXVolumeSlider.onValueChanged.AddListener(delegate { GM.audioManager.SetSFXVolume(SFXVolumeSlider.value); });
+            FOVSlider.onValueChanged.AddListener(delegate { FOVChange(); });
 
             QuitButton.onClick.AddListener(delegate { Quitting = true; });
             YesButton.onClick.AddListener(delegate { Application.Quit(); });
@@ -121,11 +133,13 @@ public class PauseController : MonoBehaviour
         MouseSensitivityYSlider.value = GM.CS.YSensitivity;
 
         if (PlayerPrefs.HasKey("MusicVol"))
-            //VolumeSlider.value = PlayerPrefs.GetFloat("MusicVol");
-            PlayerPrefs.SetFloat("MusicVol", 0f);
+            MusicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVol");
         
         if (PlayerPrefs.HasKey("MasterVol"))
-            VolumeSlider.value = PlayerPrefs.GetFloat("MasterVol");
+            MasterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVol");
+
+        if (PlayerPrefs.HasKey("SFXVol"))
+            SFXVolumeSlider.value = PlayerPrefs.GetFloat("SFXVol");
 
         //MouseSensitivityXInput.text = GM.CS.XSensitivity.ToString(); 
         //MouseSensitivityYInput.text = GM.CS.YSensitivity.ToString();
@@ -162,7 +176,10 @@ public class PauseController : MonoBehaviour
         MouseSensitivityYSlider.gameObject.SetActive(IsPaused); //Toggles Mouse Sensivity Y Slider
         //MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
         //MouseSensitivityXInput.gameObject.SetActive(IsPaused); // Toggles Mouse Sensitivity X Input Field
-        VolumeSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
+        MasterVolumeSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
+        MusicVolumeSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
+        SFXVolumeSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
+        FOVSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
         //VolumeInput.gameObject.SetActive(IsPaused); //Toggles Volume Input Field
         QuitButton.gameObject.SetActive(IsPaused); // TToggles the Quit Button
         QuitPanel.gameObject.gameObject.SetActive(Quitting); //Toggles panel for confirmation
@@ -216,6 +233,11 @@ public class PauseController : MonoBehaviour
         //MouseSensitivityYInput.text = MouseSensitivityYSlider.value.ToString();
         GM.CS.YSensitivity = MouseSensitivityYSlider.value;
         PC.playerMouseLook.mouseSensitivity.y = GM.CS.YSensitivity;
+    }
+
+    public void FOVChange(){
+       PCC.baseFOV = FOVSlider.value;
+       PCC.UpdateFOVonPaused();
     }
 
     public void VolumeChange()

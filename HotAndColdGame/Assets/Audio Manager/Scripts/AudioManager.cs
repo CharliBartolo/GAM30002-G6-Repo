@@ -159,6 +159,11 @@ public class AudioManager : MonoBehaviour
         audioMixer.SetFloat("MusicVol", Mathf.Log(soundLevel) * 20);   
         PlayerPrefs.SetFloat("MusicVol", soundLevel);     
     }
+    public void SetSFXVolume(float soundLevel)
+    {
+        audioMixer.SetFloat("SFXVol", Mathf.Log(soundLevel) * 20);   
+        PlayerPrefs.SetFloat("SFXVol", soundLevel);     
+    }
 
     public void SetMasterVolume(float soundLevel)
     {   
