@@ -49,15 +49,18 @@ public class PauseController : MonoBehaviour
     private void Awake()
     {
         //Game Master
-        if (!GM && GameObject.Find("GameMaster") != null)
+        if (!GM) //&& GameObject.Find("GameMaster") != null)
         {
-            GM = GameObject.Find("GameMaster").GetComponent<GameMaster>();
+            GM = GameMaster.instance;
+            //GM = GameObject.Find("GameMaster").GetComponent<GameMaster>();
         }
 
         //Player Controller
-        if (!PC && GameObject.Find("Player") != null)
+        if (!PC)// && GameObject.Find("Player") != null)
         {
-            PC = GameObject.Find("Player").GetComponent<PlayerController>();
+            PC = GM.playerRef.GetComponent<PlayerController>();
+            PCC = PC.playerCamControl;
+            //PC = GameObject.Find("Player").GetComponent<PlayerController>();
         }
 
         //Volume component
@@ -237,6 +240,7 @@ public class PauseController : MonoBehaviour
 
     public void FOVChange(){
        PCC.baseFOV = FOVSlider.value;
+       PCC.fovCap = FOVSlider.value + 10f;
        PCC.UpdateFOVonPaused();
     }
 
