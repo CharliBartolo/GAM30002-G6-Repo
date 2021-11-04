@@ -126,7 +126,6 @@ public class PlayerCameraControl : MonoBehaviour
     [Tooltip("The original direction of the player")]
     private Quaternion returnOriginalRotation;
 
-<<<<<<< HEAD
     //Camera Shake
     [Header("Camera Shake Settings")]
     [SerializeField]
@@ -143,9 +142,7 @@ public class PlayerCameraControl : MonoBehaviour
 
     [Tooltip("Original position of camera")]
     private Vector3 originalPos;
-=======
     public JumpCurve jumpCurve;
->>>>>>> RaynersBranch
 
     private bool inCutscene;
    

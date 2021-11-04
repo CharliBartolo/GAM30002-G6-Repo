@@ -1,86 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &87379751
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 87379752}
-  - component: {fileID: 87379754}
-  - component: {fileID: 87379753}
-  m_Layer: 0
-  m_Name: CrystalSymbol2 (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &87379752
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 87379751}
-  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0.08600003, z: 0.269001}
-  m_LocalScale: {x: 31.448074, y: 31.448084, z: 0.040974513}
-  m_Children: []
-  m_Father: {fileID: 3104365144740861976}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
---- !u!33 &87379754
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 87379751}
-  m_Mesh: {fileID: -1567517890380736292, guid: 6a77b83f2abe87f4fb9d75a350359d01, type: 3}
---- !u!23 &87379753
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 87379751}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 02d64e42cfc6b2144bcc23ce5799e94e, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &393420843
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,7 +112,7 @@ Transform:
   m_LocalScale: {x: 31.448076, y: 31.448082, z: 0.04097451}
   m_Children: []
   m_Father: {fileID: 6170742497536757887}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &456645233
 MeshFilter:
@@ -274,7 +193,7 @@ Transform:
   m_LocalScale: {x: 31.448076, y: 31.448082, z: 0.04097451}
   m_Children: []
   m_Father: {fileID: 6170742497536757887}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1160827804
 MeshFilter:
@@ -291,87 +210,6 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1160827801}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 02d64e42cfc6b2144bcc23ce5799e94e, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &1232986359
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1232986360}
-  - component: {fileID: 1232986362}
-  - component: {fileID: 1232986361}
-  m_Layer: 0
-  m_Name: CrystalSymbol2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1232986360
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1232986359}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.07799966, z: 0.269001}
-  m_LocalScale: {x: 31.448076, y: 31.448082, z: 0.04097451}
-  m_Children: []
-  m_Father: {fileID: 6170742497536757887}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1232986362
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1232986359}
-  m_Mesh: {fileID: -1567517890380736292, guid: 6a77b83f2abe87f4fb9d75a350359d01, type: 3}
---- !u!23 &1232986361
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1232986359}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -436,7 +274,7 @@ Transform:
   m_LocalScale: {x: 64.955246, y: 64.95525, z: 0.08463184}
   m_Children: []
   m_Father: {fileID: 3104365144740861976}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!33 &1306595136
 MeshFilter:
@@ -517,7 +355,7 @@ Transform:
   m_LocalScale: {x: 64.955246, y: 64.95525, z: 0.08463184}
   m_Children: []
   m_Father: {fileID: 3104365144740861976}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!33 &1385333728
 MeshFilter:
@@ -598,7 +436,7 @@ Transform:
   m_LocalScale: {x: 64.955246, y: 64.955246, z: 0.08463184}
   m_Children: []
   m_Father: {fileID: 6170742497536757887}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1454385004
 MeshFilter:
@@ -679,7 +517,7 @@ Transform:
   m_LocalScale: {x: 31.448074, y: 31.448084, z: 0.040974513}
   m_Children: []
   m_Father: {fileID: 3104365144740861976}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!33 &1749327796
 MeshFilter:
@@ -696,87 +534,6 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1749327793}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 02d64e42cfc6b2144bcc23ce5799e94e, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &1768272352
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1768272353}
-  - component: {fileID: 1768272355}
-  - component: {fileID: 1768272354}
-  m_Layer: 0
-  m_Name: CrystalSymbol1 (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1768272353
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1768272352}
-  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0.17900014, z: 0.08499341}
-  m_LocalScale: {x: 64.955246, y: 64.95525, z: 0.08463184}
-  m_Children: []
-  m_Father: {fileID: 3104365144740861976}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
---- !u!33 &1768272355
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1768272352}
-  m_Mesh: {fileID: -1567517890380736292, guid: 6a77b83f2abe87f4fb9d75a350359d01, type: 3}
---- !u!23 &1768272354
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1768272352}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -841,7 +598,7 @@ Transform:
   m_LocalScale: {x: 64.955246, y: 64.955246, z: 0.08463184}
   m_Children: []
   m_Father: {fileID: 6170742497536757887}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1782129108
 MeshFilter:
@@ -922,7 +679,7 @@ Transform:
   m_LocalScale: {x: 31.448074, y: 31.448084, z: 0.040974513}
   m_Children: []
   m_Father: {fileID: 3104365144740861976}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!33 &2079436157
 MeshFilter:
@@ -939,87 +696,6 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2079436154}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 02d64e42cfc6b2144bcc23ce5799e94e, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &2131032392
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2131032393}
-  - component: {fileID: 2131032395}
-  - component: {fileID: 2131032394}
-  m_Layer: 0
-  m_Name: CrystalSymbol1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2131032393
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2131032392}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.171, z: 0.08499341}
-  m_LocalScale: {x: 64.955246, y: 64.955246, z: 0.08463184}
-  m_Children: []
-  m_Father: {fileID: 6170742497536757887}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2131032395
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2131032392}
-  m_Mesh: {fileID: -1567517890380736292, guid: 6a77b83f2abe87f4fb9d75a350359d01, type: 3}
---- !u!23 &2131032394
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2131032392}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1163,11 +839,9 @@ Transform:
   m_LocalPosition: {x: 206.96, y: 5.1887, z: -131.09}
   m_LocalScale: {x: 0.87825644, y: 0.878256, z: 0.18991409}
   m_Children:
-  - {fileID: 1768272353}
-  - {fileID: 87379752}
   - {fileID: 1385333726}
-  - {fileID: 1306595134}
   - {fileID: 2079436155}
+  - {fileID: 1306595134}
   - {fileID: 1749327794}
   m_Father: {fileID: 7648756411731072950}
   m_RootOrder: 1
@@ -2159,8 +1833,9 @@ GameObject:
   - component: {fileID: 607755758}
   - component: {fileID: 403145018}
   - component: {fileID: 1322132706}
-  - component: {fileID: 2048354156}
-  - component: {fileID: 2048354157}
+  - component: {fileID: 679080445}
+  - component: {fileID: 891186627}
+  - component: {fileID: 6913887583845903310}
   m_Layer: 11
   m_Name: Player_ShrunkViewModel
   m_TagString: Player
@@ -2238,18 +1913,18 @@ MonoBehaviour:
     movementSpeed: 30
     speedCapSmoothFactor: 15
     jumpStrength: 30
-    airSpeed: 0.9
+    airSpeed: 0.17
     velocityCap: {x: 30, y: 20}
     stoppingForce: 1.2
     reverseForce: 1.5
   isGravityEnabled: 1
-  isGunEnabled: 1
+  isGunEnabled: 0
   isGrounded: 0
+  hasJumped: 0
   walkingMultiplier: 0.5
   playerControlState: 1
   playerControlState_copy: 1
-  playerInventory:
-  - Raygun
+  playerInventory: []
   _activeConditions: 
   isInitialised: 0
   raygunScript: {fileID: 2610262902883506657}
@@ -2272,24 +1947,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e4bf283c46294749a1437e1c53f19d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBetweenFootsteps: 8
+  timeBetweenFootsteps: 10
   maxSpeedForSlidePitch: 20
   currentLayer: 
-  footstepSurfaceMaps:
-  - footstepCollection: {fileID: 11400000, guid: d725ea6b5e47467448be1e4160630d43, type: 2}
-    surfaces:
-    - rock_
-  - footstepCollection: {fileID: 11400000, guid: e76ec480e94c25c4b932ecd3dda1f1db, type: 2}
-    surfaces:
-    - Modulat
-    - Pillar
-    - Hand
-  - footstepCollection: {fileID: 11400000, guid: ce74080893856f54ab9fd459934df97e, type: 2}
-    surfaces:
-    - Glass
-  - footstepCollection: {fileID: 11400000, guid: fff73489f6dd3de45ba3785dfc7c59fe, type: 2}
-    surfaces:
-    - Water
+  footstepSurfaceMaps: []
   footstepSounds:
   - {fileID: 8300000, guid: 42e65e088b3f4374e851b8dbd38f3df9, type: 3}
   - {fileID: 8300000, guid: 8bc94ec6ed537e743b481638bdcd503d, type: 3}
@@ -2307,7 +1968,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b38178435d4f96e4381c5ad8542c3515, type: 3}
   - {fileID: 8300000, guid: c2b3135ca2cb9c94394c23db9393eb5d, type: 3}
   raygunAudio: {fileID: 0}
-  slidingAudio: {fileID: 3066974510176292565}
+  slidingAudio: {fileID: 1322132706}
 --- !u!114 &607755757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2370,7 +2031,7 @@ MonoBehaviour:
   runBobSpeed: 14
   runBobAmount: 0.05
   walkBobSpeed: 14
-  walkBobAmount: 0.1
+  walkBobAmount: 0.05
   needsVision: 0
   visionWindow: 0
   targetObject: {fileID: 0}
@@ -2385,12 +2046,10 @@ MonoBehaviour:
   useEndGameFadeDelay: 0
   endGameFadeDelay: 0
   returnRotationSpeed: 0
-<<<<<<< HEAD
   UseCameraShake: 0
   shakeDuration: 0
   shakeMagnitude: 0
-=======
->>>>>>> RaynersBranch
+  jumpCurve: {fileID: 6913887583845903310}
 --- !u!114 &1132983919121844882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2600,9 +2259,9 @@ MonoBehaviour:
   lightning: {fileID: 3741847599148037113}
   inspectingWeapon: 0
   isProp: 0
-  weaponState: 0
+  weaponState: 3
   equipped: 0
-  weaponUpgradeState: 2
+  weaponUpgradeState: 0
   isGrabbing: 0
   isPlacing: 0
   hasPlaced: 0
@@ -3107,7 +2766,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2048354156
+--- !u!114 &679080445
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3123,9 +2782,18 @@ MonoBehaviour:
   _imageTutorialPrompt: {fileID: 0}
   _textButtonIcon: {fileID: 0}
   _listTutorialPrompts:
-  - _label: Moving Platform
-    _message: '"Ah, that machine console again. I wonder if I can move that platform
-      by interacting with the machine like I did with the previous doors..."'
+  - _label: Walk1
+    _message: '"I should be close to the site now, this small valley here is the
+      only path for me to take, all I need to do is walk over and enter the domain
+      of the subterranean."
+
+
+      PC: Mouse to look, WASD to move.
+
+      Gamepad:
+      LEFT and RIGHT thumb sticks to look and move.
+
+'
     _startTrigger: {fileID: 0}
     _endTrigger: {fileID: 0}
     _isActive: 0
@@ -3133,32 +2801,260 @@ MonoBehaviour:
     _needsVision: 0
     _visionWindow: 0
     _pointOfInterestTrigger: {fileID: 0}
-    _needsButtonIcon: 1
-    _buttonIcons:
-    - _label: MovingPlatform
-      _input: 0
-      _prompt: Shoot Beam at Machine
-      _imageSprites:
-      - _label: 
-        _image: {fileID: 0}
-        _sprite: {fileID: 21300000, guid: ac145a1a7d605e248942254d000a6587, type: 3}
-    - _label: 
-      _input: 1
-      _prompt: Shoot Beam at Machine
-      _imageSprites:
-      - _label: Xbox
-        _image: {fileID: 0}
-        _sprite: {fileID: 21300000, guid: aa5793ff859d53e4da1c5e6e87e129c5, type: 3}
-    - _label: 
-      _input: 2
-      _prompt: Shoot Beam at Machine
-      _imageSprites:
-      - _label: PS
-        _image: {fileID: 0}
-        _sprite: {fileID: 21300000, guid: 6c73961558932dc49a5c4466814d38dc, type: 3}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: Jump1
+    _message: "\"Good thing I am well-seasoned in exploring, making these jumps will
+      be no challenge.\"\n\nPC: To perform a jump, press SPACEBAR\r\nGamepad: To
+      perform a jump, press A or CROSS on the respective gamepad\r.\n"
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: Clamber1
+    _message: "\"Some jumps may be too hard to simply jump up. Upper body with clambering
+      will do the trick.\"\n\nPC: To clamber, press and hold SPACEBAR\r.\nGamepad:
+      To clamber, press and hold A or CROSS on the respective gamepad\r."
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: Journal
+    _message: '"A journal on the snow.... probably from the previous expidition,
+      I wonder what it says."
+
+
+      PC: Press E to interact. ESC to close.
+
+      Gamepad:
+      Press X or Square to interact. B or Circle to close.'
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: Clamber2
+    _message: "\"Even this great height should be no problem with clambering, I should
+      give it a shot.\"\n\nPC: To clamber, press and hold SPACEBAR\r.\nGamepad: To
+      clamber, press and hold A or CROSS on the respective gamepad\r."
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: VFX Indicator
+    _message: In story mode, the path forward and certain areas of importance are
+      marked with visual indicators to help guide the path. Getting close to them
+      will disappear allowing you to recognise that you are on the right path.
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
   IsCompleted: 0
   Player: {fileID: 0}
---- !u!114 &2048354157
+--- !u!114 &891186627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132983919121844887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2754ef237d69c94e8577fda59c841cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textTutorialPrompt: {fileID: 0}
+  _imageTutorialPrompt: {fileID: 0}
+  _textButtonIcon: {fileID: 0}
+  _listTutorialPrompts:
+  - _label: Crystal_Intro
+    _message: '"Ah the crystals, this one does not seem to be empowered, however.
+      I suppose I will move on and see if I can find crystals that are not in a neutral
+      state."'
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: Crystal_Negative1
+    _message: '"Excellent, a negatively empowered crystal. I will gladly take a velocity
+      boost for travelling when inside of its aura."'
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: Crystal_Negative2
+    _message: "\"Ah, a campfire from the previous explorer. The embers are still
+      warm too, this will be a great place to rest and return to should I stumble.\r\n-
+      Campfires act as checkpoints in the case of succumbing to perilous dangers.\r\"\n"
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: Crystal_Negative3
+    _message: "\"These objects are far too heavy to move by myself, thank goodness
+      they\u2019re in the blue light so I can move them while they\u2019re still
+      in the light. Time to create a little path to jump to the other side.\""
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: GunTool01
+    _message: "\"An alien tool of some description, infusing its technology with
+      the crystals should allow me to manipulate the crystal\u2019s behaviour states
+      now.\r\nThe door seems locked, perhaps I need to infuse another crystal and
+      come back to the unlocking machine later.\r\"\n\r - PC: Press E to interact.\r\n-
+      Gamepad: Press X or SQUARE on the respective gamepad to interact.\r"
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: CrystalAgency_Negative01
+    _message: "\"How convenient, these neutral crystals are a perfect testing ground
+      for me to fire the beam with a negative charge and see what happens with the
+      crystals. It should make getting to the other side much speedier.\"\n - PC:
+      Press Mouse1 to fire a beam.\n - Gamepad: Press Right Trigger to fire a beam."
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: Crystal_Positive1
+    _message: "\"These crystals are rather similar to the ones I have already encountered,
+      but these ones seem to have a factor that manipulates one\u2019s gravitational
+      balance with the world. In summary, I can jump higher.\""
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: Crystal_Positive2
+    _message: '"This new type of crystal should help me reaching those high ledges
+      and places that I normally would require a ladder or grapple to access. This
+      is an incredible power."'
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: GunTool02
+    _message: "\"Finally, I can upgrade my toolgun once again. With the infusion
+      of these heat crystals, I will be able to form my own paths to higher places.
+      Perhaps that door will now open when I shoot its machine interface.\r\"\n-
+      PC: Press MOUSE 2 to switch the toolgun firing mode.\r\n - Gamepad: Press LEFT
+      TRIGGER to switch the toolgun firing mode.\r"
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: CrystalAgency_PositiveNegative
+    _message: "\"Yes, I believe that door will open with this new power that the
+      toolgun has been infused with. I think I recall two symbols on the door, perhaps
+      that is an unlocking sequence\u2026?\""
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: CrystalAgency_Door
+    _message: "\"Two large symbols, I saw those as smaller versions on those machines
+      that upgraded my gun. Perhaps if I fire in that sequence on the machine pillar
+      next to the door, it will open.\"\n - Fire the gun towards the standing machine
+      next to the door in the correct colour sequence."
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  - _label: CrystalAgency_PostDoor
+    _message: '"Finally, I have unlocked that hefty door. Time to explore the real
+      mysteries of this place, discovery awaits. I wonder where the other explorers
+      are..."'
+    _startTrigger: {fileID: 0}
+    _endTrigger: {fileID: 0}
+    _isActive: 0
+    _isAchieved: 0
+    _needsVision: 0
+    _visionWindow: 0
+    _pointOfInterestTrigger: {fileID: 0}
+    _needsButtonIcon: 0
+    _buttonIcons: []
+  IsCompleted: 0
+  Player: {fileID: 1132983919121844887}
+--- !u!114 &6913887583845903310
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3176,39 +3072,21 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.0070754886
-      inSlope: -0.4441789
-      outSlope: -0.4441789
-      tangentMode: 34
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.2958957
-      value: -0.12435514
-      inSlope: 0.09164809
-      outSlope: 0.09164809
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5962657
-      value: 0.06411953
-      inSlope: 0.23432946
-      outSlope: 0.23432946
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: -0.15881616
-      outSlope: -0.15881616
-      tangentMode: 34
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -3218,46 +3096,27 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.0070754886
-      inSlope: -0.65047437
-      outSlope: -0.65047437
-      tangentMode: 34
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.23977387
-      value: -0.14889127
-      inSlope: -0.16600993
-      outSlope: -0.16600993
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.624999
-      value: -0.0262146
-      inSlope: 0.19417995
-      outSlope: 0.19417995
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: 0.06990541
-      outSlope: 0.06990541
-      tangentMode: 34
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  lerpTime: 1
-  multiplier: 3
-  grounded: 1
+  lerpTime: 0.1
+  multiplier: 1
 --- !u!1 &1132983919290905658
 GameObject:
   m_ObjectHideFlags: 0
@@ -6406,7 +6265,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.001
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -6640,7 +6499,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.001
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -7538,7 +7397,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.001
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -7751,7 +7610,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.001
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -8670,7 +8529,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.001
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -9098,7 +8957,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.001
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -9670,7 +9529,6 @@ GameObject:
   - component: {fileID: 3347009733882093496}
   - component: {fileID: 3347009733882093495}
   - component: {fileID: 256939372}
-  - component: {fileID: 658029621}
   m_Layer: 0
   m_Name: Main Camera (1)
   m_TagString: MainCamera
@@ -9732,7 +9590,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 67
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -9877,102 +9735,6 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.185
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!82 &658029621
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3347009733882093494}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 4b6508d136fd4f64f8a3008aac065704, type: 2}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -11224,11 +10986,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 5216498503769096187, guid: 4b6508d136fd4f64f8a3008aac065704, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-<<<<<<< HEAD
   m_Volume: 1
-=======
-  m_Volume: 0.892
->>>>>>> RaynersBranch
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -14868,11 +14626,9 @@ Transform:
   m_LocalPosition: {x: 206.96, y: 5.1887, z: -131.09}
   m_LocalScale: {x: 0.18991409, y: 0.18991409, z: 0.18991409}
   m_Children:
-  - {fileID: 2131032393}
-  - {fileID: 1232986360}
   - {fileID: 1454385002}
-  - {fileID: 1782129106}
   - {fileID: 1160827802}
+  - {fileID: 1782129106}
   - {fileID: 456645231}
   m_Father: {fileID: 7648756411731072950}
   m_RootOrder: 0
@@ -15094,7 +14850,7 @@ MonoBehaviour:
   tempchange: 0
   weaponRange: 45
   hitForce: 5
-  gunUpgradeState: 2
+  gunUpgradeState: 0
   gunEnd: {fileID: 4094827009817838343}
   fpsCam: {fileID: 3347009733882093496}
   audioManager: {fileID: 0}
