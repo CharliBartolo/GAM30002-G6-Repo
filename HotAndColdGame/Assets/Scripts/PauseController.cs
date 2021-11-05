@@ -40,6 +40,7 @@ public class PauseController : MonoBehaviour
     public GameObject QuitPanel; //Panel for Confirmation buttons
     public Button YesButton; //Yes Confirmation Button
     public Button NoButton; //No Confirmation Button
+    public Button ReloadButton;
 
     //public GameMaster.instance GameMaster.instance;
 
@@ -117,6 +118,7 @@ public class PauseController : MonoBehaviour
             QuitButton.onClick.AddListener(delegate { Quitting = true; });
             YesButton.onClick.AddListener(delegate { Application.Quit(); });
             NoButton.onClick.AddListener(delegate { Quitting = false; });
+            ReloadButton.onClick.AddListener(delegate {GameMaster.instance.GetComponent<Reload>().OnButtonPress(); });
         }
 
         if (PC != null)
