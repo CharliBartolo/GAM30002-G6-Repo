@@ -11,7 +11,7 @@ public class GraphicsSettings : MonoBehaviour
     public Dropdown textureDropdown;
     public Dropdown aaDropdown;
 
-    Resolution[] resolutions;
+    public Resolution[] resolutions;
 
     // Start is called before the first frame update
     void Start()
