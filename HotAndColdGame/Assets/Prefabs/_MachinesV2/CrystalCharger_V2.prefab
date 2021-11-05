@@ -526,7 +526,7 @@ GameObject:
   - component: {fileID: 6493915968620025460}
   - component: {fileID: 4218677387587951006}
   m_Layer: 0
-  m_Name: CrystalCharger
+  m_Name: CrystalCharger_V2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -589,7 +589,7 @@ AudioSource:
   m_GameObject: {fileID: 5747553960893814127}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 4b6508d136fd4f64f8a3008aac065704, type: 2}
+  OutputAudioMixerGroup: {fileID: 5216498503769096187, guid: 4b6508d136fd4f64f8a3008aac065704, type: 2}
   m_audioClip: {fileID: 8300000, guid: 5e4fe2d8e91554a47a2756dd598bad41, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -1006,27 +1006,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 0
---- !u!114 &6322865313351555657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6592774322754447573}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68a2a2bfbe93039468d821460f0abc8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delay: 0
-  Anim: {fileID: 0}
-  isEnabled: 1
-  isLaserEnabled: 0
-  power: 100
-  range: 7
-  line: {fileID: 6322865314627839951}
-  rayOrigin: {fileID: 6322865314627839948}
-  laserSound: {fileID: 0}
 --- !u!1 &6322865313407357066
 GameObject:
   m_ObjectHideFlags: 0
@@ -1315,6 +1294,27 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 0
+--- !u!114 &6322865313351555657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6592774322754447573}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68a2a2bfbe93039468d821460f0abc8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0
+  Anim: {fileID: 0}
+  isEnabled: 1
+  isLaserEnabled: 0
+  power: 100
+  range: 7
+  line: {fileID: 6322865314627839951}
+  rayOrigin: {fileID: 6322865314627839948}
+  laserSound: {fileID: 0}
 --- !u!1 &6639989430935558420
 GameObject:
   m_ObjectHideFlags: 0
