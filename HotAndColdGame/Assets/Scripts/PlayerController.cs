@@ -1047,6 +1047,7 @@ public class PlayerController : MonoBehaviour, IConditions
         {
             currentCoyoteTimer = Mathf.Clamp(currentCoyoteTimer - Time.deltaTime, 0, coyoteTimer);
             //Debug.Log("Player left the ground!");
+            
         }
     }
 
