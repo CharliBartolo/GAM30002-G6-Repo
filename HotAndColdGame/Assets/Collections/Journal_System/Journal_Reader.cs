@@ -57,8 +57,8 @@ public class Journal_Reader : MonoBehaviour
         // initialise pages to null
 
         FindPlayerReference();
-        if (playerInput != null)
-            playerInput.actions.FindActionMap("Menu").FindAction("ToggleReadable").performed += ToggleReadable;
+        //if (playerInput != null)
+        //    playerInput.actions.FindActionMap("Menu").FindAction("ToggleReadable").performed += ToggleReadable;
        
 
         homePage = transform.Find("HomePage");
@@ -124,9 +124,9 @@ public class Journal_Reader : MonoBehaviour
             Debug.Log("Current page: " + currentPage);
         }
         // toggle between current font and readable font
-        /*
-        if (Input.GetKeyDown(KeyCode.T)) 
-        //if (playerInput.actions.FindActionMap("Menu").FindAction("ToggleReadable"). > 0)
+        
+        //if (Input.GetKeyDown(KeyCode.T)) 
+        if (playerInput.actions.FindActionMap("Menu").FindAction("ToggleReadable").triggered)
         {
             toggle = !toggle;
 
@@ -143,7 +143,7 @@ public class Journal_Reader : MonoBehaviour
                 text[1].font = temp;
             }
         }
-        */
+        
         /*
         // get  input for journal navigation
         if (input.x != playerInput.actions.FindAction("Navigate").ReadValue<Vector2>().x)
@@ -335,8 +335,7 @@ public class Journal_Reader : MonoBehaviour
 
     private void OnDestroy() 
     {
-        if (playerInput != null)
-            playerInput.actions.FindActionMap("Menu").FindAction("ToggleReadable").performed -= ToggleReadable;
+        //playerInput.actions.FindActionMap("Menu").FindAction("ToggleReadable").performed -= ToggleReadable;
     }
 
 }
