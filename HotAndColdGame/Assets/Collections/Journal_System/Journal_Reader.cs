@@ -335,7 +335,8 @@ public class Journal_Reader : MonoBehaviour
 
     private void OnDestroy() 
     {
-        playerInput.actions.FindActionMap("Menu").FindAction("ToggleReadable").performed -= ToggleReadable;
+        if (playerInput != null)
+            playerInput.actions.FindActionMap("Menu").FindAction("ToggleReadable").performed -= ToggleReadable;
     }
 
 }
