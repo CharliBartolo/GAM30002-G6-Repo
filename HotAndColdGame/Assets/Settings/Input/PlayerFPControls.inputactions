@@ -411,6 +411,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ToggleReadable",
+                    "type": "Button",
+                    "id": "fffb6eef-7957-4f40-b76b-36a5fe7dab1c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -829,6 +837,28 @@
                     "processors": "",
                     "groups": "Keyboard And Mouse",
                     "action": "CloseJournal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b5262bab-21c1-4413-a914-ffbde19e8e67",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard And Mouse",
+                    "action": "ToggleReadable",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9eaf1aa2-9c9e-4417-984f-fda8eaa09469",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ToggleReadable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

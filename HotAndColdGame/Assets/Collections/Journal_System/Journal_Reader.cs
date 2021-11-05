@@ -56,7 +56,9 @@ public class Journal_Reader : MonoBehaviour
         levelPages = new List<JournalPage>();
         // initialise pages to null
 
-
+        FindPlayerReference();
+        if (playerInput != null)
+            playerInput.actions.FindActionMap("Menu").FindAction("ToggleReadable").performed += ToggleReadable;
        
 
         homePage = transform.Find("HomePage");
@@ -79,10 +81,33 @@ public class Journal_Reader : MonoBehaviour
             else
             {
                 // find player input controller
-                if (GameMaster.instance != null && GameMaster.instance.playerRef != null)
-                    playerInput = GameMaster.instance.playerRef.GetComponent<PlayerInput>();
+               FindPlayerReference();
             }
                 
+        }
+    }
+
+    private void FindPlayerReference()
+    {
+        if (GameMaster.instance != null && GameMaster.instance.playerRef != null)
+                    playerInput = GameMaster.instance.playerRef.GetComponent<PlayerInput>();
+    }
+
+    private void ToggleReadable(InputAction.CallbackContext context)
+    {
+        toggle = !toggle;
+
+        if (toggle)
+        {
+            temp = text[0].font;
+            temp = text[1].font;
+            text[0].font = readingFont;
+            text[1].font = readingFont;
+        }
+        else 
+        {
+            text[0].font = temp;
+            text[1].font = temp;
         }
     }
 
@@ -99,7 +124,9 @@ public class Journal_Reader : MonoBehaviour
             Debug.Log("Current page: " + currentPage);
         }
         // toggle between current font and readable font
+        /*
         if (Input.GetKeyDown(KeyCode.T)) 
+        //if (playerInput.actions.FindActionMap("Menu").FindAction("ToggleReadable"). > 0)
         {
             toggle = !toggle;
 
@@ -116,7 +143,7 @@ public class Journal_Reader : MonoBehaviour
                 text[1].font = temp;
             }
         }
-
+        */
         /*
         // get  input for journal navigation
         if (input.x != playerInput.actions.FindAction("Navigate").ReadValue<Vector2>().x)
@@ -304,6 +331,11 @@ public class Journal_Reader : MonoBehaviour
     public void SetTimeout(float time)
     {
         Invoke(nameof(Exit_Journal), time);
+    }
+
+    private void OnDestroy() 
+    {
+        playerInput.actions.FindActionMap("Menu").FindAction("ToggleReadable").performed -= ToggleReadable;
     }
 
 }

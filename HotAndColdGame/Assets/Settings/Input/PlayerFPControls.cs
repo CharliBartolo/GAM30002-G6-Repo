@@ -424,6 +424,14 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ToggleReadable"",
+                    ""type"": ""Button"",
+                    ""id"": ""fffb6eef-7957-4f40-b76b-36a5fe7dab1c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -844,6 +852,28 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                     ""action"": ""CloseJournal"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5262bab-21c1-4413-a914-ffbde19e8e67"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard And Mouse"",
+                    ""action"": ""ToggleReadable"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9eaf1aa2-9c9e-4417-984f-fda8eaa09469"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ToggleReadable"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -903,6 +933,7 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
         m_Menu_Navigate = m_Menu.FindAction("Navigate", throwIfNotFound: true);
         m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
         m_Menu_CloseJournal = m_Menu.FindAction("CloseJournal", throwIfNotFound: true);
+        m_Menu_ToggleReadable = m_Menu.FindAction("ToggleReadable", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1061,6 +1092,7 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Menu_Navigate;
     private readonly InputAction m_Menu_Pause;
     private readonly InputAction m_Menu_CloseJournal;
+    private readonly InputAction m_Menu_ToggleReadable;
     public struct MenuActions
     {
         private @PlayerFPControls m_Wrapper;
@@ -1077,6 +1109,7 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
         public InputAction @Navigate => m_Wrapper.m_Menu_Navigate;
         public InputAction @Pause => m_Wrapper.m_Menu_Pause;
         public InputAction @CloseJournal => m_Wrapper.m_Menu_CloseJournal;
+        public InputAction @ToggleReadable => m_Wrapper.m_Menu_ToggleReadable;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1122,6 +1155,9 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                 @CloseJournal.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnCloseJournal;
                 @CloseJournal.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnCloseJournal;
                 @CloseJournal.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnCloseJournal;
+                @ToggleReadable.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnToggleReadable;
+                @ToggleReadable.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnToggleReadable;
+                @ToggleReadable.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnToggleReadable;
             }
             m_Wrapper.m_MenuActionsCallbackInterface = instance;
             if (instance != null)
@@ -1162,6 +1198,9 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
                 @CloseJournal.started += instance.OnCloseJournal;
                 @CloseJournal.performed += instance.OnCloseJournal;
                 @CloseJournal.canceled += instance.OnCloseJournal;
+                @ToggleReadable.started += instance.OnToggleReadable;
+                @ToggleReadable.performed += instance.OnToggleReadable;
+                @ToggleReadable.canceled += instance.OnToggleReadable;
             }
         }
     }
@@ -1210,5 +1249,6 @@ public class @PlayerFPControls : IInputActionCollection, IDisposable
         void OnNavigate(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnCloseJournal(InputAction.CallbackContext context);
+        void OnToggleReadable(InputAction.CallbackContext context);
     }
 }
