@@ -131,6 +131,9 @@ public class PauseController : MonoBehaviour
         MouseSensitivityXSlider.value = GameMaster.instance.CS.XSensitivity;
         MouseSensitivityYSlider.value = GameMaster.instance.CS.YSensitivity;
 
+        if (PlayerPrefs.HasKey("FOV"))
+            FOVSlider.value = PlayerPrefs.GetFloat("FOV");
+
         if (PlayerPrefs.HasKey("MusicVol"))
             MusicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVol");
         
@@ -140,8 +143,6 @@ public class PauseController : MonoBehaviour
         if (PlayerPrefs.HasKey("SFXVol"))
             SFXVolumeSlider.value = PlayerPrefs.GetFloat("SFXVol");
 
-        //MouseSensitivityXInput.text = GameMaster.instance.CS.XSensitivity.ToString(); 
-        //MouseSensitivityYInput.text = GameMaster.instance.CS.YSensitivity.ToString();
         VolumeInput.text = GameMaster.instance.CS.Volume.ToString();
 
         PC.playerMouseLook.mouseSensitivity.x = GameMaster.instance.CS.XSensitivity;
@@ -238,6 +239,7 @@ public class PauseController : MonoBehaviour
        PCC.baseFOV = FOVSlider.value;
        PCC.fovCap = FOVSlider.value + 10f;
        PCC.UpdateFOVonPaused();
+       PlayerPrefs.SetFloat("FOV", PCC.baseFOV);
     }
 
     public void VolumeChange()
