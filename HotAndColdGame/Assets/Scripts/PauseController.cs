@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// This class is responsible for Pausing the game, and any menus that go into the pause menu.
@@ -18,29 +19,41 @@ public class PauseController : MonoBehaviour
 
     public bool IsPaused; //Pause boolean that other scripts use
     public bool Quitting; //For quitting confirmation
+    public bool MainMenu; //For returning to mainmenu
     public Text pauseText; //UI element (Text) (Placeholder)
     public PlayerController PC; //Player Controller - Accesses the mouse sensitivity
     public PlayerCameraControl PCC;
 
+    [Header("Mouse Sensitivity")]
     public Slider MouseSensitivityXSlider; //Slider option for Mouse Sensitivity X
     public Slider MouseSensitivityYSlider; //Slider option for Mouse Sensitivity Y
     public InputField MouseSensitivityXInput; //Input Field for Mouse Sensitivity X
     public InputField MouseSensitivityYInput; //Input Field for Mouse Sensitivity Y
 
+    [Header("Volume")]
     public Slider MasterVolumeSlider; //Slider option for Volume
     public Slider MusicVolumeSlider; //Slider option for Volume
     public Slider SFXVolumeSlider; //Slider option for Volume
-
-    public Slider FOVSlider; //Slider option for Field of view
-
     public InputField VolumeInput; //Input Field for Volume
 
+    [Header("FOV")]
+    public Slider FOVSlider; //Slider option for Field of view
 
+    [Header("Quit")]
     public Button QuitButton; //Button for quitiing game
     public GameObject QuitPanel; //Panel for Confirmation buttons
     public Button YesButton; //Yes Confirmation Button
     public Button NoButton; //No Confirmation Button
+    
+    [Header("Reload")]  
     public Button ReloadButton;
+
+    //Quit to main menu 
+    [Header("Main Menu")]
+    public Button MainMenuButton; //Button for returning to mainmenu
+    public GameObject MainMenuPanel; //Panel for returning to mainmenu
+    public Button MainYesButton; //Yes Confirmation Button
+    public Button MainNoButton; //No Confirmation Button
 
     //public GameMaster.instance GameMaster.instance;
 
@@ -107,6 +120,7 @@ public class PauseController : MonoBehaviour
         //Volume component
         if (PC != null)
         {
+            //Options
             PC.GetComponent<Player_Audio_Renamed>().main_volume = MouseSensitivityXSlider.value;
             MouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
             MouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
@@ -115,10 +129,18 @@ public class PauseController : MonoBehaviour
             SFXVolumeSlider.onValueChanged.AddListener(delegate { GameMaster.instance.audioManager.SetSFXVolume(SFXVolumeSlider.value); });
             FOVSlider.onValueChanged.AddListener(delegate { FOVChange(); });
 
+            //Quit
             QuitButton.onClick.AddListener(delegate { Quitting = true; });
             YesButton.onClick.AddListener(delegate { Application.Quit(); });
             NoButton.onClick.AddListener(delegate { Quitting = false; });
+
+            //Reload
             ReloadButton.onClick.AddListener(delegate {GameMaster.instance.GetComponent<Reload>().OnButtonPress(); });
+
+            //MainMenu
+            MainMenuButton.onClick.AddListener(delegate { MainMenu = true; });
+            MainYesButton.onClick.AddListener(delegate { SceneManager.LoadScene(0); });
+            MainNoButton.onClick.AddListener(delegate { MainMenu = false; });
         }
 
         if (PC != null)
@@ -183,12 +205,18 @@ public class PauseController : MonoBehaviour
         SFXVolumeSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
         FOVSlider.gameObject.SetActive(IsPaused); //Toggles Volume Slider
         //VolumeInput.gameObject.SetActive(IsPaused); //Toggles Volume Input Field
-        QuitButton.gameObject.SetActive(IsPaused); // TToggles the Quit Button
-        QuitPanel.gameObject.gameObject.SetActive(Quitting); //Toggles panel for confirmation
-        YesButton.gameObject.gameObject.SetActive(Quitting); //Toggles button for confirmation
-        NoButton.gameObject.SetActive(Quitting); // Toggles button for confirmation 
-
+        QuitButton.gameObject.SetActive(IsPaused); // Toggles the Quit Button
+        QuitPanel.gameObject.SetActive(Quitting); //Toggles panel for confirmation
+        YesButton.gameObject.SetActive(Quitting); //Toggles button for confirmation
+        NoButton.gameObject.SetActive(Quitting); // Toggles button for confirmation
         
+        //Main Menu
+        MainMenuButton.gameObject.SetActive(IsPaused); // Toggles the Main Menu Button
+        MainMenuPanel.gameObject.SetActive(MainMenu); //Toggles panel for confirmation
+        MainYesButton.gameObject.SetActive(MainMenu); //Toggles button for confirmation
+        MainNoButton.gameObject.SetActive(MainMenu); // Toggles button for confirmation 
+
+
     }
 
     //Getter for IsPaused boolean
