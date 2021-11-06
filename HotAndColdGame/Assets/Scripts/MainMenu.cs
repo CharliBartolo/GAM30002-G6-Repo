@@ -15,7 +15,14 @@ public class MainMenu : MonoBehaviour
 
     public Slider MenuVolumeSlider; //Slider option for Volume
     public InputField MenuVolumeInput; //Input Field for Volume
-    public Button QuitButton;
+    //public Button QuitButton;
+
+    public Button QuitButton; //Button for quitiing game
+    public GameObject QuitPanel; //Panel for Confirmation buttons
+    public Button YesButton; //Yes Confirmation Button
+    public Button NoButton; //No Confirmation Button
+
+    public bool Quitting; //For quitting confirmation
     public struct ControlSettings
     {       
         public float XSensitivity;
@@ -32,13 +39,16 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
-    
-
         //Listeners
         MenuMouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
         MenuMouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
         MenuVolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
-        QuitButton.onClick.AddListener(delegate { Application.Quit(); });
+        //QuitButton.onClick.AddListener(delegate { Application.Quit(); });
+
+        //Quit
+        QuitButton.onClick.AddListener(delegate { Quitting = true; });
+        YesButton.onClick.AddListener(delegate { Application.Quit(); });
+        NoButton.onClick.AddListener(delegate { Quitting = false; });
     }
 
     // Start is called before the first frame update
@@ -65,6 +75,16 @@ public class MainMenu : MonoBehaviour
         MenuMouseSensitivityYInput.interactable = false;
         MenuVolumeInput.interactable = false;
     }
+
+    /*
+    private void Update()
+    {
+        //Quit
+        QuitPanel.gameObject.SetActive(Quitting); //Toggles panel for confirmation
+        YesButton.gameObject.SetActive(Quitting); //Toggles button for confirmation
+        NoButton.gameObject.SetActive(Quitting); // Toggles button for confirmation
+    }
+    */
 
     public void Play()
     {
