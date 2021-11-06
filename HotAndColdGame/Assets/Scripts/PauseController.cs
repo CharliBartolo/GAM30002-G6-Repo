@@ -139,7 +139,7 @@ public class PauseController : MonoBehaviour
 
             //MainMenu
             MainMenuButton.onClick.AddListener(delegate { MainMenu = true; });
-            MainYesButton.onClick.AddListener(delegate { SceneManager.LoadScene(0); });
+            MainYesButton.onClick.AddListener(delegate { Time.timeScale = 1; SceneManager.LoadScene(0); });
             MainNoButton.onClick.AddListener(delegate { MainMenu = false; });
         }
 
