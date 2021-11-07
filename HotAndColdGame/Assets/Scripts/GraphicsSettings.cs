@@ -97,21 +97,35 @@ public class GraphicsSettings : MonoBehaviour
     public void LoadSettings(int currentResolutionIndex)
     {
         if (PlayerPrefs.HasKey("QualitySettingPreference"))
+        {
             qualityDropdown.value = PlayerPrefs.GetInt("QualitySettingPreference");
+            SetQuality(qualityDropdown.value);
+        }           
         else
-            qualityDropdown.value = 2;
+            Debug.Log("No key found for Quality Setting");
+        //    qualityDropdown.value = 2;
         if (PlayerPrefs.HasKey("ResolutionPreference"))
+        {
             resolutionDropdown.value = PlayerPrefs.GetInt("ResolutionPreference");
+            SetResolution(resolutionDropdown.value);
+        }
         else
-            resolutionDropdown.value = currentResolutionIndex;
+            Debug.Log("No key found for Resolution Setting");
+        //    resolutionDropdown.value = currentResolutionIndex;
         if (PlayerPrefs.HasKey("TextureQualityPreference"))
+        {
             textureDropdown.value = PlayerPrefs.GetInt("TextureQualityPreference");
-        else
-            textureDropdown.value = 0;
+            SetTextureQuality(textureDropdown.value);
+        }
+        //else
+        //    textureDropdown.value = 0;
         if (PlayerPrefs.HasKey("AntiAliasingPreference"))
+        {
             aaDropdown.value = PlayerPrefs.GetInt("AntiAliasingPreference");
-        else
-            aaDropdown.value = 2;
+            SetAntiAliasing(aaDropdown.value);
+        }
+        //else
+        //    aaDropdown.value = 2;
         if (PlayerPrefs.HasKey("FullscreenPreference"))
             //Screen.fullScreen = Convert.ToBoolean(PlayerPrefs.GetInt("FullscreenPreference"));
         //else
