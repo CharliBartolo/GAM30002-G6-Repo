@@ -103,7 +103,8 @@ public class GraphicsSettings : MonoBehaviour
         }           
         else
             Debug.Log("No key found for Quality Setting");
-        //    qualityDropdown.value = 2;
+            qualityDropdown.value = 2;
+            SetQuality(qualityDropdown.value);
         if (PlayerPrefs.HasKey("ResolutionPreference"))
         {
             resolutionDropdown.value = PlayerPrefs.GetInt("ResolutionPreference");
