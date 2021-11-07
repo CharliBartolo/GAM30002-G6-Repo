@@ -34,7 +34,9 @@ public class PauseController : MonoBehaviour
     public Slider MasterVolumeSlider; //Slider option for Volume
     public Slider MusicVolumeSlider; //Slider option for Volume
     public Slider SFXVolumeSlider; //Slider option for Volume
-    public InputField VolumeInput; //Input Field for Volume
+    public InputField MainVolumeInput; //Input Field for Volume
+    public InputField MusicVolumeInput; //Input Field for Volume
+    public InputField SFXVolumeInput; //Input Field for Volume
 
     [Header("FOV")]
     public Slider FOVSlider; //Slider option for Field of view
@@ -167,16 +169,22 @@ public class PauseController : MonoBehaviour
         if (PlayerPrefs.HasKey("SFXVol"))
             SFXVolumeSlider.value = PlayerPrefs.GetFloat("SFXVol");
 
-        VolumeInput.text = GameMaster.instance.CS.Volume.ToString();
+        MainVolumeInput.text = GameMaster.instance.CS.MainVolume.ToString();
+        MusicVolumeInput.text = GameMaster.instance.CS.MusicVolume.ToString();
+        SFXVolumeInput.text = GameMaster.instance.CS.SFXVolume.ToString();
 
         PC.playerMouseLook.mouseSensitivity.x = GameMaster.instance.CS.XSensitivity;
         PC.playerMouseLook.mouseSensitivity.y = GameMaster.instance.CS.YSensitivity;
-        PC.GetComponent<Player_Audio_Renamed>().main_volume = GameMaster.instance.CS.Volume;
+        PC.GetComponent<Player_Audio_Renamed>().main_volume = GameMaster.instance.CS.MainVolume;
+        //PC.GetComponent<Player_Audio_Renamed>().main_volume = GameMaster.instance.CS.MainVolume;
+        //PC.GetComponent<Player_Audio_Renamed>().main_volume = GameMaster.instance.CS.MainVolume;
 
         //Can't interact with the text fields
         //MouseSensitivityXInput.interactable = false;
         //MouseSensitivityYInput.interactable = false;
-        VolumeInput.interactable = false;            
+        MainVolumeInput.interactable = false;  
+        MusicVolumeInput.interactable = false;     
+        SFXVolumeInput.interactable = false;               
     }
 
     // log values

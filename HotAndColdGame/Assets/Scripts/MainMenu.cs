@@ -13,8 +13,13 @@ public class MainMenu : MonoBehaviour
     public InputField MenuMouseSensitivityXInput; //Input Field for Mouse Sensitivity X
     public InputField MenuMouseSensitivityYInput; //Input Field for Mouse Sensitivity Y
 
-    public Slider MenuVolumeSlider; //Slider option for Volume
-    public InputField MenuVolumeInput; //Input Field for Volume
+    public Slider MenuMainVolumeSlider; //Slider option for Volume
+    public Slider MenuMusicVolumeSlider; //Slider option for Volume
+    public Slider MenuSFXVolumeSlider; //Slider option for Volume
+    public InputField MenuMainVolumeInput; //Input Field for Volume
+    public InputField MenuMusicVolumeInput; //Input Field for Volume
+    public InputField MenuSFXVolumeInput; //Input Field for Volume
+
     //public Button QuitButton;
 
     public Button QuitButton; //Button for quitiing game
@@ -27,13 +32,17 @@ public class MainMenu : MonoBehaviour
     {       
         public float XSensitivity;
         public float YSensitivity;
-        public float Volume;
+        public float MainVolume;
+        public float MusicVolume;
+        public float SFXVolume;
 
-        public ControlSettings(float X, float Y, float volume)
+        public ControlSettings(float X, float Y, float mainVolume, float musicVolume, float sfxVolume)
         {
             XSensitivity = X;
             YSensitivity = Y;
-            Volume = volume;
+            MainVolume = mainVolume;
+            MusicVolume = musicVolume;
+            SFXVolume = sfxVolume;
         }
     }
 
@@ -42,7 +51,9 @@ public class MainMenu : MonoBehaviour
         //Listeners
         MenuMouseSensitivityXSlider.onValueChanged.AddListener(delegate { XInputChange(); });
         MenuMouseSensitivityYSlider.onValueChanged.AddListener(delegate { YInputChange(); });
-        MenuVolumeSlider.onValueChanged.AddListener(delegate { VolumeChange(); });
+        MenuMainVolumeSlider.onValueChanged.AddListener(delegate { MainVolumeChange(); });
+        MenuMusicVolumeSlider.onValueChanged.AddListener(delegate { MusicVolumeChange(); });
+        MenuSFXVolumeSlider.onValueChanged.AddListener(delegate { SFXVolumeChange(); });
         //QuitButton.onClick.AddListener(delegate { Application.Quit(); });
 
         //Quit
@@ -61,19 +72,34 @@ public class MainMenu : MonoBehaviour
             Debug.Log("THIS IS A MAIN MENU SCRIPT: " + this);
             Debug.Log("THIS IS A GAMEMASTER SCRIPT: " + GM);
         }
+
+        if (PlayerPrefs.HasKey("MusicVol"))
+            MenuMusicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVol");
+        
+        if (PlayerPrefs.HasKey("MasterVol"))
+            MenuMainVolumeSlider.value = PlayerPrefs.GetFloat("MasterVol");
+
+        if (PlayerPrefs.HasKey("SFXVol"))
+            MenuSFXVolumeSlider.value = PlayerPrefs.GetFloat("SFXVol");
         
         MenuMouseSensitivityXSlider.value = GM.CS.XSensitivity;
         MenuMouseSensitivityYSlider.value = GM.CS.YSensitivity;
-        MenuVolumeSlider.value = GM.CS.Volume;
+        MenuMainVolumeSlider.value = GM.CS.MainVolume;
+        MenuMusicVolumeSlider.value = GM.CS.MusicVolume;
+        MenuSFXVolumeSlider.value = GM.CS.SFXVolume;
 
         MenuMouseSensitivityXInput.text = GM.CS.XSensitivity.ToString();
         MenuMouseSensitivityYInput.text = GM.CS.YSensitivity.ToString();
-        MenuVolumeInput.text = GM.CS.Volume.ToString();
+        MenuMainVolumeInput.text = GM.CS.MainVolume.ToString();
+        MenuMusicVolumeInput.text = GM.CS.MusicVolume.ToString();
+        MenuSFXVolumeInput.text = GM.CS.SFXVolume.ToString();
 
         //Can't interact with the text fields
         MenuMouseSensitivityXInput.interactable = false;
         MenuMouseSensitivityYInput.interactable = false;
-        MenuVolumeInput.interactable = false;
+        MenuMainVolumeInput.interactable = false;
+        MenuMusicVolumeInput.interactable = false;
+        MenuSFXVolumeInput.interactable = false;
     }
 
     /*
@@ -104,9 +130,22 @@ public class MainMenu : MonoBehaviour
         GM.CS.YSensitivity = MenuMouseSensitivityYSlider.value;
     }
 
-    public void VolumeChange()
+    public void MainVolumeChange()
     {
-        MenuVolumeInput.text = MenuVolumeSlider.value.ToString();
-        GM.CS.Volume = MenuVolumeSlider.value;
+        MenuMainVolumeInput.text = MenuMainVolumeSlider.value.ToString();
+        GM.CS.MainVolume = MenuMainVolumeSlider.value;
     }
+
+    public void MusicVolumeChange()
+    {
+        MenuMusicVolumeInput.text = MenuMusicVolumeSlider.value.ToString();
+        GM.CS.MusicVolume = MenuMusicVolumeSlider.value;
+    }
+
+    public void SFXVolumeChange()
+    {
+        MenuSFXVolumeInput.text = MenuSFXVolumeSlider.value.ToString();
+        GM.CS.SFXVolume = MenuSFXVolumeSlider.value;
+    }
+    
 }
